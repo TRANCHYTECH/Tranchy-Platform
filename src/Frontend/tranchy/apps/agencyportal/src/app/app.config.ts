@@ -1,13 +1,14 @@
+import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { ApplicationConfig } from '@angular/core';
 import {
   provideRouter,
   withEnabledBlockingInitialNavigation,
 } from '@angular/router';
 import { appRoutes } from './app.routes';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { AskApiHttpInterceptor } from './intercepters/askapi.httpinterceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
-    provideHttpClient(withInterceptorsFromDi())],
+    provideHttpClient(withInterceptorsFromDi(), withInterceptors([AskApiHttpInterceptor]))],
 };

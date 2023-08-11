@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   httpClient = inject(HttpClient);
 
   async ngOnInit(): Promise<void> {
-    const a = await this.httpClient.get('http://localhost:7200/question/3434', { withCredentials: true }).toPromise();
+    const a = await this.httpClient.get('[ASK]/question/3434').toPromise();
     console.log(a);
   }
 }

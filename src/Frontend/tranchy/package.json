@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build:agencyportal": "nx build agencyportal"
+    "build:agencyportal": "nx build agencyportal",
+    "start:agencyportal": "nx serve agencyportal --port 4200"
   },
   "private": true,
   "dependencies": {
