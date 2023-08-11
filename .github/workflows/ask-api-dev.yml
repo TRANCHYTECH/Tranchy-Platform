@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - main
     paths:
-      - "src/Backend"
+      - "src/Backend/**"
 env:
   CONTAINER_APP_LOCATION: southeastasia
   CONTAINER_APP_CONTAINER_NAME: ca-vg-tn-askapi-dev-sa-001

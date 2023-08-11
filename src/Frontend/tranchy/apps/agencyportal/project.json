@@ -16,6 +16,7 @@
         "polyfills": ["zone.js"],
         "tsConfig": "apps/agencyportal/tsconfig.app.json",
         "assets": [
+          "apps/agencyportal/src/staticwebapp.config.json",
           "apps/agencyportal/src/favicon.ico",
           "apps/agencyportal/src/assets"
         ],
