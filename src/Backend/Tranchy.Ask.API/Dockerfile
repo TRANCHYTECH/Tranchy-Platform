@@ -7,12 +7,12 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Backend/global.json", "global.json"]
-COPY ["Backend/Tranchy.Ask.API/Tranchy.Ask.API.csproj", "Tranchy.Ask.API/"]
-COPY ["Backend/Tranchy.Common/Tranchy.Common.csproj", "Tranchy.Common/"]
-COPY ["Backend/Tranchy.Question/Tranchy.Question.csproj", "Tranchy.Question/"]
-RUN dotnet restore "Tranchy.Ask.API/Tranchy.Ask.API.csproj"
+COPY ["Backend/Tranchy.Ask.API/Tranchy.Ask.API.csproj", "Backend/Tranchy.Ask.API/"]
+COPY ["Backend/Tranchy.Common/Tranchy.Common.csproj", "Backend/Tranchy.Common/"]
+COPY ["Backend/Tranchy.Question/Tranchy.Question.csproj", "Backend/Tranchy.Question/"]
+RUN dotnet restore "Backend/Tranchy.Ask.API/Tranchy.Ask.API.csproj"
 COPY . .
-WORKDIR "/src/Tranchy.Ask.API"
+WORKDIR "/src/Backend/Tranchy.Ask.API"
 RUN dotnet build "Tranchy.Ask.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
