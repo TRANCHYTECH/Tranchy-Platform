@@ -2,7 +2,9 @@
   "name": "@tranchy/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build:agencyportal": "nx build agencyportal"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~16.1.0",
