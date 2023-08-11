@@ -4,7 +4,7 @@ param location string
 @description('Specifies the name of the container app.')
 param containerAppName string
 
-param aspNetEnv string = 'Development'
+param aspNetEnv string = 'Production'
 
 @description('Specifies the container port.')
 param targetPort int = 80
