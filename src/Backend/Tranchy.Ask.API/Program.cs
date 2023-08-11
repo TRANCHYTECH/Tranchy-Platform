@@ -1,0 +1,111 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Tranchy.Question;
+using Tranchy.Ask.API;
+
+const string AgencyPortalSpaPolicy = "agencyportalspa";
+
+var builder = WebApplication.CreateBuilder(args);
+
+var appSettings = new AppSettings();
+builder.Configuration.Bind(appSettings);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(AgencyPortalSpaPolicy,
+                      builder =>
+                      {
+                          builder
+                            .WithOrigins(appSettings.AgencyPortalSpaUrl)
+                            .AllowCredentials()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                      });
+});
+
+builder.Services.AddBff(options =>
+{
+    options.BackchannelLogoutAllUserSessions = true;
+    options.EnableSessionCleanup = true;
+    options.AntiForgeryHeaderName = "XSRF-TOKEN";
+});
+
+// builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+    options.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
+}).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+{
+    // host prefixed cookie name
+    options.Cookie.Name = "__Host.Web.Ask";
+
+    // strict SameSite handling
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+}).AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+{
+    options.Authority = appSettings.Authentication.Schemes.OpenIdConnect.Authority;
+    // confidential client using code flow + PKCE
+    options.ClientId = appSettings.Authentication.Schemes.OpenIdConnect.ClientId;
+    options.ClientSecret = appSettings.Authentication.Schemes.OpenIdConnect.ClientSecret;
+    options.ResponseType = "code";
+    options.ResponseMode = "query";
+    options.MapInboundClaims = false;
+    options.GetClaimsFromUserInfoEndpoint = true;
+    options.SaveTokens = true;
+    // request scopes + refresh tokens
+    options.Scope.Clear();
+    foreach (var scope in appSettings.Authentication.Schemes.OpenIdConnect.Scopes)
+    {
+        options.Scope.Add(scope);
+    }
+
+    options.Events = new OpenIdConnectEvents
+    {
+        OnRedirectToIdentityProvider = context =>
+        {
+            context.ProtocolMessage.SetParameter("audience", appSettings.Authentication.Schemes.OpenIdConnect.ValidAudience);
+            return Task.FromResult(0);
+        }
+    };
+}); 
+builder.Services.AddAuthorization();
+
+var app = builder.Build();
+app.UseCors(AgencyPortalSpaPolicy);
+
+app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint().SkipAntiforgery();
+
+// Redirect after login
+app.MapGet("/agency-portal", (HttpRequest req) =>
+{
+    return TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, true);
+});
+
+//app.MapGet("antiforgery/token", (IAntiforgery forgeryService, HttpContext context) =>
+//{
+//    var tokens = forgeryService.GetAndStoreTokens(context);
+//    context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!,
+//            new CookieOptions { HttpOnly = false });
+
+//    return Results.Ok();
+//}).RequireAuthorization().AsBffApiEndpoint().SkipAntiforgery();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseAuthentication();
+app.UseBff();
+app.UseAuthorization();
+app.MapBffManagementEndpoints();
+
+app.Run();
