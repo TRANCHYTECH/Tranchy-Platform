@@ -5,7 +5,7 @@ import {
   withEnabledBlockingInitialNavigation,
 } from '@angular/router';
 import { appRoutes } from './app.routes';
-import { AskApiHttpInterceptor } from './intercepters/askapi.httpinterceptor';
+import { AskApiHttpInterceptor } from './core/intercepters/askapi.httpinterceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

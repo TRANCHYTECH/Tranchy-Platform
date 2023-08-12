@@ -51,16 +51,16 @@ param environmentName string
 param revisionMode string = 'Single'
 param containerRegistry string
 param userAssignedIdentity string
-// param subDomainCertificate string
+param subDomainCertificate string
 
 resource environment 'Microsoft.App/managedEnvironments@2023-04-01-preview' existing = {
   name: environmentName
 }
 
-// resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2023-04-01-preview' existing = {
-//   name: subDomainCertificate
-//   parent: environment
-// }
+resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2023-04-01-preview' existing = {
+  name: subDomainCertificate
+  parent: environment
+}
 
 // var serviceBusNameSpaceName = 'vgtrunnerdev'
 
@@ -107,13 +107,13 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
             weight: 100
           }
         ]
-        // customDomains: [
-        //   {
-        //     name: managedEnvironmentManagedCertificate.properties.subjectName
-        //     certificateId: managedEnvironmentManagedCertificate.id
-        //     bindingType: 'SniEnabled'
-        //   }
-        // ]
+        customDomains: [
+          {
+            name: managedEnvironmentManagedCertificate.properties.subjectName
+            certificateId: managedEnvironmentManagedCertificate.id
+            bindingType: 'SniEnabled'
+          }
+        ]
       }
     }
     template: {

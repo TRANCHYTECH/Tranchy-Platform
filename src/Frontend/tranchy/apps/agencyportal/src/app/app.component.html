@@ -1,2 +1,6 @@
-<tranchy-nx-welcome></tranchy-nx-welcome> 
+<div>Welcome, {{user.name}}</div>
+<div>
+    <button *ngIf="!user.isLoggedIn" type="button" (click)="login()">LogIn</button>
+    <button *ngIf="user.isLoggedIn" type="button" (click)="logout()">Logout</button>
+</div>
 <router-outlet></router-outlet>

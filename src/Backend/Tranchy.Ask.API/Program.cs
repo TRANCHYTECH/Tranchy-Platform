@@ -29,7 +29,6 @@ builder.Services.AddBff(options =>
 {
     options.BackchannelLogoutAllUserSessions = true;
     options.EnableSessionCleanup = true;
-    options.AntiForgeryHeaderName = "XSRF-TOKEN";
 });
 
 // builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
@@ -71,6 +70,26 @@ builder.Services.AddAuthentication(options =>
         {
             context.ProtocolMessage.SetParameter("audience", appSettings.Authentication.Schemes.OpenIdConnect.ValidAudience);
             return Task.FromResult(0);
+        },
+        OnRedirectToIdentityProviderForSignOut = (context) =>
+        {
+            var logoutUri = $"{appSettings.Authentication.Schemes.OpenIdConnect.Authority}/v2/logout?client_id={appSettings.Authentication.Schemes.OpenIdConnect.ClientId}";
+
+            var postLogoutUri = context.Properties.RedirectUri;
+            if (!string.IsNullOrEmpty(postLogoutUri))
+            {
+                if (postLogoutUri == "/agency-portal")
+                {
+                    postLogoutUri = appSettings.AgencyPortalSpaUrl;
+                }
+
+                logoutUri += $"&returnTo={Uri.EscapeDataString(postLogoutUri)}";
+            }
+
+            context.Response.Redirect(logoutUri);
+            context.HandleResponse();
+
+            return Task.CompletedTask;
         }
     };
 }); 
@@ -79,7 +98,7 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 app.UseCors(AgencyPortalSpaPolicy);
 
-app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint().SkipAntiforgery();
+app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
 
 // Redirect after login
 app.MapGet("/agency-portal", (HttpRequest req) =>
