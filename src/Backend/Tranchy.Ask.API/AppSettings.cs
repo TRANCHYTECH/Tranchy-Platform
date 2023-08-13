@@ -5,6 +5,10 @@
         public AuthenticationSettings Authentication { get; set; } = default!;
 
         public string AgencyPortalSpaUrl { get; set; } = default!;
+
+        public DatabaseOptions QuestionDb { get; set; } = default!;
+
+        public string ServiceBusConnectionString { get; set; } = default!;
     }
 
     public class AuthenticationSettings
@@ -28,5 +32,12 @@
         public string ValidAudience { get; set; } = default!;
 
         public string[] Scopes { get; set; } = default!;
+    }
+
+    public class DatabaseOptions
+    {
+        public string DatabaseName { get; set; } = default!;
+
+        public string ConnectionString { get; set; } = default!;
     }
 }

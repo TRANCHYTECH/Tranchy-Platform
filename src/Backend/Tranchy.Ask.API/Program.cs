@@ -92,18 +92,24 @@ builder.Services.AddAuthentication(options =>
             return Task.CompletedTask;
         }
     };
-}); 
+});
 builder.Services.AddAuthorization();
+
+builder.Services.RegisterInfrastructure(appSettings);
 
 var app = builder.Build();
 app.UseCors(AgencyPortalSpaPolicy);
 
-app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
+var questionEndpointBuilder = app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
+if (app.Environment.IsDevelopment())
+{
+    questionEndpointBuilder.SkipAntiforgery();
+}
 
 // Redirect after login
 app.MapGet("/agency-portal", (HttpRequest req) =>
 {
-    return TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, true);
+return TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, true);
 });
 
 //app.MapGet("antiforgery/token", (IAntiforgery forgeryService, HttpContext context) =>

@@ -15,7 +15,9 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <Folder Include="Data\" />
+	  <PackageReference Include="MassTransit" Version="8.0.16" />
+	  <PackageReference Include="MassTransit.MongoDb" Version="8.0.16" />
+	  <PackageReference Include="MongoDB.Entities" Version="22.0.0" />
 	</ItemGroup>
 
 </Project>
