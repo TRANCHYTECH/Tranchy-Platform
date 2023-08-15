@@ -25,7 +25,7 @@ namespace Tranchy.Ask.API
                     o.DisableInboxCleanupService();
                     o.ClientFactory(provider => provider.GetRequiredService<IMongoClient>());
                     o.DatabaseFactory(provider => provider.GetRequiredService<IMongoDatabase>());
-                    o.UseBusOutbox();
+                o.UseBusOutbox(p => p.DisableDeliveryService());
                 });
 
                 c.AddConsumer<NotifyAgencyConsumer>();
@@ -35,7 +35,7 @@ namespace Tranchy.Ask.API
                 {
                     cfg.Host(options.ServiceBusConnectionString);
                     cfg.ConfigureEndpoints(ctx);
-                    cfg.ReceiveEndpoint("tranchy.question.command/notifyagencyquestion", ec =>
+                    cfg.ReceiveEndpoint("tranchy.question.command/notifyagencyquestionlocal", ec =>
                     {
                         ec.MaxSizeInMegabytes = 5120;
                         ec.DefaultMessageTimeToLive = TimeSpan.FromDays(5);

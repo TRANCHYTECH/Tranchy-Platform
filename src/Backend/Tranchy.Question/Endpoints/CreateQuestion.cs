@@ -28,13 +28,13 @@ public class CreateQuestion : IEndpoint
         };
 
         await dbContext.BeginTransaction(default);
-        await DB.Collection<Data.Question>().InsertOneAsync(newQuestion);
+        await DB.InsertAsync(newQuestion, dbContext.Session, default);
         await publishEndpoint.Publish(new QuestionCreated
         {
             Title = input.Title
         });
 
-        var sendEndpoint = await sendEndpointProvider.GetSendEndpoint(new Uri("queue:Tranchy.Question.Command/NotifyAgencyQuestion"));
+        var sendEndpoint = await sendEndpointProvider.GetSendEndpoint(new Uri("queue:Tranchy.Question.Command/NotifyAgencyQuestionLocal"));
         await sendEndpoint.Send(new VerifyQuestion
         {
             Title = input.Title
