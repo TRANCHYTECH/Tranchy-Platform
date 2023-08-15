@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Tranchy.Common;
 
 namespace Tranchy.Question.Commands
 {
-    public class VerifyQuestion
+    public class VerifyQuestion: ICommand
     {
+        public static string Queue => "tranchy-question-commands-verify-question";
+
         public string Title { get; set; } = default!;
     }
 }

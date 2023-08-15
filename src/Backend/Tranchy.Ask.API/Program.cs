@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var appSettings = new AppSettings();
 builder.Configuration.Bind(appSettings);
+builder.Services.AddOptions<AppSettings>().Configure(c => c = appSettings);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -109,7 +110,7 @@ if (app.Environment.IsDevelopment())
 // Redirect after login
 app.MapGet("/agency-portal", (HttpRequest req) =>
 {
-return TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, true);
+    return TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, true);
 });
 
 //app.MapGet("antiforgery/token", (IAntiforgery forgeryService, HttpContext context) =>

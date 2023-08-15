@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using MongoDB.Entities;
+using Tranchy.Question.Commands;
 using Tranchy.Question.Consumers;
 using Tranchy.Question.Data;
 
@@ -13,19 +14,20 @@ namespace Tranchy.Ask.API
         {
             ConfigureDb(options.QuestionDb);
 
-            var conn = MongoClientSettings.FromConnectionString(options.QuestionDb.ConnectionString);
-            services.AddSingleton<IMongoDatabase>(p => p.GetRequiredService<IMongoClient>().GetDatabase(options.QuestionDb.DatabaseName));
-            services.AddSingleton<IMongoClient>(_ => new MongoClient(conn));
+            //var conn = MongoClientSettings.FromConnectionString(options.QuestionDb.ConnectionString);
+            //services.AddSingleton(p => p.GetRequiredService<IMongoClient>().GetDatabase(options.QuestionDb.DatabaseName));
+            //services.AddSingleton<IMongoClient>(_ => new MongoClient(conn));
             services.AddScoped<QuestionDbContext>();
-
             services.AddMassTransit(c =>
             {
                 c.AddMongoDbOutbox(o =>
                 {
                     o.DisableInboxCleanupService();
-                    o.ClientFactory(provider => provider.GetRequiredService<IMongoClient>());
-                    o.DatabaseFactory(provider => provider.GetRequiredService<IMongoDatabase>());
-                o.UseBusOutbox(p => p.DisableDeliveryService());
+                    //o.ClientFactory(provider => provider.GetRequiredService<IMongoClient>());
+                    //o.DatabaseFactory(provider => provider.GetRequiredService<IMongoDatabase>());
+                    o.ClientFactory(provider => DB.Database(options.QuestionDb.DatabaseName).Client);
+                    o.DatabaseFactory(provider => DB.Database(options.QuestionDb.DatabaseName));
+                    o.UseBusOutbox();
                 });
 
                 c.AddConsumer<NotifyAgencyConsumer>();
@@ -35,7 +37,7 @@ namespace Tranchy.Ask.API
                 {
                     cfg.Host(options.ServiceBusConnectionString);
                     cfg.ConfigureEndpoints(ctx);
-                    cfg.ReceiveEndpoint("tranchy.question.command/notifyagencyquestionlocal", ec =>
+                    cfg.ReceiveEndpoint(VerifyQuestion.Queue, ec =>
                     {
                         ec.MaxSizeInMegabytes = 5120;
                         ec.DefaultMessageTimeToLive = TimeSpan.FromDays(5);
