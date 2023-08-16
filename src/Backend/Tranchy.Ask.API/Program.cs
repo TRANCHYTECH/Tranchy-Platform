@@ -11,6 +11,10 @@ var appSettings = new AppSettings();
 builder.Configuration.Bind(appSettings);
 builder.Services.AddOptions<AppSettings>().Configure(c => c = appSettings);
 
+var questionModule = new QuestionModule();
+builder.Configuration.GetSection(nameof(QuestionModule)).Bind(questionModule);
+builder.Services.AddSingleton(questionModule);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
@@ -96,7 +100,7 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddAuthorization();
 
-builder.Services.RegisterInfrastructure(appSettings);
+builder.Services.RegisterInfrastructure(appSettings, questionModule);
 
 var app = builder.Build();
 app.UseCors(AgencyPortalSpaPolicy);

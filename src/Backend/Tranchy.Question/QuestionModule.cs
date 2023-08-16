@@ -2,8 +2,8 @@
 
 namespace Tranchy.Question
 {
-    public class QuestionModule: IModule
+    public class QuestionModule : IModule
     {
-        //todo: add CAP 
+        public string VerifyQuestionQueue { get; init; } = default!;
     }
 }

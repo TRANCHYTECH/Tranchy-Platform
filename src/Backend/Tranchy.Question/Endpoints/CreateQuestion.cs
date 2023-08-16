@@ -16,7 +16,7 @@ public record CreateQuestionInput(string Title);
 
 public class CreateQuestion : IEndpoint
 {
-    public static async Task<Ok<QuestionOutput>> Create([FromBody] CreateQuestionInput input, [FromServices]MongoDbContext dbContext, [FromServices]ISendEndpointProvider sendEndpointProvider, [FromServices] IPublishEndpoint publishEndpoint)
+    public static async Task<Ok<QuestionOutput>> Create([FromBody] CreateQuestionInput input, [FromServices] QuestionModule module, [FromServices]MongoDbContext dbContext, [FromServices]ISendEndpointProvider sendEndpointProvider, [FromServices] IPublishEndpoint publishEndpoint)
     {
         var newQuestion = new Data.Question
         {
@@ -37,7 +37,7 @@ public class CreateQuestion : IEndpoint
             Title = input.Title
         };
 
-        await sendEndpointProvider.Send(command, VerifyQuestion.Queue);
+        await sendEndpointProvider.Send(command, module.VerifyQuestionQueue);
 
         await dbContext.CommitTransaction(default);
 

@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using MongoDB.Entities;
+using Tranchy.Question;
 using Tranchy.Question.Commands;
 using Tranchy.Question.Consumers;
 using Tranchy.Question.Data;
@@ -10,7 +11,7 @@ namespace Tranchy.Ask.API
 {
     public static class ServiceCollectionExtensions
     {
-        public static void RegisterInfrastructure(this IServiceCollection services, AppSettings options)
+        public static void RegisterInfrastructure(this IServiceCollection services, AppSettings options, QuestionModule module)
         {
             ConfigureDb(options.QuestionDb);
 
@@ -37,7 +38,7 @@ namespace Tranchy.Ask.API
                 {
                     cfg.Host(options.ServiceBusConnectionString);
                     cfg.ConfigureEndpoints(ctx);
-                    cfg.ReceiveEndpoint(VerifyQuestion.Queue, ec =>
+                    cfg.ReceiveEndpoint(module.VerifyQuestionQueue, ec =>
                     {
                         ec.MaxSizeInMegabytes = 5120;
                         ec.DefaultMessageTimeToLive = TimeSpan.FromDays(5);
