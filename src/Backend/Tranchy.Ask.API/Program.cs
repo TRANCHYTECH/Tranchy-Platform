@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Tranchy.Question;
 using Tranchy.Ask.API;
+using Tranchy.Payment;
 
 const string AgencyPortalSpaPolicy = "agencyportalspa";
 
@@ -106,9 +107,11 @@ var app = builder.Build();
 app.UseCors(AgencyPortalSpaPolicy);
 
 var questionEndpointBuilder = app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
+var paymentEndpointBuilder = app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
 if (app.Environment.IsDevelopment())
 {
     questionEndpointBuilder.SkipAntiforgery();
+    paymentEndpointBuilder.SkipAntiforgery();
 }
 
 // Redirect after login

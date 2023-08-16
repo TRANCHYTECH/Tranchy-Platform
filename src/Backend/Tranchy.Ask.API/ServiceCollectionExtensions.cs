@@ -1,7 +1,9 @@
-﻿using MassTransit;
+﻿using Company.Activities;
+using MassTransit;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using MongoDB.Entities;
+using Tranchy.Payment.Activities;
 using Tranchy.Question;
 using Tranchy.Question.Commands;
 using Tranchy.Question.Consumers;
@@ -34,6 +36,9 @@ namespace Tranchy.Ask.API
                 c.AddConsumer<NotifyAgencyConsumer>();
                 c.AddConsumer<VerifyQuestionConsumer>();
 
+                c.AddActivity<ProcessPaymentActivity, ProcessPaymentArguments, ProcessPaymentLog>();
+                c.AddActivity<MakeCoffeeActivity, MakeCoffeeArguments, MakeCoffeeLog>();
+
                 c.UsingAzureServiceBus((ctx, cfg) =>
                 {
                     cfg.Host(options.ServiceBusConnectionString);
@@ -47,6 +52,15 @@ namespace Tranchy.Ask.API
                         ec.UseDelayedRedelivery(x => x.Incremental(5, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5)));
 
                         ec.ConfigureConsumer<VerifyQuestionConsumer>(ctx);
+                    });
+
+                    cfg.ReceiveEndpoint("process-payment", ec =>
+                    {
+                        ec.ExecuteActivityHost<ProcessPaymentActivity, ProcessPaymentArguments>(new Uri(""), cfg => { });
+                    });
+                    cfg.ReceiveEndpoint("make-coffee", ec =>
+                    {
+                        ec.ExecuteActivityHost<MakeCoffeeActivity, MakeCoffeeArguments>(ctx);
                     });
                 });
             });
