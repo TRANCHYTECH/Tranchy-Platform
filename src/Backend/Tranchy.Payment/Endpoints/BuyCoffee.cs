@@ -21,11 +21,15 @@ namespace Tranchy.Payment.Endpoints
 
     public class BuyCoffee : IEndpoint
     {
-        public static async Task<Ok<BuyCoffeeOutput>> Buy([FromBody] BuyCoffeeInput input, [FromServices] IBus bus)
+        public static async Task<Ok<BuyCoffeeOutput>> Buy(
+            [FromBody] BuyCoffeeInput input,
+            [FromServices] IEndpointNameFormatter endpointNameFormatter,
+            [FromServices] IBus bus)
         {
             var builder = new RoutingSlipBuilder(NewId.NextGuid());
-            builder.AddActivity("ProcessPayment", new Uri("queue:process-payment"), new { Value = input.Money });
-            builder.AddActivity("MakeCoffee", new Uri("queue:make-coffee"), new { NumberOfCups = 10 });
+            builder.AddActivity(nameof(ProcessPaymentActivity), new Uri($"queue:{endpointNameFormatter.ExecuteActivity<ProcessPaymentActivity, ProcessPaymentArguments>()}"), new { Value = input.Money });
+            builder.AddActivity(nameof(MakeCoffeeActivity), new Uri($"queue:{endpointNameFormatter.ExecuteActivity<MakeCoffeeActivity, MakeCoffeeArguments>()}"), new { NumberOfCups = 10 });
+            builder.AddActivity(nameof(ShipCoffeeActivity), new Uri($"queue:{endpointNameFormatter.ExecuteActivity<ShipCoffeeActivity, ShipCoffeeArguments>()}"), new { NumberOfCups = 10 });
 
             var routingSlip = builder.Build();
 

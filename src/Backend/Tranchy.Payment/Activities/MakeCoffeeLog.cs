@@ -1,4 +1,4 @@
-namespace Company.Activities
+namespace Tranchy.Payment.Activities
 {
     public interface MakeCoffeeLog
     {

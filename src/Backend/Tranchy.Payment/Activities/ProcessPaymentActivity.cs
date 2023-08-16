@@ -18,14 +18,15 @@ namespace Tranchy.Payment.Activities
         {
             await Task.Delay(100);
 
-            _logger.LogInformation("Process Payment OK");
-            return context.Completed();
+            _logger.LogInformation("Charged customer a payment {money}", context.Arguments.Value);
+            return context.CompletedWithVariables<ProcessPaymentLog>(new { Value = context.Arguments.Value }, new { Value = context.Arguments.Value });
         }
 
         public async Task<CompensationResult> Compensate(CompensateContext<ProcessPaymentLog> context)
         {
             await Task.Delay(100);
-            
+
+            _logger.LogInformation("Reverted money of customer {money}", context.Log.Value);
             return context.Compensated();
         }
     }

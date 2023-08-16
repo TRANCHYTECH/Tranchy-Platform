@@ -1,11 +1,9 @@
-﻿using Company.Activities;
-using MassTransit;
+﻿using MassTransit;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using MongoDB.Entities;
 using Tranchy.Payment.Activities;
 using Tranchy.Question;
-using Tranchy.Question.Commands;
 using Tranchy.Question.Consumers;
 using Tranchy.Question.Data;
 
@@ -33,35 +31,40 @@ namespace Tranchy.Ask.API
                     o.UseBusOutbox();
                 });
 
-                c.AddConsumer<NotifyAgencyConsumer>();
-                c.AddConsumer<VerifyQuestionConsumer>();
-
-                c.AddActivity<ProcessPaymentActivity, ProcessPaymentArguments, ProcessPaymentLog>();
-                c.AddActivity<MakeCoffeeActivity, MakeCoffeeArguments, MakeCoffeeLog>();
-
+                //c.AddConsumer<NotifyAgencyConsumer>();
+                //c.AddConsumer<VerifyQuestionConsumer>();
+                c.AddConsumersFromNamespaceContaining<NotifyAgencyConsumer>();
+                //c.AddActivity<ProcessPaymentActivity, ProcessPaymentArguments, ProcessPaymentLog>();
+                //c.AddActivity<MakeCoffeeActivity, MakeCoffeeArguments, MakeCoffeeLog>();
+                c.AddActivitiesFromNamespaceContaining<ProcessPaymentActivity>();
+                c.SetKebabCaseEndpointNameFormatter();
                 c.UsingAzureServiceBus((ctx, cfg) =>
                 {
                     cfg.Host(options.ServiceBusConnectionString);
                     cfg.ConfigureEndpoints(ctx);
-                    cfg.ReceiveEndpoint(module.VerifyQuestionQueue, ec =>
-                    {
-                        ec.MaxSizeInMegabytes = 5120;
-                        ec.DefaultMessageTimeToLive = TimeSpan.FromDays(5);
+                    //cfg.ReceiveEndpoint(module.VerifyQuestionQueue, ec =>
+                    //{
+                    //    ec.MaxSizeInMegabytes = 5120;
+                    //    ec.DefaultMessageTimeToLive = TimeSpan.FromDays(5);
 
-                        ec.UseMessageRetry(x => x.Interval(5, TimeSpan.FromSeconds(1)));
-                        ec.UseDelayedRedelivery(x => x.Incremental(5, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5)));
+                    //    ec.UseMessageRetry(x => x.Interval(5, TimeSpan.FromSeconds(1)));
+                    //    ec.UseDelayedRedelivery(x => x.Incremental(5, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5)));
 
-                        ec.ConfigureConsumer<VerifyQuestionConsumer>(ctx);
-                    });
+                    //    ec.ConfigureConsumer<VerifyQuestionConsumer>(ctx);
+                    //});
 
-                    cfg.ReceiveEndpoint("process-payment", ec =>
-                    {
-                        ec.ExecuteActivityHost<ProcessPaymentActivity, ProcessPaymentArguments>(new Uri(""), cfg => { });
-                    });
-                    cfg.ReceiveEndpoint("make-coffee", ec =>
-                    {
-                        ec.ExecuteActivityHost<MakeCoffeeActivity, MakeCoffeeArguments>(ctx);
-                    });
+                    //cfg.ReceiveEndpoint("process-payment", ec =>
+                    //{
+                    //    ec.ExecuteActivityHost<ProcessPaymentActivity, ProcessPaymentArguments>(ctx);
+                    //});
+                    //cfg.ReceiveEndpoint("make-coffee", ec =>
+                    //{
+                    //    ec.ExecuteActivityHost<MakeCoffeeActivity, MakeCoffeeArguments>(ctx);
+                    //});
+                    //cfg.ReceiveEndpoint("ship-coffee", ec =>
+                    //{
+                    //    ec.ExecuteActivityHost<ShipCoffeeActivity, ShipCoffeeArguments>(ctx);
+                    //});
                 });
             });
         }
