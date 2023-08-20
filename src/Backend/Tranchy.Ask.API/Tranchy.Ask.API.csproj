@@ -17,14 +17,13 @@
 
   <ItemGroup>
     <PackageReference Include="Duende.BFF" Version="2.1.1" />
-    <PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.0.16" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
-    <PackageReference Include="MassTransit" Version="8.0.16" />
-    <PackageReference Include="MassTransit.MongoDb" Version="8.0.16" />
-    <PackageReference Include="MongoDB.Entities" Version="22.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
+    <PackageReference Include="MassTransit" Version="8.1.0" />
+    <PackageReference Include="MassTransit.MongoDb" Version="8.1.0" />
+    <PackageReference Include="MongoDB.Entities" Version="22.1.0" />
   </ItemGroup>
 
   <ItemGroup>

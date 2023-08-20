@@ -4,7 +4,6 @@ using MongoDB.Driver;
 using MongoDB.Entities;
 using Tranchy.Payment.Activities;
 using Tranchy.Question;
-using Tranchy.Question.Consumers;
 using Tranchy.Question.Data;
 
 namespace Tranchy.Ask.API
@@ -33,7 +32,7 @@ namespace Tranchy.Ask.API
 
                 //c.AddConsumer<NotifyAgencyConsumer>();
                 //c.AddConsumer<VerifyQuestionConsumer>();
-                c.AddConsumersFromNamespaceContaining<NotifyAgencyConsumer>();
+                //c.AddConsumersFromNamespaceContaining<NotifyAgencyConsumer>();
                 //c.AddActivity<ProcessPaymentActivity, ProcessPaymentArguments, ProcessPaymentLog>();
                 //c.AddActivity<MakeCoffeeActivity, MakeCoffeeArguments, MakeCoffeeLog>();
                 c.AddActivitiesFromNamespaceContaining<ProcessPaymentActivity>();
@@ -41,7 +40,7 @@ namespace Tranchy.Ask.API
                 c.UsingAzureServiceBus((ctx, cfg) =>
                 {
                     cfg.Host(options.ServiceBusConnectionString);
-                    cfg.ConfigureEndpoints(ctx);
+                    // cfg.ConfigureEndpoints(ctx);
                     //cfg.ReceiveEndpoint(module.VerifyQuestionQueue, ec =>
                     //{
                     //    ec.MaxSizeInMegabytes = 5120;

@@ -8,10 +8,11 @@ using MassTransit;
 using Tranchy.Question.Events;
 using MongoDB.Entities;
 using MassTransit.MongoDbIntegration;
+using Tranchy.Question.Endpoints;
 using Tranchy.Question.Commands;
 using Tranchy.Question.Consumers;
 
-namespace Tranchy.Question.Endpoints;
+namespace Tranchy.Question.Integrations.Endpoints;
 
 public record CreateQuestionInput(string Title);
 
