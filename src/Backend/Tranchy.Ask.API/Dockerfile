@@ -10,6 +10,7 @@ COPY ["Backend/global.json", "global.json"]
 COPY ["Backend/Tranchy.Ask.API/Tranchy.Ask.API.csproj", "Backend/Tranchy.Ask.API/"]
 COPY ["Backend/Tranchy.Common/Tranchy.Common.csproj", "Backend/Tranchy.Common/"]
 COPY ["Backend/Tranchy.Question/Tranchy.Question.csproj", "Backend/Tranchy.Question/"]
+COPY ["Backend/Tranchy.Payment/Tranchy.Payment.csproj", "Backend/Tranchy.Payment/"]
 RUN dotnet restore "Backend/Tranchy.Ask.API/Tranchy.Ask.API.csproj"
 COPY . .
 WORKDIR "/src/Backend/Tranchy.Ask.API"

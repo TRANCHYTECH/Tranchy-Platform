@@ -1,4 +1,4 @@
-name: dev:ask-api
+name: dev:ask-worker
 on:
   workflow_dispatch:
   push:
@@ -8,15 +8,15 @@ on:
       - "src/Backend/**"
 env:
   CONTAINER_APP_LOCATION: southeastasia
-  CONTAINER_APP_CONTAINER_NAME: ca-vg-tn-askapi-dev-sa-001
-  CONTAINER_APP_NAME: ca-vg-tn-askapi-dev-sa-001
+  CONTAINER_APP_CONTAINER_NAME: ca-vg-tn-askworker-dev-sa-001
+  CONTAINER_APP_NAME: ca-vg-tn-askworker-dev-sa-001
   CONTAINER_APP_RESOURCE_GROUP_NAME: rg-vg-tn-dev-sa-001
   CONTAINER_APP_ENV_NAME: cae-vg-tn-dev-sa-001
   CONTIANER_APP_USER_ID: id-ca-vg-tn-dev-sa-001
-  CONTAINER_APP_SUBDOMAIN_CERTIFICATE: askapi.vietgeeks.io-cae-vg-t-230811171329
+  # CONTAINER_APP_SUBDOMAIN_CERTIFICATE: askapi.vietgeeks.io-cae-vg-t-230811171329
   CONTAINER_REGISTRY_LOGIN_SERVER: tranchynetworkdev.azurecr.io
-  DOCKER_FILE_PATH: src/Backend/Tranchy.Ask.API/Dockerfile
-  PROJECT_NAME_FOR_DOCKER: tranchyasknapi
+  DOCKER_FILE_PATH: src/Backend/Tranchy.Ask.Worker/Dockerfile
+  PROJECT_NAME_FOR_DOCKER: tranchyaskworker
 
 jobs:
   build:
@@ -53,10 +53,10 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           resourceGroupName: ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }}
-          template: ./deploy/container-app-dapr.bicep
-          parameters: location=${{ env.CONTAINER_APP_LOCATION }} subDomainCertificate=${{ env.CONTAINER_APP_SUBDOMAIN_CERTIFICATE }} userAssignedIdentity=${{ env.CONTIANER_APP_USER_ID }} environmentName=${{ env.CONTAINER_APP_ENV_NAME }} containerAppName=${{ env.CONTAINER_APP_CONTAINER_NAME }} containerImage=${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }} containerRegistry=${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}
+          template: ./deploy/container-app-worker.bicep
+          parameters: location=${{ env.CONTAINER_APP_LOCATION }} userAssignedIdentity=${{ env.CONTIANER_APP_USER_ID }} environmentName=${{ env.CONTAINER_APP_ENV_NAME }} containerAppName=${{ env.CONTAINER_APP_CONTAINER_NAME }} containerImage=${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }} containerRegistry=${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}
           failOnStdErr: false
-          deploymentName: dev-ask-api-${{ github.sha }}
+          deploymentName: dev-ask-worker-${{ github.sha }}
       - name: logout
         run: >
           az logout

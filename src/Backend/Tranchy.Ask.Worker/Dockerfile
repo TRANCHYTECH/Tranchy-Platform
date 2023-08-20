@@ -5,10 +5,12 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["Tranchy.Ask.Worker/Tranchy.Ask.Worker.csproj", "Tranchy.Ask.Worker/"]
-RUN dotnet restore "Tranchy.Ask.Worker/Tranchy.Ask.Worker.csproj"
+COPY ["Backend/global.json", "global.json"]
+COPY ["Backend/Tranchy.Ask.Worker/Tranchy.Ask.Worker.csproj", "Backend/Tranchy.Ask.Worker/"]
+COPY ["Backend/Tranchy.Question/Tranchy.Question.csproj", "Backend/Tranchy.Question/"]
+RUN dotnet restore "Backend/Tranchy.Ask.Worker/Tranchy.Ask.Worker.csproj"
 COPY . .
-WORKDIR "/src/Tranchy.Ask.Worker"
+WORKDIR "/src/Backend/Tranchy.Ask.Worker"
 RUN dotnet build "Tranchy.Ask.Worker.csproj" -c Release -o /app/build
 
 FROM build AS publish
