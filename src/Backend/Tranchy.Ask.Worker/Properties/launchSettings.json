@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Tranchy.Ask.Worker": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
+    }
+  }
+}

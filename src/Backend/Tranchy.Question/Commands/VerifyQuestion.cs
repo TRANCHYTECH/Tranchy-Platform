@@ -2,7 +2,7 @@
 
 namespace Tranchy.Question.Commands
 {
-    public class VerifyQuestion: ICommand
+    public class VerifyQuestion : ICommand
     {
         public string Title { get; set; } = default!;
     }

@@ -8,15 +8,23 @@ using MassTransit;
 using Tranchy.Question.Events;
 using MongoDB.Entities;
 using MassTransit.MongoDbIntegration;
+using Tranchy.Question.Endpoints;
 using Tranchy.Question.Commands;
+using Tranchy.Question.Consumers;
 
-namespace Tranchy.Question.Endpoints;
+namespace Tranchy.Question.Integrations.Endpoints;
 
 public record CreateQuestionInput(string Title);
 
 public class CreateQuestion : IEndpoint
 {
-    public static async Task<Ok<QuestionOutput>> Create([FromBody] CreateQuestionInput input, [FromServices] QuestionModule module, [FromServices]MongoDbContext dbContext, [FromServices]ISendEndpointProvider sendEndpointProvider, [FromServices] IPublishEndpoint publishEndpoint)
+    public static async Task<Ok<QuestionOutput>> Create(
+        [FromBody] CreateQuestionInput input,
+        [FromServices] IEndpointNameFormatter endpointNameFormatter,
+        [FromServices] QuestionModule module,
+        [FromServices] MongoDbContext dbContext,
+        [FromServices] ISendEndpointProvider sendEndpointProvider,
+        [FromServices] IPublishEndpoint publishEndpoint)
     {
         var newQuestion = new Data.Question
         {
@@ -37,7 +45,7 @@ public class CreateQuestion : IEndpoint
             Title = input.Title
         };
 
-        await sendEndpointProvider.Send(command, module.VerifyQuestionQueue);
+        await sendEndpointProvider.Send(command, endpointNameFormatter.Consumer<VerifyQuestionConsumer>());
 
         await dbContext.CommitTransaction(default);
 

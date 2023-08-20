@@ -5,13 +5,15 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tranchy.Ask.API", "Tranchy.Ask.API\Tranchy.Ask.API.csproj", "{9D2B237B-9942-4BFD-8E5E-45B1A1699EF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tranchy.Question", "Tranchy.Question\Tranchy.Question.csproj", "{239FBA04-09E8-4F12-B491-608DD78CDF6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tranchy.Question", "Tranchy.Question\Tranchy.Question.csproj", "{239FBA04-09E8-4F12-B491-608DD78CDF6E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{955A95D4-C6D7-468F-ABC3-4BF9454573A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tranchy.Common", "Tranchy.Common\Tranchy.Common.csproj", "{704CB649-CFF7-4EA1-94C0-4BEDBB84EA7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tranchy.Common", "Tranchy.Common\Tranchy.Common.csproj", "{704CB649-CFF7-4EA1-94C0-4BEDBB84EA7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tranchy.Payment", "Tranchy.Payment\Tranchy.Payment.csproj", "{9C2DB807-6642-4A6A-BD9B-AE6A84D79615}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tranchy.Payment", "Tranchy.Payment\Tranchy.Payment.csproj", "{9C2DB807-6642-4A6A-BD9B-AE6A84D79615}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tranchy.Ask.Worker", "Tranchy.Ask.Worker\Tranchy.Ask.Worker.csproj", "{71216FF3-928E-47DE-A11C-D7002411D568}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{9C2DB807-6642-4A6A-BD9B-AE6A84D79615}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C2DB807-6642-4A6A-BD9B-AE6A84D79615}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C2DB807-6642-4A6A-BD9B-AE6A84D79615}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71216FF3-928E-47DE-A11C-D7002411D568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71216FF3-928E-47DE-A11C-D7002411D568}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71216FF3-928E-47DE-A11C-D7002411D568}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71216FF3-928E-47DE-A11C-D7002411D568}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
