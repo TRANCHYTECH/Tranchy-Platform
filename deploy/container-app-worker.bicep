@@ -61,7 +61,7 @@ resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-previe
   name: userAssignedIdentity
 }
 
-resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: containerAppName
   location: location
   identity: {
@@ -103,14 +103,6 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
         maxReplicas: maxReplicas
         rules: [
           {
-            name: 'http-scale-rule'
-            http: {
-              metadata: {
-                concurrentRequests: '500'
-              }
-            }
-          }
-          {
             name: 'cpu-scale-rule'
             custom: {
               type: 'cpu'
@@ -135,5 +127,3 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
     }
   }
 }
-
-output containerAppFQDN string = containerApp.properties.configuration.ingress.fqdn
