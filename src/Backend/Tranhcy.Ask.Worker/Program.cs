@@ -31,10 +31,10 @@ namespace Tranhcy.Ask.Worker
                         x.AddSagas(entryAssembly);
                         x.AddActivities(entryAssembly);
 
-                        x.UsingInMemory((context, cfg) =>
-                        {
-                            cfg.ConfigureEndpoints(context);
-                        });
+                        //x.UsingInMemory((context, cfg) =>
+                        //{
+                        //    cfg.ConfigureEndpoints(context);
+                        //});
                     });
                 });
     }
