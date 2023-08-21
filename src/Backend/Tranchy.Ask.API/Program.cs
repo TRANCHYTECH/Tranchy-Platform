@@ -130,11 +130,8 @@ app.MapGet("/agency-portal", (HttpRequest req) =>
 //}).RequireAuthorization().AsBffApiEndpoint().SkipAntiforgery();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthentication();
 app.UseBff();
