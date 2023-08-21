@@ -49,7 +49,7 @@ param revisionMode string = 'Single'
 param containerRegistry string
 param userAssignedIdentity string
 
-resource environment 'Microsoft.App/managedEnvironments@2023-04-01-preview' existing = {
+resource environment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
   name: environmentName
 }
 // var serviceBusNameSpaceName = 'vgtrunnerdev'
@@ -57,7 +57,7 @@ resource environment 'Microsoft.App/managedEnvironments@2023-04-01-preview' exis
 // resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existing = {
 //   name: serviceBusNameSpaceName
 // }
-resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' existing = {
+resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
   name: userAssignedIdentity
 }
 
@@ -80,12 +80,6 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
           server: containerRegistry
         }
       ]
-      ingress: {
-        external: false
-      }
-      dapr: {
-        enabled: false
-      }
     }
     template: {
       containers: [
@@ -107,28 +101,6 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       scale: {
         minReplicas: minReplicas
         maxReplicas: maxReplicas
-        rules: [
-          {
-            name: 'cpu-scale-rule'
-            custom: {
-              type: 'cpu'
-              metadata: {
-                metricType : 'Utilization'
-                value: '70'
-              }
-            }
-          }
-          {
-            name: 'memory-scale-rule'
-            custom: {
-              type: 'memory'
-              metadata: {
-                metricType : 'AverageValue'
-                value: '70'
-              }
-            }
-          }
-        ]
       }
     }
   }
