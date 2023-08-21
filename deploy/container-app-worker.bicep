@@ -80,6 +80,12 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
           server: containerRegistry
         }
       ]
+      ingress: {
+        external: false
+      }
+      dapr: {
+        enabled: false
+      }
     }
     template: {
       containers: [
