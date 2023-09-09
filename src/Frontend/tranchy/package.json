@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "build:agencyportal": "nx build agencyportal",
-    "start:agencyportal": "nx serve agencyportal --port 4200"
+    "start:agencyportal": "nx serve agencyportal --port 4200 --ssl --ssl-cert $HOME/.aspnet/https/tranchyone.pem --ssl-key $HOME/.aspnet/https/tranchyone.key",
+    "start:agencyportal_macos": "nx serve agencyportal --port 4200 --ssl --ssl-cert $HOME/.aspnet/https/tranchyone.pem --ssl-key $HOME/.aspnet/https/tranchyone.key"
   },
   "private": true,
   "dependencies": {

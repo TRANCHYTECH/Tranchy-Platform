@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.HttpOverrides;
 using Tranchy.Question;
 using Tranchy.Ask.API;
 using Tranchy.Payment;
@@ -7,7 +8,8 @@ using Tranchy.Payment;
 const string AgencyPortalSpaPolicy = "agencyportalspa";
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
+builder.Services.Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto);
 var appSettings = new AppSettings();
 builder.Configuration.Bind(appSettings);
 builder.Services.AddOptions<AppSettings>().Configure(c => c = appSettings);
@@ -104,6 +106,8 @@ builder.Services.AddAuthorization();
 builder.Services.RegisterInfrastructure(appSettings, questionModule);
 
 var app = builder.Build();
+app.UseForwardedHeaders();
+
 app.UseCors(AgencyPortalSpaPolicy);
 
 var questionEndpointBuilder = app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();

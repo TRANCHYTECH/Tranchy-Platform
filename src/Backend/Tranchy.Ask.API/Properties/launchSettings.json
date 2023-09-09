@@ -1,20 +1,16 @@
 {
   "profiles": {
-    "http": {
+    "https_macos": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_Kestrel__Certificates__Default__Path": "%HOME%/.aspnet/https/tranchyone.pem",
+        "ASPNETCORE_Kestrel__Certificates__Default__KeyPath": "%HOME%/.aspnet/https/tranchyone.key"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:7200"
-    },
-    "Docker": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-      "publishAllPorts": true
+      "applicationUrl": "https://localhost:7200"
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json"
