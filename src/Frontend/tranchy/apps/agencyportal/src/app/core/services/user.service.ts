@@ -18,8 +18,8 @@ export class UserService {
 
   user = computed<User>(() => {
     const user = this._user();
-    
-    if(user === null) {
+
+    if (user === null) {
       return {
         isLoggedIn: false,
         name: ''
@@ -28,7 +28,7 @@ export class UserService {
 
     return {
       isLoggedIn: true,
-      name: user.find(c => c.type === 'name')?.value as  string
+      name: user.find(c => c.type === 'name')?.value as string
     }
   });
 
@@ -59,11 +59,16 @@ export class UserService {
 
 export const AuthGuard: CanActivateFn = async () => {
   const userService = inject(UserService);
+  const router = inject(Router);
   const user = await userService.getUser();
 
   if (user !== null) {
     return true;
   }
 
-  return inject(Router).createUrlTree([environment.askApiBaseUrl, "/bff/login"], { queryParams: { returnUrl: '/agency-portal' } });
+  window.location.href = `${environment.askApiBaseUrl}/bff/login?returnUrl=/agency-portal`;
+
+  //todo: redirect to unauthorized page. Page has options to login.
+  return false;
+  //return router.createUrlTree([environment.askApiBaseUrl, "bff", "login"], { queryParams: { returnUrl: '/agency-portal' } });
 };
