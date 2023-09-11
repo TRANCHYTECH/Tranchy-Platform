@@ -18,4 +18,4 @@ Error: yarnpkg install exited with non-zero code: 1
 
 Solution: 
 delete node_module, android, ios
-yarn
+Run yarn
