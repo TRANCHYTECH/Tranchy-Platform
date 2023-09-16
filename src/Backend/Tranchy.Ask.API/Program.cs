@@ -43,16 +43,18 @@ builder.Services.AddBff(options =>
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-    options.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
+    options.DefaultScheme = "MultiAuthSchemes";
+    options.DefaultChallengeScheme = "MultiAuthSchemes";
+    // options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    // options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+    // options.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
 }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
 {
     // host prefixed cookie name
     options.Cookie.Name = "__Host.Web.Ask";
 
     // strict SameSite handling
-    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 }).AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
 {
@@ -100,7 +102,22 @@ builder.Services.AddAuthentication(options =>
             return Task.CompletedTask;
         }
     };
-});
+})
+.AddJwtBearer()
+.AddPolicyScheme("MultiAuthSchemes", "Multi Auth Schemes", options =>
+    {
+        options.ForwardDefaultSelector = context =>
+        {
+            string? authorization = context.Request.Headers.Authorization;
+            if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
+            {
+                return "Bearer";
+            }
+
+            return CookieAuthenticationDefaults.AuthenticationScheme;
+        };
+    });
+
 builder.Services.AddAuthorization();
 
 builder.Services.RegisterInfrastructure(appSettings, questionModule);
@@ -112,7 +129,6 @@ app.UseCors(AgencyPortalSpaPolicy);
 
 var questionEndpointBuilder = app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
 var paymentEndpointBuilder = app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
-if (app.Environment.IsDevelopment())
 {
     questionEndpointBuilder.SkipAntiforgery();
     paymentEndpointBuilder.SkipAntiforgery();
