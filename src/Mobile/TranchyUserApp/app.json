@@ -14,7 +14,8 @@
       "backgroundColor": "#191015"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/06e2bb0b-490b-4976-8746-45bec609a6d4"
     },
     "jsEngine": "hermes",
     "assetBundlePatterns": [
@@ -66,6 +67,9 @@
         "projectId": "06e2bb0b-490b-4976-8746-45bec609a6d4"
       }
     },
-    "owner": "tranchy"
+    "owner": "tranchy",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
   }
 }
