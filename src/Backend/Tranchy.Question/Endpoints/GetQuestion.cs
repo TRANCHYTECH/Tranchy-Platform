@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Builder;
 using Tranchy.Common;
+using HotChocolate.Types;
 
 namespace Tranchy.Question.Endpoints;
 

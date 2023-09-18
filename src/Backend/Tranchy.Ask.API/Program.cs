@@ -122,7 +122,9 @@ builder.Services.AddAuthorization();
 
 builder.Services.RegisterInfrastructure(appSettings, questionModule);
 
-builder.Services.AddGraphQL();
+builder.Services.AddGraphQLServer();
+QuestionModule.Register(builder.Services);
+
 var app = builder.Build();
 app.UseForwardedHeaders();
 
@@ -158,5 +160,7 @@ app.UseAuthentication();
 app.UseBff();
 app.UseAuthorization();
 app.MapBffManagementEndpoints();
+
+app.MapGraphQL();
 
 app.Run();
