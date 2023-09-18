@@ -122,6 +122,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.RegisterInfrastructure(appSettings, questionModule);
 
+builder.Services.AddGraphQL();
 var app = builder.Build();
 app.UseForwardedHeaders();
 

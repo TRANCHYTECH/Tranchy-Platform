@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Duende.BFF" Version="2.1.1" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="13.5.1" />
     <PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
