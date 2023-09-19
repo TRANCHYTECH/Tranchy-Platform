@@ -5,7 +5,7 @@ using Tranchy.Question;
 using Tranchy.Ask.API;
 using Tranchy.Payment;
 
-const string AgencyPortalSpaPolicy = "agencyportalspa";
+const string agencyPortalSpaPolicy = "agency-portal-spa";
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
@@ -22,10 +22,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(AgencyPortalSpaPolicy,
-                      builder =>
+    options.AddPolicy(agencyPortalSpaPolicy,
+                      policyBuilder =>
                       {
-                          builder
+                          policyBuilder
                             .WithOrigins(appSettings.AgencyPortalSpaUrl)
                             .AllowCredentials()
                             .AllowAnyMethod()
@@ -39,22 +39,19 @@ builder.Services.AddBff(options =>
     options.EnableSessionCleanup = true;
 });
 
-// builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "MultiAuthSchemes";
-    options.DefaultChallengeScheme = "MultiAuthSchemes";
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+    options.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
     // options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    // options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-    // options.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
 }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
 {
     // host prefixed cookie name
     options.Cookie.Name = "__Host.Web.Ask";
 
     // strict SameSite handling
-    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
+    options.Cookie.SameSite = SameSiteMode.Strict;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 }).AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
 {
@@ -125,7 +122,7 @@ builder.Services.RegisterInfrastructure(appSettings, questionModule);
 var app = builder.Build();
 app.UseForwardedHeaders();
 
-app.UseCors(AgencyPortalSpaPolicy);
+app.UseCors(agencyPortalSpaPolicy);
 
 var questionEndpointBuilder = app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
 var paymentEndpointBuilder = app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
@@ -135,19 +132,7 @@ var paymentEndpointBuilder = app.MapGroup("/payment").MapEndpoints<PaymentModule
 }
 
 // Redirect after login
-app.MapGet("/agency-portal", (HttpRequest req) =>
-{
-    return TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, true);
-});
-
-//app.MapGet("antiforgery/token", (IAntiforgery forgeryService, HttpContext context) =>
-//{
-//    var tokens = forgeryService.GetAndStoreTokens(context);
-//    context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!,
-//            new CookieOptions { HttpOnly = false });
-
-//    return Results.Ok();
-//}).RequireAuthorization().AsBffApiEndpoint().SkipAntiforgery();
+app.MapGet("/agency-portal", (HttpRequest req) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, true));
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
