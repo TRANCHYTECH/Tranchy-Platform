@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "generate-rest:agencyportal": "npx orval --config ./orval.config.ts",
     "build:agencyportal": "nx build agencyportal",
     "start:agencyportal": "nx serve agencyportal --port 4200 --ssl --ssl-cert $HOME/.aspnet/https/tranchyone.pem --ssl-key $HOME/.aspnet/https/tranchyone.key",
     "start:agencyportal_macos": "nx serve agencyportal --port 4200 --ssl --ssl-cert $HOME/.aspnet/https/tranchyone.pem --ssl-key $HOME/.aspnet/https/tranchyone.key"
@@ -17,8 +18,8 @@
     "@angular/platform-browser": "~16.1.0",
     "@angular/platform-browser-dynamic": "~16.1.0",
     "@angular/router": "~16.1.0",
-    "@nx/angular": "16.6.0",
     "@ng-bootstrap/ng-bootstrap": "15.1.1",
+    "@nx/angular": "16.6.0",
     "bootstrap": "5.3.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -54,6 +55,7 @@
     "jest-environment-jsdom": "^29.4.1",
     "jest-preset-angular": "~13.1.0",
     "nx": "16.6.0",
+    "orval": "^6.17.0",
     "prettier": "^2.6.2",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
