@@ -5,4 +5,6 @@
  * OpenAPI spec version: 1.0
  */
 
-export interface BuyCoffeeOutput { [key: string]: any }
+export interface BuyCoffeeOutput {
+  [key: string]: any;
+}

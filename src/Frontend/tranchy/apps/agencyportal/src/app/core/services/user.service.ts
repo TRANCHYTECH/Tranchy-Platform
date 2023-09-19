@@ -35,7 +35,7 @@ export class UserService {
   private _user = signal<{ type: string, value: string | number }[] | null>(null);
 
   getUser() {
-    return firstValueFrom(this.httpClient.get('ask:/bff/user').pipe(tap((res: any) => {
+    return firstValueFrom(this.httpClient.get('/ask:/bff/user').pipe(tap((res: any) => {
       this._user.set(res);
     }), catchError(error => {
       console.log('error get user', error);

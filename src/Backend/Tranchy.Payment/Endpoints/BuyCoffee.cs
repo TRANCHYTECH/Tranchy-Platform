@@ -40,7 +40,7 @@ namespace Tranchy.Payment.Endpoints
 
         public static void Register(RouteGroupBuilder routeGroupBuilder)
         {
-            routeGroupBuilder.MapPost("/buy", Buy);
+            routeGroupBuilder.MapPost("/buy", Buy).WithName("BuyCoffee");
         }
     }
 }

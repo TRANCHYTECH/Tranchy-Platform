@@ -23,8 +23,8 @@ public class GetQuestion : IEndpoint
 
     public static void Register(RouteGroupBuilder routeGroupBuilder)
     {
-        routeGroupBuilder.MapGet("/{id}", ById);
-        routeGroupBuilder.MapGet("/user/{user}", ByUser);
+        routeGroupBuilder.MapGet("/{id}", ById).WithName("GetQuestionById");
+        routeGroupBuilder.MapGet("/user/{user}", ByUser).WithName("GetQuestionByUser");
     }
 }
 

@@ -54,7 +54,7 @@ public class CreateQuestion : IEndpoint
 
     public static void Register(RouteGroupBuilder routeGroupBuilder)
     {
-        routeGroupBuilder.MapPost("/", Create);
+        routeGroupBuilder.MapPost("/", Create).WithName("CreateQuestion");
     }
 }
 
