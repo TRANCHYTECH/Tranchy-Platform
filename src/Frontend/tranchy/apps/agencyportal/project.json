@@ -21,9 +21,10 @@
           "apps/agencyportal/src/assets"
         ],
         "styles": [
-          "apps/agencyportal/src/assets/scss/config/saas/bootstrap.scss",
-          "apps/agencyportal/src/assets/scss/config/saas/app.scss",
-          "apps/agencyportal/src/assets/scss/icons.scss",
+          "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+          "node_modules/primeng/resources/primeng.min.css",
+          "node_modules/primeflex/primeflex.css",
+          "node_modules/primeicons/primeicons.css",
           "apps/agencyportal/src/styles.scss"
         ],
         "scripts": []

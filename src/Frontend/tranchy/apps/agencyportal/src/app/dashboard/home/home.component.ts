@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { TranchyAskAPIService } from '../../state/askapi/askapi.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'tranchy-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
