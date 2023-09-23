@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { TranchyAskAPIService } from '../../state/askapi/askapi.service';
 import { SharedModule } from '@tranchy/shared';
+import { PortalConfig } from '../../app.config';
+import { injectPortalConfig } from '@tranchy/core';
 
 @Component({
   selector: 'tranchy-home',
@@ -15,7 +16,8 @@ import { SharedModule } from '@tranchy/shared';
 export class HomeComponent implements OnInit {
   askAPIService = inject(TranchyAskAPIService);
   httpClient = inject(HttpClient);
-
+  appConfig = injectPortalConfig<PortalConfig>();
+  
   async ngOnInit(): Promise<void> {
     const a = await this.askAPIService.getQuestionById('1245').toPromise();
     console.log(a);

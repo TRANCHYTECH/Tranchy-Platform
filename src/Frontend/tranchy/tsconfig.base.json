@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@tranchy/core": ["libs/core/src/index.ts"],
       "@tranchy/shared": ["libs/shared/src/index.ts"]
     }
   },

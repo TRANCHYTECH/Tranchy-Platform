@@ -1,11 +1,11 @@
 import { Component, OnInit, effect, inject, untracked } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { User, UserService } from './core/services/user.service';
 import { HorizontalComponent } from './layout/horizontal/horizontal.component';
 import { PrimeNGConfig } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import defaultLanguage from '../assets/i18n/vi.json';
 import { SharedModule } from '@tranchy/shared';
+import { User, UserService } from '@tranchy/core';
 
 @Component({
   standalone: true,

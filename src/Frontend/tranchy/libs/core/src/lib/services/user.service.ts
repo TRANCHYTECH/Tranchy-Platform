@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
 import { firstValueFrom, tap, catchError, of } from 'rxjs';
+import { CORE_CONFIG } from '../core.config';
 
 export type User = {
   isLoggedIn: boolean,
@@ -15,7 +15,8 @@ export type User = {
 export class UserService {
   httpClient = inject(HttpClient);
   router = inject(Router);
-
+  coreConfig = inject(CORE_CONFIG);
+  
   user = computed<User>(() => {
     const user = this._user();
 
@@ -44,7 +45,7 @@ export class UserService {
   }
 
   login() {
-    window.location.href = `${environment.askApiBaseUrl}/bff/login?returnUrl=/agency-portal`;
+    window.location.href = `${this.coreConfig.apiBaseUrl}/bff/login?returnUrl=/agency-portal`;
   }
 
   logout() {
@@ -53,20 +54,21 @@ export class UserService {
       return;
 
     const logoutUrl = user.find(c => c.type === 'bff:logout_url');
-    window.location.href = `${environment.askApiBaseUrl}${logoutUrl?.value}&returnUrl=/agency-portal`;
+    window.location.href = `${this.coreConfig.apiBaseUrl}${logoutUrl?.value}&returnUrl=/agency-portal`;
   }
 }
 
 export const AuthGuard: CanActivateFn = async () => {
   const userService = inject(UserService);
   const router = inject(Router);
+  const coreConfig = inject(CORE_CONFIG);
   const user = await userService.getUser();
 
   if (user !== null) {
     return true;
   }
 
-  window.location.href = `${environment.askApiBaseUrl}/bff/login?returnUrl=/agency-portal`;
+  window.location.href = `${coreConfig.apiBaseUrl}/bff/login?returnUrl=/agency-portal`;
 
   //todo: redirect to unauthorized page. Page has options to login.
   return false;

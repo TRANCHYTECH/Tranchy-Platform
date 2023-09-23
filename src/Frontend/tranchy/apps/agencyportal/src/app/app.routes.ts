@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { AuthGuard } from './core/services/user.service';
+import { AuthGuard } from '@tranchy/core';
 
 export const appRoutes: Route[] = [
     {
