@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, Signal, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TranchyAskAPIService } from '../../_state/askapi/askapi.service';
 import { SharedModule } from '@tranchy/shared';
@@ -19,10 +19,10 @@ export class HomeComponent implements OnInit {
   askAPIService = inject(TranchyAskAPIService);
   httpClient = inject(HttpClient);
   appConfig = injectPortalConfig<PortalConfig>();
-  question?: Observable<QuestionOutput>;
-  user?: Observable<Object>;
+  question = signal<Partial<QuestionOutput>>({});
+  user = signal<Partial<Object>>({});
   async ngOnInit(): Promise<void> {
-    this.question = this.askAPIService.getQuestionById('1245');
-    this.user = this.httpClient.get('/ask:/bff/user');
+    this.askAPIService.getQuestionById('1245').subscribe(q => this.question.set(q));
+    this.httpClient.get('/ask:/bff/user').subscribe(u => this.user.set(u));
   }
 }
