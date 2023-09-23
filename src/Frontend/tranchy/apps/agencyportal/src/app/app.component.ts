@@ -1,8 +1,9 @@
-import { Component, effect, inject, untracked } from '@angular/core';
+import { Component, OnInit, effect, inject, untracked } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { User, UserService } from './core/services/user.service';
 import { CommonModule } from '@angular/common';
 import { HorizontalComponent } from './layout/horizontal/horizontal.component';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   standalone: true,
@@ -11,8 +12,10 @@ import { HorizontalComponent } from './layout/horizontal/horizontal.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   userService = inject(UserService);
+  primengConfig = inject(PrimeNGConfig);
+
   title = 'agencyportal';
   user: User = { isLoggedIn: false, name: '' };
   constructor() {
@@ -23,6 +26,10 @@ export class AppComponent {
       });
     });
   }
+
+  ngOnInit() {
+    this.primengConfig.ripple = true;
+}
 
   logout() {
     this.userService.logout();

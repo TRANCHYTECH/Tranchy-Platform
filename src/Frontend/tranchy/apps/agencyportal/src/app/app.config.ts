@@ -6,9 +6,12 @@ import {
 } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { AskApiHttpInterceptor } from './core/intercepters/askapi.httpinterceptor';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
-    provideHttpClient(withInterceptorsFromDi(), withInterceptors([AskApiHttpInterceptor]))],
+    provideHttpClient(withInterceptorsFromDi(), withInterceptors([AskApiHttpInterceptor])),
+    provideAnimations(),
+  ]
 };
