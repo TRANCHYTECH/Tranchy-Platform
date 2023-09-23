@@ -16,8 +16,8 @@ export default defineConfig({
   askapi: {
     output: {
       mode: 'single',
-      target: 'apps/agencyportal/src/app/state/askapi/askapi.service.ts',
-      schemas: 'apps/agencyportal/src/app/state/askapi/models',
+      target: 'apps/agencyportal/src/app/_state/askapi/askapi.service.ts',
+      schemas: 'apps/agencyportal/src/app/_state/askapi/models',
       client: 'angular',
       prettier: true
     },

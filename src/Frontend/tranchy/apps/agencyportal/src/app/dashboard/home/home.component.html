@@ -1,6 +1,8 @@
 <div class="row">
     <h2>{{ 'dashboard.title' | translate }}</h2>
-    <p>home works! {{ appConfig | json }}</p>
+    <p>App config: {{ appConfig | json }}</p>
+    <p>Question : {{ question | async | json }}</p>
+    <p>User : {{ user | async | json }}</p>
     <div class="card flex justify-content-center">
         <p-button label="This is the button" icon="pi pi-check"></p-button>
     </div>

@@ -1,7 +1,7 @@
 import { EnvironmentProviders, InjectionToken, inject, makeEnvironmentProviders } from "@angular/core";
 
 export interface CoreConfig {
-    apiBaseUrl: string
+    askApiBaseUrl: string
 }
 
 export const CORE_CONFIG = new InjectionToken<CoreConfig>('CoreConfig');

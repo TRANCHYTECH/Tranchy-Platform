@@ -10,6 +10,6 @@ export const appRoutes: Route[] = [
     {
         path: 'setting',
         loadChildren: () => import('./setting/setting.routes').then(m => m.ROUTES),
-        //canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
     }
 ];

@@ -9,7 +9,7 @@ export const AskApiHttpInterceptor: HttpInterceptorFn = (req, next) => {
         const headers = req.headers.set('x-csrf', '1');
 
         req = req.clone({
-            url: req.url.replace(askApiPrefix, coreConfig.apiBaseUrl),
+            url: req.url.replace(askApiPrefix, coreConfig.askApiBaseUrl),
             headers,
             withCredentials: true
         });

@@ -1,0 +1,14 @@
+<div>TranchyOne</div>
+<div class="flex">
+    <div>
+        <a [routerLink]="['/']">{{ 'menu.dashboard' | translate }}</a>
+        <a [routerLink]="['/setting']">{{ 'menu.setting' | translate }}</a>
+    </div>
+    <div>
+        <div>Welcome, {{user.name}}</div>
+        <div>
+            <button *ngIf="!user.isLoggedIn" type="button" (click)="login()">LogIn</button>
+            <button *ngIf="user.isLoggedIn" type="button" (click)="logout()">Logout</button>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,8 @@
 {
+    "menu": {
+        "dashboard": "Dashboard",
+        "setting": "Setting"
+    },
     "dashboard": {
         "title": "Dashboard"
     }

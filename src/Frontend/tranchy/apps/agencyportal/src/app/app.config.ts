@@ -1,18 +1,18 @@
 import { HttpClient, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
-import { ApplicationConfig, InjectionToken, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import {
   provideRouter,
   withEnabledBlockingInitialNavigation,
 } from '@angular/router';
-import { appRoutes } from './app.routes';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AskApiHttpInterceptor, CoreConfig, provideCore } from '@tranchy/core';
 import { environment } from '../environments/environment';
+import { appRoutes } from './app.routes';
 
 export interface PortalConfig extends CoreConfig {
-  production: string
+  production: boolean
 }
 
 export const appConfig: ApplicationConfig = {

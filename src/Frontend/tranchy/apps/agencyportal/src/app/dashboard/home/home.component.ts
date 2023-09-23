@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TranchyAskAPIService } from '../../state/askapi/askapi.service';
+import { TranchyAskAPIService } from '../../_state/askapi/askapi.service';
 import { SharedModule } from '@tranchy/shared';
 import { PortalConfig } from '../../app.config';
 import { injectPortalConfig } from '@tranchy/core';
+import { QuestionOutput } from '../../_state/askapi/models';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'tranchy-home',
@@ -17,12 +19,10 @@ export class HomeComponent implements OnInit {
   askAPIService = inject(TranchyAskAPIService);
   httpClient = inject(HttpClient);
   appConfig = injectPortalConfig<PortalConfig>();
-  
+  question?: Observable<QuestionOutput>;
+  user?: Observable<Object>;
   async ngOnInit(): Promise<void> {
-    const a = await this.askAPIService.getQuestionById('1245').toPromise();
-    console.log(a);
-
-    const b = await this.httpClient.get('/ask:/bff/user').toPromise();
-    console.log(b);
+    this.question = this.askAPIService.getQuestionById('1245');
+    this.user = this.httpClient.get('/ask:/bff/user');
   }
 }

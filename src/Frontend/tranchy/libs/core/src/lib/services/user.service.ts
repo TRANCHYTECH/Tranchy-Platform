@@ -45,7 +45,7 @@ export class UserService {
   }
 
   login() {
-    window.location.href = `${this.coreConfig.apiBaseUrl}/bff/login?returnUrl=/agency-portal`;
+    window.location.href = `${this.coreConfig.askApiBaseUrl}/bff/login?returnUrl=/agency-portal`;
   }
 
   logout() {
@@ -54,7 +54,7 @@ export class UserService {
       return;
 
     const logoutUrl = user.find(c => c.type === 'bff:logout_url');
-    window.location.href = `${this.coreConfig.apiBaseUrl}${logoutUrl?.value}&returnUrl=/agency-portal`;
+    window.location.href = `${this.coreConfig.askApiBaseUrl}${logoutUrl?.value}&returnUrl=/agency-portal`;
   }
 }
 
@@ -68,7 +68,7 @@ export const AuthGuard: CanActivateFn = async () => {
     return true;
   }
 
-  window.location.href = `${coreConfig.apiBaseUrl}/bff/login?returnUrl=/agency-portal`;
+  window.location.href = `${coreConfig.askApiBaseUrl}/bff/login?returnUrl=/agency-portal`;
 
   //todo: redirect to unauthorized page. Page has options to login.
   return false;
