@@ -1,8 +1,10 @@
 import { Component, OnInit, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
+import { SharedModule } from '@tranchy/shared';
 
 @Component({
   selector: 'tranchy-app-topbar',
   standalone: true,
+  imports: [SharedModule],
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
