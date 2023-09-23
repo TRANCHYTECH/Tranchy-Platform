@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, ChangeDetectionStrategy, effect, untracked, inject } from '@angular/core';
 import { User, UserService } from '@tranchy/core';
 import { SharedModule } from '@tranchy/shared';
-
 @Component({
   selector: 'tranchy-app-topbar',
   standalone: true,

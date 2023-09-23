@@ -4,6 +4,7 @@
     <p>Question : {{ question() | json }}</p>
     <p>User : {{ user() | json }}</p>
     <div class="card flex justify-content-center">
-        <p-button label="This is the button" icon="pi pi-check"></p-button>
+        <p-button label="This is the button" icon="pi pi-check" (onClick)="confirm1()"></p-button>
     </div>
 </div>
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>

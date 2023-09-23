@@ -10,6 +10,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AskApiHttpInterceptor, CoreConfig, provideCore } from '@tranchy/core';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
+import { SharedModule } from '@tranchy/shared';
 
 export interface PortalConfig extends CoreConfig {
   production: boolean
@@ -20,13 +21,16 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
     provideHttpClient(withInterceptorsFromDi(), withInterceptors([AskApiHttpInterceptor])),
     provideAnimations(),
-    importProvidersFrom(TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })),
+    importProvidersFrom(
+      TranslateModule.forRoot({
+        loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+        }
+      }),
+      SharedModule.forRoot()
+    ),
     provideCore(environment)
   ]
 };

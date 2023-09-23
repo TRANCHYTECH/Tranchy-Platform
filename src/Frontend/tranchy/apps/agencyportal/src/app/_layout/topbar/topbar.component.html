@@ -7,8 +7,8 @@
     <div>
         <div>Welcome, {{user.name}}</div>
         <div>
-            <button *ngIf="!user.isLoggedIn" type="button" (click)="login()">LogIn</button>
-            <button *ngIf="user.isLoggedIn" type="button" (click)="logout()">Logout</button>
+            <p-button *ngIf="!user.isLoggedIn" type="button" (onClick)="login()">LogIn</p-button>
+            <p-button *ngIf="user.isLoggedIn" type="button" (onClick)="logout()">Logout</p-button>
         </div>
     </div>
 </div>
