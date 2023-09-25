@@ -26,7 +26,9 @@ const plugins = [
 module.exports = {
   presets: ["babel-preset-expo"],
   env: {
-    production: {},
+    production: {
+      plugins: ['react-native-paper/babel']
+    },
   },
   plugins,
 }
