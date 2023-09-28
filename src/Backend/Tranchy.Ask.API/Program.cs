@@ -14,9 +14,8 @@ var appSettings = new AppSettings();
 builder.Configuration.Bind(appSettings);
 builder.Services.AddOptions<AppSettings>().Configure(c => c = appSettings);
 
-var questionModule = new QuestionModule();
-builder.Configuration.GetSection(nameof(QuestionModule)).Bind(questionModule);
-builder.Services.AddSingleton(questionModule);
+QuestionModule.ConfigureServices(builder.Services, builder.Configuration.GetSection(nameof(QuestionModule)));
+builder.Services.RegisterInfrastructure(appSettings);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -117,8 +116,6 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddAuthorization();
-
-builder.Services.RegisterInfrastructure(appSettings, questionModule);
 
 var app = builder.Build();
 app.UseForwardedHeaders();
