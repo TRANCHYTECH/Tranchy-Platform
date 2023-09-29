@@ -4,18 +4,19 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Tranchy.Question;
 using Tranchy.Ask.API;
 using Tranchy.Payment;
+using Tranchy.Common;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 builder.Services.Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto);
+
 var appSettings = new AppSettings();
 builder.Configuration.Bind(appSettings);
 builder.Services.AddOptions<AppSettings>().Configure(c => c = appSettings);
 
-QuestionModule.ConfigureServices(builder.Services, builder.Configuration.GetSection(nameof(QuestionModule)));
-builder.Services.RegisterInfrastructure(appSettings);
+builder.Services.RegisterModules(appSettings);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

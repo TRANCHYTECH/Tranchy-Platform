@@ -5,6 +5,6 @@ namespace Tranchy.Common
 {
     public interface IModule
     {
-        abstract static void ConfigureServices(IServiceCollection services, IConfigurationSection configuration);
+        abstract static void ConfigureServices(IServiceCollection services, AppSettings configuration);
     }
 }

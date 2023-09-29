@@ -11,7 +11,7 @@ namespace Tranchy.Payment;
 
 public class PaymentModule : IModule
 {
-    public static void ConfigureServices(IServiceCollection services, IConfigurationSection configuration)
+    public static void ConfigureServices(IServiceCollection services, AppSettings configuration)
     {
     }
 }

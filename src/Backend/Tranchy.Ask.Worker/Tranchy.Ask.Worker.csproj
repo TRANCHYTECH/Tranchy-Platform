@@ -18,6 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Tranchy.Payment\Tranchy.Payment.csproj" />
 	  <ProjectReference Include="..\Tranchy.Question\Tranchy.Question.csproj" />
 	</ItemGroup>
 
