@@ -2,6 +2,7 @@
 using MongoDB.Entities;
 using Tranchy.Common;
 using Tranchy.Payment;
+using Tranchy.Payment.Data;
 using Tranchy.Question;
 
 namespace Tranchy.Ask.API
@@ -14,6 +15,12 @@ namespace Tranchy.Ask.API
             PaymentModule.ConfigureServices(services, configuration);
             services.AddMassTransit(c =>
             {
+                c.AddEntityFrameworkOutbox<PaymentDbContext>(o =>
+                {
+                    o.UseSqlServer();
+                    o.UseBusOutbox();
+                });
+
                 c.AddMongoDbOutbox(o =>
                 {
                     o.ClientFactory(provider => DB.Database(configuration.QuestionDb.DatabaseName).Client);
