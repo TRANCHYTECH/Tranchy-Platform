@@ -1,12 +1,3 @@
-### Confluence workspace
-https://vietgeeks.atlassian.net/wiki/spaces/TO/overview
-
-### Agency Portal
-https://agency.vietgeeks.io/
-
-### Mobile
-https://expo.dev/accounts/dangngoctau/projects/TranchyUserApp
-
-### API
-https://askapi.vietgeeks.io/swagger/index.html
-
+    Oppen power shell:
+    dotnet dev-certs https -ep "$env:USERPROFILE\.aspnet\https\tranchyone.pem" --format Pem --no-password
+    dotnet dev-certs https --trust

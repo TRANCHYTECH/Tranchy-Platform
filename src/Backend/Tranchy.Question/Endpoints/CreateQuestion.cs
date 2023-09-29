@@ -21,7 +21,6 @@ public class CreateQuestion : IEndpoint
     public static async Task<Ok<QuestionOutput>> Create(
         [FromBody] CreateQuestionInput input,
         [FromServices] IEndpointNameFormatter endpointNameFormatter,
-        [FromServices] QuestionModule module,
         [FromServices] MongoDbContext dbContext,
         [FromServices] ISendEndpointProvider sendEndpointProvider,
         [FromServices] IPublishEndpoint publishEndpoint)

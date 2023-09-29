@@ -16,6 +16,7 @@
 	
 	<ItemGroup>
 	  <PackageReference Include="MassTransit" Version="8.1.0" />
+	  <PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.1.0" />
 	  <PackageReference Include="MassTransit.MongoDb" Version="8.1.0" />
 	  <PackageReference Include="MongoDB.Entities" Version="22.1.0" />
 	</ItemGroup>

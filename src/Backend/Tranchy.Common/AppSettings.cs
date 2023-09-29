@@ -1,4 +1,4 @@
-﻿namespace Tranchy.Ask.API
+﻿namespace Tranchy.Common
 {
     public class AppSettings
     {
