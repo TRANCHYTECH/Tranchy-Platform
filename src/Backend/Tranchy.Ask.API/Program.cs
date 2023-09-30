@@ -5,11 +5,33 @@ using Tranchy.Question;
 using Tranchy.Ask.API;
 using Tranchy.Payment;
 using Tranchy.Common;
+using Azure.Identity;
+using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
+builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false)
+.ConfigureAppConfiguration(config =>
+{
+    config.AddAzureAppConfiguration(options =>
+    {
+        var appConfigName = builder.Configuration["AppConfigName"];
+        options.Connect(new Uri($"https://{appConfigName}.azconfig.io"), new DefaultAzureCredential())
+        .Select(KeyFilter.Any, builder.Environment.EnvironmentName);
+        options.ConfigureKeyVault(options =>
+                   {
+                       options.SetCredential(new DefaultAzureCredential());
+                   });
+    });
+});
+builder.Services.AddAzureClients(config =>
+{
+    var vault = builder.Configuration["KeyVaultName"];
+    config.UseCredential(new DefaultAzureCredential());
+    config.AddSecretClient(new Uri($"https://{vault}.vault.azure.net"));
+});
 builder.Services.Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto);
 
 var appSettings = new AppSettings();
