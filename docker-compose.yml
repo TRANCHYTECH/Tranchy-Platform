@@ -1,0 +1,19 @@
+services:
+  sql:
+    container_name: tranchy-sql
+    environment:
+      - ACCEPT_EULA=true
+      - MSSQL_SA_PASSWORD=Password@456
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    ports:
+      - "1434:1433"
+  
+  mongo:
+    container_name: tranchy-mongo
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: sa
+      MONGO_INITDB_ROOT_PASSWORD: Password@456
+    ports:
+      - "27017:27017"
