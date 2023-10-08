@@ -145,7 +145,12 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddOpenTelemetry().UseAzureMonitor();
+builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
+{
+    options.ConnectionString = appSettings.AzureMonitor.ConnectionString;
+    options.SamplingRatio = 0.5F;
+    options.Credential = new DefaultAzureCredential();
+});
 
 builder.Services.AddHealthChecks()
 .AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded)
