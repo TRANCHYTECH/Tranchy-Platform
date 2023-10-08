@@ -8,6 +8,11 @@ using Tranchy.Common;
 using Azure.Identity;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using System.Text.Json;
+using System.Net.Mime;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
 
@@ -140,9 +145,14 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddOpenTelemetry().UseAzureMonitor();
+
+builder.Services.AddHealthChecks()
+.AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded)
+.AddApplicationInsightsPublisher();
+
 var app = builder.Build();
 app.UseForwardedHeaders();
-
 app.UseCors(agencyPortalSpaPolicy);
 
 var questionEndpointBuilder = app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
@@ -163,5 +173,6 @@ app.UseAuthentication();
 app.UseBff();
 app.UseAuthorization();
 app.MapBffManagementEndpoints();
+app.MapTranchyHealthChecks();
 
 app.Run();

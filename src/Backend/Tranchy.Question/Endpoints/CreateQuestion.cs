@@ -11,6 +11,7 @@ using MassTransit.MongoDbIntegration;
 using Tranchy.Question.Endpoints;
 using Tranchy.Question.Commands;
 using Tranchy.Question.Consumers;
+using Microsoft.Extensions.Logging;
 
 namespace Tranchy.Question.Integrations.Endpoints;
 
@@ -23,7 +24,8 @@ public class CreateQuestion : IEndpoint
         [FromServices] IEndpointNameFormatter endpointNameFormatter,
         [FromServices] MongoDbContext dbContext,
         [FromServices] ISendEndpointProvider sendEndpointProvider,
-        [FromServices] IPublishEndpoint publishEndpoint)
+        [FromServices] IPublishEndpoint publishEndpoint,
+        [FromServices] ILogger<CreateQuestion> logger)
     {
         var newQuestion = new Data.Question
         {
@@ -47,6 +49,8 @@ public class CreateQuestion : IEndpoint
         await sendEndpointProvider.Send(command, endpointNameFormatter.Consumer<VerifyQuestionConsumer>());
 
         await dbContext.CommitTransaction(default);
+
+        logger.CreatedQuestion(newQuestion.Title);
 
         return TypedResults.Ok<QuestionOutput>(new(input.Title));
     }
