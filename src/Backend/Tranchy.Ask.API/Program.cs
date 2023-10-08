@@ -8,6 +8,8 @@ using Tranchy.Common;
 using Azure.Identity;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
 
@@ -140,16 +142,16 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-// builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
-// {
-//     options.ConnectionString = appSettings.AzureMonitor.ConnectionString;
-//     options.SamplingRatio = 0.5F;
-//     options.Credential = new DefaultAzureCredential();
-// });
+builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
+{
+    options.ConnectionString = appSettings.AzureMonitor.ConnectionString;
+    options.SamplingRatio = 0.5F;
+    options.Credential = new DefaultAzureCredential();
+});
 
-// builder.Services.AddHealthChecks()
-// .AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded);
-// .AddApplicationInsightsPublisher();
+builder.Services.AddHealthChecks()
+.AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded)
+.AddApplicationInsightsPublisher();
 
 var app = builder.Build();
 app.UseForwardedHeaders();
@@ -173,6 +175,6 @@ app.UseAuthentication();
 app.UseBff();
 app.UseAuthorization();
 app.MapBffManagementEndpoints();
-// app.MapTranchyHealthChecks();
+app.MapTranchyHealthChecks();
 
 app.Run();

@@ -6,6 +6,8 @@ param containerAppName string
 
 param aspNetEnv string = 'Production'
 
+param azureClientId string
+
 @description('Specifies the container port.')
 param targetPort int = 80
 
@@ -125,6 +127,10 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
             {
               name: 'ASPNETCORE_ENVIRONMENT'
               value: aspNetEnv
+            }
+            {
+              name: 'AZURE_CLIENT_ID'
+              value: azureClientId
             }
             // {
             //   name: 'TestManagerServiceBus__Namespace'

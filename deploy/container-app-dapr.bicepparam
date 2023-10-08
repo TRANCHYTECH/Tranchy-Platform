@@ -13,4 +13,4 @@ param environmentName = ''
 param revisionMode = 'Single'
 param containerRegistry = ''
 param subDomainCertificate = ''
-
+param azureClientId = 'ab25b142-2288-4372-97c1-80b60b52e92e'
