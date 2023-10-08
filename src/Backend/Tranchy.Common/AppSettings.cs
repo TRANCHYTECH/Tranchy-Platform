@@ -9,6 +9,13 @@
         public DatabaseOptions QuestionDb { get; set; } = default!;
 
         public string ServiceBusConnectionString { get; set; } = default!;
+
+        public AzureMonitorSettings AzureMonitor { get; set; } = default!;
+    }
+
+    public class AzureMonitorSettings
+    {
+        public string ConnectionString { get; set; } = default!;
     }
 
     public class AuthenticationSettings

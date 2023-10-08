@@ -15,11 +15,11 @@ namespace Tranchy.Ask.API
             PaymentModule.ConfigureServices(services, configuration);
             services.AddMassTransit(c =>
             {
-                c.AddEntityFrameworkOutbox<PaymentDbContext>(o =>
-                {
-                    o.UseSqlServer();
-                    o.UseBusOutbox();
-                });
+                // c.AddEntityFrameworkOutbox<PaymentDbContext>(o =>
+                // {
+                //     o.UseSqlServer();
+                //     o.UseBusOutbox();
+                // });
 
                 c.AddMongoDbOutbox(o =>
                 {
