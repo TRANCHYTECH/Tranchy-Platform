@@ -152,8 +152,8 @@ builder.Services.AddAuthorization();
 //     options.Credential = new DefaultAzureCredential();
 // });
 
-builder.Services.AddHealthChecks()
-.AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded);
+// builder.Services.AddHealthChecks()
+// .AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded);
 // .AddApplicationInsightsPublisher();
 
 var app = builder.Build();
@@ -178,6 +178,6 @@ app.UseAuthentication();
 app.UseBff();
 app.UseAuthorization();
 app.MapBffManagementEndpoints();
-app.MapTranchyHealthChecks();
+// app.MapTranchyHealthChecks();
 
 app.Run();
