@@ -153,8 +153,8 @@ builder.Services.AddAuthorization();
 // });
 
 builder.Services.AddHealthChecks()
-.AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded)
-.AddApplicationInsightsPublisher();
+.AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded);
+// .AddApplicationInsightsPublisher();
 
 var app = builder.Build();
 app.UseForwardedHeaders();
