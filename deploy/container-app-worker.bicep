@@ -6,6 +6,8 @@ param containerAppName string
 
 param aspNetEnv string = 'Production'
 
+param azureClientId string
+
 @description('Specifies the docker container image to deploy.')
 param containerImage string = 'mcr.microsoft.com/k8se/quickstart:latest'
 
@@ -90,6 +92,10 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
             {
               name: 'DOTNET_ENVIRONMENT'
               value: aspNetEnv
+            }
+            {
+              name: 'AZURE_CLIENT_ID'
+              value: azureClientId
             }
           ]
           resources: {
