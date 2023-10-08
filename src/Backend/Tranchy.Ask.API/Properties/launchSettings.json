@@ -1,5 +1,15 @@
 {
   "profiles": {
+    "https_vs": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7200"
+    },
     "https_macos": {
       "commandName": "Project",
       "launchBrowser": false,
