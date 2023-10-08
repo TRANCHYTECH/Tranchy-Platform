@@ -16,17 +16,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="7.0.0" />
-    <PackageReference Include="AspNetcore.HealthChecks.Publisher.ApplicationInsights" Version="7.0.0" />
     <PackageReference Include="Azure.Identity" Version="1.10.1" />
-    <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.0.0-beta.8" />
     <PackageReference Include="Duende.BFF" Version="2.1.1" />
     <PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.11" />
     <PackageReference Include="Microsoft.Extensions.Azure" Version="1.7.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="6.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
     <PackageReference Include="MassTransit" Version="8.1.0" />
     <PackageReference Include="MassTransit.MongoDb" Version="8.1.0" />
     <PackageReference Include="MongoDB.Entities" Version="22.1.0" />

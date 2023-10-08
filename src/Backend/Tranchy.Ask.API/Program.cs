@@ -8,11 +8,6 @@ using Tranchy.Common;
 using Azure.Identity;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
-using Azure.Monitor.OpenTelemetry.AspNetCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using System.Text.Json;
-using System.Net.Mime;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
 
