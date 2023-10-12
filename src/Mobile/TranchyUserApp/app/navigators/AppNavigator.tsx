@@ -34,9 +34,10 @@ import { DemoTabParamList, MyTabs } from "./BottomNavigator"
  *   https://reactnavigation.org/docs/typescript/#organizing-types
  */
 export type AppStackParamList = {
-  Welcome: undefined,
+  Welcome: undefined
   Demo: NavigatorScreenParams<DemoTabParamList>
   // 🔥 Your screens go here
+  NewQuestion: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -56,13 +57,14 @@ const Stack = createNativeStackNavigator<AppStackParamList>()
 
 const AppStack = observer(function AppStack() {
   return (
-    <Stack.Navigator 
-      screenOptions={{ headerShown: false, navigationBarColor: colors.background, title: 'todo' }}
+    <Stack.Navigator
+      screenOptions={{ headerShown: false, navigationBarColor: colors.background, title: "todo" }}
     >
-          <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-          <Stack.Screen name="Demo" component={MyTabs} />
-          
+      <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
+      <Stack.Screen name="Demo" component={MyTabs} />
+
       {/** 🔥 Your screens go here */}
+      <Stack.Screen name="NewQuestion" component={Screens.NewQuestionScreen} />
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

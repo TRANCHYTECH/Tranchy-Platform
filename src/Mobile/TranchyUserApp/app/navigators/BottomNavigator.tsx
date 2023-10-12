@@ -60,9 +60,9 @@ export function MyTabs() {
         name="Notifications"
         component={Notifications}
         options={{
-          tabBarLabel: 'Updates',
+          tabBarLabel: 'Question',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={size} />
+            <MaterialCommunityIcons name="file-edit-outline" color={color} size={size} />
           ),
         }}
       />
