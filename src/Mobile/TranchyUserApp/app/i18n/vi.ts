@@ -1,4 +1,4 @@
-const en = {
+const vi = {
   common: {
     ok: "OK!",
     cancel: "Cancel",
@@ -10,8 +10,8 @@ const en = {
     agency: "Doanh nghiệp",
   },
   tab: {
-    community: "Community",
-    newQuestion: "New Question",
+    community: "Cộng đồng",
+    newQuestion: "Đặt câu hỏi",
   },
   newQuestionScreen: {
     error: {
@@ -20,7 +20,8 @@ const en = {
       noQuestionCategorySelected: "Anh có thể chọn tối đa {{max}} chủ đề",
     },
     questionContent: "Nội dung câu hỏi",
-    askQuestionGuideline: "Hướng dẫn cách đặt 1 câu hỏi hiệu quả. 5W.",
+    askQuestionGuideline:
+      "Để đặt 1 câu hỏi hiệu quả, bạn nên tham khảo hướng dẫn về cách đặt vấn đề\r\nBước 1: Xác định vấn đề. \r\nBước 2: Nếu câu hỏi nhạy cảm, bạn nên tuân thủ theo hướng dẫn tại đây.\r\nBước 3: Bạn mong muốn câu trả lời.",
   },
   welcomeScreen: {
     postscript:
@@ -42,5 +43,5 @@ const en = {
     },
   },
 }
-
-export default en
+export default vi
+export type Translations = typeof vi

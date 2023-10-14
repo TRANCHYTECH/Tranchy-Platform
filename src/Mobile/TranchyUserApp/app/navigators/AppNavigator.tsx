@@ -64,7 +64,11 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="Demo" component={MyTabs} />
 
       {/** 🔥 Your screens go here */}
-      <Stack.Screen name="NewQuestion" component={Screens.NewQuestionScreen} />
+      <Stack.Screen
+        name="NewQuestion"
+        options={{ headerShown: true, title: "Tạo câu hỏi mới" }}
+        component={Screens.NewQuestionScreen}
+      />
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

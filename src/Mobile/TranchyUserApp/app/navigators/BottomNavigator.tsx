@@ -1,8 +1,8 @@
-import * as React from 'react';
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { translate } from 'app/i18n';
 
 export type DemoTabParamList = {
   Feed: undefined
@@ -16,7 +16,7 @@ const Tab = createBottomTabNavigator();
 function Feed() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Feed!</Text>
+        <Text>Danh sách câu hỏi cộng đồng</Text>
       </View>
     );
   }
@@ -43,6 +43,7 @@ export function MyTabs() {
     <Tab.Navigator
       initialRouteName="Feed"
       screenOptions={{
+        
         tabBarActiveTintColor: '#e91e63',
       }}
     >
@@ -50,7 +51,8 @@ export function MyTabs() {
         name="Feed"
         component={Feed}
         options={{
-          tabBarLabel: 'Home',
+          title: translate("tab.community"),
+          tabBarLabel: translate("tab.community"),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
@@ -59,8 +61,15 @@ export function MyTabs() {
       <Tab.Screen
         name="Notifications"
         component={Notifications}
+        listeners={({ navigation, route }) => ({
+          tabPress: e => {
+            e.preventDefault(); 
+            navigation.navigate('NewQuestion');
+          },
+        })}
         options={{
-          tabBarLabel: 'Question',
+          title: translate("tab.newQuestion"),
+          tabBarLabel: translate("tab.newQuestion"),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="file-edit-outline" color={color} size={size} />
           ),
@@ -69,7 +78,7 @@ export function MyTabs() {
       <Tab.Screen
         name="Profile"
         component={Profile}
-        options={{
+        options={{ 
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
