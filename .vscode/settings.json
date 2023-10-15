@@ -5,5 +5,6 @@
   "editor.renderWhitespace": "boundary",
   "editor.rulers": [100],
   "editor.cursorBlinking": "solid",
-  "cSpell.words": ["hookform"]
+  "cSpell.words": ["hookform"],
+  "eslint.workingDirectories": ["./src/Frontend", ".src/Mobile"]
 }

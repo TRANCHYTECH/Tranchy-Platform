@@ -1,6 +1,6 @@
 import { View } from "react-native"
 import { Text } from "react-native-paper"
-
+import React from "react"
 export function SectionLabel({ title, description }: { title: string; description?: string }) {
   return (
     <View>

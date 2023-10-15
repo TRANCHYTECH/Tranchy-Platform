@@ -1,15 +1,15 @@
-import { Screen, SectionLabel } from "app/components"
-import { translate } from "app/i18n"
-import { AppStackScreenProps } from "app/navigators"
-import { observer } from "mobx-react-lite"
-import React, { FC, useCallback, useMemo, useRef, useState } from "react"
-import { StyleSheet, View, ViewStyle } from "react-native"
-import { Button, Chip, HelperText, SegmentedButtons, Text, TextInput } from "react-native-paper"
 import BottomSheet from "@gorhom/bottom-sheet"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { QuestionModel, SupportLevels } from "app/models"
+import { Screen, SectionLabel } from "app/components"
+import { translate } from "app/i18n"
+import { SupportLevels, useStores } from "app/models"
+import { AppStackScreenProps } from "app/navigators"
 import { colors, spacing } from "app/theme"
+import { observer } from "mobx-react-lite"
+import React, { FC, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
+import { StyleSheet, View, ViewStyle } from "react-native"
+import { Button, Chip, HelperText, SegmentedButtons, Text, TextInput } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import z from "zod"
 
@@ -17,7 +17,7 @@ interface NewQuestionScreenProps extends AppStackScreenProps<"NewQuestion"> {}
 
 const Categories = ["technology", "education", "marketing", "commerce", "law", "other"]
 
-const NewQuestionSchema = z.object({
+const QuestionFormSchema = z.object({
   content: z
     .string()
     .min(50, { message: translate("newQuestionScreen.error.questionTooShort", { min: 50 }) }),
@@ -27,7 +27,7 @@ const NewQuestionSchema = z.object({
   supportLevel: z.enum(SupportLevels),
 })
 
-type QuestionModel = z.infer<typeof NewQuestionSchema>
+type QuestionFormModel = z.infer<typeof QuestionFormSchema>
 
 const supportLevelOptions = [
   {
@@ -47,6 +47,7 @@ const supportLevelOptions = [
   },
 ]
 
+// todo: apply observer
 const CategorySelections = ({
   input,
   onClose,
@@ -86,17 +87,21 @@ const CategorySelections = ({
   )
 }
 
-export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function NewQuestionScreen() {
+export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function NewQuestionScreen(
+  _props,
+) {
   const insets = useSafeAreaInsets()
-
+  const { navigation } = _props
+  // const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
+  const { questionStore } = useStores()
   const {
     control,
     watch,
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<QuestionModel>({
-    resolver: zodResolver(NewQuestionSchema),
+  } = useForm<QuestionFormModel>({
+    resolver: zodResolver(QuestionFormSchema),
     mode: "onBlur",
     defaultValues: {
       categories: [],
@@ -121,8 +126,17 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
   }
 
   // Form submit
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = async (data: QuestionFormModel) => {
+    await questionStore.addQuestion({
+      content: data.content,
+      categories: data.categories,
+      supportLevel: data.supportLevel,
+      id: "",
+    })
+    alert(
+      "Câu hỏi của anh đã tạo thành công, hệ thống đang tiến hành kiểm duyệt và gửi đến nơi phù hợp",
+    )
+    navigation.navigate("MyTabs", { screen: "CommunityQuestionList" })
   }
   const onError = (error) => {
     console.log(error)
@@ -233,7 +247,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
         </View>
       </Screen>
       <View style={{ ...styles.bottomRow, marginBottom: insets.bottom }}>
-        <Button mode={"contained"} loading={true} onPress={handleSubmit(onSubmit, onError)}>
+        <Button mode={"contained"} loading={false} onPress={handleSubmit(onSubmit, onError)}>
           Gửi câu hỏi
         </Button>
       </View>
@@ -249,27 +263,27 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
 })
 
 const styles = StyleSheet.create({
+  bottomRow: {
+    padding: spacing.md,
+  },
+  bottomSheetContainer: {
+    alignItems: "center",
+    flex: 1,
+  },
+  column: {
+    flexDirection: "column",
+    paddingTop: spacing.xs,
+  },
   row: {
-    paddingTop: spacing.xxs,
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 12,
-  },
-  column: {
-    paddingTop: spacing.xs,
-    flexDirection: "column",
+    paddingTop: spacing.xxs,
   },
   selectedChip: {
-    borderColor: colors.palette.accent100,
     backgroundColor: colors.palette.accent100,
+    borderColor: colors.palette.accent100,
     color: colors.palette.accent100,
-  },
-  bottomSheetContainer: {
-    flex: 1,
-    alignItems: "center",
-  },
-  bottomRow: {
-    padding: spacing.md,
   },
 })
 
