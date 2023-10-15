@@ -6,7 +6,12 @@ import { withSetPropAction } from "./helpers/withSetPropAction"
  */
 export const QuestionModel = types
   .model("Question")
-  .props({})
+  .props({
+    id: types.identifier,
+    content: types.string,
+    categories: types.array(types.string),
+    supportLevel: types.string,
+  })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

@@ -1,56 +1,52 @@
-import * as React from 'react';
-import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Text, View } from "react-native"
+import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { translate } from "app/i18n"
+import React from "react"
+import { CommunityQuestionListScreen, ProfileScreen } from "app/screens"
+import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
+import { CompositeScreenProps } from "@react-navigation/native"
 
-export type DemoTabParamList = {
-  Feed: undefined
-  Profile: { queryIndex?: string; itemIndex?: string }
-  Notifications: undefined
+export type MyTabParamList = {
+  Profile: undefined
+  Blank: undefined
+  CommunityQuestionList: undefined
 }
 
+/**
+ * Helper for automatically generating navigation prop types for each route.
+ *
+ * More info: https://reactnavigation.org/docs/typescript/#organizing-types
+ */
+export type MyTabScreenProps<T extends keyof MyTabParamList> = CompositeScreenProps<
+  BottomTabScreenProps<MyTabParamList, T>,
+  AppStackScreenProps<keyof AppStackParamList>
+>
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator()
 
-function Feed() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Feed!</Text>
-      </View>
-    );
-  }
-  
-  function Profile() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Profile!</Text>
-      </View>
-    );
-  }
-  
-  function Notifications() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Notifications!</Text>
-      </View>
-    );
-  }
+function Blank() {
+  return (
+    <View>
+      <Text>Blank</Text>
+    </View>
+  )
+}
 
-  
 export function MyTabs() {
   return (
     <Tab.Navigator
       initialRouteName="Feed"
       screenOptions={{
-        tabBarActiveTintColor: '#e91e63',
+        tabBarActiveTintColor: "#e91e63",
       }}
     >
       <Tab.Screen
         name="Feed"
-        component={Feed}
+        component={CommunityQuestionListScreen}
         options={{
-          tabBarLabel: 'Home',
+          title: translate("tab.community"),
+          tabBarLabel: translate("tab.community"),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
@@ -58,24 +54,31 @@ export function MyTabs() {
       />
       <Tab.Screen
         name="Notifications"
-        component={Notifications}
+        component={Blank}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault()
+            navigation.navigate("NewQuestion")
+          },
+        })}
         options={{
-          tabBarLabel: 'Updates',
+          title: translate("tab.newQuestion"),
+          tabBarLabel: translate("tab.newQuestion"),
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={size} />
+            <MaterialCommunityIcons name="file-edit-outline" color={color} size={size} />
           ),
         }}
       />
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={ProfileScreen}
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
       />
     </Tab.Navigator>
-  );
+  )
 }

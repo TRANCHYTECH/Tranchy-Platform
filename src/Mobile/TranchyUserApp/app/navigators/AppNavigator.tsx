@@ -18,7 +18,8 @@ import * as Screens from "app/screens"
 import Config from "../config"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { colors } from "app/theme"
-import { DemoTabParamList, MyTabs } from "./BottomNavigator"
+import { MyTabParamList, MyTabs } from "./BottomNavigator"
+import { useStores } from "app/models"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -34,9 +35,10 @@ import { DemoTabParamList, MyTabs } from "./BottomNavigator"
  *   https://reactnavigation.org/docs/typescript/#organizing-types
  */
 export type AppStackParamList = {
-  Welcome: undefined,
-  Demo: NavigatorScreenParams<DemoTabParamList>
+  MyTabs: NavigatorScreenParams<MyTabParamList>
   // 🔥 Your screens go here
+  NewQuestion: undefined
+  Login: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -55,13 +57,33 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStack
 const Stack = createNativeStackNavigator<AppStackParamList>()
 
 const AppStack = observer(function AppStack() {
+  const { authenticationStore } = useStores()
+
+  console.log("app start. auth:", authenticationStore.authToken)
+  if (authenticationStore.isAuthenticated) {
+    authenticationStore.distributeAuthToken()
+  }
+
   return (
-    <Stack.Navigator 
-      screenOptions={{ headerShown: false, navigationBarColor: colors.background, title: 'todo' }}
+    <Stack.Navigator
+      screenOptions={{ headerShown: false, navigationBarColor: colors.background, title: "todo" }}
+      initialRouteName={authenticationStore.isAuthenticated ? "MyTabs" : "Login"}
     >
-          <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-          <Stack.Screen name="Demo" component={MyTabs} />
-          
+      {authenticationStore.isAuthenticated ? (
+        <>
+          <Stack.Screen name="MyTabs" component={MyTabs} />
+          <Stack.Screen
+            name="NewQuestion"
+            options={{ headerShown: true, title: "Tạo câu hỏi mới" }}
+            component={Screens.NewQuestionScreen}
+          />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="Login" component={Screens.LoginScreen} />
+        </>
+      )}
+
       {/** 🔥 Your screens go here */}
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>

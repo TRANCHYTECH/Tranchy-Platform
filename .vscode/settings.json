@@ -1,3 +1,10 @@
 {
-    "dotnet.defaultSolution": "src/Backend/Tranchy.sln"
+  "dotnet.defaultSolution": "src/Backend/Tranchy.sln",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.renderWhitespace": "boundary",
+  "editor.rulers": [100],
+  "editor.cursorBlinking": "solid",
+  "cSpell.words": ["hookform"],
+  "eslint.workingDirectories": ["./src/Frontend", ".src/Mobile"]
 }
