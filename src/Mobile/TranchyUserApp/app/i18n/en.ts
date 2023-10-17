@@ -4,8 +4,14 @@ const en = {
     cancel: "Cancel",
     back: "Back",
   },
+  error: {
+    questionTooShort:
+      "Câu hỏi quá ngắn, tối thiểu {{min}}. Anh có thể diễn giải thêm vấn đề của mình nhé",
+    noQuestionCategorySelected: "Anh có thể chọn tối đa {{max}} chủ đề",
+  },
   supportLevel: {
     community: "Cộng đồng",
+    coffee: "Coffee",
     expert: "Chuyên gia",
     agency: "Doanh nghiệp",
   },
@@ -14,11 +20,6 @@ const en = {
     newQuestion: "New Question",
   },
   newQuestionScreen: {
-    error: {
-      questionTooShort:
-        "Câu hỏi quá ngắn, tối thiểu {{min}}. Anh có thể diễn giải thêm vấn đề của mình nhé",
-      noQuestionCategorySelected: "Anh có thể chọn tối đa {{max}} chủ đề",
-    },
     questionContent: "Nội dung câu hỏi",
     askQuestionGuideline: "Hướng dẫn cách đặt 1 câu hỏi hiệu quả. 5W.",
   },

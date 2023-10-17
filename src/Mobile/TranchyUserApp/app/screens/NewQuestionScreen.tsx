@@ -1,8 +1,8 @@
 import BottomSheet from "@gorhom/bottom-sheet"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Screen, SectionLabel } from "app/components"
-import { translate } from "app/i18n"
-import { SupportLevels, useStores } from "app/models"
+import { TxKeyPath, translate, currentLocale } from "app/i18n"
+import { SupportLevel, SupportLevels, useStores } from "app/models"
 import { AppStackScreenProps } from "app/navigators"
 import { colors, spacing } from "app/theme"
 import { observer } from "mobx-react-lite"
@@ -15,37 +15,27 @@ import z from "zod"
 
 interface NewQuestionScreenProps extends AppStackScreenProps<"NewQuestion"> {}
 
-const Categories = ["technology", "education", "marketing", "commerce", "law", "other"]
-
 const QuestionFormSchema = z.object({
-  content: z
-    .string()
-    .min(50, { message: translate("newQuestionScreen.error.questionTooShort", { min: 50 }) }),
+  content: z.string().min(50, { message: translate("error.questionTooShort", { min: 50 }) }),
   categories: z.array(z.string(), { required_error: "error.required" }).nonempty({
-    message: translate("newQuestionScreen.error.noQuestionCategorySelected", { max: 3 }),
+    message: translate("error.noQuestionCategorySelected", { max: 3 }),
   }),
   supportLevel: z.enum(SupportLevels),
 })
 
 type QuestionFormModel = z.infer<typeof QuestionFormSchema>
 
-const supportLevelOptions = [
-  {
-    value: SupportLevels[0],
+const supportLevelOptions = SupportLevels.map<{
+  value: SupportLevel
+  showSelectedCheck: boolean
+  label: string
+}>(function (v) {
+  return {
+    value: v,
     showSelectedCheck: true,
-    label: translate("supportLevel.community"),
-  },
-  {
-    value: SupportLevels[1],
-    showSelectedCheck: true,
-    label: translate("supportLevel.expert"),
-  },
-  {
-    value: SupportLevels[2],
-    showSelectedCheck: true,
-    label: translate("supportLevel.agency"),
-  },
-]
+    label: translate(`supportLevel.${v}` as TxKeyPath),
+  }
+})
 
 // todo: apply observer
 const CategorySelections = ({
@@ -56,27 +46,28 @@ const CategorySelections = ({
   onClose: (output: string[]) => void
 }) => {
   const [values, setValues] = useState<string[]>(input)
+  const { metadataStore } = useStores()
 
   console.log("Re render CategorySelections")
   return (
     <>
       <View style={{ ...styles.row, padding: spacing.md }}>
-        {Categories.map((cat) => (
+        {metadataStore.questionCategories.map((cat) => (
           <Chip
             mode={"outlined"}
             key={`cat-selection-${cat}`}
             style={styles.selectedChip}
             showSelectedCheck={true}
-            selected={values.includes(cat)}
+            selected={values.includes(cat.key)}
             onPress={() => {
-              if (values.includes(cat)) {
-                setValues(values.filter((v) => v !== cat))
+              if (values.includes(cat.key)) {
+                setValues(values.filter((v) => v !== cat.key))
               } else {
-                setValues([...values, cat])
+                setValues([...values, cat.key])
               }
             }}
           >
-            {cat}
+            {cat.key}
           </Chip>
         ))}
       </View>
@@ -87,13 +78,17 @@ const CategorySelections = ({
   )
 }
 
+// todo: use memo if move inside
+const locale = currentLocale()
+
 export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function NewQuestionScreen(
   _props,
 ) {
   const insets = useSafeAreaInsets()
   const { navigation } = _props
   // const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
-  const { questionStore } = useStores()
+  const { questionStore, metadataStore } = useStores()
+
   const {
     control,
     watch,
@@ -193,7 +188,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
                         onChange(value.filter((v) => v !== cat))
                       }}
                     >
-                      {cat}
+                      {metadataStore.questionCategories.find((c) => c.key === cat).name[locale]}
                     </Chip>
                   ))}
                   <Chip
@@ -225,7 +220,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
               </>
             )}
           />
-          {supportLevel === SupportLevels[0] && (
+          {supportLevel === "community" && (
             <View>
               {Array.from({ length: 7 }, (value, index) => index).map((i) => (
                 <Text key={"info-" + i}>
@@ -234,12 +229,12 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
               ))}
             </View>
           )}
-          {supportLevel === SupportLevels[1] && (
+          {supportLevel === "expert" && (
             <View>
               <Text>Expert level</Text>
             </View>
           )}
-          {supportLevel === SupportLevels[2] && (
+          {supportLevel === "agency" && (
             <View>
               <Text>Agency level</Text>
             </View>

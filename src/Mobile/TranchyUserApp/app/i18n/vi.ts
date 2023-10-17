@@ -4,8 +4,14 @@ const vi = {
     cancel: "Cancel",
     back: "Back",
   },
+  error: {
+    questionTooShort:
+      "Câu hỏi quá ngắn, tối thiểu {{min}}. Anh có thể diễn giải thêm vấn đề của mình nhé",
+    noQuestionCategorySelected: "Anh có thể chọn tối đa {{max}} chủ đề",
+  },
   supportLevel: {
     community: "Cộng đồng",
+    coffee: "Cafe",
     expert: "Chuyên gia",
     agency: "Doanh nghiệp",
   },
@@ -14,11 +20,6 @@ const vi = {
     newQuestion: "Đặt câu hỏi",
   },
   newQuestionScreen: {
-    error: {
-      questionTooShort:
-        "Câu hỏi quá ngắn, tối thiểu {{min}}. Anh có thể diễn giải thêm vấn đề của mình nhé",
-      noQuestionCategorySelected: "Anh có thể chọn tối đa {{max}} chủ đề",
-    },
     questionContent: "Nội dung câu hỏi",
     askQuestionGuideline:
       "Để đặt 1 câu hỏi hiệu quả, bạn nên tham khảo hướng dẫn về cách đặt vấn đề\r\nBước 1: Xác định vấn đề. \r\nBước 2: Nếu câu hỏi nhạy cảm, bạn nên tuân thủ theo hướng dẫn tại đây.\r\nBước 3: Bạn mong muốn câu trả lời.",
@@ -43,5 +44,6 @@ const vi = {
     },
   },
 }
+
 export default vi
 export type Translations = typeof vi

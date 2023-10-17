@@ -57,12 +57,14 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStack
 const Stack = createNativeStackNavigator<AppStackParamList>()
 
 const AppStack = observer(function AppStack() {
-  const { authenticationStore } = useStores()
+  const { authenticationStore, metadataStore } = useStores()
 
   console.log("app start. auth:", authenticationStore.authToken)
   if (authenticationStore.isAuthenticated) {
     authenticationStore.distributeAuthToken()
   }
+
+  metadataStore.downloadMetadata(true)
 
   return (
     <Stack.Navigator

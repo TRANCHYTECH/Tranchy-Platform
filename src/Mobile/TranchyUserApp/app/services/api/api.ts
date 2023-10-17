@@ -28,7 +28,7 @@ export class Api {
     question: QuestionSnapshotOut,
   ): Promise<{ kind: "ok"; data: QuestionSnapshotIn } | GeneralApiProblem> {
     const response: ApiResponse<AddQuestionResponse> = await this.apisauce.post(
-      "/question",
+      "question",
       question,
     )
 
