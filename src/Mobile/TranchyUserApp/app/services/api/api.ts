@@ -21,6 +21,7 @@ export class Api {
       timeout: this.config.timeout,
       headers: {
         Accept: "application/json",
+        "x-csrf": "1",
       },
     })
   }
@@ -57,7 +58,7 @@ export class Api {
       `${api.apisauce.getBaseURL()}file/question/${questionId}?fileName=${fileName}`,
       fileUri,
       {
-        headers: { authorization: api.apisauce.headers.Authorization },
+        headers: { authorization: api.apisauce.headers.Authorization, "x-csrf": "1" },
         httpMethod: "POST",
         uploadType: FileSystem.FileSystemUploadType.MULTIPART,
         fieldName: "file",
