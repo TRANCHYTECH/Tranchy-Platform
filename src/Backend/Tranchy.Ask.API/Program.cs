@@ -10,6 +10,7 @@ using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Tranchy.File;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
 
@@ -38,7 +39,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options => options.Forwarded
 
 var appSettings = new AppSettings();
 builder.Configuration.Bind(appSettings);
-builder.Services.AddOptions<AppSettings>().Configure(c => c = appSettings);
+builder.Services.Configure<AppSettings>(builder.Configuration);
 
 builder.Services.RegisterModules(appSettings);
 
@@ -157,10 +158,14 @@ var app = builder.Build();
 app.UseForwardedHeaders();
 app.UseCors(agencyPortalSpaPolicy);
 
+// Could take advantage of IHostingStartup
 var questionEndpointBuilder = app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
+var fileEndpointBuilder = app.MapGroup("/file").MapEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint();
 var paymentEndpointBuilder = app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
+if (builder.Environment.IsDevelopment())
 {
     questionEndpointBuilder.SkipAntiforgery();
+    fileEndpointBuilder.SkipAntiforgery();
     paymentEndpointBuilder.SkipAntiforgery();
 }
 

@@ -5,10 +5,10 @@
       "launchBrowser": false,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7200"
+      "applicationUrl": "https://localhost:7200;http://localhost:7300"
     },
     "https_macos": {
       "commandName": "Project",
@@ -20,7 +20,7 @@
         "ASPNETCORE_Kestrel__Certificates__Default__KeyPath": "%HOME%/.aspnet/https/tranchyone.key"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7200"
+      "applicationUrl": "https://localhost:7200;http://localhost:7300"
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json"

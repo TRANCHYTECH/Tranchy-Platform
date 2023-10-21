@@ -52,7 +52,7 @@ public class CreateQuestion : IEndpoint
 
         logger.CreatedQuestion(newQuestion.Title);
 
-        return TypedResults.Ok<QuestionOutput>(new(input.Title));
+        return TypedResults.Ok<QuestionOutput>(new(newQuestion.ID!));
     }
 
     public static void Register(RouteGroupBuilder routeGroupBuilder)

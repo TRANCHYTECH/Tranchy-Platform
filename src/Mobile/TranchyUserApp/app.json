@@ -18,9 +18,7 @@
       "url": "https://u.expo.dev/06e2bb0b-490b-4976-8746-45bec609a6d4"
     },
     "jsEngine": "hermes",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
       "icon": "./assets/images/app-icon-android-legacy.png",
       "package": "com.tranchy.userapp",

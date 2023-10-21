@@ -21,7 +21,7 @@ var roles = [
 ]
 
 resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
-  name: 'id-tranchy-dev-sa'
+  name: 'id-tranchy-dev-sa-001'
   location: resourceGroup().location
 }
 

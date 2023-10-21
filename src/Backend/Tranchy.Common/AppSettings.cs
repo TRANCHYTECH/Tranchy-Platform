@@ -11,6 +11,8 @@
         public string ServiceBusConnectionString { get; set; } = default!;
 
         public AzureMonitorSettings AzureMonitor { get; set; } = default!;
+
+        public FileSettings File { get; set; } = default!;
     }
 
     public class AzureMonitorSettings
@@ -46,5 +48,10 @@
         public string DatabaseName { get; set; } = default!;
 
         public string ConnectionString { get; set; } = default!;
+    }
+
+    public class FileSettings
+    {
+        public string UnsafeQuestionFileContainerUri { get; set; } = default!;
     }
 }

@@ -7,7 +7,7 @@ using Tranchy.Common;
 
 namespace Tranchy.Question.Endpoints;
 
-public record QuestionOutput(string Title);
+public record QuestionOutput(string Id);
 
 public class GetQuestion : IEndpoint
 {
