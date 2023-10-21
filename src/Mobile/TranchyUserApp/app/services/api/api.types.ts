@@ -1,9 +1,5 @@
-import { SupportLevel } from "app/models"
-
-export interface AddQuestionResponse {
-  content: string
-  categories: string[]
-  supportLevel: SupportLevel
+export interface CreateQuestionResponse {
+  id: string
 }
 
 /**

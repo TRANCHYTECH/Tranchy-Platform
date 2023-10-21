@@ -18,12 +18,13 @@ export const QuestionStoreModel = types
       if (response.kind === "ok") {
         store.setProp("questions", [
           {
-            id: "3344" + Date.now,
+            id: response.data.id,
             content: question.content,
             categories: question.categories,
             supportLevel: question.supportLevel,
           },
         ])
+        console.tron.log("Created question", response.data)
       } else {
         console.tron.error(`Error adding question: ${JSON.stringify(response)}`, [])
       }

@@ -2,7 +2,6 @@
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using MongoDB.Entities;
-using Tranchy.Common;
 using Tranchy.Question.Data;
 
 namespace Tranchy.Question

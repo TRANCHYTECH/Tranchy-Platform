@@ -29,7 +29,8 @@ import * as storage from "./utils/storage"
 import { customFontsToLoad } from "./theme"
 import Config from "./config"
 import { Auth0Provider } from "react-native-auth0"
-import { PaperProvider } from 'react-native-paper';
+import { PaperProvider } from "react-native-paper"
+import { RootSiblingParent } from "react-native-root-siblings"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
@@ -96,18 +97,17 @@ function App(props: AppProps) {
 
   // otherwise, we're ready to render the app
   return (
-    <Auth0Provider
-      domain={"dev-kz3mgkb4xl50tobe.us.auth0.com"}
-      clientId={"YMiSVPGoRAUZ9pwuNoy83MXHxnw3KslD"}
-    >
+    <Auth0Provider domain={Config.auth0ProviderDomain} clientId={Config.auth0ProviderClientId}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <ErrorBoundary catchErrors={Config.catchErrors}>
           <PaperProvider>
-            <AppNavigator
-              linking={linking}
-              initialState={initialNavigationState}
-              onStateChange={onNavigationStateChange}
-            />
+            <RootSiblingParent>
+              <AppNavigator
+                linking={linking}
+                initialState={initialNavigationState}
+                onStateChange={onNavigationStateChange}
+              />
+            </RootSiblingParent>
           </PaperProvider>
         </ErrorBoundary>
       </SafeAreaProvider>

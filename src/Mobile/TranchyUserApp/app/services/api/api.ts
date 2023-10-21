@@ -1,8 +1,9 @@
 import { ApiResponse, ApisauceInstance, create } from "apisauce"
 import Config from "../../config"
-import type { AddQuestionResponse, ApiConfig } from "./api.types"
+import type { CreateQuestionResponse, ApiConfig } from "./api.types"
 import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem"
 import { QuestionSnapshotIn, QuestionSnapshotOut } from "app/models"
+import * as FileSystem from "expo-file-system"
 
 export const DEFAULT_API_CONFIG: ApiConfig = {
   url: Config.API_URL,
@@ -27,8 +28,8 @@ export class Api {
   async addQuestion(
     question: QuestionSnapshotOut,
   ): Promise<{ kind: "ok"; data: QuestionSnapshotIn } | GeneralApiProblem> {
-    const response: ApiResponse<AddQuestionResponse> = await this.apisauce.post(
-      "/question",
+    const response: ApiResponse<CreateQuestionResponse> = await this.apisauce.post(
+      "question",
       question,
     )
 
@@ -38,11 +39,41 @@ export class Api {
     }
 
     try {
-      // todo: parse to model in.
-      return { kind: "ok", data: response }
+      return { kind: "ok", data: { id: response.data.id } }
     } catch (e) {
       if (__DEV__) {
         console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
+      }
+      return { kind: "bad-data" }
+    }
+  }
+
+  async uploadFile(
+    questionId: string,
+    fileName: string,
+    fileUri: string,
+  ): Promise<{ kind: "ok"; data: { questionId: string } } | GeneralApiProblem> {
+    const response = await FileSystem.uploadAsync(
+      `${api.apisauce.getBaseURL()}file/question/${questionId}?fileName=${fileName}`,
+      fileUri,
+      {
+        headers: { authorization: api.apisauce.headers.Authorization },
+        httpMethod: "POST",
+        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        fieldName: "file",
+      },
+    )
+
+    if (response.status !== 200) {
+      return { kind: "server" }
+    }
+
+    try {
+      const data = JSON.parse(response.body)
+      return { kind: "ok", data: { questionId: data.questionId } }
+    } catch (e) {
+      if (__DEV__) {
+        console.tron.error(`Bad data: ${e.message}\n${response.body}`, e.stack)
       }
       return { kind: "bad-data" }
     }

@@ -2,7 +2,7 @@
 import { Screen } from "app/components"
 import { AppStackScreenProps } from "app/navigators"
 import { observer } from "mobx-react-lite"
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { View, ViewStyle } from "react-native"
 // import { useNavigation } from "@react-navigation/native"
 import { spacing } from "app/theme"
@@ -14,11 +14,13 @@ interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
 export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_props) {
   const { authenticationStore } = useStores()
+  const [isProcessing, setIsProcessing] = useState(false)
 
   // todo: handle callback, loading
   const { navigation } = _props
   const { authorize, getCredentials } = useAuth0()
   const login = async () => {
+    setIsProcessing(true)
     await authorize({ scope: "offline_access", audience: "https://ask-api" })
     const credentials = await getCredentials()
     authenticationStore.setAuthToken(credentials.accessToken)
@@ -35,7 +37,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
     >
       <View>
         <Text variant="displaySmall">Tranchy One Platform</Text>
-        <Button mode={"contained"} onPress={login}>
+        <Button mode={"contained"} onPress={login} loading={isProcessing}>
           Đăng nhập
         </Button>
       </View>
