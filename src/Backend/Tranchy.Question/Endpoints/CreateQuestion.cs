@@ -30,6 +30,8 @@ public class CreateQuestion : IEndpoint
         var newQuestion = new Data.Question
         {
             Title = input.Title,
+            //TODO: assign current userId
+            CreatedByUserId = string.Empty
         };
 
         await dbContext.BeginTransaction(default);
