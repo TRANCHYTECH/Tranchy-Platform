@@ -8,7 +8,7 @@ builder.Services.AddMassTransit(c =>
 {
     c.SetKebabCaseEndpointNameFormatter();
     c.AddConsumersFromNamespaceContaining<QuestionFileUploadedConsumer>();
-    c.AddActivitiesFromNamespaceContaining<ProcessPaymentActivity>();
+    // c.AddActivitiesFromNamespaceContaining<ProcessPaymentActivity>();
     c.UsingAzureServiceBus((ctx, cfg) =>
     {
         cfg.Host(builder.Configuration.GetValue<string>("ServiceBusConnectionString"));
