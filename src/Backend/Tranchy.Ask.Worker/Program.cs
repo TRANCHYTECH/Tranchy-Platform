@@ -8,12 +8,8 @@ builder.Services.AddMassTransit(c =>
 {
     c.SetKebabCaseEndpointNameFormatter();
 
-    c.AddActivitiesFromNamespaceContaining<ProcessPaymentActivity>();
-
-    // Issue: call c.AddConsumersFromNamespaceContaining() and c.AddActivitiesFromNamespaceContaining caused missed consumers. Therefore register one by one.
-    c.AddConsumer<QuestionFileUploadedConsumer>();
-    c.AddConsumer<VerifyQuestionConsumer>();
-    c.AddConsumer<NotifyAgencyConsumer>();
+    c.AddConsumersFromNamespaceContaining<QuestionFileUploadedConsumer>();
+    // Issue: call c.AddConsumersFromNamespaceContaining() and c.AddActivitiesFromNamespaceContaining caused missed consumers in container apps env.
 
     c.UsingAzureServiceBus((ctx, cfg) =>
     {
