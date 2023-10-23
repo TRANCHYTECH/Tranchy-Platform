@@ -28,6 +28,8 @@
     public class Schemes
     {
         public OpenIdConnectSetting OpenIdConnect { get; set; } = default!;
+
+        public OpenIdConnectSetting Swagger { get; set; } = default!;
     }
 
     public class OpenIdConnectSetting
@@ -38,9 +40,13 @@
 
         public string ClientSecret { get; set; } = default!;
 
-        public string ValidAudience { get; set; } = default!;
+        public string[] ValidAudiences { get; set; } = default!;
 
         public string[] Scopes { get; set; } = default!;
+
+        public string? AuthorizationUrl { get; set; }
+
+        public string? TokenUrl { get; set; }
     }
 
     public class DatabaseOptions

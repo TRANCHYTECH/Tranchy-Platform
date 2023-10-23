@@ -10,7 +10,9 @@ using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.OpenApi.Models;
 using Tranchy.File;
+using System.Linq;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
 
@@ -24,9 +26,9 @@ builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false)
         options.Connect(new Uri($"https://{appConfigName}.azconfig.io"), new DefaultAzureCredential())
         .Select(KeyFilter.Any, builder.Environment.EnvironmentName);
         options.ConfigureKeyVault(options =>
-                   {
-                       options.SetCredential(new DefaultAzureCredential());
-                   });
+        {
+            options.SetCredential(new DefaultAzureCredential());
+        });
     });
 });
 builder.Services.AddAzureClients(config =>
@@ -43,8 +45,10 @@ builder.Services.Configure<AppSettings>(builder.Configuration);
 
 builder.Services.RegisterModules(appSettings);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddTranchySwagger(appSettings);
+}
 
 builder.Services.AddCors(options =>
 {
@@ -101,7 +105,7 @@ builder.Services.AddAuthentication(options =>
     {
         OnRedirectToIdentityProvider = context =>
         {
-            context.ProtocolMessage.SetParameter("audience", appSettings.Authentication.Schemes.OpenIdConnect.ValidAudience);
+            context.ProtocolMessage.SetParameter("audience", appSettings.Authentication.Schemes.OpenIdConnect.ValidAudiences[0]);
             return Task.FromResult(0);
         },
         OnRedirectToIdentityProviderForSignOut = (context) =>
@@ -128,18 +132,18 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer()
 .AddPolicyScheme("MultiAuthSchemes", "Multi Auth Schemes", options =>
+{
+    options.ForwardDefaultSelector = context =>
     {
-        options.ForwardDefaultSelector = context =>
+        string? authorization = context.Request.Headers.Authorization;
+        if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
         {
-            string? authorization = context.Request.Headers.Authorization;
-            if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
-            {
-                return "Bearer";
-            }
+            return "Bearer";
+        }
 
-            return CookieAuthenticationDefaults.AuthenticationScheme;
-        };
-    });
+        return CookieAuthenticationDefaults.AuthenticationScheme;
+    };
+});
 
 builder.Services.AddAuthorization();
 
@@ -159,22 +163,17 @@ app.UseForwardedHeaders();
 app.UseCors(agencyPortalSpaPolicy);
 
 // Could take advantage of IHostingStartup
-var questionEndpointBuilder = app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
-var fileEndpointBuilder = app.MapGroup("/file").MapEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint();
-var paymentEndpointBuilder = app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
-if (builder.Environment.IsDevelopment())
-{
-    questionEndpointBuilder.SkipAntiforgery();
-    fileEndpointBuilder.SkipAntiforgery();
-    paymentEndpointBuilder.SkipAntiforgery();
-}
+app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
+app.MapGroup("/file").MapEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint();
+app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
 
 // Redirect after login
 app.MapGet("/agency-portal", (HttpRequest req) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, true));
 
-// Configure the HTTP request pipeline.
-app.UseSwagger();
-app.UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    app.UseTranchySwagger(appSettings);
+}
 
 app.UseAuthentication();
 app.UseBff();
