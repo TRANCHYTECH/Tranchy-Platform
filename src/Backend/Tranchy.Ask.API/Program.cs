@@ -45,10 +45,7 @@ builder.Services.Configure<AppSettings>(builder.Configuration);
 
 builder.Services.RegisterModules(appSettings);
 
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddTranchySwagger(appSettings);
-}
+builder.Services.AddTranchySwagger(appSettings);
 
 builder.Services.AddCors(options =>
 {
@@ -170,10 +167,7 @@ app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().As
 // Redirect after login
 app.MapGet("/agency-portal", (HttpRequest req) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, true));
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseTranchySwagger(appSettings);
-}
+app.UseTranchySwagger(appSettings);
 
 app.UseAuthentication();
 app.UseBff();

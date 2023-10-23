@@ -9,16 +9,13 @@ namespace Tranchy.Ask.API
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            if (string.Equals(context.ApiDescription.HttpMethod, HttpMethod.Post.Method, StringComparison.InvariantCultureIgnoreCase))
+            operation.Parameters.Add(new OpenApiParameter
             {
-                operation.Parameters.Add(new OpenApiParameter
-                {
-                    Name = "x-csrf",
-                    In = ParameterLocation.Header,
-                    Required = true,
-                    Example = new OpenApiString("1")
-                });
-            }
+                Name = "x-csrf",
+                In = ParameterLocation.Header,
+                Required = true,
+                Example = new OpenApiString("1")
+            });
         }
     }
 
