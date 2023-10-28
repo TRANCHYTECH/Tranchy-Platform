@@ -1,9 +1,7 @@
-﻿using Tranchy.Common;
-
-namespace Tranchy.Question.Commands
+﻿namespace Tranchy.Question.Commands
 {
     public class VerifyQuestion : ICommand
     {
-        public string Title { get; set; } = default!;
+        public required string Id { get; set; }
     }
 }

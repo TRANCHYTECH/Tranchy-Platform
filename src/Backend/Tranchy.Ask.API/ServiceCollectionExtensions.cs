@@ -3,7 +3,6 @@ using MongoDB.Entities;
 using Tranchy.Common;
 using Tranchy.File;
 using Tranchy.Payment;
-using Tranchy.Payment.Data;
 using Tranchy.Question;
 
 namespace Tranchy.Ask.API
@@ -12,6 +11,7 @@ namespace Tranchy.Ask.API
     {
         public static void RegisterModules(this IServiceCollection services, AppSettings configuration)
         {
+            CommonModule.ConfigureServices(services, configuration);
             QuestionModule.ConfigureServices(services, configuration);
             FileModule.ConfigureServices(services, configuration);
             PaymentModule.ConfigureServices(services, configuration);
