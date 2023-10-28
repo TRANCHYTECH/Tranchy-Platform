@@ -3,7 +3,7 @@ import { SupportLevels } from "app/models"
 import z from "zod"
 
 export const QuestionFormSchema = z.object({
-  content: z.string().min(20, { message: translate("error.questionTooShort", { min: 20 }) }),
+  content: z.string().min(20, { message: translate("error.questionTooShort", { min: 50 }) }),
   categories: z.array(z.string(), { required_error: "error.required" }).nonempty({
     message: translate("error.noQuestionCategorySelected", { max: 3 }),
   }),

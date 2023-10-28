@@ -54,29 +54,34 @@ export class Api {
     fileName: string,
     fileUri: string,
   ): Promise<{ kind: "ok"; data: { questionId: string } } | GeneralApiProblem> {
-    const response = await FileSystem.uploadAsync(
-      `${api.apisauce.getBaseURL()}file/question/${questionId}?fileName=${fileName}`,
-      fileUri,
-      {
-        headers: { authorization: api.apisauce.headers.Authorization, "x-csrf": "1" },
-        httpMethod: "POST",
-        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-        fieldName: "file",
-      },
-    )
-
-    if (response.status !== 200) {
-      return { kind: "server" }
-    }
-
     try {
-      const data = JSON.parse(response.body)
-      return { kind: "ok", data: { questionId: data.questionId } }
-    } catch (e) {
-      if (__DEV__) {
-        console.tron.error(`Bad data: ${e.message}\n${response.body}`, e.stack)
+      const response = await FileSystem.uploadAsync(
+        `${api.apisauce.getBaseURL()}file/question/${questionId}?fileName=${fileName}`,
+        fileUri,
+        {
+          headers: { authorization: api.apisauce.headers.Authorization, "x-csrf": "1" },
+          httpMethod: "POST",
+          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          fieldName: "file",
+        },
+      )
+
+      if (response.status !== 200) {
+        return { kind: "server" }
       }
-      return { kind: "bad-data" }
+
+      try {
+        const data = JSON.parse(response.body)
+        return { kind: "ok", data: { questionId: data.questionId } }
+      } catch (e) {
+        if (__DEV__) {
+          console.tron.error(`Bad data: ${e.message}\n${response.body}`, e.stack)
+        }
+        return { kind: "bad-data" }
+      }
+    } catch (ex) {
+      console.error("Could not upload", ex)
+      return { kind: "server" }
     }
   }
 }

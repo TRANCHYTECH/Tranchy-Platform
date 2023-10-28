@@ -9,18 +9,19 @@ import { QuestionFormModel } from "./QuestionFormSchema"
 
 const ExpertSupportLevel = () => {
   const { control } = useFormContext<QuestionFormModel>()
-  const { fields, append } = useFieldArray({ control, name: "files" })
+  const { fields, append, remove } = useFieldArray({ control, name: "files" })
   const handleDocumentSelection = async () => {
     const result = await DocumentPicker.getDocumentAsync({
       type: "*/*",
       copyToCacheDirectory: false,
+      multiple: true,
     })
     if (result.type === "success") {
       // todo: handle duplicated files
       // todo: handle deleting files
       // todo: style for document picker btn in case there are any files
       append({ name: result.name, uri: result.uri, size: result.size })
-      // console.log("load success", files)
+      console.log("load success", result)
     } else {
       setTimeout(() => {
         Alert.alert("Document picked", JSON.stringify(result, null, 2))
@@ -62,7 +63,9 @@ const ExpertSupportLevel = () => {
               title={item.name}
               key={"file-item-" + index}
               left={(props) => <Avatar.Icon {...props} icon="paperclip" />}
-              right={(props) => <IconButton {...props} icon="delete-outline" />}
+              right={(props) => (
+                <IconButton {...props} icon="delete-outline" onPress={() => remove(index)} />
+              )}
             />
           )}
         />

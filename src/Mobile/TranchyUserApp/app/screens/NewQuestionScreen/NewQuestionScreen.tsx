@@ -9,7 +9,7 @@ import { observer } from "mobx-react-lite"
 import React, { FC, useRef, useState } from "react"
 import { Controller, FormProvider, useForm } from "react-hook-form"
 import { StyleSheet, View, ViewStyle } from "react-native"
-import { Button, Chip, HelperText, SegmentedButtons, Text, TextInput } from "react-native-paper"
+import { Button, Chip, HelperText, SegmentedButtons, TextInput } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { AgencySupportLevel } from "./AgencySupportLevel"
 import { CommunitySupportLevel } from "./CommunitySupportLevel"
@@ -82,15 +82,17 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
   const insets = useSafeAreaInsets()
   const { navigation } = _props
   // const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
-  const { questionStore, metadataStore } = useStores()
+  const { metadataStore } = useStores()
   const [isProcessing, setIsProcessing] = useState(false)
 
   const form = useForm<QuestionFormModel>({
     resolver: zodResolver(QuestionFormSchema),
     mode: "onBlur",
     defaultValues: {
-      categories: [],
+      content: "",
+      categories: ["technology"],
       files: [],
+      supportLevel: "expert",
     },
   })
 
@@ -112,8 +114,8 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
   }
 
   // Form submit
-
   const onSubmit = async (data: QuestionFormModel) => {
+    console.log("Process submit")
     if (isProcessing) {
       return
     }
@@ -163,7 +165,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
         preset="scroll"
       >
         <FormProvider {...form}>
-          <View style={{ paddingTop: spacing.md }}>
+          <View style={{ paddingTop: spacing.xs }}>
             <Controller
               control={form.control}
               name="content"
