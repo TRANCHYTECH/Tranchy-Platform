@@ -15,7 +15,7 @@ public class VerifyQuestionConsumer : IConsumer<VerifyQuestion>
 
     public Task Consume(ConsumeContext<VerifyQuestion> context)
     {
-        _logger.LogInformation("Verified question {question}", context.Message.Title);
+        _logger.LogInformation("Verified question {question}", context.Message.Id);
 
         return Task.CompletedTask;
     }

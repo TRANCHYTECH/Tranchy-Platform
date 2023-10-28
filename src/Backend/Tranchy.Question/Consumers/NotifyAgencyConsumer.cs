@@ -15,7 +15,7 @@ public class NotifyAgencyConsumer : IConsumer<QuestionCreated>
 
     public Task Consume(ConsumeContext<QuestionCreated> context)
     {
-        _logger.LogInformation("User created question {question}", context.Message.Title);
+        _logger.LogInformation("User created question '{id}'", context.Message.Id);
 
         return Task.CompletedTask;
     }
