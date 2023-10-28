@@ -19,7 +19,7 @@ if (__DEV__) {
 import "./i18n"
 import "./utils/ignoreWarnings"
 import { useFonts } from "expo-font"
-import React from "react"
+import React, { version } from "react"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
 import * as Linking from "expo-linking"
 import { useInitialRootStore } from "./models"
@@ -31,6 +31,7 @@ import Config from "./config"
 import { Auth0Provider } from "react-native-auth0"
 import { PaperProvider } from "react-native-paper"
 import { RootSiblingParent } from "react-native-root-siblings"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
@@ -99,17 +100,19 @@ function App(props: AppProps) {
   return (
     <Auth0Provider domain={Config.auth0ProviderDomain} clientId={Config.auth0ProviderClientId}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <ErrorBoundary catchErrors={Config.catchErrors}>
-          <PaperProvider>
-            <RootSiblingParent>
-              <AppNavigator
-                linking={linking}
-                initialState={initialNavigationState}
-                onStateChange={onNavigationStateChange}
-              />
-            </RootSiblingParent>
-          </PaperProvider>
-        </ErrorBoundary>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <ErrorBoundary catchErrors={Config.catchErrors}>
+            <PaperProvider theme={{ version: 3 }}>
+              <RootSiblingParent>
+                <AppNavigator
+                  linking={linking}
+                  initialState={initialNavigationState}
+                  onStateChange={onNavigationStateChange}
+                />
+              </RootSiblingParent>
+            </PaperProvider>
+          </ErrorBoundary>
+        </GestureHandlerRootView>
       </SafeAreaProvider>
     </Auth0Provider>
   )

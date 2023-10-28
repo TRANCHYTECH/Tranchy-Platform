@@ -1,13 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
+import { LocalizedAttribute } from "./LocalizedAttribute"
 
-/**
- * Model description here for TypeScript hints.
- */
-
-interface LocalizedAttribute {
-  [key: string]: string
-}
 export const QuestionCategoryModel = types
   .model("QuestionCategory")
   .props({

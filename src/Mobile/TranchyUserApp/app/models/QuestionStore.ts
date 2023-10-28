@@ -19,8 +19,8 @@ export const QuestionStoreModel = types
         store.setProp("questions", [
           {
             id: response.data.id,
-            content: question.content,
-            categories: question.categories,
+            content: question.title,
+            categories: question.questionCategoryIds,
             supportLevel: question.supportLevel,
           },
         ])
