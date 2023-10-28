@@ -11,6 +11,8 @@
         public string ServiceBusConnectionString { get; set; } = default!;
 
         public AzureMonitorSettings AzureMonitor { get; set; } = default!;
+
+        public FileSettings File { get; set; } = default!;
     }
 
     public class AzureMonitorSettings
@@ -26,6 +28,8 @@
     public class Schemes
     {
         public OpenIdConnectSetting OpenIdConnect { get; set; } = default!;
+
+        public OpenIdConnectSetting Swagger { get; set; } = default!;
     }
 
     public class OpenIdConnectSetting
@@ -36,9 +40,13 @@
 
         public string ClientSecret { get; set; } = default!;
 
-        public string ValidAudience { get; set; } = default!;
+        public string[] ValidAudiences { get; set; } = default!;
 
         public string[] Scopes { get; set; } = default!;
+
+        public string? AuthorizationUrl { get; set; }
+
+        public string? TokenUrl { get; set; }
     }
 
     public class DatabaseOptions
@@ -46,5 +54,10 @@
         public string DatabaseName { get; set; } = default!;
 
         public string ConnectionString { get; set; } = default!;
+    }
+
+    public class FileSettings
+    {
+        public string UnsafeQuestionFileContainerUri { get; set; } = default!;
     }
 }

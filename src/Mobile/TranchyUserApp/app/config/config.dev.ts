@@ -7,4 +7,7 @@
  */
 export default {
   API_URL: "https://askapi.vietgeeks.io/",
+  // API_URL: "http://localhost:7300/",
+  auth0ProviderDomain: "dev-kz3mgkb4xl50tobe.us.auth0.com",
+  auth0ProviderClientId: "YMiSVPGoRAUZ9pwuNoy83MXHxnw3KslD",
 }
