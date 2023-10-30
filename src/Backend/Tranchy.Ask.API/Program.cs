@@ -10,9 +10,8 @@ using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.OpenApi.Models;
 using Tranchy.File;
-using System.Linq;
+using System.Text.Json.Serialization;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
 
@@ -154,6 +153,19 @@ builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
 builder.Services.AddHealthChecks()
 .AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded)
 .AddApplicationInsightsPublisher();
+
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+//builder.Services.Configure<JsonOptions>(o =>
+//{
+//    o.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+//});
 
 var app = builder.Build();
 app.UseForwardedHeaders();

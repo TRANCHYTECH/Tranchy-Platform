@@ -1,56 +1,55 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Builder;
-using Tranchy.Common;
-using MassTransit;
+﻿using Microsoft.AspNetCore.Builder;
 using Tranchy.Question.Events;
 using MongoDB.Entities;
 using MassTransit.MongoDbIntegration;
 using Tranchy.Question.Endpoints;
 using Tranchy.Question.Commands;
 using Tranchy.Question.Consumers;
-using Microsoft.Extensions.Logging;
+using Tranchy.Common.Services;
+using Tranchy.Question.Mappers;
+using Tranchy.Question.Contracts;
+using Tranchy.Common.Validators;
 
 namespace Tranchy.Question.Integrations.Endpoints;
 
-public record CreateQuestionInput(string Title);
-
 public class CreateQuestion : IEndpoint
 {
-    public static async Task<Ok<QuestionOutput>> Create(
+    public static async Task<IResult> Create(
         [FromBody] CreateQuestionInput input,
+        [FromServices] IValidator<CreateQuestionInput> validator,
         [FromServices] IEndpointNameFormatter endpointNameFormatter,
         [FromServices] MongoDbContext dbContext,
         [FromServices] ISendEndpointProvider sendEndpointProvider,
         [FromServices] IPublishEndpoint publishEndpoint,
-        [FromServices] ILogger<CreateQuestion> logger)
+        [FromServices] ILogger<CreateQuestion> logger,
+        [FromServices] ITenant tenant,
+        CancellationToken token
+    )
     {
-        var newQuestion = new Data.Question
+        IDictionary<string, string[]>? errors = null;
+
+        if (input == null || (!await validator.IsValidAsync(input, out errors)))
         {
-            Title = input.Title,
-        };
+            return TypedResults.BadRequest(errors);
+        }
 
-        await dbContext.BeginTransaction(default);
+        var newQuestion = input.ToDbQuestion(tenant.UserId);
 
-        await DB.InsertAsync(newQuestion, dbContext.Session, default);
+        await dbContext.BeginTransaction(token);
 
-        await publishEndpoint.Publish(new QuestionCreated
-        {
-            Title = input.Title
-        });
+        await DB.InsertAsync(newQuestion, dbContext.Session, token);
 
-        VerifyQuestion command = new()
-        {
-            Title = input.Title
-        };
+        await publishEndpoint.Publish(new QuestionCreated { Id = newQuestion.ID! }, token);
 
-        await sendEndpointProvider.Send(command, endpointNameFormatter.Consumer<VerifyQuestionConsumer>());
+        VerifyQuestion command = new() { Id = newQuestion.ID! };
 
-        await dbContext.CommitTransaction(default);
+        await sendEndpointProvider.Send(
+            command,
+            endpointNameFormatter.Consumer<VerifyQuestionConsumer>()
+        );
+        await dbContext.CommitTransaction(token);
 
-        logger.CreatedQuestion(newQuestion.Title);
+        logger.CreatedQuestion(newQuestion.ID!, newQuestion.Title);
 
         return TypedResults.Ok<QuestionOutput>(new(newQuestion.ID!));
     }
@@ -60,4 +59,3 @@ public class CreateQuestion : IEndpoint
         routeGroupBuilder.MapPost("/", Create).WithName("CreateQuestion");
     }
 }
-

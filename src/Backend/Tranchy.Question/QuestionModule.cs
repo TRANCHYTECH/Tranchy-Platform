@@ -15,7 +15,6 @@ namespace Tranchy.Question
             services.AddScoped<QuestionDbContext>();
         }
 
-
         public static void ConfigureDb(DatabaseOptions databaseOptions)
         {
             var conventionPack = new ConventionPack
