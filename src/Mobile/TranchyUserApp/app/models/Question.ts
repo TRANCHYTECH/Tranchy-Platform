@@ -14,6 +14,7 @@ export const QuestionModel = types
     supportLevel: types.string,
     priorityId: types.string,
     communityShareAgreement: types.boolean,
+    createdAt: types.string,
   })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

@@ -18,6 +18,7 @@ const vi = {
   tab: {
     community: "Cộng đồng",
     newQuestion: "Đặt câu hỏi",
+    questions: "Câu hỏi",
   },
   newQuestionScreen: {
     questionContent: "Nội dung câu hỏi",

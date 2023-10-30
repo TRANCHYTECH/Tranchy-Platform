@@ -40,6 +40,7 @@
     "@react-navigation/bottom-tabs": "^6.3.2",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.0.2",
+    "@shopify/flash-list": "1.4.3",
     "apisauce": "2.1.5",
     "date-fns": "^2.29.2",
     "expo": "^49.0.0",
@@ -47,8 +48,8 @@
     "expo-constants": "~14.4.2",
     "expo-dev-client": "~2.4.11",
     "expo-device": "~5.4.0",
-    "expo-document-picker": "~11.7.0",
-    "expo-file-system": "~15.6.0",
+    "expo-document-picker": "~11.5.4",
+    "expo-file-system": "~15.4.4",
     "expo-font": "~11.4.0",
     "expo-linking": "~5.0.2",
     "expo-localization": "~14.3.0",
@@ -74,6 +75,7 @@
     "reactotron-mst": "3.1.4",
     "reactotron-react-js": "^3.3.7",
     "reactotron-react-native": "5.0.3",
+    "xregexp": "^5.1.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
