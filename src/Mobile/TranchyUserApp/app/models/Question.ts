@@ -8,9 +8,13 @@ export const QuestionModel = types
   .model("Question")
   .props({
     id: types.identifier,
-    content: types.string,
-    categories: types.array(types.string),
+    title: types.string,
+    description: types.string,
+    questionCategoryIds: types.array(types.string),
     supportLevel: types.string,
+    priorityId: types.string,
+    communityShareAgreement: types.boolean,
+    createdAt: types.string,
   })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

@@ -1,6 +1,5 @@
-import BottomSheet from "@gorhom/bottom-sheet"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Screen, SectionLabel } from "app/components"
+import { BottomSheet, BottomSheetBase, Screen, SectionLabel } from "app/components"
 import { TxKeyPath, currentLocale, translate } from "app/i18n"
 import { SupportLevel, SupportLevels, useStores } from "app/models"
 import { AppStackScreenProps } from "app/navigators"
@@ -8,8 +7,8 @@ import { colors, spacing } from "app/theme"
 import { observer } from "mobx-react-lite"
 import React, { FC, useRef, useState } from "react"
 import { Controller, FormProvider, useForm } from "react-hook-form"
-import { StyleSheet, View, ViewStyle } from "react-native"
-import { Button, Chip, HelperText, SegmentedButtons, Text, TextInput } from "react-native-paper"
+import { Alert, StyleSheet, View, ViewStyle } from "react-native"
+import { Button, Chip, HelperText, SegmentedButtons, TextInput } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { AgencySupportLevel } from "./AgencySupportLevel"
 import { CommunitySupportLevel } from "./CommunitySupportLevel"
@@ -17,6 +16,7 @@ import { ExpertSupportLevel } from "./ExpertSupportLevel"
 import { QuestionFormModel, QuestionFormSchema } from "./QuestionFormSchema"
 import { api } from "app/services/api"
 import Toast from "react-native-root-toast"
+import { CoffeeSupportLevel } from "./CoffeeSupportLevel"
 
 interface NewQuestionScreenProps extends AppStackScreenProps<"NewQuestion"> {}
 
@@ -38,7 +38,7 @@ const CategorySelections = ({
   onClose,
 }: {
   input: string[]
-  onClose: (output: string[]) => void
+  onClose: (cancelled: boolean, output: string[]) => void
 }) => {
   const [values, setValues] = useState<string[]>(input)
   const { metadataStore } = useStores()
@@ -62,13 +62,18 @@ const CategorySelections = ({
               }
             }}
           >
-            {cat.key}
+            {cat.name[locale]}
           </Chip>
         ))}
       </View>
-      <Button mode="contained" onPress={() => onClose(values)}>
-        Chọn xong
-      </Button>
+      <View style={styles.row}>
+        <Button mode="outlined" onPress={() => onClose(true, values)}>
+          Huỷ
+        </Button>
+        <Button mode="contained" onPress={() => onClose(false, values)}>
+          Lưu thay đổi
+        </Button>
+      </View>
     </>
   )
 }
@@ -82,21 +87,24 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
   const insets = useSafeAreaInsets()
   const { navigation } = _props
   // const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
-  const { questionStore, metadataStore } = useStores()
+  const { metadataStore } = useStores()
   const [isProcessing, setIsProcessing] = useState(false)
 
   const form = useForm<QuestionFormModel>({
     resolver: zodResolver(QuestionFormSchema),
-    mode: "onBlur",
     defaultValues: {
-      categories: [],
+      title: "",
+      communityShareAgreement: false,
+      questionCategoryIds: [],
       files: [],
     },
   })
 
   // Subscribe form values.
   const supportLevel = form.watch("supportLevel")
-  const categories = form.watch("categories")
+  const categories = form.watch("questionCategoryIds")
+
+  console.log("form error", form.formState.errors)
 
   // Question category selection.
   const [openCategorySelection, setOpenCategorySelection] = useState(false)
@@ -105,14 +113,17 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
     setOpenCategorySelection(true)
     bottomSheetRef.current.expand()
   }
-  const closeBottomSheet = (values: string[]) => {
-    form.setValue("categories", values as [string, ...string[]])
+  const closeBottomSheet = (cancelled: boolean, values: string[]) => {
+    if (!cancelled) {
+      form.setValue("questionCategoryIds", values as [string, ...string[]], {
+        shouldValidate: true,
+      })
+    }
     setOpenCategorySelection(false)
     bottomSheetRef.current.close()
   }
 
   // Form submit
-
   const onSubmit = async (data: QuestionFormModel) => {
     if (isProcessing) {
       return
@@ -120,9 +131,12 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
 
     setIsProcessing(true)
     const createQuestionResponse = await api.addQuestion({
-      content: data.content,
-      categories: data.categories,
+      title: data.title,
+      description: data.title,
+      questionCategoryIds: data.questionCategoryIds,
       supportLevel: data.supportLevel,
+      priorityId: data.priority,
+      communityShareAgreement: data.communityShareAgreement,
       id: "",
     })
 
@@ -139,15 +153,20 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
       console.log("upload file", file)
       const uploadResponse = await api.uploadFile(createdQuestionId, file.name, file.uri)
       if (uploadResponse.kind === "ok") {
-        Toast.show(`Upload file ${file.name} thành công`)
+        //Toast.show(`Upload file ${file.name} thành công`)
       } else {
         Toast.show(`Không thể upload file ${file.name}`)
       }
     }
 
     setIsProcessing(false)
-    //navigation.navigate("MyTabs", { screen: "CommunityQuestionList" })
+
+    Alert.alert("Câu hỏi đã được tạo thành công", "Hệ thống đang kiểm duyệt", [
+      { text: "Hoàn tất", onPress: goToList },
+    ])
   }
+
+  const goToList = () => navigation.navigate("MyTabs", { screen: "CommunityQuestionList" })
   const onError = (error) => {
     console.log(error)
   }
@@ -163,10 +182,10 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
         preset="scroll"
       >
         <FormProvider {...form}>
-          <View style={{ paddingTop: spacing.md }}>
+          <View style={{ paddingTop: spacing.xs }}>
             <Controller
               control={form.control}
-              name="content"
+              name="title"
               render={({ field: { value, onBlur, onChange } }) => (
                 <>
                   <TextInput
@@ -174,12 +193,12 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
                     value={value}
                     onBlur={onBlur}
                     onChangeText={onChange}
-                    error={form.formState.errors.content && true}
+                    error={form.formState.errors.title && true}
                     label={translate("newQuestionScreen.questionContent")}
                     placeholder={translate("newQuestionScreen.askQuestionGuideline")}
                     multiline={true}
                   />
-                  <HelperText type="error">{form.formState.errors.content?.message}</HelperText>
+                  <HelperText type="error">{form.formState.errors.title?.message}</HelperText>
                 </>
               )}
             />
@@ -192,13 +211,14 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
             <View style={styles.row}>
               <Controller
                 control={form.control}
-                name="categories"
+                name="questionCategoryIds"
                 render={({ field: { value, onChange } }) => (
                   <>
                     {value.map((cat) => (
                       <Chip
                         mode={"outlined"}
                         icon="book-education"
+                        style={styles.chip}
                         key={cat}
                         onClose={() => {
                           onChange(value.filter((v) => v !== cat))
@@ -210,13 +230,14 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
                     <Chip
                       mode="flat"
                       icon="plus-circle-outline"
+                      style={styles.chip}
                       key="new-cat"
                       onPress={openBottomSheet}
                     >
                       {value.length === 0 ? "Chọn chủ đề" : "Chủ đề khác"}
                     </Chip>
                     <HelperText type="error">
-                      {form.formState.errors.categories?.message}
+                      {form.formState.errors.questionCategoryIds?.message}
                     </HelperText>
                   </>
                 )}
@@ -239,6 +260,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
               )}
             />
             {supportLevel === "community" && <CommunitySupportLevel />}
+            {supportLevel === "coffee" && <CoffeeSupportLevel />}
             {supportLevel === "expert" && <ExpertSupportLevel />}
             {supportLevel === "agency" && <AgencySupportLevel />}
           </View>
@@ -248,18 +270,19 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
         <Button
           mode={"contained"}
           loading={isProcessing}
+          // disabled={!form.formState.isValid}
           onPress={form.handleSubmit(onSubmit, onError)}
         >
           Gửi câu hỏi
         </Button>
       </View>
-      <BottomSheet ref={bottomSheetRef} index={-1} snapPoints={["25%", "50%"]}>
+      <BottomSheetBase ref={bottomSheetRef} index={-1} snapPoints={["25%", "50%"]}>
         <View style={styles.bottomSheetContainer}>
           {openCategorySelection && (
             <CategorySelections input={categories} onClose={closeBottomSheet} />
           )}
         </View>
-      </BottomSheet>
+      </BottomSheetBase>
     </>
   )
 })
@@ -272,9 +295,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
+  chip: {
+    borderRadius: spacing.md,
+  },
   column: {
     flexDirection: "column",
-    paddingTop: spacing.xs,
+    paddingTop: spacing.sm,
   },
   row: {
     flexDirection: "row",
@@ -285,6 +311,7 @@ const styles = StyleSheet.create({
   selectedChip: {
     backgroundColor: colors.palette.accent100,
     borderColor: colors.palette.accent100,
+    borderRadius: spacing.lg,
     color: colors.palette.accent100,
   },
 })

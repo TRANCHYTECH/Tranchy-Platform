@@ -1,14 +1,14 @@
 ﻿using MongoDB.Entities;
+using Tranchy.Common.Data;
 
 namespace Tranchy.Question.Data
 {
     [Collection("Question")]
-    public class Question : Entity, ICreatedOn, IModifiedOn
+    public class Question : Entity, ICreatedOn, IModifiedOn, IOwnEntity
     {
-        public string Title { get; set; } = default!;
-        public string Description { get; set; } = default!;
-        public SupportLevel SupportLevel { get; set; }
-        public QuestionStatus Status { get; set; }
+        public required string Title { get; set; }
+        public required SupportLevel SupportLevel { get; set; }
+        public required QuestionStatus Status { get; set; }
         public required string CreatedByUserId { get; set; }
         public string[] QuestionCategoryIds { get; set; } = Array.Empty<string>();
         public DateTime CreatedOn { get; set; } = default!;

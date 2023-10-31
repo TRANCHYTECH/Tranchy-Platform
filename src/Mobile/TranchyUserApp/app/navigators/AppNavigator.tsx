@@ -39,7 +39,8 @@ export type AppStackParamList = {
   // 🔥 Your screens go here
   NewQuestion: undefined
   Login: undefined
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  QuestionList: undefined
+	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -87,7 +88,8 @@ const AppStack = observer(function AppStack() {
       )}
 
       {/** 🔥 Your screens go here */}
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+      <Stack.Screen name="QuestionList" component={Screens.QuestionListScreen} />
+			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 })

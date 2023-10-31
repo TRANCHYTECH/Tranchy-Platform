@@ -1,30 +1,34 @@
-import { View, StyleSheet, Alert, FlatList } from "react-native"
+import { View, StyleSheet, FlatList } from "react-native"
 import React from "react"
-import { Avatar, Button, Card, Chip, IconButton } from "react-native-paper"
+import { Avatar, Button, Card, Checkbox, Chip, IconButton, Text } from "react-native-paper"
 import { SectionLabel } from "app/components"
 import { colors, spacing } from "app/theme"
 import * as DocumentPicker from "expo-document-picker"
-import { useFieldArray, useFormContext } from "react-hook-form"
+import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import { QuestionFormModel } from "./QuestionFormSchema"
+import { useStores } from "app/models"
+import { currentLocale } from "app/i18n"
+
+const locale = currentLocale()
 
 const ExpertSupportLevel = () => {
+  const { metadataStore } = useStores()
   const { control } = useFormContext<QuestionFormModel>()
-  const { fields, append } = useFieldArray({ control, name: "files" })
+  const { fields, append, remove } = useFieldArray({ control, name: "files" })
   const handleDocumentSelection = async () => {
     const result = await DocumentPicker.getDocumentAsync({
       type: "*/*",
-      copyToCacheDirectory: false,
+      copyToCacheDirectory: true,
+      multiple: false,
     })
-    if (result.type === "success") {
+    if (!result.canceled) {
       // todo: handle duplicated files
       // todo: handle deleting files
       // todo: style for document picker btn in case there are any files
-      append({ name: result.name, uri: result.uri, size: result.size })
-      // console.log("load success", files)
-    } else {
-      setTimeout(() => {
-        Alert.alert("Document picked", JSON.stringify(result, null, 2))
-      }, 100)
+      result.assets.forEach((result) => {
+        append({ name: result.name, uri: result.uri, size: result.size })
+      })
+      console.log("load success", result)
     }
   }
 
@@ -33,17 +37,37 @@ const ExpertSupportLevel = () => {
       <View>
         <SectionLabel title="Tôi đang cần câu câu trả lời" />
         <View style={styles.row}>
-          <Chip mode="outlined">Khẩn cấp</Chip>
-          <Chip mode="outlined" selected={true}>
-            Trong ngày
-          </Chip>
-          <Chip mode="outlined">Trong tuần</Chip>
+          <Controller
+            control={control}
+            name="priority"
+            render={({ field: { value, onChange } }) => (
+              <>
+                <View style={styles.row}>
+                  {metadataStore.questionPriorities.map((p) => (
+                    <Chip
+                      key={p.key}
+                      mode="outlined"
+                      style={styles.chip}
+                      selected={p.key === value}
+                      onPress={(_) => onChange(p.key)}
+                      showSelectedCheck={true}
+                    >
+                      {p.name[locale]}
+                    </Chip>
+                  ))}
+                </View>
+                <Text style={{ paddingBottom: spacing.xxs }}>
+                  {metadataStore.questionPriority(value)?.getDescription(locale)}
+                </Text>
+              </>
+            )}
+          />
         </View>
       </View>
       <View>
         <SectionLabel
           title="Tệp tin đính kèm"
-          description="Hỗ trợ hình ảnh, video, đoạn ghi âm, tệp tin,..."
+          description="Hỗ trợ hình ảnh, video, đoạn ghi âm, tệp tin"
         />
         <Button mode="text" icon="plus" onPress={handleDocumentSelection}>
           Nhấn để thêm tệp đính kèm
@@ -62,16 +86,38 @@ const ExpertSupportLevel = () => {
               title={item.name}
               key={"file-item-" + index}
               left={(props) => <Avatar.Icon {...props} icon="paperclip" />}
-              right={(props) => <IconButton {...props} icon="delete-outline" />}
+              right={(props) => (
+                <IconButton {...props} icon="delete-outline" onPress={() => remove(index)} />
+              )}
             />
           )}
         />
+      </View>
+      <View>
+        <SectionLabel title="Đối với quyền riêng tư" />
+        <Controller
+          control={control}
+          name="communityShareAgreement"
+          render={({ field: { value, onChange } }) => (
+            <Checkbox.Item
+              position="leading"
+              status={value ? "checked" : "unchecked"}
+              onPress={() => onChange(!value)}
+              mode="android"
+              labelVariant="labelSmall"
+              label="Cho phép đăng tải câu hỏi lên cộng đồng. Khi nhận được sự đồng ý từ chuyên gia trả lời"
+            />
+          )}
+        ></Controller>
       </View>
     </>
   )
 }
 
 const styles = StyleSheet.create({
+  chip: {
+    borderRadius: spacing.md,
+  },
   row: {
     flexDirection: "row",
     flexWrap: "wrap",

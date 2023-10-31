@@ -41,7 +41,7 @@ public class CreateQuestion : IEndpoint
 
         await publishEndpoint.Publish(new QuestionCreated { Id = newQuestion.ID! }, token);
 
-        VerifyQuestion command = new() { Id = newQuestion.ID! };
+        Commands.VerifyQuestion command = new() { Id = newQuestion.ID! };
 
         await sendEndpointProvider.Send(
             command,

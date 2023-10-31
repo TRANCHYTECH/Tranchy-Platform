@@ -3,7 +3,7 @@ import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigatio
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { translate } from "app/i18n"
 import React from "react"
-import { CommunityQuestionListScreen, ProfileScreen } from "app/screens"
+import { CommunityQuestionListScreen, ProfileScreen, QuestionListScreen } from "app/screens"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 import { CompositeScreenProps } from "@react-navigation/native"
 
@@ -47,6 +47,17 @@ export function MyTabs() {
         options={{
           title: translate("tab.community"),
           tabBarLabel: translate("tab.community"),
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Questions"
+        component={QuestionListScreen}
+        options={{
+          title: translate("tab.questions"),
+          tabBarLabel: translate("tab.questions"),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
