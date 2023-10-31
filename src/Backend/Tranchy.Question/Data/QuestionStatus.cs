@@ -6,7 +6,7 @@
         BeingReviewed = 2,
         Accepted = 3,
         Payment = 4,
-        Inprogress = 5,
+        InProgress = 5,
         Rejected = 6,
         Done = 7,
         Reported = 8

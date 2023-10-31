@@ -13,6 +13,7 @@
 	<ItemGroup>
 	  <PackageReference Include="MassTransit.Abstractions" Version="8.1.0" />
 	  <PackageReference Include="MiniValidation" Version="0.9.0" />
+	  <PackageReference Include="MongoDB.Entities" Version="22.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
