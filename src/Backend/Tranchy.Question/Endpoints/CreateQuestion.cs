@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Tranchy.Question.Events;
 using MongoDB.Entities;
 using MassTransit.MongoDbIntegration;
 using Tranchy.Question.Endpoints;
-using Tranchy.Question.Commands;
 using Tranchy.Question.Consumers;
 using Tranchy.Common.Services;
 using Tranchy.Question.Mappers;
@@ -28,7 +27,7 @@ public class CreateQuestion : IEndpoint
     {
         IDictionary<string, string[]>? errors = null;
 
-        if (input == null || (!await validator.IsValidAsync(input, out errors)))
+        if (input is null || (!await validator.IsValidAsync(input, out errors)))
         {
             return TypedResults.BadRequest(errors);
         }
@@ -45,7 +44,8 @@ public class CreateQuestion : IEndpoint
 
         await sendEndpointProvider.Send(
             command,
-            endpointNameFormatter.Consumer<VerifyQuestionConsumer>()
+            endpointNameFormatter.Consumer<VerifyQuestionConsumer>(),
+            token
         );
         await dbContext.CommitTransaction(token);
 

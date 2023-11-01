@@ -1,4 +1,4 @@
-﻿namespace Tranchy.Common.Services;
+namespace Tranchy.Common.Services;
 
 public interface ITenant
 {

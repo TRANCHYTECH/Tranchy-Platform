@@ -26,15 +26,15 @@ public class UploadQuestionFile : IEndpoint
             return TypedResults.BadRequest();
         }
 
-        var container = new Uri(appSettings.Value.File.UnsafeQuestionFileContainerUri).GetBlobContainerClient();
+        var container = new Uri(appSettings.Value.File.UnsafeQuestionFileContainerUri).GetBlobContainerClient(cancellation);
         //todo: move to deployment bicep.
         await container.CreateIfNotExistsAsync(cancellationToken: cancellation);
 
-        var finalizedFileName = fileName ?? file.FileName;
+        string finalizedFileName = fileName ?? file.FileName;
         var blob = container.GetBlobClient($"{questionId}/{finalizedFileName}");
         await blob.UploadAsync(fileContent, new BlobUploadOptions
         {
-            Metadata = new Dictionary<string, string>
+            Metadata = new Dictionary<string, string>(StringComparer.Ordinal)
             {
                 { "TranchyQuestionId", questionId },
                 { "TranchyFileName", finalizedFileName }
@@ -45,7 +45,7 @@ public class UploadQuestionFile : IEndpoint
             }
         }, cancellation);
 
-        await publishEndpoint.Publish(new QuestionFileUploaded() { QuestionId = questionId, FilePath = blob.Uri.AbsolutePath }, cancellation);
+        await publishEndpoint.Publish(new QuestionFileUploaded { QuestionId = questionId, FilePath = blob.Uri.AbsolutePath }, cancellation);
 
         return TypedResults.Ok<UploadQuestionFileResponse>(new(questionId));
     }

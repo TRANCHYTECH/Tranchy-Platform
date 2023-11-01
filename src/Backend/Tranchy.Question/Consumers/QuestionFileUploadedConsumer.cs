@@ -1,4 +1,4 @@
-﻿using Tranchy.Common.Events;
+using Tranchy.Common.Events;
 
 namespace Tranchy.Question.Consumers;
 
@@ -13,9 +13,8 @@ public class QuestionFileUploadedConsumer : IConsumer<QuestionFileUploaded>
 
     public Task Consume(ConsumeContext<QuestionFileUploaded> context)
     {
-        _logger.LogInformation("Handle question file uploaded {question}", context.Message.FilePath);
+        _logger.HandledQuestion(context.Message.FilePath);
 
         return Task.CompletedTask;
     }
 }
-
