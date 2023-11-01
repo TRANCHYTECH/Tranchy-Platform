@@ -5,9 +5,7 @@ namespace Tranchy.Question.Contracts;
 
 public record CreateQuestionInput(
     [Required][MinLength(10)]
-string Title,
-    [Required][MinLength(10)]
-string Description,
+    string Title,
     SupportLevel SupportLevel,
     string[] QuestionCategoryIds
 );

@@ -26,7 +26,7 @@ public class UploadQuestionFile : IEndpoint
             return TypedResults.BadRequest();
         }
 
-        var container = new Uri(appSettings.Value.File.UnsafeQuestionFileContainerUri).GetBlobContainerClient();
+        var container = new Uri(appSettings.Value.File.UnsafeQuestionFileContainerUri).GetBlobContainerClient(cancellation);
         //todo: move to deployment bicep.
         await container.CreateIfNotExistsAsync(cancellationToken: cancellation);
 
