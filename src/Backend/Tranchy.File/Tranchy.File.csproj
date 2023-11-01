@@ -1,11 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
@@ -15,11 +9,11 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <PackageReference Include="Azure.Storage.Blobs" Version="12.18.0" />
-	  <PackageReference Include="MassTransit" Version="8.1.0" />
-	  <PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="8.1.0" />
-	  <PackageReference Include="MassTransit.MongoDb" Version="8.1.0" />
-	  <PackageReference Include="MongoDB.Entities" Version="22.1.0" />
+	  <PackageReference Include="Azure.Storage.Blobs" />
+	  <PackageReference Include="MassTransit" />
+	  <PackageReference Include="MassTransit.Azure.ServiceBus.Core" />
+	  <PackageReference Include="MassTransit.MongoDb" />
+	  <PackageReference Include="MongoDB.Entities" />
 	</ItemGroup>
   
 </Project>
