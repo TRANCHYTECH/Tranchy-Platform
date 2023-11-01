@@ -12,6 +12,7 @@ export interface Question {
   createdOn?: string
   id?: string | null
   modifiedOn?: string
+  priorityId?: string | null
   questionCategoryIds?: string[] | null
   status?: QuestionStatus
   supportLevel?: SupportLevel

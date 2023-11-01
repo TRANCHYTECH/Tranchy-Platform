@@ -17,7 +17,7 @@ import { QuestionFormModel, QuestionFormSchema } from "./QuestionFormSchema"
 import { api } from "app/services/api"
 import Toast from "react-native-root-toast"
 import { CoffeeSupportLevel } from "./CoffeeSupportLevel"
-import { createQuestion } from "app/services/rest/askapi.service"
+import { createQuestion } from "app/services/askapi/askapi"
 
 interface NewQuestionScreenProps extends AppStackScreenProps<"NewQuestion"> {}
 
@@ -133,13 +133,28 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
 
     setIsProcessing(true)
 
+    // todo: rework on response process
     const createQuestionResponse = await createQuestion({
       title: data.title,
       questionCategoryIds: data.questionCategoryIds,
       supportLevel: "Community",
       priorityId: data.priority,
     })
-    console.log("create question", createQuestionResponse)
+
+    for (const file of data.files) {
+      console.log("upload file", file)
+      const uploadResponse = await api.uploadFile(
+        createQuestionResponse.data.id,
+        file.name,
+        file.uri,
+      )
+      if (uploadResponse.kind === "ok") {
+        // Toast.show(`Upload file ${file.name} thành công`)
+      } else {
+        Toast.show(`Không thể upload file ${file.name}`)
+      }
+    }
+
     // const createQuestionResponse = await api.addQuestion({
     //   title: data.title,
     //   questionCategoryIds: data.questionCategoryIds,

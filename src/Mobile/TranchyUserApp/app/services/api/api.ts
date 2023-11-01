@@ -4,7 +4,7 @@ import type { CreateQuestionResponse, ApiConfig } from "./api.types"
 import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem"
 import { QuestionSnapshotIn, QuestionSnapshotOut } from "app/models"
 import * as FileSystem from "expo-file-system"
-import Axios, { AxiosRequestConfig } from "axios"
+import { AxiosRequestConfig } from "axios"
 
 export const DEFAULT_API_CONFIG: ApiConfig = {
   url: Config.API_URL,

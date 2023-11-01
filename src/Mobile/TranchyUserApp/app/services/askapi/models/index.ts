@@ -5,7 +5,9 @@
  * OpenAPI spec version: v1
  */
 
+export * from "./createQuestion400"
 export * from "./createQuestionInput"
+export * from "./getQuestionConfigurationsResponse"
 export * from "./question"
 export * from "./questionOutput"
 export * from "./questionStatus"
@@ -13,3 +15,4 @@ export * from "./supportLevel"
 export * from "./uploadFileForQuestionBody"
 export * from "./uploadFileForQuestionParams"
 export * from "./uploadQuestionFileResponse"
+export * from "./questionCategory"

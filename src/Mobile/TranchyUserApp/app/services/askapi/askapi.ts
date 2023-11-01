@@ -6,6 +6,7 @@
  */
 import type {
   CreateQuestionInput,
+  GetQuestionConfigurationsResponse,
   Question,
   QuestionOutput,
   UploadFileForQuestionBody,
@@ -15,7 +16,7 @@ import type {
 import { customInstance } from "../api/api"
 
 export const createQuestion = (createQuestionInput: CreateQuestionInput) => {
-  return customInstance<void>({
+  return customInstance<QuestionOutput>({
     url: `/question`,
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -24,7 +25,10 @@ export const createQuestion = (createQuestionInput: CreateQuestionInput) => {
 }
 
 export const getQuestionConfigurations = () => {
-  return customInstance<void>({ url: `/question/configurations`, method: "get" })
+  return customInstance<GetQuestionConfigurationsResponse>({
+    url: `/question/configurations`,
+    method: "get",
+  })
 }
 
 export const getQuestionById = (id: string) => {
@@ -35,7 +39,7 @@ export const getQuestionByUser = (user: string) => {
   return customInstance<QuestionOutput>({ url: `/question/user/${user}`, method: "get" })
 }
 
-export const listPublicAcceptedQuestions = () => {
+export const listPublicQuestions = () => {
   return customInstance<Question[]>({ url: `/question/list/public`, method: "get" })
 }
 
@@ -74,9 +78,7 @@ export type GetQuestionConfigurationsResult = NonNullable<
 >
 export type GetQuestionByIdResult = NonNullable<Awaited<ReturnType<typeof getQuestionById>>>
 export type GetQuestionByUserResult = NonNullable<Awaited<ReturnType<typeof getQuestionByUser>>>
-export type ListPublicAcceptedQuestionsResult = NonNullable<
-  Awaited<ReturnType<typeof listPublicAcceptedQuestions>>
->
+export type ListPublicQuestionsResult = NonNullable<Awaited<ReturnType<typeof listPublicQuestions>>>
 export type ListMyQuestionsResult = NonNullable<Awaited<ReturnType<typeof listMyQuestions>>>
 export type GetAgencyPortalResult = NonNullable<Awaited<ReturnType<typeof getAgencyPortal>>>
 export type UploadFileForQuestionResult = NonNullable<
