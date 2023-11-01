@@ -2,14 +2,13 @@
 using Tranchy.Common.Services;
 using Tranchy.Common.Validators;
 
-namespace Tranchy.Common
+namespace Tranchy.Common;
+
+public class CommonModule : IModule
 {
-    public class CommonModule : IModule
+    public static void ConfigureServices(IServiceCollection services, AppSettings configuration)
     {
-        public static void ConfigureServices(IServiceCollection services, AppSettings configuration)
-        {
-            services.AddScoped<ITenant, Tenant>();
-            services.AddScoped(typeof(IValidator<>), typeof(Validator<>));
-        }
+        services.AddScoped<ITenant, Tenant>();
+        services.AddScoped(typeof(IValidator<>), typeof(Validator<>));
     }
 }

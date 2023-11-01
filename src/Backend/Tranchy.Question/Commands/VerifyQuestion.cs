@@ -1,7 +1,6 @@
-﻿namespace Tranchy.Question.Commands
+﻿namespace Tranchy.Question.Commands;
+
+public class VerifyQuestion : ICommand
 {
-    public class VerifyQuestion : ICommand
-    {
-        public required string Id { get; set; }
-    }
+    public required string Id { get; set; }
 }

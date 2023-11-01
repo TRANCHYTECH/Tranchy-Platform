@@ -1,19 +1,19 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Tranchy.Question.Contracts;
 
-namespace Tranchy.Question.Endpoints
+namespace Tranchy.Question.Endpoints;
+
+public class GetMetadata : IEndpoint
 {
-    public class GetMetadata : IEndpoint
+    public static IResult GetQuestionConfigurations()
     {
-        public static IResult GetQuestionConfigurations() {
-            var response = new GetQuestionConfigurations();
+        var response = new GetQuestionConfigurations();
 
-            return TypedResults.Ok(response);
-        }
+        return TypedResults.Ok(response);
+    }
 
-        public static void Register(RouteGroupBuilder routeGroupBuilder)
-        {
-            routeGroupBuilder.MapGet("/configurations", GetQuestionConfigurations).WithName("GetQuestionConfigurations");
-        }
+    public static void Register(RouteGroupBuilder routeGroupBuilder)
+    {
+        routeGroupBuilder.MapGet("/configurations", GetQuestionConfigurations).WithName("GetQuestionConfigurations");
     }
 }

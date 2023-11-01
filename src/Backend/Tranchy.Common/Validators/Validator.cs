@@ -1,32 +1,31 @@
 ﻿using MiniValidation;
 using Tranchy.Common.Validators;
 
-namespace Tranchy.Common
+namespace Tranchy.Common;
+
+public class Validator<T> : IValidator<T>
 {
-    public class Validator<T>: IValidator<T>
+    private readonly IServiceProvider _serviceProvider;
+
+    public Validator(IServiceProvider serviceProvider)
     {
-        private readonly IServiceProvider _serviceProvider;
+        _serviceProvider = serviceProvider;
+    }
 
-        public Validator(IServiceProvider serviceProvider)
+    public virtual Task<bool> IsValidAsync(T model, out IDictionary<string, string[]> errors)
+    {
+        bool isValid = MiniValidator.TryValidate(model, _serviceProvider, out errors);
+
+        if (isValid)
         {
-            _serviceProvider = serviceProvider;
+            return CustomValidateAsync(model);
         }
 
-        public virtual Task<bool> IsValidAsync(T model, out IDictionary<string, string[]> errors)
-        {
-            var isValid = MiniValidator.TryValidate(model, _serviceProvider, out errors);
+        return Task.FromResult(false);
+    }
 
-            if (isValid)
-            {
-                return CustomValidateAsync(model);
-            }
-
-            return Task.FromResult(false);
-        }
-
-        protected virtual Task<bool> CustomValidateAsync(T model)
-        {
-            return Task.FromResult(true);
-        }
+    protected virtual Task<bool> CustomValidateAsync(T model)
+    {
+        return Task.FromResult(true);
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace Tranchy.Common.Validators
+﻿namespace Tranchy.Common.Validators;
+
+public interface IValidator<T>
 {
-    public interface IValidator<T>
-    {
-        Task<bool> IsValidAsync(T model, out IDictionary<string, string[]> errors);
-    }
+    Task<bool> IsValidAsync(T model, out IDictionary<string, string[]> errors);
 }
