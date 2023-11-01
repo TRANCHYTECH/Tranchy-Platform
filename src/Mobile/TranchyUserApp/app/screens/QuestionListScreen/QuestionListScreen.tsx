@@ -11,7 +11,7 @@ import { spacing } from "app/theme"
 
 interface QuestionListScreenProps extends AppStackScreenProps<"QuestionList"> {}
 
-//todo: destroy list after navigate to another screen
+// todo: destroy list after navigate to another screen
 export const QuestionItem = ({ item }: { item: Question }) => (
   <View style={styles.questionItem}>
     <IconButton icon="delete-outline" />
@@ -27,10 +27,11 @@ export const QuestionListScreen: FC<QuestionListScreenProps> = observer(
   function QuestionListScreen() {
     // Pull in one of our MST stores
     const { questionStore } = useStores()
+
     React.useEffect(() => {
-      questionStore.insertDummy()
-      console.log("insert dummy")
-    }, [questionStore])
+      console.log("load questions")
+      questionStore.fetchPublicQuestions()
+    }, [])
     // Pull in navigation via hook
     // const navigation = useNavigation()
     return (
@@ -53,8 +54,5 @@ const $root: ViewStyle = {
 }
 
 const styles = StyleSheet.create({
-  list: {
-    flex: 1,
-  },
   questionItem: { flex: 1, flexDirection: "row", margin: spacing.xs },
 })
