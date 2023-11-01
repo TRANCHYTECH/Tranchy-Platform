@@ -394,6 +394,7 @@ dotnet_diagnostic.IDE0004.severity = error
 dotnet_diagnostic.IDE0005.severity = error
 dotnet_diagnostic.IDE0007.severity = error
 dotnet_diagnostic.IDE0010.severity = suggestion
+dotnet_diagnostic.IDE0301.severity = none 
 dotnet_diagnostic.IDE0011.severity = error
 dotnet_diagnostic.IDE0016.severity = error
 dotnet_diagnostic.IDE0017.severity = error
@@ -777,11 +778,3 @@ dotnet_diagnostic.MA0051.severity = silent
 dotnet_diagnostic.MA0025.severity = silent
 # Missing XML comment for publicly visible type or member 'Type_or_Member': This doesn't make sense to require for tests. (xUnit.net tests don't have to be public; they can be private. But then we'd get an "unused member" warning.)
 dotnet_diagnostic.CS1591.severity = silent
-
-[**/*SharedForTests/*.cs]
-# It is totally fine having non implemented code in Test projects (Stubs, Mocks, Fakes, ...)
-dotnet_diagnostic.MA0025.severity = silent
-
-[**/__snapshots__/*.json]
-# Unfortunately CookieCrumble fails the comparison if there is an extra blank line...
-insert_final_newline = false
