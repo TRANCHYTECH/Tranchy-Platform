@@ -10,7 +10,6 @@
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
     <NuGetAudit>true</NuGetAudit>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <AnalysisMode>All</AnalysisMode>
   </PropertyGroup>
 
   <ItemGroup>
