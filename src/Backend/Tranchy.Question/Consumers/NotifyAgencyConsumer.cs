@@ -1,5 +1,3 @@
-﻿using MassTransit;
-using Microsoft.Extensions.Logging;
 using Tranchy.Question.Events;
 
 namespace Tranchy.Question.Consumers;
@@ -15,9 +13,8 @@ public class NotifyAgencyConsumer : IConsumer<QuestionCreated>
 
     public Task Consume(ConsumeContext<QuestionCreated> context)
     {
-        _logger.LogInformation("User created question '{id}'", context.Message.Id);
+        _logger.CreatedQuestion("User created question '{id}'", context.Message.Id);
 
         return Task.CompletedTask;
     }
 }
-

@@ -21,18 +21,15 @@ builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false)
 {
     config.AddAzureAppConfiguration(options =>
     {
-        var appConfigName = builder.Configuration["AppConfigName"];
+        string? appConfigName = builder.Configuration["AppConfigName"];
         options.Connect(new Uri($"https://{appConfigName}.azconfig.io"), new DefaultAzureCredential())
         .Select(KeyFilter.Any, builder.Environment.EnvironmentName);
-        options.ConfigureKeyVault(options =>
-        {
-            options.SetCredential(new DefaultAzureCredential());
-        });
+        options.ConfigureKeyVault(options => options.SetCredential(new DefaultAzureCredential()));
     });
 });
 builder.Services.AddAzureClients(config =>
 {
-    var vault = builder.Configuration["KeyVaultName"];
+    string? vault = builder.Configuration["KeyVaultName"];
     config.UseCredential(new DefaultAzureCredential());
     config.AddSecretClient(new Uri($"https://{vault}.vault.azure.net"));
 });
@@ -92,7 +89,7 @@ builder.Services.AddAuthentication(options =>
     options.SaveTokens = true;
     // request scopes + refresh tokens
     options.Scope.Clear();
-    foreach (var scope in appSettings.Authentication.Schemes.OpenIdConnect.Scopes)
+    foreach (string scope in appSettings.Authentication.Schemes.OpenIdConnect.Scopes)
     {
         options.Scope.Add(scope);
     }
@@ -106,12 +103,12 @@ builder.Services.AddAuthentication(options =>
         },
         OnRedirectToIdentityProviderForSignOut = (context) =>
         {
-            var logoutUri = $"{appSettings.Authentication.Schemes.OpenIdConnect.Authority}/v2/logout?client_id={appSettings.Authentication.Schemes.OpenIdConnect.ClientId}";
+            string logoutUri = $"{appSettings.Authentication.Schemes.OpenIdConnect.Authority}/v2/logout?client_id={appSettings.Authentication.Schemes.OpenIdConnect.ClientId}";
 
-            var postLogoutUri = context.Properties.RedirectUri;
+            string? postLogoutUri = context.Properties.RedirectUri;
             if (!string.IsNullOrEmpty(postLogoutUri))
             {
-                if (postLogoutUri == "/agency-portal")
+                if (string.Equals(postLogoutUri, "/agency-portal", StringComparison.Ordinal))
                 {
                     postLogoutUri = appSettings.AgencyPortalSpaUrl;
                 }
@@ -132,7 +129,7 @@ builder.Services.AddAuthentication(options =>
     options.ForwardDefaultSelector = context =>
     {
         string? authorization = context.Request.Headers.Authorization;
-        if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
+        if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer ", StringComparison.Ordinal))
         {
             return "Bearer";
         }
@@ -154,14 +151,8 @@ builder.Services.AddHealthChecks()
 .AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded)
 .AddApplicationInsightsPublisher();
 
-builder.Services.ConfigureHttpJsonOptions(options =>
-{
-    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
-builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
-{
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 //builder.Services.Configure<JsonOptions>(o =>
 //{
 //    o.SerializerOptions.Converters.Add(new JsonStringEnumConverter());

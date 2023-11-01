@@ -1,5 +1,4 @@
 using MassTransit;
-using Tranchy.Payment.Activities;
 using Tranchy.Question.Consumers;
 
 var builder = Host.CreateApplicationBuilder(args);

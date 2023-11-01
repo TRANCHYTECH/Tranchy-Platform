@@ -1,4 +1,4 @@
-﻿namespace Tranchy.Common;
+namespace Tranchy.Common;
 
 public interface ICommand
 {

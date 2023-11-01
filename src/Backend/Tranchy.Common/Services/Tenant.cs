@@ -1,4 +1,3 @@
-﻿
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
@@ -21,7 +20,7 @@ public class Tenant : ITenant
 
     private string GetClaim(string claimType)
     {
-        var claim = Claims.FirstOrDefault(c => c.Type == claimType);
-        return claim?.Value ?? "";
+        var claim = Claims.FirstOrDefault(c => string.Equals(c.Type, claimType, StringComparison.Ordinal));
+        return claim?.Value ?? string.Empty;
     }
 }

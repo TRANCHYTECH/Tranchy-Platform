@@ -1,5 +1,3 @@
-﻿using MassTransit;
-using Microsoft.Extensions.Logging;
 using Tranchy.Question.Commands;
 
 namespace Tranchy.Question.Consumers;
@@ -15,7 +13,7 @@ public class VerifyQuestionConsumer : IConsumer<VerifyQuestion>
 
     public Task Consume(ConsumeContext<VerifyQuestion> context)
     {
-        _logger.LogInformation("Verified question {question}", context.Message.Id);
+        _logger.CreatedQuestion(context.Message.Id, string.Empty);
 
         return Task.CompletedTask;
     }
