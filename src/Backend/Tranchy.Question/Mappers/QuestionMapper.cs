@@ -1,4 +1,4 @@
-﻿using Tranchy.Question.Contracts;
+using Tranchy.Question.Contracts;
 
 namespace Tranchy.Question.Mappers;
 
@@ -10,6 +10,7 @@ internal static class QuestionMapper
         Status = Data.QuestionStatus.New,
         SupportLevel = questionInput.SupportLevel,
         Title = questionInput.Title,
+        PriorityId = questionInput.PriorityId,
         QuestionCategoryIds = questionInput.QuestionCategoryIds,
         CreatedByUserId = userId
     };
