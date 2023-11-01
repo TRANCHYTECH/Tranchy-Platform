@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Tranchy.Common
+namespace Tranchy.Common;
+
+public interface IModule
 {
-    public interface IModule
-    {
-        abstract static void ConfigureServices(IServiceCollection services, AppSettings configuration);
-    }
+    static abstract void ConfigureServices(IServiceCollection services, AppSettings configuration);
 }

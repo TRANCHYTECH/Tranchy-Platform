@@ -1,7 +1,6 @@
-﻿namespace Tranchy.Question.Events
+﻿namespace Tranchy.Question.Events;
+
+public record QuestionCreated
 {
-    public record QuestionCreated
-    {
-        public required string Id { get; set; }
-    }
+    public required string Id { get; set; }
 }

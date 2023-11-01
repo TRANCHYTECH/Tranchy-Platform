@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Tranchy.Common;
 using Tranchy.Payment.Data;
 
 namespace Tranchy.Payment;
@@ -17,7 +16,7 @@ public class PaymentModule : IModule
 
     private static void SetupDbContext(IServiceProvider serviceProvider, DbContextOptionsBuilder options)
     {
-        var connectionString = serviceProvider.GetRequiredService<IConfiguration>().GetValue<string>("PaymentDb:ConnectionString");
+        string? connectionString = serviceProvider.GetRequiredService<IConfiguration>().GetValue<string>("PaymentDb:ConnectionString");
         options.UseSqlServer(connectionString, sqlOptions =>
         {
             sqlOptions.EnableRetryOnFailure(3);

@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Tranchy.Question.Contracts;
 
-namespace Tranchy.Question.Contracts
+public class GetQuestionConfigurations
 {
-    public class GetQuestionConfigurations
-    {
-    }
 }

@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Routing;
 
-namespace Tranchy.Common
+namespace Tranchy.Common;
+
+public interface IEndpoint
 {
-    public interface IEndpoint
-    {
-        abstract static void Register(RouteGroupBuilder routeGroupBuilder);
-    }
+    static abstract void Register(RouteGroupBuilder routeGroupBuilder);
 }

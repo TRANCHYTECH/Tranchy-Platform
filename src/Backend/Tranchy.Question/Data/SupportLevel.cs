@@ -1,9 +1,8 @@
-﻿namespace Tranchy.Question.Data
+﻿namespace Tranchy.Question.Data;
+
+public enum SupportLevel
 {
-    public enum SupportLevel
-    {
-        Community = 1,
-        Expert = 2,
-        Agency = 3
-    }
+    Community = 1,
+    Expert = 2,
+    Agency = 3
 }
