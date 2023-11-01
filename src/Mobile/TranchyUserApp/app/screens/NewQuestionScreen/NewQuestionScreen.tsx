@@ -17,6 +17,7 @@ import { QuestionFormModel, QuestionFormSchema } from "./QuestionFormSchema"
 import { api } from "app/services/api"
 import Toast from "react-native-root-toast"
 import { CoffeeSupportLevel } from "./CoffeeSupportLevel"
+import { createQuestion } from "app/services/askapi/askapi"
 
 interface NewQuestionScreenProps extends AppStackScreenProps<"NewQuestion"> {}
 
@@ -84,6 +85,7 @@ const locale = currentLocale()
 export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function NewQuestionScreen(
   _props,
 ) {
+  console.log("new question open")
   const insets = useSafeAreaInsets()
   const { navigation } = _props
   // const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
@@ -130,34 +132,57 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
     }
 
     setIsProcessing(true)
-    const createQuestionResponse = await api.addQuestion({
-      title: data.title,
-      description: data.title,
-      questionCategoryIds: data.questionCategoryIds,
-      supportLevel: data.supportLevel,
-      priorityId: data.priority,
-      communityShareAgreement: data.communityShareAgreement,
-      id: "",
-    })
 
-    let createdQuestionId: string
-    if (createQuestionResponse.kind === "ok") {
-      createdQuestionId = createQuestionResponse.data.id
-    } else {
-      Toast.show("Không thể gửi câu hỏi " + JSON.stringify(createQuestionResponse))
-      setIsProcessing(false)
-      return
-    }
+    // todo: rework on response process
+    const createQuestionResponse = await createQuestion({
+      title: data.title,
+      questionCategoryIds: data.questionCategoryIds,
+      supportLevel: "Community",
+      priorityId: data.priority,
+    })
 
     for (const file of data.files) {
       console.log("upload file", file)
-      const uploadResponse = await api.uploadFile(createdQuestionId, file.name, file.uri)
+      const uploadResponse = await api.uploadFile(
+        createQuestionResponse.data.id,
+        file.name,
+        file.uri,
+      )
       if (uploadResponse.kind === "ok") {
-        //Toast.show(`Upload file ${file.name} thành công`)
+        // Toast.show(`Upload file ${file.name} thành công`)
       } else {
         Toast.show(`Không thể upload file ${file.name}`)
       }
     }
+
+    // const createQuestionResponse = await api.addQuestion({
+    //   title: data.title,
+    //   questionCategoryIds: data.questionCategoryIds,
+    //   supportLevel: data.supportLevel,
+    //   priorityId: data.priority,
+    //   communityShareAgreement: data.communityShareAgreement,
+    //   id: "",
+    //   createdAt: "",
+    // })
+
+    // let createdQuestionId: string
+    // if (createQuestionResponse.kind === "ok") {
+    //   createdQuestionId = createQuestionResponse.data.id
+    // } else {
+    //   Toast.show("Không thể gửi câu hỏi " + JSON.stringify(createQuestionResponse))
+    //   setIsProcessing(false)
+    //   return
+    // }
+
+    // for (const file of data.files) {
+    //   console.log("upload file", file)
+    //   const uploadResponse = await api.uploadFile(createdQuestionId, file.name, file.uri)
+    //   if (uploadResponse.kind === "ok") {
+    //     // Toast.show(`Upload file ${file.name} thành công`)
+    //   } else {
+    //     Toast.show(`Không thể upload file ${file.name}`)
+    //   }
+    // }
 
     setIsProcessing(false)
 

@@ -9,7 +9,6 @@ export const QuestionModel = types
   .props({
     id: types.identifier,
     title: types.string,
-    description: types.string,
     questionCategoryIds: types.array(types.string),
     supportLevel: types.string,
     priorityId: types.string,

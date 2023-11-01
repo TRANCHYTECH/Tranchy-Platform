@@ -6,12 +6,12 @@ public record QuestionOutput(string Id);
 
 public class GetQuestion : IEndpoint
 {
-    public static Ok<QuestionOutput> ById([FromRoute] string id)
+    public static Results<Ok<QuestionOutput>, NotFound> ById([FromRoute] string id)
     {
         return TypedResults.Ok<QuestionOutput>(new("Question id " + id));
     }
 
-    public static Ok<QuestionOutput> ByUser([FromRoute] string user)
+    public static Results<Ok<QuestionOutput>, NotFound> ByUser([FromRoute] string user)
     {
         return TypedResults.Ok<QuestionOutput>(new("Question id " + user));
     }

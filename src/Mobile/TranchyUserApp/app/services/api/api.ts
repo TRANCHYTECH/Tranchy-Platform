@@ -4,6 +4,7 @@ import type { CreateQuestionResponse, ApiConfig } from "./api.types"
 import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem"
 import { QuestionSnapshotIn, QuestionSnapshotOut } from "app/models"
 import * as FileSystem from "expo-file-system"
+import { AxiosRequestConfig } from "axios"
 
 export const DEFAULT_API_CONFIG: ApiConfig = {
   url: Config.API_URL,
@@ -24,6 +25,28 @@ export class Api {
         "x-csrf": "1",
       },
     })
+  }
+
+  async getPublicQuestions(): Promise<
+    { kind: "ok"; data: QuestionSnapshotIn[] } | GeneralApiProblem
+  > {
+    const response: ApiResponse<QuestionSnapshotIn[]> = await this.apisauce.get(
+      "question/list/public",
+    )
+
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+
+    try {
+      return { kind: "ok", data: response.data }
+    } catch (e) {
+      if (__DEV__) {
+        console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
+      }
+      return { kind: "bad-data" }
+    }
   }
 
   async addQuestion(
@@ -88,3 +111,7 @@ export class Api {
 
 // Singleton instance of the API for convenience
 export const api = new Api()
+
+export const customInstance = <T>(config: AxiosRequestConfig): Promise<ApiResponse<T>> => {
+  return api.apisauce.any(config)
+}

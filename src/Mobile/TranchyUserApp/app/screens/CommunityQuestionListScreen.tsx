@@ -16,7 +16,7 @@ export const CommunityQuestionListScreen: FC<MyTabScreenProps<"CommunityQuestion
     // const navigation = useNavigation()
     return (
       <Screen contentContainerStyle={$container} preset="scroll" safeAreaEdges={["top"]}>
-        <Text>Danh sách câu hỏi từ cộng đồng, và</Text>
+        <Text>tranchy Danh sách câu hỏi từ cộng đồng, và</Text>
       </Screen>
     )
   }

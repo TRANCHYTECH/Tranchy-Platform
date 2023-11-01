@@ -1,15 +1,15 @@
 import { defineConfig } from 'orval';
 import { OpenAPIObject } from 'openapi3-ts';
 
-const askApiPrefixFn = (inputSchema: OpenAPIObject) : OpenAPIObject => ({
+const askApiPrefixFn = (inputSchema: OpenAPIObject): OpenAPIObject => ({
   ...inputSchema,
   paths: Object.entries(inputSchema.paths).reduce(
     (acc, [path, pathItem]) => ({
       ...acc,
-      [`ask:${path}`]: pathItem
+      [`ask:${path}`]: pathItem,
     }),
     {}
-  )
+  ),
 });
 
 export default defineConfig({
@@ -18,14 +18,19 @@ export default defineConfig({
       mode: 'single',
       target: 'apps/agencyportal/src/app/_state/askapi/askapi.service.ts',
       schemas: 'apps/agencyportal/src/app/_state/askapi/models',
-      client: 'angular',
-      prettier: true
+      // client: 'angular',
+      prettier: true,
+      override: {
+        mutator: {
+          path: 'apps/agencyportal/src/app/_state/askapi/askapi.service.ts',
+        },
+      },
     },
     input: {
       target: 'https://askapi.vietgeeks.io/swagger/v1/swagger.json',
       override: {
-        transformer: askApiPrefixFn
+        transformer: askApiPrefixFn,
       },
-    }
+    },
   },
 });

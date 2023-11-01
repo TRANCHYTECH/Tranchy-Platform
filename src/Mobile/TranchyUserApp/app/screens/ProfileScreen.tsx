@@ -9,7 +9,6 @@ import { useAuth0 } from "react-native-auth0"
 import { useStores } from "app/models"
 
 export const ProfileScreen: FC<MyTabScreenProps<"Profile">> = function ProfileScreen(_props) {
-  // Pull in one of our MST stores
   const { authenticationStore } = useStores()
 
   // Pull in navigation via hook

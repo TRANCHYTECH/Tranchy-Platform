@@ -1,8 +1,7 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
+import { Instance, SnapshotIn, SnapshotOut, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { QuestionModel, QuestionSnapshotOut } from "./Question"
 import { api } from "app/services/api"
-import { SupportLevels } from "./ConventionalConstants"
 
 /**
  * Model description here for TypeScript hints.
@@ -14,24 +13,6 @@ export const QuestionStoreModel = types
   })
   .actions(withSetPropAction)
   .actions((store) => ({
-    insertDummy() {
-      store.questions.clear()
-      for (let i = 1; i < 50; i++) {
-        const q = QuestionModel.create({
-          title:
-            "The most important type in MST is types.model, which can be used to describe the shape of an o " +
-            i,
-          supportLevel: SupportLevels[0],
-          description: "",
-          id: `question=${i}`,
-          priorityId: "urgent",
-          communityShareAgreement: false,
-          createdAt: "42 phut truoc",
-          questionCategoryIds: ["finance", "law", "tax"],
-        })
-        store.questions.push(q)
-      }
-    },
     async addQuestion(question: QuestionSnapshotOut) {
       const response = await api.addQuestion(question)
       if (response.kind === "ok") {
@@ -55,6 +36,18 @@ export const QuestionStoreModel = types
     },
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .actions((self) => ({
+    fetchPublicQuestions: flow(function* fetchPublicQuestions() {
+      try {
+        // ... yield can be used in async/await style
+        const response = yield api.getPublicQuestions()
+        if (response.kind === "ok") self.questions = response.data
+      } catch (error) {
+        // ... including try/catch error handling
+        console.error("Failed to fetch public questions", error)
+      }
+    }),
+  }))
 
 export interface QuestionStore extends Instance<typeof QuestionStoreModel> {}
 export interface QuestionStoreSnapshotOut extends SnapshotOut<typeof QuestionStoreModel> {}

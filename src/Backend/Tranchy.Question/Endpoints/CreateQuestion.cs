@@ -13,7 +13,7 @@ namespace Tranchy.Question.Integrations.Endpoints;
 
 public class CreateQuestion : IEndpoint
 {
-    public static async Task<IResult> Create(
+    public static async Task<Results<Ok<QuestionOutput>, BadRequest<IDictionary<string, string[]>>>> Create(
         [FromBody] CreateQuestionInput input,
         [FromServices] IValidator<CreateQuestionInput> validator,
         [FromServices] IEndpointNameFormatter endpointNameFormatter,
