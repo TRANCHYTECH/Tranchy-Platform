@@ -13,10 +13,10 @@ import type {
   UploadFileForQuestionParams,
   UploadQuestionFileResponse,
 } from "./models"
-import { customInstance } from "../api/api"
+import { apiRequest } from "../api/api"
 
 export const createQuestion = (createQuestionInput: CreateQuestionInput) => {
-  return customInstance<QuestionOutput>({
+  return apiRequest<QuestionOutput>({
     url: `/question`,
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -25,30 +25,30 @@ export const createQuestion = (createQuestionInput: CreateQuestionInput) => {
 }
 
 export const getQuestionConfigurations = () => {
-  return customInstance<GetQuestionConfigurationsResponse>({
+  return apiRequest<GetQuestionConfigurationsResponse>({
     url: `/question/configurations`,
     method: "get",
   })
 }
 
 export const getQuestionById = (id: string) => {
-  return customInstance<QuestionOutput>({ url: `/question/${id}`, method: "get" })
+  return apiRequest<QuestionOutput>({ url: `/question/${id}`, method: "get" })
 }
 
 export const getQuestionByUser = (user: string) => {
-  return customInstance<QuestionOutput>({ url: `/question/user/${user}`, method: "get" })
+  return apiRequest<QuestionOutput>({ url: `/question/user/${user}`, method: "get" })
 }
 
 export const listPublicQuestions = () => {
-  return customInstance<Question[]>({ url: `/question/list/public`, method: "get" })
+  return apiRequest<Question[]>({ url: `/question/list/public`, method: "get" })
 }
 
 export const listMyQuestions = () => {
-  return customInstance<Question[]>({ url: `/question/list/mine`, method: "get" })
+  return apiRequest<Question[]>({ url: `/question/list/mine`, method: "get" })
 }
 
 export const getAgencyPortal = () => {
-  return customInstance<void>({ url: `/agency-portal`, method: "get" })
+  return apiRequest<void>({ url: `/agency-portal`, method: "get" })
 }
 
 export const uploadFileForQuestion = (
@@ -59,7 +59,7 @@ export const uploadFileForQuestion = (
   const formData = new FormData()
   formData.append("file", uploadFileForQuestionBody.file)
 
-  return customInstance<UploadQuestionFileResponse>({
+  return apiRequest<UploadQuestionFileResponse>({
     url: `/file/question/${questionId}`,
     method: "post",
     headers: { "Content-Type": "multipart/form-data" },
@@ -69,7 +69,7 @@ export const uploadFileForQuestion = (
 }
 
 export const acceptQuestion = (id: string) => {
-  return customInstance<void>({ url: `/question/${id}/accept`, method: "post" })
+  return apiRequest<void>({ url: `/question/${id}/accept`, method: "post" })
 }
 
 export type CreateQuestionResult = NonNullable<Awaited<ReturnType<typeof createQuestion>>>

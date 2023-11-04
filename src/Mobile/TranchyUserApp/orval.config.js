@@ -1,21 +1,21 @@
 import { defineConfig } from "orval"
 
 export default defineConfig({
-  askapi: {
+  AskApi: {
     output: {
       mode: "single",
-      target: "app/services/askapi/askapi.ts",
-      schemas: "app/services/askapi/models",
+      target: "app/services/ask-api/askApi.ts",
+      schemas: "app/services/ask-api/models",
       prettier: true,
       override: {
         mutator: {
           path: "app/services/api/api.ts",
-          name: "customInstance",
+          name: "apiRequest",
         },
       },
     },
     input: {
-      target: "http://localhost:7200/swagger/v1/swagger.json",
+      target: "https://askapi.vietgeeks.io/swagger/v1/swagger.json",
     },
   },
 })

@@ -10,10 +10,10 @@ const vi = {
     noQuestionCategorySelected: "Anh có thể chọn tối đa {{max}} chủ đề",
   },
   supportLevel: {
-    community: "Cộng đồng",
-    coffee: "Cafe",
-    expert: "Chuyên gia",
-    agency: "Doanh nghiệp",
+    Community: "Cộng đồng",
+    Coffee: "Cafe",
+    Expert: "Chuyên gia",
+    Agency: "Doanh nghiệp",
   },
   tab: {
     community: "Cộng đồng",

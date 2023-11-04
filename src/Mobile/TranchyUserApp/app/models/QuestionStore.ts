@@ -1,7 +1,10 @@
-import { Instance, SnapshotIn, SnapshotOut, flow, types } from "mobx-state-tree"
+import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { QuestionModel, QuestionSnapshotOut } from "./Question"
 import { api } from "app/services/api"
+import { listPublicQuestions } from "app/services/ask-api/askApi"
+import { Question } from "app/services/ask-api/models"
+import { ApiResponse } from "apisauce"
 
 /**
  * Model description here for TypeScript hints.
@@ -10,41 +13,27 @@ export const QuestionStoreModel = types
   .model("QuestionStore")
   .props({
     questions: types.array(QuestionModel),
+    isLoading: types.optional(types.boolean, false),
   })
   .actions(withSetPropAction)
-  .actions((store) => ({
-    async addQuestion(question: QuestionSnapshotOut) {
-      const response = await api.addQuestion(question)
-      if (response.kind === "ok") {
-        store.setProp("questions", [
-          {
-            id: response.data.id,
-            content: question.title,
-            categories: question.questionCategoryIds,
-            supportLevel: question.supportLevel,
-          },
-        ])
-        console.tron.log("Created question", response.data)
-      } else {
-        console.tron.error(`Error adding question: ${JSON.stringify(response)}`, [])
-      }
-    },
-  }))
   .views((self) => ({
     get allQuestions() {
       return self.questions
     },
-  })) // eslint-disable-line @typescript-eslint/no-unused-vars
-  .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  }))
   .actions((self) => ({
-    fetchPublicQuestions: flow(function* fetchPublicQuestions() {
+    listPublicQuestions: flow(function* fetchPublicQuestions() {
       try {
-        // ... yield can be used in async/await style
-        const response = yield api.getPublicQuestions()
-        if (response.kind === "ok") self.questions = response.data
+        self.isLoading = true
+        const response: ApiResponse<Question[]> = yield listPublicQuestions()
+        if (response.ok) {
+          self.questions = cast(response.data)
+        }
       } catch (error) {
         // ... including try/catch error handling
         console.error("Failed to fetch public questions", error)
+      } finally {
+        self.isLoading = false
       }
     }),
   }))

@@ -3,21 +3,20 @@ import { BottomSheet, BottomSheetBase, Screen, SectionLabel } from "app/componen
 import { TxKeyPath, currentLocale, translate } from "app/i18n"
 import { SupportLevel, SupportLevels, useStores } from "app/models"
 import { AppStackScreenProps } from "app/navigators"
+import { api } from "app/services/api"
+import { acceptQuestion, createQuestion } from "app/services/ask-api/askApi"
 import { colors, spacing } from "app/theme"
 import { observer } from "mobx-react-lite"
 import React, { FC, useRef, useState } from "react"
 import { Controller, FormProvider, useForm } from "react-hook-form"
 import { Alert, StyleSheet, View, ViewStyle } from "react-native"
 import { Button, Chip, HelperText, SegmentedButtons, TextInput } from "react-native-paper"
+import Toast from "react-native-root-toast"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { AgencySupportLevel } from "./AgencySupportLevel"
 import { CommunitySupportLevel } from "./CommunitySupportLevel"
 import { ExpertSupportLevel } from "./ExpertSupportLevel"
 import { QuestionFormModel, QuestionFormSchema } from "./QuestionFormSchema"
-import { api } from "app/services/api"
-import Toast from "react-native-root-toast"
-import { CoffeeSupportLevel } from "./CoffeeSupportLevel"
-import { createQuestion } from "app/services/askapi/askapi"
 
 interface NewQuestionScreenProps extends AppStackScreenProps<"NewQuestion"> {}
 
@@ -95,9 +94,12 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
   const form = useForm<QuestionFormModel>({
     resolver: zodResolver(QuestionFormSchema),
     defaultValues: {
-      title: "",
+      title:
+        "Run this method before running layout animations, such as when animating an element when deleting it. This method disables recycling for the next frame so that layout animations run",
       communityShareAgreement: false,
-      questionCategoryIds: [],
+      questionCategoryIds: ["technology"],
+      supportLevel: "Expert",
+      priority: "urgent",
       files: [],
     },
   })
@@ -137,9 +139,17 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
     const createQuestionResponse = await createQuestion({
       title: data.title,
       questionCategoryIds: data.questionCategoryIds,
-      supportLevel: "Community",
+      supportLevel: data.supportLevel,
       priorityId: data.priority,
     })
+
+    if (!createQuestionResponse.ok) {
+      Alert.alert("Lỗi", "Không thể tạo câu hỏi")
+      setIsProcessing(false)
+      return
+    }
+
+    await acceptQuestion(createQuestionResponse.data.id)
 
     for (const file of data.files) {
       console.log("upload file", file)
@@ -148,41 +158,10 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
         file.name,
         file.uri,
       )
-      if (uploadResponse.kind === "ok") {
-        // Toast.show(`Upload file ${file.name} thành công`)
-      } else {
+      if (uploadResponse.kind !== "ok") {
         Toast.show(`Không thể upload file ${file.name}`)
       }
     }
-
-    // const createQuestionResponse = await api.addQuestion({
-    //   title: data.title,
-    //   questionCategoryIds: data.questionCategoryIds,
-    //   supportLevel: data.supportLevel,
-    //   priorityId: data.priority,
-    //   communityShareAgreement: data.communityShareAgreement,
-    //   id: "",
-    //   createdAt: "",
-    // })
-
-    // let createdQuestionId: string
-    // if (createQuestionResponse.kind === "ok") {
-    //   createdQuestionId = createQuestionResponse.data.id
-    // } else {
-    //   Toast.show("Không thể gửi câu hỏi " + JSON.stringify(createQuestionResponse))
-    //   setIsProcessing(false)
-    //   return
-    // }
-
-    // for (const file of data.files) {
-    //   console.log("upload file", file)
-    //   const uploadResponse = await api.uploadFile(createdQuestionId, file.name, file.uri)
-    //   if (uploadResponse.kind === "ok") {
-    //     // Toast.show(`Upload file ${file.name} thành công`)
-    //   } else {
-    //     Toast.show(`Không thể upload file ${file.name}`)
-    //   }
-    // }
 
     setIsProcessing(false)
 
@@ -284,10 +263,10 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
                 </>
               )}
             />
-            {supportLevel === "community" && <CommunitySupportLevel />}
-            {supportLevel === "coffee" && <CoffeeSupportLevel />}
-            {supportLevel === "expert" && <ExpertSupportLevel />}
-            {supportLevel === "agency" && <AgencySupportLevel />}
+            {supportLevel === "Community" && <CommunitySupportLevel />}
+            {/* {supportLevel === "Coffee" && <CoffeeSupportLevel />} */}
+            {supportLevel === "Expert" && <ExpertSupportLevel />}
+            {supportLevel === "Agency" && <AgencySupportLevel />}
           </View>
         </FormProvider>
       </Screen>
@@ -295,7 +274,6 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
         <Button
           mode={"contained"}
           loading={isProcessing}
-          // disabled={!form.formState.isValid}
           onPress={form.handleSubmit(onSubmit, onError)}
         >
           Gửi câu hỏi
