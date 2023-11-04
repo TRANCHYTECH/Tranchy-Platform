@@ -5,7 +5,9 @@
  * OpenAPI spec version: v1
  */
 import type { QuestionCategory } from "./questionCategory"
+import type { QuestionPriority } from "./questionPriority"
 
 export interface GetQuestionConfigurationsResponse {
   questionCategories?: QuestionCategory[] | null
+  questionPriorities?: QuestionPriority[] | null
 }

@@ -1,10 +1,9 @@
 import { ApiResponse, ApisauceInstance, create } from "apisauce"
-import Config from "../../config"
-import type { CreateQuestionResponse, ApiConfig } from "./api.types"
-import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem"
-import { QuestionSnapshotIn, QuestionSnapshotOut } from "app/models"
-import * as FileSystem from "expo-file-system"
 import { AxiosRequestConfig } from "axios"
+import { FileSystemUploadType, uploadAsync } from "expo-file-system"
+import Config from "../../config"
+import { ApiConfig } from "./api.types"
+import { GeneralApiProblem } from "./apiProblem"
 
 export const DEFAULT_API_CONFIG: ApiConfig = {
   url: Config.API_URL,
@@ -27,64 +26,19 @@ export class Api {
     })
   }
 
-  async getPublicQuestions(): Promise<
-    { kind: "ok"; data: QuestionSnapshotIn[] } | GeneralApiProblem
-  > {
-    const response: ApiResponse<QuestionSnapshotIn[]> = await this.apisauce.get(
-      "question/list/public",
-    )
-
-    if (!response.ok) {
-      const problem = getGeneralApiProblem(response)
-      if (problem) return problem
-    }
-
-    try {
-      return { kind: "ok", data: response.data }
-    } catch (e) {
-      if (__DEV__) {
-        console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
-      }
-      return { kind: "bad-data" }
-    }
-  }
-
-  async addQuestion(
-    question: QuestionSnapshotOut,
-  ): Promise<{ kind: "ok"; data: QuestionSnapshotIn } | GeneralApiProblem> {
-    const response: ApiResponse<CreateQuestionResponse> = await this.apisauce.post(
-      "question",
-      question,
-    )
-
-    if (!response.ok) {
-      const problem = getGeneralApiProblem(response)
-      if (problem) return problem
-    }
-
-    try {
-      return { kind: "ok", data: { id: response.data.id } }
-    } catch (e) {
-      if (__DEV__) {
-        console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
-      }
-      return { kind: "bad-data" }
-    }
-  }
-
   async uploadFile(
     questionId: string,
     fileName: string,
     fileUri: string,
   ): Promise<{ kind: "ok"; data: { questionId: string } } | GeneralApiProblem> {
     try {
-      const response = await FileSystem.uploadAsync(
+      const response = await uploadAsync(
         `${api.apisauce.getBaseURL()}file/question/${questionId}?fileName=${fileName}`,
         fileUri,
         {
           headers: { authorization: api.apisauce.headers.Authorization, "x-csrf": "1" },
           httpMethod: "POST",
-          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          uploadType: FileSystemUploadType.MULTIPART,
           fieldName: "file",
         },
       )
@@ -112,6 +66,6 @@ export class Api {
 // Singleton instance of the API for convenience
 export const api = new Api()
 
-export const customInstance = <T>(config: AxiosRequestConfig): Promise<ApiResponse<T>> => {
+export const apiRequest = <T>(config: AxiosRequestConfig): Promise<ApiResponse<T>> => {
   return api.apisauce.any(config)
 }

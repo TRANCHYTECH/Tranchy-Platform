@@ -4,11 +4,13 @@
  * Tranchy Ask Api Documentation
  * OpenAPI spec version: v1
  */
+import type { QuestionCategoryDescription } from "./questionCategoryDescription"
+import type { QuestionCategoryTitle } from "./questionCategoryTitle"
 
 export interface QuestionCategory {
   createdOn?: string
-  description?: string | null
+  description?: QuestionCategoryDescription
   id?: string | null
   modifiedOn?: string
-  title?: string | null
+  title?: QuestionCategoryTitle
 }

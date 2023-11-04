@@ -1,5 +1,6 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
+import { SupportLevels } from "./Constants"
 
 /**
  * Model description here for TypeScript hints.
@@ -10,10 +11,10 @@ export const QuestionModel = types
     id: types.identifier,
     title: types.string,
     questionCategoryIds: types.array(types.string),
-    supportLevel: types.string,
-    priorityId: types.string,
-    communityShareAgreement: types.boolean,
-    createdAt: types.string,
+    supportLevel: types.enumeration(SupportLevels),
+    priorityId: types.maybeNull(types.string),
+    communityShareAgreement: types.maybe(types.boolean),
+    createdOn: types.string,
   })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
