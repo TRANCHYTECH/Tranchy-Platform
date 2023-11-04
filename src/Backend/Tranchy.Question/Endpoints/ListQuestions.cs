@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Builder;
 using MongoDB.Entities;
 using Tranchy.Common.Services;
 using Tranchy.Question.Data;

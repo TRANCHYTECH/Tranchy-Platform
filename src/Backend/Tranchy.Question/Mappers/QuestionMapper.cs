@@ -1,18 +1,17 @@
-using Tranchy.Question.Contracts;
+using Tranchy.Common.Services;
 
 namespace Tranchy.Question.Mappers;
 
 internal static class QuestionMapper
 {
-    internal static Data.Question ToDbQuestion(this CreateQuestionInput questionInput, string userId)
-    => new()
+    internal static Data.Question ToEntity(this CreateQuestionRequest request, string userId) => request.BuildAdapter()
+    .AddParameters(nameof(ITenant.UserId), userId).AdaptToType<Data.Question>();
+
+    static QuestionMapper()
     {
-        Status = Data.QuestionStatus.New,
-        SupportLevel = questionInput.SupportLevel,
-        Title = questionInput.Title,
-        PriorityId = questionInput.PriorityId,
-        QuestionCategoryIds = questionInput.QuestionCategoryIds,
-        CommunityShareAgreement = questionInput.CommunityShareAgreement,
-        CreatedByUserId = userId
-    };
+        TypeAdapterConfig<CreateQuestionRequest, Data.Question>
+        .NewConfig()
+        .Map(dest => dest.Status, _ => Data.QuestionStatus.New)
+        .Map(dest => dest.CreatedByUserId, _ => MapContext.Current!.Parameters[nameof(ITenant.UserId)]);
+    }
 }

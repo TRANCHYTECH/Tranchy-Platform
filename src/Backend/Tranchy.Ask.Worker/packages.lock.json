@@ -179,6 +179,11 @@
           "Microsoft.Extensions.Dependencyinjection.Abstractions": "2.1.0"
         }
       },
+      "Mapster.Core": {
+        "type": "Transitive",
+        "resolved": "1.2.1",
+        "contentHash": "11lokmfliBEMMmjeqxFGNpqGXq6tN96zFqpBmfYeahr4Ybk63oDmeJmOflsATjobYkX248g5Y62oQ2NNnZaeww=="
+      },
       "Microsoft.Azure.Amqp": {
         "type": "Transitive",
         "resolved": "2.6.2",
@@ -889,6 +894,7 @@
         "dependencies": {
           "FluentValidation": "[11.8.0, )",
           "FluentValidation.AspNetCore": "[11.3.0, )",
+          "Mapster": "[7.4.0, )",
           "MassTransit": "[8.1.1, )",
           "MassTransit.Azure.ServiceBus.Core": "[8.1.1, )",
           "MassTransit.MongoDb": "[8.1.1, )",
@@ -925,6 +931,15 @@
         "dependencies": {
           "FluentValidation": "11.5.1",
           "FluentValidation.DependencyInjectionExtensions": "11.5.1"
+        }
+      },
+      "Mapster": {
+        "type": "CentralTransitive",
+        "requested": "[7.4.0, )",
+        "resolved": "7.4.0",
+        "contentHash": "RYGoDqvS4WTKIq0HDyPBBVIj6N0mluOCXQ1Vk95JKseMHEsbCXSEGKSlP95oL+s42IXAXbqvHj7p0YaRBUcfqg==",
+        "dependencies": {
+          "Mapster.Core": "1.2.1"
         }
       },
       "MassTransit.Abstractions": {

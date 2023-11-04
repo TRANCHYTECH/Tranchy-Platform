@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace Tranchy.Question.Validators;
 
 public class QuestionValidator : AbstractValidator<Data.Question>

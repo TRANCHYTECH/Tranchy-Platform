@@ -1,8 +1,8 @@
 using Tranchy.Question.Data;
 
-namespace Tranchy.Question.Contracts;
+namespace Tranchy.Question.Requests;
 
-public record CreateQuestionInput(
+public record CreateQuestionRequest(
     string Title,
     SupportLevel SupportLevel,
     string? PriorityId,
