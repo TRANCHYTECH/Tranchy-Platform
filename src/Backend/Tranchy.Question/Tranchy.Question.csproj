@@ -15,6 +15,7 @@
 	  <PackageReference Include="MongoDB.Entities" />
 	  <PackageReference Include="FluentValidation" />
 	  <PackageReference Include="FluentValidation.AspNetCore" />
+	  <PackageReference Include="Mapster" />
 	</ItemGroup>
 
 </Project>

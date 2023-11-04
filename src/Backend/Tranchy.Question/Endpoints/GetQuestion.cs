@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-
-namespace Tranchy.Question.Endpoints;
+﻿namespace Tranchy.Question.Endpoints;
 
 public record QuestionOutput(string Id);
 

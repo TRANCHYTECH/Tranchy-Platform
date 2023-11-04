@@ -1,19 +1,15 @@
-using Microsoft.AspNetCore.Builder;
 using Tranchy.Question.Events;
 using MongoDB.Entities;
 using MassTransit.MongoDbIntegration;
 using Tranchy.Question.Consumers;
 using Tranchy.Common.Services;
-using Tranchy.Question.Mappers;
-using Tranchy.Question.Contracts;
-using FluentValidation;
 
 namespace Tranchy.Question.Endpoints;
 
 public class CreateQuestion : IEndpoint
 {
-    public static async Task<Results<Ok<QuestionOutput>, BadRequest<IDictionary<string, string[]>>>> Create(
-        [FromBody] CreateQuestionInput input,
+    public static async Task<Results<Ok<CreateQuestionResponse>, BadRequest<IDictionary<string, string[]>>>> Create(
+        [FromBody] CreateQuestionRequest request,
         [FromServices] IValidator<Data.Question> questionValidator,
         [FromServices] IEndpointNameFormatter endpointNameFormatter,
         [FromServices] MongoDbContext dbContext,
@@ -21,35 +17,32 @@ public class CreateQuestion : IEndpoint
         [FromServices] IPublishEndpoint publishEndpoint,
         [FromServices] ILogger<CreateQuestion> logger,
         [FromServices] ITenant tenant,
-        CancellationToken token
+        CancellationToken cancellation
     )
     {
-        var newQuestion = input.ToDbQuestion(tenant.UserId);
+        var newQuestion = request.ToEntity(tenant.UserId);
 
-        await questionValidator.TryValidate(newQuestion, token);
+        await questionValidator.TryValidate(newQuestion, cancellation);
 
-        await dbContext.BeginTransaction(token);
+        await dbContext.BeginTransaction(cancellation);
 
-        await DB.InsertAsync(newQuestion, dbContext.Session, token);
+        await DB.InsertAsync(newQuestion, dbContext.Session, cancellation);
 
-        await publishEndpoint.Publish(new QuestionCreated { Id = newQuestion.ID! }, token);
+        await publishEndpoint.Publish(new QuestionCreated { Id = newQuestion.ID! }, cancellation);
 
         Commands.VerifyQuestion command = new() { Id = newQuestion.ID! };
 
         await sendEndpointProvider.Send(
             command,
             endpointNameFormatter.Consumer<VerifyQuestionConsumer>(),
-            token
+            cancellation
         );
-        await dbContext.CommitTransaction(token);
+        await dbContext.CommitTransaction(cancellation);
 
         logger.CreatedQuestion(newQuestion.ID!, newQuestion.Title);
 
-        return TypedResults.Ok<QuestionOutput>(new(newQuestion.ID!));
+        return TypedResults.Ok<CreateQuestionResponse>(new(newQuestion.ID!));
     }
 
-    public static void Register(RouteGroupBuilder routeGroupBuilder)
-    {
-        routeGroupBuilder.MapPost("/", Create).WithName("CreateQuestion");
-    }
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapPost("/", Create).WithName("CreateQuestion");
 }

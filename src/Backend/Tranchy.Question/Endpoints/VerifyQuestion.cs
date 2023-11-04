@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Builder;
 using MongoDB.Entities;
 
 namespace Tranchy.Question.Endpoints;

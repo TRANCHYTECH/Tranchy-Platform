@@ -37,6 +37,7 @@
     <PackageVersion Include="MiniValidation" Version="0.9.0" />
     <PackageVersion Include="FluentValidation" Version="11.8.0" />
     <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageVersion Include="Mapster" Version="7.4.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageVersion Include="Duende.BFF" Version="2.1.1" />
   </ItemGroup>
