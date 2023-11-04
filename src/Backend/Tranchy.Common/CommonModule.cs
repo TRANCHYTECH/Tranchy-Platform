@@ -9,6 +9,6 @@ public class CommonModule : IModule
     public static void ConfigureServices(IServiceCollection services, AppSettings configuration)
     {
         services.AddScoped<ITenant, Tenant>();
-        services.AddScoped(typeof(IValidator<>), typeof(Validator<>));
+        services.AddScoped(typeof(IContractValidator<>), typeof(Validator<>));
     }
 }

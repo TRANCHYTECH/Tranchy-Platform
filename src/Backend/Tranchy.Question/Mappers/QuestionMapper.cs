@@ -12,6 +12,7 @@ internal static class QuestionMapper
         Title = questionInput.Title,
         PriorityId = questionInput.PriorityId,
         QuestionCategoryIds = questionInput.QuestionCategoryIds,
+        CommunityShareAgreement = questionInput.CommunityShareAgreement,
         CreatedByUserId = userId
     };
 }
