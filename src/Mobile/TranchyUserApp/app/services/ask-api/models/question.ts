@@ -8,6 +8,7 @@ import type { QuestionStatus } from "./questionStatus"
 import type { SupportLevel } from "./supportLevel"
 
 export interface Question {
+  communityShareAgreement?: boolean | null
   createdByUserId?: string | null
   createdOn?: string
   id?: string | null

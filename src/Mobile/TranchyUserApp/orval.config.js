@@ -7,6 +7,7 @@ export default defineConfig({
       target: "app/services/ask-api/askApi.ts",
       schemas: "app/services/ask-api/models",
       prettier: true,
+      clean: true,
       override: {
         mutator: {
           path: "app/services/api/api.ts",

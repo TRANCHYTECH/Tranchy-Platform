@@ -6,7 +6,8 @@
  */
 import type { SupportLevel } from "./supportLevel"
 
-export interface CreateQuestionInput {
+export interface CreateQuestionRequest {
+  communityShareAgreement?: boolean | null
   priorityId?: string | null
   questionCategoryIds?: string[] | null
   supportLevel?: SupportLevel
