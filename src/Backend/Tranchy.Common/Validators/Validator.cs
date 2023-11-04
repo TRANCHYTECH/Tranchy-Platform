@@ -3,7 +3,7 @@ using Tranchy.Common.Validators;
 
 namespace Tranchy.Common;
 
-public class Validator<T> : IValidator<T>
+public class Validator<T> : IContractValidator<T>
 {
     private readonly IServiceProvider _serviceProvider;
 

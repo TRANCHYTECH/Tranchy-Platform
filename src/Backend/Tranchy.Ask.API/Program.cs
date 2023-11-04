@@ -12,6 +12,7 @@ using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Tranchy.File;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
 
@@ -152,11 +153,7 @@ builder.Services.AddHealthChecks()
 .AddApplicationInsightsPublisher();
 
 builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-//builder.Services.Configure<JsonOptions>(o =>
-//{
-//    o.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
-//});
+builder.Services.Configure<JsonOptions>(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 var app = builder.Build();
 app.UseForwardedHeaders();
@@ -168,9 +165,10 @@ app.MapGroup("/file").MapEndpoints<FileModule>().RequireAuthorization().AsBffApi
 app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
 
 // Redirect after login
-app.MapGet("/agency-portal", (HttpRequest req) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, true));
+app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, permanent: true));
 
 app.UseTranchySwagger(appSettings);
+app.UseTranchyExceptionHandler();
 
 app.UseAuthentication();
 app.UseBff();

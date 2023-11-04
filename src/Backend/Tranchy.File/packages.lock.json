@@ -440,6 +440,7 @@
       "tranchy.common": {
         "type": "Project",
         "dependencies": {
+          "FluentValidation": "[11.8.0, )",
           "MassTransit.Abstractions": "[8.1.1, )",
           "MiniValidation": "[0.9.0, )",
           "MongoDB.Entities": "[22.1.0, )"
@@ -459,6 +460,12 @@
           "System.Text.Json": "4.7.2",
           "System.Threading.Tasks.Extensions": "4.5.4"
         }
+      },
+      "FluentValidation": {
+        "type": "CentralTransitive",
+        "requested": "[11.8.0, )",
+        "resolved": "11.8.0",
+        "contentHash": "TiEaaYqSIAS+wXQv46LRm8Mca092XYNePD0n231Hqlkmm5FuToZoWnjI1ef/vJUxBzqR7/k2vaVQXxijNgVKRQ=="
       },
       "MassTransit.Abstractions": {
         "type": "CentralTransitive",

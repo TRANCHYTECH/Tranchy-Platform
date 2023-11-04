@@ -2,20 +2,19 @@ using Microsoft.AspNetCore.Builder;
 using Tranchy.Question.Events;
 using MongoDB.Entities;
 using MassTransit.MongoDbIntegration;
-using Tranchy.Question.Endpoints;
 using Tranchy.Question.Consumers;
 using Tranchy.Common.Services;
 using Tranchy.Question.Mappers;
 using Tranchy.Question.Contracts;
-using Tranchy.Common.Validators;
+using FluentValidation;
 
-namespace Tranchy.Question.Integrations.Endpoints;
+namespace Tranchy.Question.Endpoints;
 
 public class CreateQuestion : IEndpoint
 {
     public static async Task<Results<Ok<QuestionOutput>, BadRequest<IDictionary<string, string[]>>>> Create(
         [FromBody] CreateQuestionInput input,
-        [FromServices] IValidator<CreateQuestionInput> validator,
+        [FromServices] IValidator<Data.Question> questionValidator,
         [FromServices] IEndpointNameFormatter endpointNameFormatter,
         [FromServices] MongoDbContext dbContext,
         [FromServices] ISendEndpointProvider sendEndpointProvider,
@@ -25,14 +24,9 @@ public class CreateQuestion : IEndpoint
         CancellationToken token
     )
     {
-        IDictionary<string, string[]>? errors = null;
-
-        if (input is null || (!await validator.IsValidAsync(input, out errors)))
-        {
-            return TypedResults.BadRequest(errors);
-        }
-
         var newQuestion = input.ToDbQuestion(tenant.UserId);
+
+        await questionValidator.TryValidate(newQuestion, token);
 
         await dbContext.BeginTransaction(token);
 
