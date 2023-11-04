@@ -6,7 +6,8 @@
  */
 
 export * from "./createQuestion400"
-export * from "./createQuestionInput"
+export * from "./createQuestionRequest"
+export * from "./createQuestionResponse"
 export * from "./getQuestionConfigurationsResponse"
 export * from "./question"
 export * from "./questionCategory"

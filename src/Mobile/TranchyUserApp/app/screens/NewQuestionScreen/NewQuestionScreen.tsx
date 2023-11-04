@@ -149,6 +149,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
       return
     }
 
+    // todo: revert this temp code block
     await acceptQuestion(createQuestionResponse.data.id)
 
     for (const file of data.files) {

@@ -5,7 +5,8 @@
  * OpenAPI spec version: v1
  */
 import type {
-  CreateQuestionInput,
+  CreateQuestionRequest,
+  CreateQuestionResponse,
   GetQuestionConfigurationsResponse,
   Question,
   QuestionOutput,
@@ -15,12 +16,12 @@ import type {
 } from "./models"
 import { apiRequest } from "../api/api"
 
-export const createQuestion = (createQuestionInput: CreateQuestionInput) => {
-  return apiRequest<QuestionOutput>({
+export const createQuestion = (createQuestionRequest: CreateQuestionRequest) => {
+  return apiRequest<CreateQuestionResponse>({
     url: `/question`,
     method: "post",
     headers: { "Content-Type": "application/json" },
-    data: createQuestionInput,
+    data: createQuestionRequest,
   })
 }
 

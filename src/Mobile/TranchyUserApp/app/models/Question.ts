@@ -13,7 +13,7 @@ export const QuestionModel = types
     questionCategoryIds: types.array(types.string),
     supportLevel: types.enumeration(SupportLevels),
     priorityId: types.maybeNull(types.string),
-    communityShareAgreement: types.maybe(types.boolean),
+    communityShareAgreement: types.maybeNull(types.boolean),
     createdOn: types.string,
   })
   .actions(withSetPropAction)
