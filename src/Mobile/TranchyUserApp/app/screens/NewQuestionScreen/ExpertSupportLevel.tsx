@@ -52,7 +52,7 @@ const ExpertSupportLevel = () => {
                       onPress={(_) => onChange(p.key)}
                       showSelectedCheck={true}
                     >
-                      {p.name[locale]}
+                      {p.title[locale]}
                     </Chip>
                   ))}
                 </View>
