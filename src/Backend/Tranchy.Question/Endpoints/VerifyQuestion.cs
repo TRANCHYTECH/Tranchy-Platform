@@ -12,7 +12,7 @@ public class VerifyQuestion : IEndpoint
             return TypedResults.BadRequest();
         }
 
-        question.Status = Data.QuestionStatus.Accepted;
+        question.Approve();
         await DB.SaveAsync(question, cancellation: cancellationToken);
 
         return TypedResults.NoContent();
