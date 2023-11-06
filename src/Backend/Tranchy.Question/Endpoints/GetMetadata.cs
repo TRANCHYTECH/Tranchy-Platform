@@ -11,7 +11,7 @@ public class GetMetadata : IEndpoint
         var response = new GetQuestionConfigurationsResponse
         {
             QuestionCategories = await GetQuestionCategories(cancellationToken),
-            QuestionPriorities = await GetQuestionPriorities(cancellationToken)
+            QuestionPriorities = await GetQuestionPriorities(cancellationToken),
         };
 
         return TypedResults.Ok(response);

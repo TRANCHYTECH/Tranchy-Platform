@@ -21,7 +21,7 @@ public class QuestionModule : IModule
     {
         var conventionPack = new ConventionPack
         {
-            new IgnoreExtraElementsConvention(true)
+            new IgnoreExtraElementsConvention(true),
         };
 
         ConventionRegistry.Register("TranchyAskDefaultConventions", conventionPack, _ => true);
@@ -30,6 +30,8 @@ public class QuestionModule : IModule
         DB.InitAsync(databaseOptions.DatabaseName, conn).Wait(cancellationToken: default);
 
         DB.DatabaseFor<Data.Question>(databaseOptions.DatabaseName);
+        DB.DatabaseFor<QuestionCategory>(databaseOptions.DatabaseName);
+        DB.DatabaseFor<QuestionPriority>(databaseOptions.DatabaseName);
     }
 
     private static void AddValidators(IServiceCollection serviceCollection)
