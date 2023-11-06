@@ -9,5 +9,5 @@ public enum QuestionStatus
     InProgress = 5,
     Rejected = 6,
     Done = 7,
-    Reported = 8
+    Reported = 8,
 }

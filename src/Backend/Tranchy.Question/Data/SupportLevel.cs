@@ -4,5 +4,5 @@ public enum SupportLevel
 {
     Community = 1,
     Expert = 2,
-    Agency = 3
+    Agency = 3,
 }
