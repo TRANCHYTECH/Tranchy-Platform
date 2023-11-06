@@ -14,6 +14,7 @@ export interface QuestionPriority {
   description?: QuestionPriorityDescription
   duration?: TimeSpan
   id?: string | null
+  key?: string | null
   modifiedOn?: string
   priorityMetaData?: QuestionPriorityPriorityMetaData
   rank?: number

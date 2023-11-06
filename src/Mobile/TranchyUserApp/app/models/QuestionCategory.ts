@@ -6,7 +6,8 @@ export const QuestionCategoryModel = types
   .model("QuestionCategory")
   .props({
     key: types.string,
-    name: types.frozen<LocalizedAttribute>(),
+    title: types.frozen<LocalizedAttribute>(),
+    description: types.frozen<LocalizedAttribute>(),
   })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
