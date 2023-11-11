@@ -10,12 +10,16 @@
 	
 	<ItemGroup>
 	  <PackageReference Include="MassTransit" />
-	  <PackageReference Include="MassTransit.Azure.ServiceBus.Core"  />
-	  <PackageReference Include="MassTransit.MongoDb"  />
+	  <PackageReference Include="MassTransit.Azure.ServiceBus.Core" />
+	  <PackageReference Include="MassTransit.MongoDb" />
 	  <PackageReference Include="MongoDB.Entities" />
 	  <PackageReference Include="FluentValidation" />
 	  <PackageReference Include="FluentValidation.AspNetCore" />
 	  <PackageReference Include="Mapster" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Contracts\" />
 	</ItemGroup>
 
 </Project>

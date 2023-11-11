@@ -8,7 +8,9 @@ namespace Tranchy.Question.Endpoints;
 
 public class CreateQuestion : IEndpoint
 {
-    public static async Task<Results<Ok<CreateQuestionResponse>, BadRequest<IDictionary<string, string[]>>>> Create(
+    public static async Task<
+        Results<Ok<CreateQuestionResponse>, BadRequest<IDictionary<string, string[]>>>
+    > Create(
         [FromBody] CreateQuestionRequest request,
         [FromServices] IValidator<Data.Question> questionValidator,
         [FromServices] IEndpointNameFormatter endpointNameFormatter,
@@ -44,5 +46,6 @@ public class CreateQuestion : IEndpoint
         return TypedResults.Ok<CreateQuestionResponse>(new(newQuestion.ID!));
     }
 
-    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapPost("/", Create).WithName("CreateQuestion");
+    public static void Register(RouteGroupBuilder routeGroupBuilder) =>
+        routeGroupBuilder.MapPost("/", Create).WithName("CreateQuestion");
 }

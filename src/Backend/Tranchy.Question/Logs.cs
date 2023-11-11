@@ -13,4 +13,10 @@ public static partial class Logs
     Level = LogLevel.Information,
     Message = "Handle question file uploaded {question}")]
     public static partial void HandledQuestion(this ILogger logger, string question);
+
+    [LoggerMessage(
+    EventId = 2,
+    Level = LogLevel.Information,
+    Message = "Created question event with id=`{questionEventId}` for question `{questionId}` by user {userId}")]
+    public static partial void CreatedQuestionEvent(this ILogger logger, string questionEventId, string questionId, string userId);
 }
