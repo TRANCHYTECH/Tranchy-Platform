@@ -1,7 +1,6 @@
 import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
-import { QuestionModel, QuestionSnapshotOut } from "./Question"
-import { api } from "app/services/api"
+import { QuestionModel } from "./Question"
 import { listPublicQuestions } from "app/services/ask-api/askApi"
 import { Question } from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"

@@ -62,7 +62,7 @@ const CategorySelections = ({
               }
             }}
           >
-            {cat.name[locale]}
+            {cat.title[locale]}
           </Chip>
         ))}
       </View>
@@ -229,7 +229,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
                           onChange(value.filter((v) => v !== cat))
                         }}
                       >
-                        {metadataStore.questionCategories.find((c) => c.key === cat).name[locale]}
+                        {metadataStore.questionCategories.find((c) => c.key === cat).title[locale]}
                       </Chip>
                     ))}
                     <Chip

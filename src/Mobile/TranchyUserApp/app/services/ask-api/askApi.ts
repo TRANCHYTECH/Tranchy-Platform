@@ -48,6 +48,10 @@ export const listMyQuestions = () => {
   return apiRequest<Question[]>({ url: `/question/list/mine`, method: "get" })
 }
 
+export const seedMetadata = () => {
+  return apiRequest<void>({ url: `/question/suportdeveloper/seedmetadata`, method: "post" })
+}
+
 export const getAgencyPortal = () => {
   return apiRequest<void>({ url: `/agency-portal`, method: "get" })
 }
@@ -81,6 +85,7 @@ export type GetQuestionByIdResult = NonNullable<Awaited<ReturnType<typeof getQue
 export type GetQuestionByUserResult = NonNullable<Awaited<ReturnType<typeof getQuestionByUser>>>
 export type ListPublicQuestionsResult = NonNullable<Awaited<ReturnType<typeof listPublicQuestions>>>
 export type ListMyQuestionsResult = NonNullable<Awaited<ReturnType<typeof listMyQuestions>>>
+export type SeedMetadataResult = NonNullable<Awaited<ReturnType<typeof seedMetadata>>>
 export type GetAgencyPortalResult = NonNullable<Awaited<ReturnType<typeof getAgencyPortal>>>
 export type UploadFileForQuestionResult = NonNullable<
   Awaited<ReturnType<typeof uploadFileForQuestion>>

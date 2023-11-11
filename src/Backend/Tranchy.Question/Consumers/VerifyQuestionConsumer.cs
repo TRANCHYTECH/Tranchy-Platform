@@ -1,3 +1,4 @@
+using MongoDB.Entities;
 using Tranchy.Question.Commands;
 
 namespace Tranchy.Question.Consumers;
@@ -11,11 +12,18 @@ public class VerifyQuestionConsumer : IConsumer<VerifyQuestion>
         _logger = logger;
     }
 
-    public Task Consume(ConsumeContext<VerifyQuestion> context)
+    public async Task Consume(ConsumeContext<VerifyQuestion> context)
     {
-        _logger.CreatedQuestion(context.Message.Id, string.Empty);
+        var question = await DB.Find<Data.Question>().MatchID(context.Message.Id).ExecuteFirstAsync();
+        if (question is null || question.Status != Data.QuestionStatus.New)
+        {
+            return;
+        }
 
-        return Task.CompletedTask;
+        question.Approve();
+        await question.SaveAsync(cancellation: context.CancellationToken);
+
+        _logger.ApprovedQuestion(context.Message.Id, string.Empty);
     }
 }
 

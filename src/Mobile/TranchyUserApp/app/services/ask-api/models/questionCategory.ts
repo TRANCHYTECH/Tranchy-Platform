@@ -11,6 +11,7 @@ export interface QuestionCategory {
   createdOn?: string
   description?: QuestionCategoryDescription
   id?: string | null
+  key?: string | null
   modifiedOn?: string
   title?: QuestionCategoryTitle
 }

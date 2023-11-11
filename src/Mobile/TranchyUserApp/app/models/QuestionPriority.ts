@@ -9,7 +9,7 @@ export const QuestionPriorityModel = types
   .model("QuestionPriority")
   .props({
     key: types.string,
-    name: types.frozen<LocalizedAttribute>(),
+    title: types.frozen<LocalizedAttribute>(),
     description: types.frozen<LocalizedAttribute>(),
   })
   .actions(withSetPropAction)
