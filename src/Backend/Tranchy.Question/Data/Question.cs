@@ -4,7 +4,7 @@ using Tranchy.Common.Data;
 namespace Tranchy.Question.Data;
 
 [Collection("Question")]
-public class Question : Entity, ICreatedOn, IModifiedOn, IOwnEntity
+public class Question : EntityBase, IOwnEntity
 {
     public required string Title { get; set; }
     public required SupportLevel SupportLevel { get; set; }
