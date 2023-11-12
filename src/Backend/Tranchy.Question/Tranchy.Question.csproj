@@ -12,6 +12,7 @@
 	  <PackageReference Include="MassTransit" />
 	  <PackageReference Include="MassTransit.Azure.ServiceBus.Core" />
 	  <PackageReference Include="MassTransit.MongoDb" />
+	  <PackageReference Include="Microsoft.Azure.SignalR" />
 	  <PackageReference Include="MongoDB.Entities" />
 	  <PackageReference Include="FluentValidation" />
 	  <PackageReference Include="FluentValidation.AspNetCore" />

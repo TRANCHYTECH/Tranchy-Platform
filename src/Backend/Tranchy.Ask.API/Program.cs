@@ -44,6 +44,8 @@ builder.Services.RegisterModules(appSettings);
 
 builder.Services.AddTranchySwagger(appSettings);
 
+builder.Services.RegisterHubService();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(agencyPortalSpaPolicy,
@@ -155,6 +157,7 @@ builder.Services.AddHealthChecks()
 builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.Configure<JsonOptions>(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
+
 var app = builder.Build();
 app.UseForwardedHeaders();
 app.UseCors(agencyPortalSpaPolicy);
@@ -176,4 +179,5 @@ app.UseAuthorization();
 app.MapBffManagementEndpoints();
 app.MapTranchyHealthChecks();
 
+app.UseHubs();
 app.Run();
