@@ -40,6 +40,8 @@ export type AppStackParamList = {
   NewQuestion: undefined
   Login: undefined
   QuestionList: undefined
+  QuestionDetails: { id: string }
+  QuestionConversation: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -89,6 +91,16 @@ const AppStack = observer(function AppStack() {
 
       {/** 🔥 Your screens go here */}
       <Stack.Screen name="QuestionList" component={Screens.QuestionListScreen} />
+      <Stack.Screen
+        name="QuestionDetails"
+        options={{ headerShown: true, title: "Câu hỏi" }}
+        component={Screens.QuestionDetailsScreen}
+      />
+      <Stack.Screen
+        name="QuestionConversation"
+        options={{ headerShown: true, title: "Tư vấn" }}
+        component={Screens.QuestionConversationScreen}
+      />
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

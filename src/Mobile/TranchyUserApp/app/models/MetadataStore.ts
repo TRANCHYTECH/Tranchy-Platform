@@ -1,10 +1,11 @@
-import { Instance, SnapshotIn, SnapshotOut, types, cast, flow } from "mobx-state-tree"
+import { Instance, SnapshotIn, SnapshotOut, types, cast, flow, getSnapshot } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { QuestionCategoryModel } from "./QuestionCategory"
 import { QuestionPriorityModel } from "./QuestionPriority"
 import { getQuestionConfigurations } from "app/services/ask-api/askApi"
 import { GetQuestionConfigurationsResponse } from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"
+import { load, save } from "app/utils/storage"
 
 /**
  * Model description here for TypeScript hints.
@@ -33,14 +34,25 @@ export const MetadataStoreModel = types
     },
   }))
   .actions((self) => ({
-    downloadMetadata: flow(function* downloadMetadataFlow() {
+    downloadMetadata: flow(function* downloadMetadataFlow(force: boolean) {
       try {
-        const response: ApiResponse<GetQuestionConfigurationsResponse> =
-          yield getQuestionConfigurations()
-        if (response.ok) {
-          console.log("load config")
-          self.categories = cast(response.data.questionCategories)
-          self.priorities = cast(response.data.questionPriorities)
+        const persistedMetadata = load("metadata")
+        if (force || persistedMetadata === null) {
+          const response: ApiResponse<GetQuestionConfigurationsResponse> =
+            yield getQuestionConfigurations()
+          if (response.ok) {
+            console.log("load config")
+            self.categories = cast(response.data.questionCategories)
+            self.priorities = cast(response.data.questionPriorities)
+
+            const snapshot = getSnapshot(self)
+            save("metadata", snapshot)
+          }
+        } else {
+          const metadata = MetadataStoreModel.create(persistedMetadata)
+          console.tron.log(metadata)
+          self = metadata
+          console.log("Set metadata", metadata)
         }
       } catch (error) {
         // ... including try/catch error handling
