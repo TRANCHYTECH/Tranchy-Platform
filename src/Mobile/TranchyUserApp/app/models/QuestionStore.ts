@@ -19,6 +19,9 @@ export const QuestionStoreModel = types
     get allQuestions() {
       return self.questions
     },
+    getQuestion(id: string) {
+      return self.questions.find((q) => q.id === id)
+    },
   }))
   .actions((self) => ({
     listPublicQuestions: flow(function* fetchPublicQuestions() {
