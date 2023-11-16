@@ -41,7 +41,7 @@ export type AppStackParamList = {
   Login: undefined
   QuestionList: undefined
   QuestionDetails: { id: string }
-  QuestionConversation: undefined
+  QuestionConversation: { id: string }
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 

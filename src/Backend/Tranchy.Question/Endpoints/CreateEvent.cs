@@ -21,7 +21,7 @@ public class CreateQuestionEvent : IEndpoint
     {
         var newQuestionEvent = input.ToEntity(questionId, tenant.UserId);
 
-        //TODO: validation
+        // TODO: validation
         await dbContext.BeginTransaction(token);
 
         await DB.InsertAsync(newQuestionEvent, dbContext.Session, token);

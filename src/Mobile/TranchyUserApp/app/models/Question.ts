@@ -2,6 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { SupportLevels } from "./Constants"
 
+const
 /**
  * Model description here for TypeScript hints.
  */
@@ -15,6 +16,8 @@ export const QuestionModel = types
     priorityId: types.maybeNull(types.string),
     communityShareAgreement: types.maybeNull(types.boolean),
     createdOn: types.string,
+    // events: types.array()
+    // question events reference?
   })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
