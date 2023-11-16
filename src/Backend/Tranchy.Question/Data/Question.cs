@@ -13,8 +13,5 @@ public class Question : EntityBase, IOwnEntity
     public string? PriorityId { get; set; }
     public string[] QuestionCategoryIds { get; set; } = Array.Empty<string>();
     public bool? CommunityShareAgreement { get; set; }
-    public DateTime CreatedOn { get; set; } = default!;
-    public DateTime ModifiedOn { get; set; } = default!;
-
     public void Approve() => Status = QuestionStatus.Accepted;
 }

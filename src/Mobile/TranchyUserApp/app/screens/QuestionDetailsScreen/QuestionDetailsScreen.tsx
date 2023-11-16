@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle } from "react-native"
-import { AppStackParamList, AppStackScreenProps, navigate } from "app/navigators"
+import { AppStackParamList, AppStackScreenProps } from "app/navigators"
 import { Screen } from "app/components"
 import { Text, Button } from "react-native-paper"
 import { QuestionSnapshotOut, useStores } from "app/models"
@@ -23,6 +23,7 @@ export const QuestionDetailsScreen: FC<QuestionDetailsScreenProps> = observer(
     const { navigate } =
       useNavigation<NativeStackNavigationProp<AppStackParamList, "QuestionDetails">>()
     const { questionStore } = useStores()
+
     return (
       <Screen style={$root} preset="scroll">
         <View>
@@ -30,7 +31,7 @@ export const QuestionDetailsScreen: FC<QuestionDetailsScreenProps> = observer(
           <Button
             onPress={() => {
               console.log("Confirm")
-              navigate("QuestionConversation")
+              navigate("QuestionConversation", { id })
             }}
           >
             Accept

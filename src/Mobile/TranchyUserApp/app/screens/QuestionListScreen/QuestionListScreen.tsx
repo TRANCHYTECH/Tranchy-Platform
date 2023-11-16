@@ -14,10 +14,12 @@ export const QuestionListScreen: FC<QuestionListScreenProps> = observer(
     const { questionStore } = useStores()
     // const navigation = useNavigation()
 
-    React.useEffect(() => {
-      console.log("load questions")
-      questionStore.listPublicQuestions()
-    }, [])
+    console.log("load questions")
+    questionStore.listPublicQuestions()
+    // React.useEffect(() => {
+    //   console.log("load questions")
+    //   questionStore.listPublicQuestions()
+    // }, [])
 
     return (
       <Screen style={$root} preset="scroll">

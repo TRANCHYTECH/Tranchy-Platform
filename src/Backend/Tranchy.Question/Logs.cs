@@ -21,7 +21,7 @@ public static partial class Logs
     public static partial void HandledQuestion(this ILogger logger, string question);
 
     [LoggerMessage(
-    EventId = 2,
+    EventId = 22,
     Level = LogLevel.Information,
     Message = "Created question event with id=`{questionEventId}` for question `{questionId}` by user {userId}")]
     public static partial void CreatedQuestionEvent(this ILogger logger, string questionEventId, string questionId, string userId);

@@ -761,7 +761,7 @@ dotnet_diagnostic.MA0199.severity = default
 
 dotnet_diagnostic.CA1062.severity = none
 dotnet_diagnostic.CA2007.severity = none
-
+dotnet_diagnostic.CS0108.severity = error
 # EF.Core migrations are generated we should not bother with them
 [**/Migrations/*.cs]
 dotnet_analyzer_diagnostic.severity = default
