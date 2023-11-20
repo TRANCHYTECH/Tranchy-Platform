@@ -1,19 +1,30 @@
 using System.Text.Json.Serialization;
+using Swashbuckle.AspNetCore.Annotations;
 using Tranchy.Question.Data;
-
 namespace Tranchy.Question.Requests;
 
-[JsonDerivedType(typeof(CreateQuestionEventMessageSentInput), (int)QuestionEventType.MessageSent)]
-[JsonDerivedType(
-    typeof(CreateQuestionEventStatusChangedInput),
-    (int)QuestionEventType.StatusChanged
-)]
-[JsonDerivedType(typeof(CreateQuestionEventFileAttachedInput), (int)QuestionEventType.FileAttached)]
-[JsonDerivedType(typeof(CreateQuestionEventVoiceCalledInput), (int)QuestionEventType.VoiceCalled)]
-[JsonDerivedType(typeof(CreateQuestionEventVideoCalledInput), (int)QuestionEventType.VideoCalled)]
-[JsonDerivedType(typeof(QuestionEventReacted), (int)QuestionEventType.EventReacted)]
+[SwaggerDiscriminator("$type")]
+
+[JsonDerivedType(typeof(CreateQuestionEventMessageSentInput), nameof(QuestionEventType.MessageSent))]
+[SwaggerSubType(typeof(CreateQuestionEventMessageSentInput), DiscriminatorValue = nameof(QuestionEventType.MessageSent))]
+
+[JsonDerivedType(typeof(CreateQuestionEventStatusChangedInput), nameof(QuestionEventType.StatusChanged))]
+[SwaggerSubType(typeof(CreateQuestionEventStatusChangedInput), DiscriminatorValue = nameof(QuestionEventType.StatusChanged))]
+
+[JsonDerivedType(typeof(CreateQuestionEventFileAttachedInput), nameof(QuestionEventType.FileAttached))]
+[SwaggerSubType(typeof(CreateQuestionEventFileAttachedInput), DiscriminatorValue = nameof(QuestionEventType.FileAttached))]
+
+[JsonDerivedType(typeof(CreateQuestionEventVoiceCalledInput), nameof(QuestionEventType.VoiceCalled))]
+[SwaggerSubType(typeof(CreateQuestionEventVoiceCalledInput), DiscriminatorValue = nameof(QuestionEventType.VoiceCalled))]
+
+[JsonDerivedType(typeof(CreateQuestionEventVideoCalledInput), nameof(QuestionEventType.VideoCalled))]
+[SwaggerSubType(typeof(CreateQuestionEventVideoCalledInput), DiscriminatorValue = nameof(QuestionEventType.VideoCalled))]
+
+[JsonDerivedType(typeof(QuestionEventReacted), nameof(QuestionEventType.EventReacted))]
+[SwaggerSubType(typeof(QuestionEventReacted), DiscriminatorValue = nameof(QuestionEventType.EventReacted))]
 public class CreateQuestionEventRequest
 {
+    public required CreateEventMetadata Metadata { get; set; }
 }
 
 public class CreateQuestionEventMessageSentInput : CreateQuestionEventRequest
@@ -52,3 +63,5 @@ public class CreateQuestionEventVideoCalledInput : CreateQuestionEventRequest
 public class QuestionEventReacted : CreateQuestionEventRequest
 {
 }
+
+public record CreateEventMetadata(string? QuestionId, string? NotifiedUserId);

@@ -1,8 +1,23 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { SupportLevels } from "./Constants"
+import { QuestionResponderModel } from "./QuestionResponder"
+import { QuestionPermissionsModel } from "./QuestionPermissions"
 
-const
+export const QuestionEventModel = types
+  .model("QuestionEvent")
+  .props({
+    $type: types.string,
+    id: types.identifier,
+    data: types.string,
+  })
+  .views((self) => ({
+    get chatMessage() {
+      // parse to IChatMessage
+      return JSON.parse(self.data)
+    },
+  }))
+
 /**
  * Model description here for TypeScript hints.
  */
@@ -13,11 +28,14 @@ export const QuestionModel = types
     title: types.string,
     questionCategoryIds: types.array(types.string),
     supportLevel: types.enumeration(SupportLevels),
+    status: types.string,
     priorityId: types.maybeNull(types.string),
     communityShareAgreement: types.maybeNull(types.boolean),
     createdOn: types.string,
-    // events: types.array()
-    // question events reference?
+    createdByUserId: types.string,
+    responder: types.maybeNull(QuestionResponderModel),
+    permissions: types.maybeNull(QuestionPermissionsModel),
+    events: types.array(types.frozen(QuestionEventModel)),
   })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

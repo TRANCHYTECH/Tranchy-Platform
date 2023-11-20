@@ -1,7 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { QuestionModel } from "./Question"
-import { listPublicQuestions } from "app/services/ask-api/askApi"
+import { listCommunityQuestions } from "app/services/ask-api/askApi"
 import { Question } from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"
 
@@ -16,7 +16,7 @@ export const QuestionStoreModel = types
   })
   .actions(withSetPropAction)
   .views((self) => ({
-    get allQuestions() {
+    getQuestions() {
       return self.questions
     },
     getQuestion(id: string) {
@@ -27,7 +27,7 @@ export const QuestionStoreModel = types
     listPublicQuestions: flow(function* fetchPublicQuestions() {
       try {
         self.isLoading = true
-        const response: ApiResponse<Question[]> = yield listPublicQuestions()
+        const response: ApiResponse<Question[]> = yield listCommunityQuestions()
         if (response.ok) {
           self.questions = cast(response.data)
         }

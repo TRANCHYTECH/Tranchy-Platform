@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useCallback } from "react"
 import { observer } from "mobx-react-lite"
 import { StyleSheet, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
@@ -6,26 +6,27 @@ import { Screen } from "app/components"
 import { useStores, Question } from "app/models"
 import { FlashList } from "@shopify/flash-list"
 import QuestionItem from "./QuestionItem"
+import { useFocusEffect } from "@react-navigation/native"
+import { Text } from "react-native-paper"
 
 interface QuestionListScreenProps extends AppStackScreenProps<"QuestionList"> {}
 
 export const QuestionListScreen: FC<QuestionListScreenProps> = observer(
   function QuestionListScreen() {
     const { questionStore } = useStores()
-    // const navigation = useNavigation()
 
-    console.log("load questions")
-    questionStore.listPublicQuestions()
-    // React.useEffect(() => {
-    //   console.log("load questions")
-    //   questionStore.listPublicQuestions()
-    // }, [])
+    useFocusEffect(
+      useCallback(() => {
+        console.log("load questions")
+        questionStore.listPublicQuestions()
+      }, []),
+    )
 
     return (
       <Screen style={$root} preset="scroll">
         <View style={styles.questionListArea}>
           <FlashList<Question>
-            data={questionStore.allQuestions}
+            data={questionStore.getQuestions()}
             renderItem={({ item }) => {
               return <QuestionItem item={item} />
             }}

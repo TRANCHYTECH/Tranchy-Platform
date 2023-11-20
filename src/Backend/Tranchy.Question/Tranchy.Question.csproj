@@ -17,6 +17,7 @@
 	  <PackageReference Include="FluentValidation" />
 	  <PackageReference Include="FluentValidation.AspNetCore" />
 	  <PackageReference Include="Mapster" />
+	  <PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
 	</ItemGroup>
 	
 	<ItemGroup>
