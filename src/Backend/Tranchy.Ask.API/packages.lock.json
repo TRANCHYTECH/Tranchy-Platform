@@ -1281,6 +1281,7 @@
           "MassTransit.MongoDb": "[8.1.1, )",
           "Microsoft.Azure.SignalR": "[1.22.0, )",
           "MongoDB.Entities": "[22.1.0, )",
+          "Swashbuckle.AspNetCore.Annotations": "[6.5.0, )",
           "Tranchy.Common": "[1.0.0, )"
         }
       },
@@ -1357,6 +1358,15 @@
         "dependencies": {
           "Microsoft.Data.SqlClient": "5.1.1",
           "Microsoft.EntityFrameworkCore.Relational": "7.0.11"
+        }
+      },
+      "Swashbuckle.AspNetCore.Annotations": {
+        "type": "CentralTransitive",
+        "requested": "[6.5.0, )",
+        "resolved": "6.5.0",
+        "contentHash": "EcHd1z2pEdnpaBMTI9qjVxk6mFVGVMZ1n0ySC3fjrkXCQQ8O9fMdt9TxPJRKyjiTiTjvO9700jKjmyl+hPBinQ==",
+        "dependencies": {
+          "Swashbuckle.AspNetCore.SwaggerGen": "6.5.0"
         }
       }
     }

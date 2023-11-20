@@ -22,7 +22,7 @@ const QuestionItem = ({ item }: { item: Question }) => {
       <View style={styles.row}>
         <View style={styles.questionHeader}>
           <Text variant="titleMedium">{item.supportLevel}</Text>
-          <Text variant="titleSmall">Chờ trả lời</Text>
+          <Text variant="titleSmall">{item.status}</Text>
         </View>
         <View style={styles.questionBrief}>
           <Text>{item.title}</Text>

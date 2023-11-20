@@ -27,7 +27,9 @@ public static class ServiceCollectionExtensions
             {
                 o.ClientFactory(provider => DB.Database(configuration.QuestionDb.DatabaseName).Client);
                 o.DatabaseFactory(provider => DB.Database(configuration.QuestionDb.DatabaseName));
-                o.UseBusOutbox();
+
+                // todo: check error when enable the service
+                o.UseBusOutbox(c => c.DisableDeliveryService());
             });
 
             c.SetKebabCaseEndpointNameFormatter();

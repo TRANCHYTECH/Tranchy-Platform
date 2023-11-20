@@ -2,6 +2,8 @@ using Tranchy.Question.Events;
 using MongoDB.Entities;
 using MassTransit.MongoDbIntegration;
 using Tranchy.Common.Services;
+using Microsoft.AspNetCore.SignalR;
+using Tranchy.Question.Hubs;
 
 namespace Tranchy.Question.Endpoints;
 
@@ -16,6 +18,7 @@ public class CreateQuestionEvent : IEndpoint
         [FromServices] IPublishEndpoint publishEndpoint,
         [FromServices] ILogger<CreateQuestionEvent> logger,
         [FromServices] ITenant tenant,
+        [FromServices] IHubContext<ConversationHub> hubContext,
         CancellationToken token
     )
     {
@@ -29,6 +32,11 @@ public class CreateQuestionEvent : IEndpoint
         await publishEndpoint.Publish(new QuestionEventCreated { Id = newQuestionEvent.ID! }, token);
 
         await dbContext.CommitTransaction(token);
+
+        if (input.Metadata.NotifiedUserId is not null)
+        {
+            await hubContext.Clients.Users(new[] { input.Metadata.NotifiedUserId }).SendAsync("receiveEvent", newQuestionEvent, token);
+        }
 
         logger.CreatedQuestionEvent(newQuestionEvent.ID!, newQuestionEvent.QuestionId, newQuestionEvent.CreatedByUserId);
 

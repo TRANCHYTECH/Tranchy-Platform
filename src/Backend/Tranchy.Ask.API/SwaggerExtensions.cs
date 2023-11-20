@@ -26,6 +26,7 @@ public static class SwaggerExtensions
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
+            options.EnableAnnotations(enableAnnotationsForInheritance: true, enableAnnotationsForPolymorphism: true);
             options.SwaggerDoc("v1", new OpenApiInfo { Title = "Tranchy Ask Api Documentation", Version = "v1" });
             options.OperationFilter<DefaultHeaderFilter>();
 
@@ -52,11 +53,11 @@ public static class SwaggerExtensions
                     {
                         Reference = new OpenApiReference { Id = "OAuth", Type = ReferenceType.SecurityScheme }
                     },
-                    new List<string>() }
-                    });
+                    new List<string>()
+                }
+            });
         });
     }
-
 
     public static void UseTranchySwagger(this IApplicationBuilder app, AppSettings appSettings)
     {

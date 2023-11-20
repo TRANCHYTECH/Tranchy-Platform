@@ -13,7 +13,10 @@ interface QuestionDetailsScreenProps extends AppStackScreenProps<"QuestionDetail
 const QuestionForm = ({ question }: { question: QuestionSnapshotOut }) => {
   return (
     <View>
-      <Text>{question?.title}</Text>
+      <Text>Question: {question?.title}</Text>
+      <Text>Status: {question?.status}</Text>
+      <Text>Created by: {question?.createdByUserId}</Text>
+      <Text>Responder: {question?.responder?.userId}</Text>
     </View>
   )
 }
@@ -28,13 +31,9 @@ export const QuestionDetailsScreen: FC<QuestionDetailsScreenProps> = observer(
       <Screen style={$root} preset="scroll">
         <View>
           <QuestionForm question={questionStore.getQuestion(id)} />
-          <Button
-            onPress={() => {
-              console.log("Confirm")
-              navigate("QuestionConversation", { id })
-            }}
-          >
-            Accept
+          <Button onPress={() => navigate("QuestionConversation", { id })}>Accept</Button>
+          <Button onPress={() => navigate("QuestionConversation", { id })}>
+            Go To Conversation
           </Button>
         </View>
       </Screen>
