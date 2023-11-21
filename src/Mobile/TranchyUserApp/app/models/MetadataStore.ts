@@ -13,6 +13,8 @@ import { load, save } from "app/utils/storage"
 export const MetadataStoreModel = types
   .model("MetadataStore")
   .props({
+    userId: types.maybeNull(types.string),
+    email: types.maybeNull(types.string),
     categories: types.array(QuestionCategoryModel),
     priorities: types.array(QuestionPriorityModel),
   })
@@ -42,6 +44,8 @@ export const MetadataStoreModel = types
             yield getQuestionConfigurations()
           if (response.ok) {
             console.log("load config")
+            self.userId = response.data.userId
+            self.email = response.data.email
             self.categories = cast(response.data.questionCategories)
             self.priorities = cast(response.data.questionPriorities)
 

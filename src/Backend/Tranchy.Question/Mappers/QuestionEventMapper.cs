@@ -15,16 +15,26 @@ internal static class QuestionEventMapper
             .AddParameters("questionId", questionId)
             .AdaptToType<Data.QuestionEvent>();
 
-    static QuestionEventMapper() => TypeAdapterConfig<CreateQuestionEventRequest, Data.QuestionEvent>
-            .NewConfig()
-            .Include<CreateQuestionEventMessageSentInput, Data.QuestionEventMessageSent>()
-            .Include<CreateQuestionEventStatusChangedInput, Data.QuestionEventStatusChanged>()
-            .Include<CreateQuestionEventFileAttachedInput, Data.QuestionEventFileAttached>()
-            .Include<CreateQuestionEventVoiceCalledInput, Data.QuestionEventVoiceCalled>()
-            .Include<CreateQuestionEventVideoCalledInput, Data.QuestionEventVoiceCalled>()
-            .Map(dest => dest.QuestionId, _ => MapContext.Current!.Parameters["questionId"])
-            .Map(
-                dest => dest.CreatedByUserId,
-                _ => MapContext.Current!.Parameters[nameof(ITenant.UserId)]
-            );
+    internal static MobileQuestionEvent ToModel(this Data.QuestionEvent @event)
+    {
+        return @event.BuildAdapter().AdaptToType<MobileQuestionEvent>();
+    }
+
+    static QuestionEventMapper()
+    {
+        TypeAdapterConfig<CreateQuestionEventRequest, Data.QuestionEvent>
+        .NewConfig()
+        .Include<CreateQuestionEventMessageSentInput, Data.QuestionEventMessageSent>()
+        .Include<CreateQuestionEventStatusChangedInput, Data.QuestionEventStatusChanged>()
+        .Include<CreateQuestionEventFileAttachedInput, Data.QuestionEventFileAttached>()
+        .Include<CreateQuestionEventVoiceCalledInput, Data.QuestionEventVoiceCalled>()
+        .Include<CreateQuestionEventVideoCalledInput, Data.QuestionEventVoiceCalled>()
+        .Map(dest => dest.QuestionId, _ => MapContext.Current!.Parameters["questionId"])
+        .Map(dest => dest.CreatedByUserId, _ => MapContext.Current!.Parameters[nameof(ITenant.UserId)]);
+
+        TypeAdapterConfig<Data.QuestionEvent, MobileQuestionEvent>
+        .NewConfig()
+        .Map(s => s.User.Id, t => t.CreatedByUserId)
+        .Include<Data.QuestionEventMessageSent, MobileQuestionEventMessageSent>();
+    }
 }

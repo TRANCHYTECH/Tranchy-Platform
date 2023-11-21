@@ -9,6 +9,7 @@ import type {
   CreateQuestionRequest,
   CreateQuestionResponse,
   GetQuestionConfigurationsResponse,
+  MobileQuestionEventMessageSent,
   Question,
   QuestionOutput,
   UploadFileForQuestionBody,
@@ -57,6 +58,13 @@ export const pickQuestion = (id: string) => {
   return apiRequest<void>({ url: `/question/${id}/pick`, method: "post" })
 }
 
+export const listMobileQuestionEvents = (id: string) => {
+  return apiRequest<MobileQuestionEventMessageSent[]>({
+    url: `/question/mobile/${id}/events`,
+    method: "get",
+  })
+}
+
 export const listCommunityQuestions = () => {
   return apiRequest<Question[]>({ url: `/question/list/community`, method: "get" })
 }
@@ -102,6 +110,9 @@ export type GetQuestionConfigurationsResult = NonNullable<
 export type GetQuestionByIdResult = NonNullable<Awaited<ReturnType<typeof getQuestionById>>>
 export type GetQuestionByUserResult = NonNullable<Awaited<ReturnType<typeof getQuestionByUser>>>
 export type PickQuestionResult = NonNullable<Awaited<ReturnType<typeof pickQuestion>>>
+export type ListMobileQuestionEventsResult = NonNullable<
+  Awaited<ReturnType<typeof listMobileQuestionEvents>>
+>
 export type ListCommunityQuestionsResult = NonNullable<
   Awaited<ReturnType<typeof listCommunityQuestions>>
 >

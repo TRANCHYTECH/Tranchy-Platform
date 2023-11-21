@@ -8,6 +8,8 @@ import type { QuestionCategory } from "./questionCategory"
 import type { QuestionPriority } from "./questionPriority"
 
 export interface GetQuestionConfigurationsResponse {
+  email?: string | null
   questionCategories?: QuestionCategory[] | null
   questionPriorities?: QuestionPriority[] | null
+  userId?: string | null
 }

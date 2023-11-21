@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from "react"
+import React, { FC, useCallback, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle, StyleSheet } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
@@ -19,13 +19,12 @@ interface QuestionConversationScreenProps extends AppStackScreenProps<"QuestionC
 export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = observer(
   function QuestionConversationScreen({ route }) {
     const { id } = route.params
-    const { questionStore } = useStores()
+    const { questionStore, metadataStore } = useStores()
     const [messages, setMessages] = useState([])
 
     useConversationHub({
       receiveEventHandler: (data) => {
-        // test msg
-        const newMsg = {
+        const receivedEvent = {
           _id: data.id,
           text: data.content,
           createdAt: data.createdOn,
@@ -34,28 +33,19 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
           },
         }
 
-        setMessages((previousMessages) => GiftedChat.append(previousMessages, [newMsg]))
-        console.log("ON RECEIVE EVENT Chat message", data)
+        setMessages((previousMessages) => GiftedChat.append(previousMessages, [receivedEvent]))
       },
-      conversationId: id,
     })
 
     useFocusEffect(
       useCallback(() => {
-        // todo: get current events from store, bind to msg chat.
-        // or bind from server by passing format.
-        setMessages([
-          {
-            _id: 1,
-            text: "Hello TauDang",
-            createdAt: new Date(),
-            user: {
-              _id: 2,
-              name: "React Native",
-              avatar: "https://placeimg.com/140/140/any",
-            },
-          },
-        ])
+        async function loadEvents() {
+          const question = questionStore.getQuestion(id)
+          await question.loadQuestionEvents()
+          setMessages(question.events)
+        }
+
+        loadEvents()
       }, []),
     )
 
@@ -66,15 +56,15 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
         content: (messages[0] as IChatMessage).text,
         metadata: {
           notifiedUserId:
-            question.permissions.role === "Requester"
-              ? question.responder.userId
-              : question.createdByUserId,
+            question.permissions.role === "Requester" ? question.responder.userId : getUserId(),
         },
       }
       createQuestionEvent(id, event)
 
       setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
     }, [])
+
+    const getUserId = () => metadataStore.userId
 
     // const testHub = () => {
     //   signalr.createEvent(
@@ -86,12 +76,12 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
     return (
       <Screen style={$root} safeAreaEdges={["bottom"]}>
         <View style={styles.questionListArea}>
-          <Text>Conversation</Text>
+          <Text>Conversation. user: {metadataStore.email}</Text>
           <GiftedChat
             messages={messages}
             onSend={(messages) => onSend(messages)}
             user={{
-              _id: 1,
+              _id: getUserId(),
             }}
           />
         </View>

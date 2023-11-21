@@ -4,6 +4,7 @@
  * Tranchy Ask Api Documentation
  * OpenAPI spec version: v1
  */
+import type { QuestionPermissions } from "./questionPermissions"
 import type { QuestionResponder } from "./questionResponder"
 import type { QuestionStatus } from "./questionStatus"
 import type { SupportLevel } from "./supportLevel"
@@ -14,6 +15,7 @@ export interface Question {
   createdOn?: string
   id?: string | null
   modifiedOn?: string
+  permissions?: QuestionPermissions
   priorityId?: string | null
   questionCategoryIds?: string[] | null
   responder?: QuestionResponder

@@ -7,7 +7,6 @@ import { useStores, Question } from "app/models"
 import { FlashList } from "@shopify/flash-list"
 import QuestionItem from "./QuestionItem"
 import { useFocusEffect } from "@react-navigation/native"
-import { Text } from "react-native-paper"
 
 interface QuestionListScreenProps extends AppStackScreenProps<"QuestionList"> {}
 

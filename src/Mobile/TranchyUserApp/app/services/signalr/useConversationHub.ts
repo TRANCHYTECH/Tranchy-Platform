@@ -3,7 +3,6 @@ import { useFocusEffect } from "@react-navigation/native"
 import { conversationHub } from "./conversationHub"
 
 type ConversationHubProps = {
-  conversationId: string
   receiveEventHandler: (data: any) => void
 }
 
