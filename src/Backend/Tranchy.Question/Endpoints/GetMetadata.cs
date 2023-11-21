@@ -1,4 +1,5 @@
 using MongoDB.Entities;
+using Tranchy.Common.Services;
 using Tranchy.Question.Contracts;
 using Tranchy.Question.Data;
 
@@ -6,10 +7,12 @@ namespace Tranchy.Question.Endpoints;
 
 public class GetMetadata : IEndpoint
 {
-    public static async Task<Ok<GetQuestionConfigurationsResponse>> GetQuestionConfigurations(CancellationToken cancellationToken)
+    public static async Task<Ok<GetQuestionConfigurationsResponse>> GetQuestionConfigurations([FromServices] ITenant tenant, CancellationToken cancellationToken)
     {
         var response = new GetQuestionConfigurationsResponse
         {
+            UserId = tenant.UserId,
+            Email = tenant.Email,
             QuestionCategories = await GetQuestionCategories(cancellationToken),
             QuestionPriorities = await GetQuestionPriorities(cancellationToken),
         };
