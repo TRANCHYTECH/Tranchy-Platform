@@ -9,6 +9,6 @@ import type { User } from "./user"
 export interface MobileQuestionEvent {
   _id?: string | null
   $type: string
-  createdAt?: string
+  createdAt?: Date
   user?: User
 }

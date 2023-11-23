@@ -1,8 +1,15 @@
+using System.Collections.ObjectModel;
+
 namespace Tranchy.Question.Data;
 
 public class QuestionPermissions
 {
-    public string? Role { get; set; }
+    public ICollection<QuestionAction> Actions { get; init; } = new Collection<QuestionAction>();
+    public string? DirectChatTargetUserId { get; set; }
+}
 
-    public string[]? Actions { get; set; }
+public enum QuestionAction
+{
+    TakeConsultation,
+    GoToConversation,
 }

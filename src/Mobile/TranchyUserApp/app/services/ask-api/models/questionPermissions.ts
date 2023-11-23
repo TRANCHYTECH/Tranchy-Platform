@@ -4,8 +4,9 @@
  * Tranchy Ask Api Documentation
  * OpenAPI spec version: v1
  */
+import type { QuestionAction } from "./questionAction"
 
 export interface QuestionPermissions {
-  actions?: string[] | null
-  role?: string | null
+  actions?: QuestionAction[] | null
+  directChatTargetUserId?: string | null
 }

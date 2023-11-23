@@ -5,9 +5,12 @@ public class ListEvents : IEndpoint
 {
     public static async Task<Ok<MobileQuestionEvent[]>> ListQuestionEvents(string id, CancellationToken cancellation)
     {
-        var events = await DB.Find<Data.QuestionEvent>().Match(e => e.QuestionId == id).ExecuteAsync(cancellation);
+        var events = await DB.Find<Data.QuestionEvent>()
+        .Match(e => e.QuestionId == id)
+        .Sort(e => e.CreatedOn, Order.Ascending)
+        .ExecuteAsync(cancellation);
 
-        var response = events.Select(e => e.ToModel()).ToArray();
+        var response = events.Select(e => e.ToMobileModel()).ToArray();
 
         return TypedResults.Ok(response);
     }

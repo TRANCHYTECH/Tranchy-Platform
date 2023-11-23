@@ -55,7 +55,7 @@ export const getQuestionByUser = (user: string) => {
 }
 
 export const pickQuestion = (id: string) => {
-  return apiRequest<void>({ url: `/question/${id}/pick`, method: "post" })
+  return apiRequest<Question>({ url: `/question/${id}/pick`, method: "post" })
 }
 
 export const listMobileQuestionEvents = (id: string) => {

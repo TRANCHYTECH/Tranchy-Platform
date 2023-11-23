@@ -43,7 +43,6 @@ export const MetadataStoreModel = types
           const response: ApiResponse<GetQuestionConfigurationsResponse> =
             yield getQuestionConfigurations()
           if (response.ok) {
-            console.log("load config")
             self.userId = response.data.userId
             self.email = response.data.email
             self.categories = cast(response.data.questionCategories)
@@ -56,30 +55,12 @@ export const MetadataStoreModel = types
           const metadata = MetadataStoreModel.create(persistedMetadata)
           console.tron.log(metadata)
           self = metadata
-          console.log("Set metadata", metadata)
         }
       } catch (error) {
         // ... including try/catch error handling
         console.error("Failed to fetch metadata", error)
       }
     }),
-    // async downloadMetadata(force?: boolean) {
-    //   const persistedMetadata = load("metadata")
-    //   if (force || persistedMetadata === null) {
-    //     const res = await getQuestionConfigurations()
-    //     self.categories = cast(res.data.questionCategories)
-    //     self.priorities = cast(res.data.questionPriorities)
-
-    //     const snapshot = getSnapshot(self)
-    //     save("metadata", snapshot)
-    //     console.log("Download metadata", snapshot)
-    //   } else {
-    //     const metadata = MetadataStoreModel.create(persistedMetadata)
-    //     console.tron.log(metadata)
-    //     self = metadata
-    //     console.log("Set metadata", metadata)
-    //   }
-    // },
   }))
 
 export interface MetadataStore extends Instance<typeof MetadataStoreModel> {}

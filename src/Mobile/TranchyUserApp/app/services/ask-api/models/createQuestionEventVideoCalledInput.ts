@@ -10,6 +10,6 @@ import type { CreateQuestionEventVideoCalledInputType } from "./createQuestionEv
 export type CreateQuestionEventVideoCalledInput = CreateQuestionEventRequest & {
   $type: CreateQuestionEventVideoCalledInputType
   blobLocation?: string | null
-  endedAt?: string
-  startedAt?: string
+  endedAt?: Date
+  startedAt?: Date
 }

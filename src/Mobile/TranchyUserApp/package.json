@@ -59,6 +59,7 @@
     "expo-status-bar": "~1.6.0",
     "expo-updates": "~0.18.17",
     "i18n-js": "3.9.2",
+    "lodash-es": "^4.17.21",
     "mobx": "6.10.2",
     "mobx-react-lite": "4.0.5",
     "mobx-state-tree": "5.3.0",

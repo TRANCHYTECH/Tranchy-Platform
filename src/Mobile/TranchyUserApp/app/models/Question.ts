@@ -1,34 +1,25 @@
 import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { SupportLevels } from "./Constants"
-import { QuestionResponderModel } from "./QuestionResponder"
+import { QuestionConsultantModel } from "./QuestionConsultant"
 import { QuestionPermissionsModel } from "./QuestionPermissions"
 import { ApiResponse } from "apisauce"
-import { MobileQuestionEventMessageSent } from "app/services/ask-api/models"
-import { listMobileQuestionEvents } from "app/services/ask-api/askApi"
+import { MobileQuestionEventMessageSent, Question } from "app/services/ask-api/models"
+import { listMobileQuestionEvents, pickQuestion } from "app/services/ask-api/askApi"
+import { IsoDate } from "./helpers/isoDateType"
 
-export const QuestionEventUserModel = types
-  .model("QuestionEventUser")
-  .props({
-    _id: types.identifier,
-  })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  .views((self) => ({}))
+export const QuestionEventUserModel = types.model("QuestionEventUser").props({
+  _id: types.identifier,
+})
 
-export const QuestionEventModel = types
-  .model("QuestionEvent")
-  .props({
-    $type: types.string,
-    _id: types.identifier,
-    text: types.string,
-    user: types.frozen(QuestionEventUserModel),
-  })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  .views((self) => ({}))
+export const QuestionEventModel = types.model("QuestionEvent").props({
+  $type: types.string,
+  _id: types.identifier,
+  text: types.string,
+  createdAt: IsoDate,
+  user: types.frozen(QuestionEventUserModel),
+})
 
-/**
- * Model description here for TypeScript hints.
- */
 export const QuestionModel = types
   .model("Question")
   .props({
@@ -39,14 +30,17 @@ export const QuestionModel = types
     status: types.string,
     priorityId: types.maybeNull(types.string),
     communityShareAgreement: types.maybeNull(types.boolean),
-    createdOn: types.string,
+    createdOn: IsoDate,
     createdByUserId: types.string,
-    responder: types.maybeNull(QuestionResponderModel),
-    permissions: types.maybeNull(QuestionPermissionsModel),
-    events: types.array(types.frozen(QuestionEventModel)),
+    consultant: types.maybeNull(QuestionConsultantModel),
+    permissions: types.maybe(QuestionPermissionsModel),
+    events: types.array(QuestionEventModel),
   })
   .actions(withSetPropAction)
-  .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
+  .views((self) => ({
+    getNotifiedUserId: (userId: string) =>
+      self.consultant?.userId.trim() === userId.trim() ? self.createdByUserId : userId,
+  }))
   .actions((self) => ({
     loadQuestionEvents: flow(function* loadQuestionEvents() {
       const response: ApiResponse<MobileQuestionEventMessageSent[]> =
@@ -55,9 +49,15 @@ export const QuestionModel = types
         self.events = cast(response.data)
       }
     }),
+    takeConsultation: flow(function* takeConsultation() {
+      const response: ApiResponse<Question> = yield pickQuestion(self.id)
+      if (response.ok) {
+        self = Object.assign(self, response.data)
+      }
+    }),
   }))
 
-export interface Question extends Instance<typeof QuestionModel> {}
+export interface QuestionInstance extends Instance<typeof QuestionModel> {}
 export interface QuestionSnapshotOut extends SnapshotOut<typeof QuestionModel> {}
 export interface QuestionSnapshotIn extends SnapshotIn<typeof QuestionModel> {}
 export const createQuestionDefaultModel = () => types.optional(QuestionModel, {})
