@@ -33,7 +33,9 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
           },
         }
 
-        setMessages((previousMessages) => GiftedChat.append(previousMessages, [receivedEvent]))
+        setMessages((previousMessages) =>
+          GiftedChat.append(previousMessages, [receivedEvent], false),
+        )
       },
     })
 
@@ -55,13 +57,12 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
         $type: CreateQuestionEventMessageSentInputType.MessageSent,
         content: (messages[0] as IChatMessage).text,
         metadata: {
-          notifiedUserId:
-            question.permissions.role === "Requester" ? question.responder.userId : getUserId(),
+          notifiedUserId: question.permissions.directChatTargetUserId,
         },
       }
       createQuestionEvent(id, event)
 
-      setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+      setMessages((previousMessages) => GiftedChat.append(previousMessages, messages, false))
     }, [])
 
     const getUserId = () => metadataStore.userId
@@ -76,8 +77,18 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
     return (
       <Screen style={$root} safeAreaEdges={["bottom"]}>
         <View style={styles.questionListArea}>
-          <Text>Conversation. user: {metadataStore.email}</Text>
+          <Text>
+            user:{metadataStore.userId}|{metadataStore.email}
+          </Text>
+          <Text>requester: {questionStore.getQuestion(id).createdByUserId}</Text>
+          <Text>
+            consultant:{" "}
+            {questionStore.getQuestion(id).consultant?.userId === metadataStore.userId
+              ? "yes"
+              : "no"}
+          </Text>
           <GiftedChat
+            inverted={false}
             messages={messages}
             onSend={(messages) => onSend(messages)}
             user={{

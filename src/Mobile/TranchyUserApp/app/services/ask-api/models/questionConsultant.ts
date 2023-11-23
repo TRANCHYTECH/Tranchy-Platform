@@ -5,7 +5,7 @@
  * OpenAPI spec version: v1
  */
 
-export interface QuestionResponder {
-  createdAt?: string
+export interface QuestionConsultant {
+  createdAt?: Date
   userId?: string | null
 }

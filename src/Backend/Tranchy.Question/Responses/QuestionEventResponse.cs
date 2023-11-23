@@ -22,7 +22,7 @@ public abstract class MobileQuestionEvent
 public record User
 {
     [JsonPropertyName("_id")]
-    public string? Id { get; set; }
+    public string Id { get; set; } = string.Empty;
 }
 
 public class MobileQuestionEventMessageSent : MobileQuestionEvent

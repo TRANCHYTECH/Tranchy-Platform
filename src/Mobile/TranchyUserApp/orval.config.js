@@ -13,6 +13,7 @@ export default defineConfig({
           path: "app/services/api/api.ts",
           name: "apiRequest",
         },
+        useDates: true,
       },
     },
     input: {

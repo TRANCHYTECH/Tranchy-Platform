@@ -10,12 +10,12 @@ import type { QuestionPriorityPriorityMetaData } from "./questionPriorityPriorit
 import type { QuestionPriorityTitle } from "./questionPriorityTitle"
 
 export interface QuestionPriority {
-  createdOn?: string
+  createdOn?: Date
   description?: QuestionPriorityDescription
   duration?: TimeSpan
   id?: string | null
   key?: string | null
-  modifiedOn?: string
+  modifiedOn?: Date
   priorityMetaData?: QuestionPriorityPriorityMetaData
   rank?: number
   title?: QuestionPriorityTitle

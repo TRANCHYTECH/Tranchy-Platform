@@ -61,8 +61,6 @@ const Stack = createNativeStackNavigator<AppStackParamList>()
 
 const AppStack = observer(function AppStack() {
   const { authenticationStore, metadataStore } = useStores()
-
-  console.log("app start. auth:", authenticationStore.authToken)
   if (authenticationStore.isAuthenticated) {
     authenticationStore.distributeAuthToken()
   }

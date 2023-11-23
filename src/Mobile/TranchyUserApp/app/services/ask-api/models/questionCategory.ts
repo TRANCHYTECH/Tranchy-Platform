@@ -8,10 +8,10 @@ import type { QuestionCategoryDescription } from "./questionCategoryDescription"
 import type { QuestionCategoryTitle } from "./questionCategoryTitle"
 
 export interface QuestionCategory {
-  createdOn?: string
+  createdOn?: Date
   description?: QuestionCategoryDescription
   id?: string | null
   key?: string | null
-  modifiedOn?: string
+  modifiedOn?: Date
   title?: QuestionCategoryTitle
 }

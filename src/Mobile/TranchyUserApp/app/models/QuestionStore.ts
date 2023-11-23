@@ -5,9 +5,8 @@ import { listCommunityQuestions } from "app/services/ask-api/askApi"
 import { Question } from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"
 
-/**
- * Model description here for TypeScript hints.
- */
+// setLivelinessChecking("error")
+
 export const QuestionStoreModel = types
   .model("QuestionStore")
   .props({
@@ -17,7 +16,7 @@ export const QuestionStoreModel = types
   .actions(withSetPropAction)
   .views((self) => ({
     getQuestions() {
-      return self.questions
+      return self.questions.filter((_) => true)
     },
     getQuestion(id: string) {
       return self.questions.find((q) => q.id === id)
@@ -32,7 +31,6 @@ export const QuestionStoreModel = types
           self.questions = cast(response.data)
         }
       } catch (error) {
-        // ... including try/catch error handling
         console.error("Failed to fetch public questions", error)
       } finally {
         self.isLoading = false

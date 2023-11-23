@@ -16,7 +16,6 @@ export const QuestionListScreen: FC<QuestionListScreenProps> = observer(
 
     useFocusEffect(
       useCallback(() => {
-        console.log("load questions")
         questionStore.listPublicQuestions()
       }, []),
     )

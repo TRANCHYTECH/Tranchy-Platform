@@ -4,21 +4,21 @@
  * Tranchy Ask Api Documentation
  * OpenAPI spec version: v1
  */
+import type { QuestionConsultant } from "./questionConsultant"
 import type { QuestionPermissions } from "./questionPermissions"
-import type { QuestionResponder } from "./questionResponder"
 import type { QuestionStatus } from "./questionStatus"
 import type { SupportLevel } from "./supportLevel"
 
 export interface Question {
   communityShareAgreement?: boolean | null
+  consultant?: QuestionConsultant
   createdByUserId?: string | null
-  createdOn?: string
+  createdOn?: Date
   id?: string | null
-  modifiedOn?: string
+  modifiedOn?: Date
   permissions?: QuestionPermissions
   priorityId?: string | null
   questionCategoryIds?: string[] | null
-  responder?: QuestionResponder
   status?: QuestionStatus
   supportLevel?: SupportLevel
   title?: string | null

@@ -14,7 +14,6 @@ const QuestionItem = ({ item }: { item: Question }) => {
     <Pressable
       style={styles.questionItem}
       onPress={() => {
-        console.log("Press item")
         navigate("QuestionDetails", { id: item.id })
       }}
     >

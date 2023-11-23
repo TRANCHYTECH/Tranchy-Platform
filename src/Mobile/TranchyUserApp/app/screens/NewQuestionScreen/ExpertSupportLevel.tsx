@@ -28,7 +28,6 @@ const ExpertSupportLevel = () => {
       result.assets.forEach((result) => {
         append({ name: result.name, uri: result.uri, size: result.size })
       })
-      console.log("load success", result)
     }
   }
 

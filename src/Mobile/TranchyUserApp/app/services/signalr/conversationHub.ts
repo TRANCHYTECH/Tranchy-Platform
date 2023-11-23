@@ -55,15 +55,6 @@ export class ConversationHub {
         },
       })
       .build()
-
-  // async createEvent(questionId: string, payload: any) {
-  //   console.log("create event payload", payload)
-  //   try {
-  //     await this._hubConnection.invoke("CreateEvent", questionId, JSON.stringify(payload))
-  //   } catch (error) {
-  //     console.log("invoke error", error)
-  //   }
-  // }
 }
 
 export const conversationHub = new ConversationHub()

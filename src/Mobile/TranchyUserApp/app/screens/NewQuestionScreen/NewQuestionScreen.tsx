@@ -43,7 +43,6 @@ const CategorySelections = ({
   const [values, setValues] = useState<string[]>(input)
   const { metadataStore } = useStores()
 
-  console.log("Re render CategorySelections")
   return (
     <>
       <View style={{ ...styles.row, padding: spacing.md }}>
@@ -84,7 +83,6 @@ const locale = currentLocale()
 export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function NewQuestionScreen(
   _props,
 ) {
-  console.log("new question open")
   const insets = useSafeAreaInsets()
   const { navigation } = _props
   // const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
@@ -107,8 +105,6 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
   // Subscribe form values.
   const supportLevel = form.watch("supportLevel")
   const categories = form.watch("questionCategoryIds")
-
-  console.log("form error", form.formState.errors)
 
   // Question category selection.
   const [openCategorySelection, setOpenCategorySelection] = useState(false)
@@ -153,7 +149,6 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
     await acceptQuestion(createQuestionResponse.data.id)
 
     for (const file of data.files) {
-      console.log("upload file", file)
       const uploadResponse = await api.uploadFile(
         createQuestionResponse.data.id,
         file.name,

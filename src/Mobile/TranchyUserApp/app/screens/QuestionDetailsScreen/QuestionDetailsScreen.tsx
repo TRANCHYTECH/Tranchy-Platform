@@ -1,22 +1,23 @@
-import React, { FC } from "react"
+import React, { FC, useCallback, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle } from "react-native"
 import { AppStackParamList, AppStackScreenProps } from "app/navigators"
 import { Screen } from "app/components"
 import { Text, Button } from "react-native-paper"
-import { QuestionSnapshotOut, useStores } from "app/models"
-import { useNavigation } from "@react-navigation/native"
+import { Question, QuestionSnapshotOut, useStores } from "app/models"
+import { useFocusEffect, useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 
 interface QuestionDetailsScreenProps extends AppStackScreenProps<"QuestionDetails"> {}
 
+// todo: use observer. https://mobx-state-tree.js.org/intro/getting-started
 const QuestionForm = ({ question }: { question: QuestionSnapshotOut }) => {
   return (
     <View>
-      <Text>Question: {question?.title}</Text>
-      <Text>Status: {question?.status}</Text>
-      <Text>Created by: {question?.createdByUserId}</Text>
-      <Text>Responder: {question?.responder?.userId}</Text>
+      <Text>Question: {question.title}</Text>
+      <Text>Status: {question.status}</Text>
+      <Text>Created by: {question.createdByUserId}</Text>
+      <Text>Consultant: {question.consultant?.userId}</Text>
     </View>
   )
 }
@@ -26,16 +27,34 @@ export const QuestionDetailsScreen: FC<QuestionDetailsScreenProps> = observer(
     const { navigate } =
       useNavigation<NativeStackNavigationProp<AppStackParamList, "QuestionDetails">>()
     const { questionStore } = useStores()
+    const [question, setQuestion] = useState<Question>()
+
+    const takeConsultation = async () => {
+      await question.takeConsultation()
+      alert("Congratulation. You are now consultant of this question")
+    }
+
+    useFocusEffect(
+      useCallback(() => {
+        setQuestion(questionStore.getQuestion(id))
+      }, []),
+    )
 
     return (
       <Screen style={$root} preset="scroll">
-        <View>
-          <QuestionForm question={questionStore.getQuestion(id)} />
-          <Button onPress={() => navigate("QuestionConversation", { id })}>Accept</Button>
-          <Button onPress={() => navigate("QuestionConversation", { id })}>
-            Go To Conversation
-          </Button>
-        </View>
+        {question && (
+          <View>
+            <QuestionForm question={question} />
+            {question.permissions.canTakeConsultation && (
+              <Button onPress={takeConsultation}>Take Consultation</Button>
+            )}
+            {question.permissions.canTakeConversation && (
+              <Button onPress={() => navigate("QuestionConversation", { id })}>
+                Go To Conversation
+              </Button>
+            )}
+          </View>
+        )}
       </Screen>
     )
   },
