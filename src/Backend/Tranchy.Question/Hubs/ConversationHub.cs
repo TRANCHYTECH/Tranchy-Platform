@@ -8,23 +8,26 @@ namespace Tranchy.Question.Hubs;
 [Authorize]
 public class ConversationHub : Hub
 {
-    public async Task CreateEventV2(CreateEventMetadata metadata, string payload, [FromServices] ILogger<ConversationHub> logger)
-    {
-        var @event = JsonSerializer.Deserialize<CreateQuestionEventRequest>(payload, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-        if (@event is not null)
-        {
-            string userId = GetUserId();
-            var newQuestionEvent = @event.ToEntity(metadata.QuestionId, userId);
-            await DB.InsertAsync(newQuestionEvent, cancellation: Context.ConnectionAborted);
-            logger.CreatedQuestionEvent(newQuestionEvent.ID!, metadata.QuestionId, string.Empty);
+    private static readonly JsonSerializerOptions Options = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
-            await Clients.Users(new[] { metadata.NotifiedUserId }).SendAsync("receiveEvent", newQuestionEvent, cancellationToken: Context.ConnectionAborted);
-        }
-    }
+    // public async Task CreateEventV2(CreateEventMetadata metadata, string payload, [FromServices] ILogger<ConversationHub> logger)
+    // {
+
+    //     var @event = JsonSerializer.Deserialize<CreateQuestionEventRequest>(payload, Options);
+    //     if (@event is not null)
+    //     {
+    //         string userId = GetUserId();
+    //         var newQuestionEvent = @event.ToEntity(metadata.QuestionId, userId);
+    //         await DB.InsertAsync(newQuestionEvent, cancellation: Context.ConnectionAborted);
+    //         logger.CreatedQuestionEvent(newQuestionEvent.ID!, metadata.QuestionId, string.Empty);
+
+    //         await Clients.Users(new[] { metadata.NotifiedUserId }).SendAsync("receiveEvent", newQuestionEvent, cancellationToken: Context.ConnectionAborted);
+    //     }
+    // }
 
     public async Task CreateEvent(string questionId, string payload, [FromServices] ILogger<ConversationHub> logger)
     {
-        var @event = JsonSerializer.Deserialize<CreateQuestionEventRequest>(payload, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        var @event = JsonSerializer.Deserialize<CreateQuestionEventRequest>(payload, Options);
         if (@event is not null)
         {
             string userId = GetUserId();

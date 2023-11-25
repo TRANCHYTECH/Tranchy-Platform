@@ -31,7 +31,7 @@ export const createQuestionEvent = (
   questionId: string,
   createQuestionEventBody: CreateQuestionEventBody,
 ) => {
-  return apiRequest<QuestionOutput>({
+  return apiRequest<MobileQuestionEventMessageSent>({
     url: `/question/${questionId}/Event`,
     method: "post",
     headers: { "Content-Type": "application/json" },
