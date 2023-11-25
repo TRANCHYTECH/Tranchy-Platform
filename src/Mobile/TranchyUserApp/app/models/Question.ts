@@ -1,12 +1,12 @@
+import { ApiResponse } from "apisauce"
+import { listMobileQuestionEvents, pickQuestion } from "app/services/ask-api/askApi"
+import { MobileQuestionEventMessageSent, Question } from "app/services/ask-api/models"
 import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state-tree"
-import { withSetPropAction } from "./helpers/withSetPropAction"
 import { SupportLevels } from "./Constants"
 import { QuestionConsultantModel } from "./QuestionConsultant"
 import { QuestionPermissionsModel } from "./QuestionPermissions"
-import { ApiResponse } from "apisauce"
-import { MobileQuestionEventMessageSent, Question } from "app/services/ask-api/models"
-import { listMobileQuestionEvents, pickQuestion } from "app/services/ask-api/askApi"
 import { IsoDate } from "./helpers/isoDateType"
+import { withSetPropAction } from "./helpers/withSetPropAction"
 
 export const QuestionEventUserModel = types.model("QuestionEventUser").props({
   _id: types.identifier,
@@ -37,10 +37,6 @@ export const QuestionModel = types
     events: types.array(QuestionEventModel),
   })
   .actions(withSetPropAction)
-  .views((self) => ({
-    getNotifiedUserId: (userId: string) =>
-      self.consultant?.userId.trim() === userId.trim() ? self.createdByUserId : userId,
-  }))
   .actions((self) => ({
     loadQuestionEvents: flow(function* loadQuestionEvents() {
       const response: ApiResponse<MobileQuestionEventMessageSent[]> =
