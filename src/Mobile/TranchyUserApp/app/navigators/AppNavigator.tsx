@@ -13,7 +13,7 @@ import {
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { useColorScheme } from "react-native"
+import { Button, useColorScheme } from "react-native"
 import * as Screens from "app/screens"
 import Config from "../config"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
@@ -89,7 +89,10 @@ const AppStack = observer(function AppStack() {
           />
           <Stack.Screen
             name="QuestionConversation"
-            options={{ headerShown: true, title: "Tư vấn" }}
+            options={{
+              headerShown: true,
+              title: "Trao đổi",
+            }}
             component={Screens.QuestionConversationScreen}
           />
           {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}

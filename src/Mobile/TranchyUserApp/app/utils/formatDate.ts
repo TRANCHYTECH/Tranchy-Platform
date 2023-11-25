@@ -23,6 +23,6 @@ export const formatDate = (date: string, dateFormat?: string, options?: Options)
   return format(parseISO(date), dateFormat ?? "MMM dd, yyyy", dateOptions)
 }
 
-export const timeAgo = (date: string) => {
-  return formatDistance(new Date(date), new Date(), { addSuffix: true, locale: vi })
+export const timeAgo = (date: Date) => {
+  return formatDistance(date, new Date(), { addSuffix: true, locale: vi })
 }

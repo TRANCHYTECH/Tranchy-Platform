@@ -53,7 +53,6 @@ export const MetadataStoreModel = types
           }
         } else {
           const metadata = MetadataStoreModel.create(persistedMetadata)
-          console.tron.log(metadata)
           self = metadata
         }
       } catch (error) {

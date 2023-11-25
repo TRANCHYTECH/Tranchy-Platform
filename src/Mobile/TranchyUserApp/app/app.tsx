@@ -32,6 +32,7 @@ import { Auth0Provider } from "react-native-auth0"
 import { PaperProvider } from "react-native-paper"
 import { RootSiblingParent } from "react-native-root-siblings"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
+import { ViewStyle } from "react-native"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
@@ -100,7 +101,7 @@ function App(props: AppProps) {
   return (
     <Auth0Provider domain={Config.auth0ProviderDomain} clientId={Config.auth0ProviderClientId}>
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
+        <GestureHandlerRootView style={$root}>
           <ErrorBoundary catchErrors={Config.catchErrors}>
             <PaperProvider theme={{ version: 3 }}>
               <RootSiblingParent>
@@ -119,3 +120,7 @@ function App(props: AppProps) {
 }
 
 export default App
+
+const $root: ViewStyle = {
+  flex: 1,
+}

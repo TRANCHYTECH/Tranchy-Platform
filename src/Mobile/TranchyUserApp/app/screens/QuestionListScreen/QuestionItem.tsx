@@ -1,14 +1,14 @@
 import React from "react"
 import { View, Image, StyleSheet, Pressable } from "react-native"
 import { Text } from "react-native-paper"
-import { Question } from "app/models"
+import { QuestionInstance } from "app/models"
 import { colors, getSupportLevelImage, spacing } from "app/theme"
 import { timeAgo } from "app/utils/formatDate"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { AppStackParamList } from "app/navigators"
 
-const QuestionItem = ({ item }: { item: Question }) => {
+const QuestionItem = ({ item }: { item: QuestionInstance }) => {
   const { navigate } = useNavigation<NativeStackNavigationProp<AppStackParamList, "QuestionList">>()
   return (
     <Pressable

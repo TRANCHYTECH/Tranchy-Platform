@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import { StyleSheet, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
 import { Screen } from "app/components"
-import { useStores, Question } from "app/models"
+import { useStores, QuestionInstance } from "app/models"
 import { FlashList } from "@shopify/flash-list"
 import QuestionItem from "./QuestionItem"
 import { useFocusEffect } from "@react-navigation/native"
@@ -23,7 +23,7 @@ export const QuestionListScreen: FC<QuestionListScreenProps> = observer(
     return (
       <Screen style={$root} preset="scroll">
         <View style={styles.questionListArea}>
-          <FlashList<Question>
+          <FlashList<QuestionInstance>
             data={questionStore.getQuestions()}
             renderItem={({ item }) => {
               return <QuestionItem item={item} />
