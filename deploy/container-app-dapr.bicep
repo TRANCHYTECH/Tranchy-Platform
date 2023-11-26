@@ -150,36 +150,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       scale: {
         minReplicas: minReplicas
         maxReplicas: maxReplicas
-        rules: [
-          {
-            name: 'http-scale-rule'
-            http: {
-              metadata: {
-                concurrentRequests: '500'
-              }
-            }
-          }
-          {
-            name: 'cpu-scale-rule'
-            custom: {
-              type: 'cpu'
-              metadata: {
-                metricType : 'Utilization'
-                value: '70'
-              }
-            }
-          }
-          {
-            name: 'memory-scale-rule'
-            custom: {
-              type: 'memory'
-              metadata: {
-                metricType : 'AverageValue'
-                value: '70'
-              }
-            }
-          }
-        ]
+        rules: []
       }
     }
   }
