@@ -4,21 +4,21 @@
     "net8.0": {
       "FluentValidation": {
         "type": "Direct",
-        "requested": "[11.8.0, )",
-        "resolved": "11.8.0",
-        "contentHash": "TiEaaYqSIAS+wXQv46LRm8Mca092XYNePD0n231Hqlkmm5FuToZoWnjI1ef/vJUxBzqR7/k2vaVQXxijNgVKRQ=="
+        "requested": "[11.8.1, )",
+        "resolved": "11.8.1",
+        "contentHash": "N72rnlE99XYB7EGA1u9y7m7kNTTynqOPBhZqDE8zr1Y0aSR4t5si94LRA7UVdAV09GaXWCErW+EiFhfbg3DSbg=="
       },
       "MassTransit.Abstractions": {
         "type": "Direct",
-        "requested": "[8.1.1, )",
-        "resolved": "8.1.1",
-        "contentHash": "fe6isUE0S87Px/Qkg5fkg8ymhax87SNdcOgOtOxo5ZUm8Er9VgmUBwHGYg8fHywDri6xGCJtLucFSaUIu2Urrw=="
+        "requested": "[8.1.2, )",
+        "resolved": "8.1.2",
+        "contentHash": "121mBA29VOIKtdNp+FyvNZj3BxUkHKLoGbGp3PwrUVJFwDupN3BOxRga1IbOSdNswicPXWt0k94QNcqEHDE0Yw=="
       },
       "Meziantou.Analyzer": {
         "type": "Direct",
-        "requested": "[2.0.62, )",
-        "resolved": "2.0.62",
-        "contentHash": "uG2CiDIm97q8KrUt8B34WdElpEDDLOe4YzrLWpwlQmesXrSX2WuJZ+HwIGWrJgDBBMi2a3tVjeF8oKjV+AhUdA=="
+        "requested": "[2.0.112, )",
+        "resolved": "2.0.112",
+        "contentHash": "mqlE8STIpfo1ZR7zc6H4V9mNEJjfaaa7ECIbuoQ3B2VAyiU8rlAezXz/n8SamiakVy10cItwyLnxcTGCch+7Hg=="
       },
       "Microsoft.CodeAnalysis.BannedApiAnalyzers": {
         "type": "Direct",
@@ -44,15 +44,15 @@
       },
       "Roslynator.Analyzers": {
         "type": "Direct",
-        "requested": "[4.3.0, )",
-        "resolved": "4.3.0",
-        "contentHash": "NZNaV9DAYGHKZ753WfhtBj8eoP40LLJsA6JQXdzhF87iTZAdbKCgp32mI3cnQF4TMXz7bk+CgzF/kDG+m+9bCg=="
+        "requested": "[4.6.4, )",
+        "resolved": "4.6.4",
+        "contentHash": "lOPpqMv4YzqkQNVmfwRPhjtAFTHd7HT7Jzy50sWU/QUOawGdqw462TCwFNW2DlrfjUUVHOzQp89HuhaqGOsDVg=="
       },
       "Roslynator.Formatting.Analyzers": {
         "type": "Direct",
-        "requested": "[4.3.0, )",
-        "resolved": "4.3.0",
-        "contentHash": "fvPmVbNguTZbQoAxI6Onk76S+VN6NA2yAglOZFVqNj5D9C9b5o+IR2SttP9cB093KRzyjOzFmXDHnvAg1NEAqg=="
+        "requested": "[4.6.4, )",
+        "resolved": "4.6.4",
+        "contentHash": "weQmLZMgLhpWBS+0b3Pbq5GK7ZQd/Rc/HAp2NObdUeErc+LMzGLQjkkDZR51586KFVSTosURXRYFhlhreY80wg=="
       },
       "AWSSDK.Core": {
         "type": "Transitive",
