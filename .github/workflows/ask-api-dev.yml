@@ -8,8 +8,8 @@ on:
       - "src/Backend/**"
 env:
   CONTAINER_APP_LOCATION: southeastasia
-  CONTAINER_APP_CONTAINER_NAME: ca-vg-tn-askapi-dev-sa-002
-  CONTAINER_APP_NAME: ca-vg-tn-askapi-dev-sa-002
+  CONTAINER_APP_CONTAINER_NAME: ca-vg-tn-askapi-dev-sa-001
+  CONTAINER_APP_NAME: ca-vg-tn-askapi-dev-sa-001
   CONTAINER_APP_RESOURCE_GROUP_NAME: rg-vg-tn-dev-sa-001
   CONTAINER_APP_ENV_NAME: cae-vg-tn-dev-sa-001
   CONTIANER_APP_USER_ID: id-ca-vg-tn-dev-sa-001
