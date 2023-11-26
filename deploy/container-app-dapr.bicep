@@ -55,11 +55,11 @@ param containerRegistry string
 param userAssignedIdentity string
 param subDomainCertificate string
 
-resource environment 'Microsoft.App/managedEnvironments@2023-04-01-preview' existing = {
+resource environment 'Microsoft.App/managedEnvironments@2023-05-02-preview' existing = {
   name: environmentName
 }
 
-resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2023-04-01-preview' existing = {
+resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2023-05-02-preview' existing = {
   name: subDomainCertificate
   parent: environment
 }
@@ -69,11 +69,11 @@ resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments
 // resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existing = {
 //   name: serviceBusNameSpaceName
 // }
-resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' existing = {
+resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
   name: userAssignedIdentity
 }
 
-resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2023-05-02-preview' = {
   name: containerAppName
   location: location
   identity: {
@@ -93,7 +93,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
         }
       ]
       dapr: {
-        enabled: true
+        enabled: false
         appId: containerAppName
         appPort: 80
         appProtocol: 'http'
