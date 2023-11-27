@@ -9,7 +9,7 @@ using Azure.Identity;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
+// using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Tranchy.File;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
@@ -151,7 +151,7 @@ builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
 });
 
 builder.Services.AddHealthChecks()
-.AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded)
+// .AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded)
 .AddApplicationInsightsPublisher();
 
 builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
