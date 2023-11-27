@@ -15,10 +15,7 @@ internal static class QuestionEventMapper
             .AddParameters("questionId", questionId)
             .AdaptToType<Data.QuestionEvent>();
 
-    internal static MobileQuestionEvent ToMobileModel(this Data.QuestionEvent @event)
-    {
-        return @event.BuildAdapter().AdaptToType<MobileQuestionEvent>();
-    }
+    internal static MobileQuestionEvent ToMobileModel(this Data.QuestionEvent @event) => @event.BuildAdapter().AdaptToType<MobileQuestionEvent>();
 
     static QuestionEventMapper()
     {
