@@ -20,18 +20,9 @@ public class GetMetadata : IEndpoint
         return TypedResults.Ok(response);
     }
 
-    private static async Task<List<QuestionCategory>> GetQuestionCategories(CancellationToken cancellationToken)
-    {
-        return await DB.Find<QuestionCategory>().ManyAsync(_ => true, cancellationToken);
-    }
+    private static async Task<List<QuestionCategory>> GetQuestionCategories(CancellationToken cancellationToken) => await DB.Find<QuestionCategory>().ManyAsync(_ => true, cancellationToken);
 
-    private static async Task<List<QuestionPriority>> GetQuestionPriorities(CancellationToken cancellationToken)
-    {
-        return await DB.Find<QuestionPriority>().ManyAsync(_ => true, cancellationToken);
-    }
+    private static async Task<List<QuestionPriority>> GetQuestionPriorities(CancellationToken cancellationToken) => await DB.Find<QuestionPriority>().ManyAsync(_ => true, cancellationToken);
 
-    public static void Register(RouteGroupBuilder routeGroupBuilder)
-    {
-        routeGroupBuilder.MapGet("/configurations", GetQuestionConfigurations).WithName("GetQuestionConfigurations");
-    }
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapGet("/configurations", GetQuestionConfigurations).WithName("GetQuestionConfigurations");
 }
