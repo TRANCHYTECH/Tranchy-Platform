@@ -9,7 +9,7 @@ public static class EndpointRouteBuilderExtensions
 {
     public static void MapTranchyHealthChecks(this IEndpointRouteBuilder builder)
     {
-        builder.MapHealthChecks("/healthz/startup",
+        builder.MapHealthChecks("/healthz",
                     new HealthCheckOptions
                     {
                         ResponseWriter = async (context, report) =>
@@ -25,6 +25,10 @@ public static class EndpointRouteBuilderExtensions
                         }
                     }
                 );
+        builder.MapHealthChecks("/healthz/startup", new HealthCheckOptions
+        {
+            Predicate = _ => true
+        });
         builder.MapHealthChecks("/healthz/readiness", new HealthCheckOptions
         {
             Predicate = _ => true
