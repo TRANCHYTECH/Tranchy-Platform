@@ -9,7 +9,7 @@ namespace Tranchy.Question.Endpoints;
 
 public class CreateQuestionEvent : IEndpoint
 {
-    public static async Task<Results<Ok<MobileQuestionEvent>, BadRequest<IDictionary<string, string[]>>>> Create(
+    public static async Task<Results<Ok<QuestionOutput>, BadRequest<IDictionary<string, string[]>>>> Create(
         [FromRoute] string questionId,
         [FromBody] CreateQuestionEventRequest input,
         [FromServices] IEndpointNameFormatter endpointNameFormatter,
@@ -35,14 +35,12 @@ public class CreateQuestionEvent : IEndpoint
 
         if (input.Metadata.NotifiedUserId is not null)
         {
-            //todo: fire and forget. https://www.meziantou.net/fire-and-forget-a-task-in-dotnet.htm#alternative-implemen-a5b499
-            var mobileEvent = newQuestionEvent.ToMobileModel();
-            await hubContext.Clients.Users(new[] { input.Metadata.NotifiedUserId }).SendAsync("receiveEvent", mobileEvent, token);
+            await hubContext.Clients.Users(new[] { input.Metadata.NotifiedUserId }).SendAsync("receiveEvent", newQuestionEvent, token);
         }
 
         logger.CreatedQuestionEvent(newQuestionEvent.ID!, newQuestionEvent.QuestionId, newQuestionEvent.CreatedByUserId);
 
-        return TypedResults.Ok(newQuestionEvent.ToMobileModel());
+        return TypedResults.Ok<QuestionOutput>(new(newQuestionEvent.ID!));
     }
 
     public static void Register(RouteGroupBuilder routeGroupBuilder)
