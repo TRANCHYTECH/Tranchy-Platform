@@ -145,6 +145,36 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
             cpu: json(cpuCore)
             memory: '${memorySize}Gi'
           }
+          probes: [
+            {
+              type: 'Startup'
+              timeoutSeconds: 10
+              httpGet: {
+                port: targetPort
+                path: '/healthz/startup'
+              }
+            }
+            {
+              type: 'Readiness'
+              timeoutSeconds: 5
+              failureThreshold: 3
+              httpGet: {
+                port: targetPort
+                path: '/healthz/readiness'
+              }
+            }
+            {
+              type: 'Liveness'
+              initialDelaySeconds: 15
+              periodSeconds: 30
+              failureThreshold: 3
+              timeoutSeconds: 3
+              httpGet: {
+                port: targetPort
+                path: '/healthz/liveness'
+              }
+            }
+          ]
         }
       ]
       scale: {
