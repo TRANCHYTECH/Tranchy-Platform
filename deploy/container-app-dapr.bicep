@@ -55,11 +55,11 @@ param containerRegistry string
 param userAssignedIdentity string
 param subDomainCertificate string
 
-resource environment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
+resource environment 'Microsoft.App/managedEnvironments@2023-04-01-preview' existing = {
   name: environmentName
 }
 
-resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2023-05-01' existing = {
+resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments/managedCertificates@2023-04-01-preview' existing = {
   name: subDomainCertificate
   parent: environment
 }
@@ -69,11 +69,11 @@ resource managedEnvironmentManagedCertificate 'Microsoft.App/managedEnvironments
 // resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' existing = {
 //   name: serviceBusNameSpaceName
 // }
-resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' existing = {
   name: userAssignedIdentity
 }
 
-resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
+resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
   name: containerAppName
   location: location
   identity: {
@@ -93,7 +93,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
         }
       ]
       dapr: {
-        enabled: false
+        enabled: true
         appId: containerAppName
         appPort: 80
         appProtocol: 'http'
@@ -102,7 +102,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       ingress: {
         external: true
         targetPort: targetPort
-        allowInsecure: true
+        allowInsecure: false
         traffic: [
           {
             latestRevision: true
@@ -145,42 +145,41 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
             cpu: json(cpuCore)
             memory: '${memorySize}Gi'
           }
-          probes: [
-            {
-              type: 'Startup'
-              timeoutSeconds: 10
-              httpGet: {
-                port: targetPort
-                path: '/healthz/startup'
-              }
-            }
-            {
-              type: 'Readiness'
-              timeoutSeconds: 5
-              failureThreshold: 3
-              httpGet: {
-                port: targetPort
-                path: '/healthz/readiness'
-              }
-            }
-            {
-              type: 'Liveness'
-              initialDelaySeconds: 15
-              periodSeconds: 30
-              failureThreshold: 3
-              timeoutSeconds: 3
-              httpGet: {
-                port: targetPort
-                path: '/healthz/liveness'
-              }
-            }
-          ]
         }
       ]
       scale: {
         minReplicas: minReplicas
         maxReplicas: maxReplicas
-        rules: []
+        rules: [
+          {
+            name: 'http-scale-rule'
+            http: {
+              metadata: {
+                concurrentRequests: '500'
+              }
+            }
+          }
+          {
+            name: 'cpu-scale-rule'
+            custom: {
+              type: 'cpu'
+              metadata: {
+                metricType: 'Utilization'
+                value: '70'
+              }
+            }
+          }
+          {
+            name: 'memory-scale-rule'
+            custom: {
+              type: 'memory'
+              metadata: {
+                metricType: 'AverageValue'
+                value: '70'
+              }
+            }
+          }
+        ]
       }
     }
   }

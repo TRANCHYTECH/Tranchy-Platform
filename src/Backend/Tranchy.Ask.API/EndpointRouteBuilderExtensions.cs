@@ -25,24 +25,6 @@ public static class EndpointRouteBuilderExtensions
                         }
                     }
                 );
-        builder.MapHealthChecks("/healthz/startup", new HealthCheckOptions
-        {
-            Predicate = _ => true,
-            ResultStatusCodes =
-            {
-              [HealthStatus.Healthy] = StatusCodes.Status200OK,
-              [HealthStatus.Degraded] = StatusCodes.Status200OK,
-              [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
-            }
-        });
-        builder.MapHealthChecks("/healthz/readiness", new HealthCheckOptions
-        {
-            Predicate = _ => true
-        });
-        builder.MapHealthChecks("/healthz/liveness", new HealthCheckOptions
-        {
-            Predicate = _ => true
-        });
     }
 
 }
