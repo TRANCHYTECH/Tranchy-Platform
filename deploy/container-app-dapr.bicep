@@ -159,26 +159,6 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
               }
             }
           }
-          {
-            name: 'cpu-scale-rule'
-            custom: {
-              type: 'cpu'
-              metadata: {
-                metricType: 'Utilization'
-                value: '70'
-              }
-            }
-          }
-          {
-            name: 'memory-scale-rule'
-            custom: {
-              type: 'memory'
-              metadata: {
-                metricType: 'AverageValue'
-                value: '70'
-              }
-            }
-          }
         ]
       }
     }
