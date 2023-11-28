@@ -1,16 +1,13 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
-using Tranchy.Question;
 using Tranchy.Ask.API;
-using Tranchy.Payment;
 using Tranchy.Common;
 using Azure.Identity;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 // using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Tranchy.File;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -164,9 +161,6 @@ app.UseForwardedHeaders();
 app.UseCors(agencyPortalSpaPolicy);
 
 // Could take advantage of IHostingStartup
-app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
-app.MapGroup("/file").MapEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint();
-app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
 
 // Redirect after login
 app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, permanent: true));
@@ -174,11 +168,4 @@ app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSetting
 app.UseTranchySwagger(appSettings);
 app.UseTranchyExceptionHandler();
 
-app.UseAuthentication();
-app.UseBff();
-app.UseAuthorization();
-app.MapBffManagementEndpoints();
-app.MapTranchyHealthChecks();
-
-app.UseHubs();
 app.Run();
