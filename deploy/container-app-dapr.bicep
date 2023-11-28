@@ -25,7 +25,7 @@ param containerImage string = 'mcr.microsoft.com/k8se/quickstart:latest'
   '1.75'
   '2'
 ])
-param cpuCore string = '0.25'
+param cpuCore string = '0.5'
 
 @description('Amount of memory (in gibibytes, GiB) allocated to the container up to 4GiB. Can be with a maximum of two decimals. Ratio with CPU cores must be equal to 2.')
 @allowed([
@@ -37,7 +37,7 @@ param cpuCore string = '0.25'
   '3.5'
   '4'
 ])
-param memorySize string = '0.5'
+param memorySize string = '1'
 
 @description('Minimum number of replicas that will be deployed')
 @minValue(0)
