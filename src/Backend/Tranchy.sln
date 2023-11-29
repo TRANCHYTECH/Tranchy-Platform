@@ -13,9 +13,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tranchy.Common", "Tranchy.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tranchy.Payment", "Tranchy.Payment\Tranchy.Payment.csproj", "{9C2DB807-6642-4A6A-BD9B-AE6A84D79615}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tranchy.Ask.Worker", "Tranchy.Ask.Worker\Tranchy.Ask.Worker.csproj", "{71216FF3-928E-47DE-A11C-D7002411D568}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tranchy.Ask.Worker", "Tranchy.Ask.Worker\Tranchy.Ask.Worker.csproj", "{71216FF3-928E-47DE-A11C-D7002411D568}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tranchy.File", "Tranchy.File\Tranchy.File.csproj", "{888E4454-ECE4-4DDA-AAEE-16A6326C41F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tranchy.File", "Tranchy.File\Tranchy.File.csproj", "{888E4454-ECE4-4DDA-AAEE-16A6326C41F7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tranchy.Api", "Tranchy.Api\Tranchy.Api.csproj", "{0A85EF1F-E3A5-49EE-A5E2-BD1983CCE1A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Solutions", "_Solutions", "{1DDD0C0F-853C-4345-9B51-35C300B0CC7B}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\.dockerignore = ..\..\.dockerignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C1C3CE09-E843-49A6-9A16-90F18EB18D30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +59,14 @@ Global
 		{888E4454-ECE4-4DDA-AAEE-16A6326C41F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{888E4454-ECE4-4DDA-AAEE-16A6326C41F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{888E4454-ECE4-4DDA-AAEE-16A6326C41F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A85EF1F-E3A5-49EE-A5E2-BD1983CCE1A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A85EF1F-E3A5-49EE-A5E2-BD1983CCE1A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A85EF1F-E3A5-49EE-A5E2-BD1983CCE1A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A85EF1F-E3A5-49EE-A5E2-BD1983CCE1A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1C3CE09-E843-49A6-9A16-90F18EB18D30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1C3CE09-E843-49A6-9A16-90F18EB18D30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1C3CE09-E843-49A6-9A16-90F18EB18D30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1C3CE09-E843-49A6-9A16-90F18EB18D30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
