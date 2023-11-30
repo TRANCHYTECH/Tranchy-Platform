@@ -63,7 +63,7 @@ resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' exist
   name: userAssignedIdentity
 }
 
-resource containerApp 'Microsoft.App/containerApps@2023-05-02-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: containerAppName
   location: location
   identity: {
@@ -118,6 +118,16 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-02-preview' = {
       scale: {
         minReplicas: minReplicas
         maxReplicas: maxReplicas
+        rules: [
+          {
+            name: 'http-requests'
+            http: {
+              metadata: {
+                concurrentRequests: '10'
+              }
+            }
+          }
+        ]
       }
     }
   }
