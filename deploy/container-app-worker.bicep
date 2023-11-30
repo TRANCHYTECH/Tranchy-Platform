@@ -82,6 +82,17 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-02-preview' = {
           server: containerRegistry
         }
       ]
+      ingress: {
+        external: true
+        targetPort: 80
+        allowInsecure: false
+        traffic: [
+          {
+            latestRevision: true
+            weight: 100
+          }
+        ]
+      }
     }
     template: {
       containers: [
