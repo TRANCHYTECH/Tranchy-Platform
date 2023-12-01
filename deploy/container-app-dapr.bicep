@@ -9,7 +9,7 @@ param aspNetEnv string = 'Production'
 param azureClientId string
 
 @description('Specifies the container port.')
-param targetPort int = 80
+param targetPort int = 8080
 
 @description('Specifies the docker container image to deploy.')
 param containerImage string = 'mcr.microsoft.com/k8se/quickstart:latest'
@@ -93,7 +93,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
         }
       ]
       dapr: {
-        enabled: true
+        enabled: false
         appId: containerAppName
         appPort: 80
         appProtocol: 'http'
