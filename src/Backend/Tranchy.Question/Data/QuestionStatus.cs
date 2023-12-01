@@ -5,9 +5,11 @@ public enum QuestionStatus
     New = 1,
     BeingReviewed = 2,
     Accepted = 3,
-    Payment = 4,
-    InProgress = 5,
-    Rejected = 6,
-    Done = 7,
-    Reported = 8,
+    Cancelled = 4,
+    Payment = 5,
+    InProgress = 6,
+    Rejected = 7,
+    Resolved = 8,
+    Closed = 9,
+    Reported = 10
 }

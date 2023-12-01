@@ -44,7 +44,6 @@ export class Api {
       )
 
       if (response.status !== 200) {
-        console.tron.error("Could not upload file", response.body)
         return { kind: "server" }
       }
 

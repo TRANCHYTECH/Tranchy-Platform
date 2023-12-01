@@ -8,7 +8,6 @@ import type {
   CreateQuestionEventBody,
   CreateQuestionRequest,
   CreateQuestionResponse,
-  FinishConsultationRequest,
   GetQuestionConfigurationsResponse,
   MobileQuestionEventMessageSent,
   Question,
@@ -28,6 +27,18 @@ export const createQuestion = (createQuestionRequest: CreateQuestionRequest) => 
   })
 }
 
+export const createQuestionEvent = (
+  questionId: string,
+  createQuestionEventBody: CreateQuestionEventBody,
+) => {
+  return apiRequest<MobileQuestionEventMessageSent>({
+    url: `/question/${questionId}/Event`,
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    data: createQuestionEventBody,
+  })
+}
+
 export const getQuestionConfigurations = () => {
   return apiRequest<GetQuestionConfigurationsResponse>({
     url: `/question/configurations`,
@@ -43,28 +54,8 @@ export const getQuestionByUser = (user: string) => {
   return apiRequest<QuestionOutput>({ url: `/question/user/${user}`, method: "get" })
 }
 
-export const createQuestionEvent = (
-  questionId: string,
-  createQuestionEventBody: CreateQuestionEventBody,
-) => {
-  return apiRequest<QuestionOutput>({
-    url: `/question/${questionId}/Event`,
-    method: "post",
-    headers: { "Content-Type": "application/json" },
-    data: createQuestionEventBody,
-  })
-}
-
-export const finishConsultation = (
-  id: string,
-  finishConsultationRequest: FinishConsultationRequest,
-) => {
-  return apiRequest<void>({
-    url: `/question/${id}/finish`,
-    method: "post",
-    headers: { "Content-Type": "application/json" },
-    data: finishConsultationRequest,
-  })
+export const pickQuestion = (id: string) => {
+  return apiRequest<Question>({ url: `/question/${id}/pick`, method: "post" })
 }
 
 export const listMobileQuestionEvents = (id: string) => {
@@ -72,14 +63,6 @@ export const listMobileQuestionEvents = (id: string) => {
     url: `/question/mobile/${id}/events`,
     method: "get",
   })
-}
-
-export const pickQuestion = (id: string) => {
-  return apiRequest<Question>({ url: `/question/${id}/pick`, method: "post" })
-}
-
-export const acceptQuestion = (id: string) => {
-  return apiRequest<void>({ url: `/question/${id}/accept`, method: "post" })
 }
 
 export const listCommunityQuestions = () => {
@@ -115,19 +98,21 @@ export const uploadFileForQuestion = (
   })
 }
 
+export const acceptQuestion = (id: string) => {
+  return apiRequest<void>({ url: `/question/${id}/accept`, method: "post" })
+}
+
 export type CreateQuestionResult = NonNullable<Awaited<ReturnType<typeof createQuestion>>>
+export type CreateQuestionEventResult = NonNullable<Awaited<ReturnType<typeof createQuestionEvent>>>
 export type GetQuestionConfigurationsResult = NonNullable<
   Awaited<ReturnType<typeof getQuestionConfigurations>>
 >
 export type GetQuestionByIdResult = NonNullable<Awaited<ReturnType<typeof getQuestionById>>>
 export type GetQuestionByUserResult = NonNullable<Awaited<ReturnType<typeof getQuestionByUser>>>
-export type CreateQuestionEventResult = NonNullable<Awaited<ReturnType<typeof createQuestionEvent>>>
-export type FinishConsultationResult = NonNullable<Awaited<ReturnType<typeof finishConsultation>>>
+export type PickQuestionResult = NonNullable<Awaited<ReturnType<typeof pickQuestion>>>
 export type ListMobileQuestionEventsResult = NonNullable<
   Awaited<ReturnType<typeof listMobileQuestionEvents>>
 >
-export type PickQuestionResult = NonNullable<Awaited<ReturnType<typeof pickQuestion>>>
-export type AcceptQuestionResult = NonNullable<Awaited<ReturnType<typeof acceptQuestion>>>
 export type ListCommunityQuestionsResult = NonNullable<
   Awaited<ReturnType<typeof listCommunityQuestions>>
 >
@@ -137,3 +122,4 @@ export type GetAgencyPortalResult = NonNullable<Awaited<ReturnType<typeof getAge
 export type UploadFileForQuestionResult = NonNullable<
   Awaited<ReturnType<typeof uploadFileForQuestion>>
 >
+export type AcceptQuestionResult = NonNullable<Awaited<ReturnType<typeof acceptQuestion>>>
