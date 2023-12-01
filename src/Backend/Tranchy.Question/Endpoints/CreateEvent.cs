@@ -35,7 +35,7 @@ public class CreateQuestionEvent : IEndpoint
 
         if (input.Metadata.NotifiedUserId is not null)
         {
-            await hubContext.Clients.Users(new[] { input.Metadata.NotifiedUserId }).SendAsync("receiveEvent", newQuestionEvent, token);
+            await hubContext.Clients.Users(new[] { input.Metadata.NotifiedUserId }).SendAsync("receiveEvent", newQuestionEvent.ToMobileModel(), token);
         }
 
         logger.CreatedQuestionEvent(newQuestionEvent.ID!, newQuestionEvent.QuestionId, newQuestionEvent.CreatedByUserId);

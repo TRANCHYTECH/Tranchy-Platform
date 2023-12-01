@@ -4,6 +4,8 @@ import { SupportLevel } from "app/services/ask-api/models"
 import supportLevelCoffee from "../../assets/images/support-level-coffee.png"
 // @ts-ignore
 import supportLevelExpert from "../../assets/images/support-level-expert.png"
+// @ts-ignore
+import finishConsultationImage from "../../assets/images/finish-consultation-btn.png"
 
 const getSupportLevelImage = (type: SupportLevel) => {
   switch (type) {
@@ -15,4 +17,4 @@ const getSupportLevelImage = (type: SupportLevel) => {
       return supportLevelCoffee
   }
 }
-export { getSupportLevelImage }
+export { getSupportLevelImage, finishConsultationImage }

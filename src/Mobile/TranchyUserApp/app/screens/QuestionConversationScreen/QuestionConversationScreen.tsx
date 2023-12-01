@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useRef, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle, StyleSheet, Image } from "react-native"
+import { View, ViewStyle, StyleSheet, Image, Alert } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
 import { BottomSheet, BottomSheetBase, Screen, SectionLabel } from "app/components"
 import { Button, Checkbox, HelperText, Text, TextInput, IconButton } from "react-native-paper"
@@ -32,6 +32,18 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
     const openBottomSheet = () => {
       setOpenCategorySelection(true)
       bottomSheetRef.current.expand()
+    }
+
+    const closeBottomSheet = (success: boolean) => {
+      setOpenCategorySelection(false)
+      bottomSheetRef.current.close()
+      if (success) {
+        Alert.alert(
+          "Chúc mừng bạn đã hoàn thành tư vấn. Hệ thống sẽ chuyển câu trả lời đến... Trong vòng 24 giờ...",
+        )
+
+        // How to update status? Need response from server also
+      }
     }
 
     useConversationHub({
@@ -102,7 +114,9 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
         </Screen>
         <BottomSheetBase bottomInset={46} ref={bottomSheetRef} index={-1} snapPoints={["75%"]}>
           <View style={styles.bottomSheetContainer}>
-            {openCategorySelection && <ConclusionEditorSection />}
+            {openCategorySelection && (
+              <ConclusionEditorSection questionId={id} onClose={closeBottomSheet} />
+            )}
           </View>
         </BottomSheetBase>
       </>
@@ -124,7 +138,13 @@ const QuestionDetailSection = ({ question }: { question: QuestionInstance }) => 
   )
 }
 
-const ConclusionEditorSection = ({ questionId }: { questionId: string }) => {
+const ConclusionEditorSection = ({
+  questionId,
+  onClose,
+}: {
+  questionId: string
+  onClose: (cancelled: boolean) => void
+}) => {
   const form = useForm<ConclusionFormModel>({
     resolver: zodResolver(ConclusionFormSchema),
     defaultValues: {
@@ -133,7 +153,12 @@ const ConclusionEditorSection = ({ questionId }: { questionId: string }) => {
   })
 
   const submitConclusion = async (form: ConclusionFormModel) => {
-    await finishConsultation(questionId, { conclusion: form.conclusion })
+    const response = await finishConsultation(questionId, { conclusion: form.conclusion })
+    if (response.ok) {
+      setTimeout(() => onClose(true), 100)
+    } else {
+      Alert.alert("Có lỗi không thể submit")
+    }
   }
 
   const onError = (error) => {
@@ -144,7 +169,7 @@ const ConclusionEditorSection = ({ questionId }: { questionId: string }) => {
     <>
       <View style={bottomSheetStyles.title}>
         <Text variant="titleMedium">Gửi câu trả lời cuối cùng</Text>
-        <IconButton icon="close" size={20} />
+        <IconButton icon="close" size={20} onPress={() => onClose(false)} />
       </View>
       <FormProvider {...form}>
         <View style={bottomSheetStyles.contentContainer}>
