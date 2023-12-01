@@ -18,9 +18,6 @@ public class VerifyQuestion : IEndpoint
         return TypedResults.NoContent();
     }
 
-    public static void Register(RouteGroupBuilder routeGroupBuilder)
-    {
-        routeGroupBuilder.MapPost("/{id}/accept", Accept).WithName("AcceptQuestion");
-    }
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapPost("/{id}/accept", Accept).WithName("AcceptQuestion").WithTags("Question");
 }
 

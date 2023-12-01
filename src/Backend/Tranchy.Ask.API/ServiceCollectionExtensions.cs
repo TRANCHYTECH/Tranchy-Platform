@@ -17,6 +17,7 @@ public static class ServiceCollectionExtensions
         PaymentModule.ConfigureServices(services, configuration);
         services.AddMassTransit(c =>
         {
+            c.ConfigureHealthCheckOptions(cfg => cfg.FailureStatus = Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
             // c.AddEntityFrameworkOutbox<PaymentDbContext>(o =>
             // {
             //     o.UseSqlServer();

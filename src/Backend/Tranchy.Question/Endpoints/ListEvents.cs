@@ -15,8 +15,5 @@ public class ListEvents : IEndpoint
         return TypedResults.Ok(response);
     }
 
-    public static void Register(RouteGroupBuilder routeGroupBuilder)
-    {
-        routeGroupBuilder.MapGet("/mobile/{id}/events", ListQuestionEvents).WithName("ListMobileQuestionEvents").WithTags("Questions");
-    }
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapGet("/mobile/{id}/events", ListQuestionEvents).WithName("ListMobileQuestionEvents").WithTags("Question");
 }

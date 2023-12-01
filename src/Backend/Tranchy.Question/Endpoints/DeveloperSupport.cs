@@ -61,8 +61,5 @@ public class SupportDeveloper : IEndpoint
         return TypedResults.Ok();
     }
 
-    public static void Register(RouteGroupBuilder routeGroupBuilder)
-    {
-        routeGroupBuilder.MapPost("/suportdeveloper/seedmetadata", SeedMetadata).WithName("SeedMetadata");
-    }
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapPost("/suportdeveloper/seedmetadata", SeedMetadata).WithName("SeedMetadata");
 }

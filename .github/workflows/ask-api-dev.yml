@@ -36,7 +36,7 @@ jobs:
       - name: Build and push container image to registry
         uses: docker/build-push-action@v2
         with:
-          context: ./src
+          context: ./src/Backend
           push: true
           tags: ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }}
           file: ${{ env.DOCKER_FILE_PATH }}
@@ -53,6 +53,7 @@ jobs:
       - name: Deploy to containerapp
         uses: azure/arm-deploy@v1
         with:
+          scope: "resourcegroup"
           resourceGroupName: ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }}
           template: ./deploy/container-app-dapr.bicep
           parameters: location=${{ env.CONTAINER_APP_LOCATION }} subDomainCertificate=${{ env.CONTAINER_APP_SUBDOMAIN_CERTIFICATE }} userAssignedIdentity=${{ env.CONTIANER_APP_USER_ID }} azureClientId=${{env.CONTIANER_APP_AZURE_CLIENT_ID}} environmentName=${{ env.CONTAINER_APP_ENV_NAME }} containerAppName=${{ env.CONTAINER_APP_CONTAINER_NAME }} containerImage=${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }} containerRegistry=${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}

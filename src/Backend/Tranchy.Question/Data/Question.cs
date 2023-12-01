@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using MongoDB.Entities;
 using Tranchy.Common.Data;
 using Tranchy.Common.Exceptions;
@@ -38,6 +37,22 @@ public class Question : EntityBase, IOwnEntity
         Consultant = new() { UserId = userId, CreatedAt = DateTime.UtcNow };
     }
 
+    public void FinishConsultation(string userId, string conclusion)
+    {
+        if (Status == QuestionStatus.InProgress)
+        {
+            throw new TranchyAteChillyException("Invalid status");
+        }
+
+        if (Consultant is null || !string.Equals(Consultant.UserId, userId, StringComparison.Ordinal))
+        {
+            throw new TranchyAteChillyException("Invalid consultant");
+        }
+
+        Consultant.Conclusion = conclusion;
+        Status = QuestionStatus.Resolved;
+    }
+
     public void RefinePermissions(string userId)
     {
         Permissions = new QuestionPermissions();
@@ -67,5 +82,4 @@ public class Question : EntityBase, IOwnEntity
 
     private bool IsRequester(string userId) => string.Equals(CreatedByUserId, userId, StringComparison.Ordinal);
     private bool IsConsultant(string userId) => string.Equals(Consultant?.UserId, userId, StringComparison.Ordinal);
-
 }

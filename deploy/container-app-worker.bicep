@@ -51,7 +51,7 @@ param revisionMode string = 'Single'
 param containerRegistry string
 param userAssignedIdentity string
 
-resource environment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
+resource environment 'Microsoft.App/managedEnvironments@2023-05-02-preview' existing = {
   name: environmentName
 }
 // var serviceBusNameSpaceName = 'vgtrunnerdev'
@@ -63,7 +63,7 @@ resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' exist
   name: userAssignedIdentity
 }
 
-resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
+resource containerApp 'Microsoft.App/containerApps@2023-05-02-preview' = {
   name: containerAppName
   location: location
   identity: {

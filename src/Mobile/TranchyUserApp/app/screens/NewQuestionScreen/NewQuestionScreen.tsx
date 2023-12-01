@@ -77,6 +77,7 @@ const CategorySelections = ({
   )
 }
 
+// todo: use memo if move inside
 const locale = currentLocale()
 
 export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function NewQuestionScreen(
@@ -84,6 +85,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
 ) {
   const insets = useSafeAreaInsets()
   const { navigation } = _props
+  // const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
   const { metadataStore } = useStores()
   const [isProcessing, setIsProcessing] = useState(false)
 

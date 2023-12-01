@@ -9,7 +9,7 @@ param aspNetEnv string = 'Production'
 param azureClientId string
 
 @description('Specifies the container port.')
-param targetPort int = 80
+param targetPort int = 8080
 
 @description('Specifies the docker container image to deploy.')
 param containerImage string = 'mcr.microsoft.com/k8se/quickstart:latest'
@@ -25,7 +25,7 @@ param containerImage string = 'mcr.microsoft.com/k8se/quickstart:latest'
   '1.75'
   '2'
 ])
-param cpuCore string = '0.25'
+param cpuCore string = '0.5'
 
 @description('Amount of memory (in gibibytes, GiB) allocated to the container up to 4GiB. Can be with a maximum of two decimals. Ratio with CPU cores must be equal to 2.')
 @allowed([
@@ -37,7 +37,7 @@ param cpuCore string = '0.25'
   '3.5'
   '4'
 ])
-param memorySize string = '0.5'
+param memorySize string = '1'
 
 @description('Minimum number of replicas that will be deployed')
 @minValue(0)
@@ -93,9 +93,9 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
         }
       ]
       dapr: {
-        enabled: true
+        enabled: false
         appId: containerAppName
-        appPort: 80
+        appPort: targetPort
         appProtocol: 'http'
         enableApiLogging: true
       }
@@ -156,26 +156,6 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
             http: {
               metadata: {
                 concurrentRequests: '500'
-              }
-            }
-          }
-          {
-            name: 'cpu-scale-rule'
-            custom: {
-              type: 'cpu'
-              metadata: {
-                metricType : 'Utilization'
-                value: '70'
-              }
-            }
-          }
-          {
-            name: 'memory-scale-rule'
-            custom: {
-              type: 'memory'
-              metadata: {
-                metricType : 'AverageValue'
-                value: '70'
               }
             }
           }
