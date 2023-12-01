@@ -159,6 +159,12 @@
           "Microsoft.Extensions.Logging": "6.0.0"
         }
       },
+      "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
+        "type": "Direct",
+        "requested": "[1.19.5, )",
+        "resolved": "1.19.5",
+        "contentHash": "Kaa1rBZdJFq5A0qgAcl6Bmk/UqLXTq9acEqxUlPEBA8oscmakLfkvuSXfG7Wa9t1/keaT85EuuDNgOo+Z9VYOQ=="
+      },
       "MiniValidation": {
         "type": "Direct",
         "requested": "[0.9.0, )",
