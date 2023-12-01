@@ -24,8 +24,6 @@ const en = {
     questionContent: "Nội dung câu hỏi",
     askQuestionGuideline:
       "Để đặt 1 câu hỏi hiệu quả, bạn nên tham khảo hướng dẫn về cách đặt vấn đề\r\nBước 1: Xác định vấn đề. \r\nBước 2: Nếu câu hỏi nhạy cảm, bạn nên tuân thủ theo hướng dẫn tại đây.\r\nBước 3: Bạn mong muốn câu trả lời.",
-    answerGuideline:
-      "Để có 1 câu trả lời hiệu quả, bạn nên tham khảo hướng dẫn về cách đặt vấn đề\r\nBước 1: Xác định vấn đề. \r\nBước 2: Nếu câu hỏi nhạy cảm, bạn nên tuân thủ theo hướng dẫn tại đây.\r\nBước 3: Bạn mong muốn câu trả lời.",
   },
   welcomeScreen: {
     postscript:
