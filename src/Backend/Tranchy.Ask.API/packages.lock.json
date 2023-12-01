@@ -39,11 +39,11 @@
       },
       "Azure.Monitor.OpenTelemetry.AspNetCore": {
         "type": "Direct",
-        "requested": "[1.0.0-beta.8, )",
-        "resolved": "1.0.0-beta.8",
-        "contentHash": "YVK09psTBYncEtQDxcu5N0tJq+tgVxlWnJfAWcezzuGAY6LBxvkmBg31B6dQS/qc9oUt/XIPIqjwmEzQdXtTVQ==",
+        "requested": "[1.0.0, )",
+        "resolved": "1.0.0",
+        "contentHash": "xjGoK3fc3b2PXPigWFzkcb1lHzEIU2/jaut7P3b3q8lEetkb6zOn6klZXJGseVRNwvLKZKU2UuyADU6G6X9jGg==",
         "dependencies": {
-          "Azure.Monitor.OpenTelemetry.Exporter": "1.0.0",
+          "Azure.Monitor.OpenTelemetry.Exporter": "1.1.0",
           "Microsoft.AspNetCore.Http.Abstractions": "[2.1.1, 6.0.0)",
           "Microsoft.AspNetCore.Http.Features": "[2.1.1, 6.0.0)",
           "OpenTelemetry.Extensions.Hosting": "1.6.0",
@@ -102,9 +102,9 @@
       },
       "Meziantou.Analyzer": {
         "type": "Direct",
-        "requested": "[2.0.112, )",
-        "resolved": "2.0.112",
-        "contentHash": "mqlE8STIpfo1ZR7zc6H4V9mNEJjfaaa7ECIbuoQ3B2VAyiU8rlAezXz/n8SamiakVy10cItwyLnxcTGCch+7Hg=="
+        "requested": "[2.0.116, )",
+        "resolved": "2.0.116",
+        "contentHash": "r+6UkVHXpg6DXXZmrxHUX2h4eQyF9QaWj+m6hiusY23tX0ZJUew9M9/zOKDHVdE0CNWnTqfcRv86yZ6wb/RA+Q=="
       },
       "Microsoft.AspNetCore.Authentication.JwtBearer": {
         "type": "Direct",
@@ -173,12 +173,12 @@
       },
       "MongoDB.Entities": {
         "type": "Direct",
-        "requested": "[22.1.0, )",
-        "resolved": "22.1.0",
-        "contentHash": "N1kq1gDmQOft5CJpbq8OAWmYFVBS9JXTiE54VrQpZqSvFtSRoMbkJ6jd9pXlxSERvBl4maFguSxFtqH9nEdDnQ==",
+        "requested": "[23.0.0, )",
+        "resolved": "23.0.0",
+        "contentHash": "6clMPwr1WL4pqQ8mFr7WF8TShbNSynLGoCbeMOuvnX/Sd4w8RZ6ltI2YrDGUEvsuqXDKjmnVJJGcXuaey7J1uA==",
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
-          "MongoDB.Driver": "2.21.0"
+          "MongoDB.Driver": "2.22.0"
         }
       },
       "Roslynator.Analyzers": {
@@ -276,10 +276,10 @@
       },
       "Azure.Monitor.OpenTelemetry.Exporter": {
         "type": "Transitive",
-        "resolved": "1.0.0",
-        "contentHash": "Hj4tDQa5ZJc108QLjGaTvmf38fCn4vZMK6vd3muNQ+k7Zd71d+QrpnsnlaAVGAqb/XAKZsMhySviI5LtAlU+kA==",
+        "resolved": "1.1.0",
+        "contentHash": "4KD5z/uQxaT5olVLLbf34Ydi/B80ADNLl2zGWpmwI5t+P/0KNDWkeRC1NlP+mli5D0G+8jrRwm5O87yAWB3CWg==",
         "dependencies": {
-          "Azure.Core": "1.35.0",
+          "Azure.Core": "1.36.0",
           "OpenTelemetry": "1.6.0",
           "OpenTelemetry.PersistentStorage.FileSystem": "1.0.0",
           "System.Text.Json": "4.7.2"
@@ -1221,7 +1221,7 @@
           "FluentValidation": "[11.8.1, )",
           "MassTransit.Abstractions": "[8.1.2, )",
           "MiniValidation": "[0.9.0, )",
-          "MongoDB.Entities": "[22.1.0, )"
+          "MongoDB.Entities": "[23.0.0, )"
         }
       },
       "tranchy.file": {
@@ -1231,7 +1231,7 @@
           "MassTransit": "[8.1.2, )",
           "MassTransit.Azure.ServiceBus.Core": "[8.1.2, )",
           "MassTransit.MongoDb": "[8.1.2, )",
-          "MongoDB.Entities": "[22.1.0, )",
+          "MongoDB.Entities": "[23.0.0, )",
           "Tranchy.Common": "[1.0.0, )"
         }
       },
@@ -1254,7 +1254,7 @@
           "MassTransit.Azure.ServiceBus.Core": "[8.1.2, )",
           "MassTransit.MongoDb": "[8.1.2, )",
           "Microsoft.Azure.SignalR": "[1.22.0, )",
-          "MongoDB.Entities": "[22.1.0, )",
+          "MongoDB.Entities": "[23.0.0, )",
           "Swashbuckle.AspNetCore.Annotations": "[6.5.0, )",
           "Tranchy.Common": "[1.0.0, )"
         }

@@ -17,7 +17,7 @@
     <PackageVersion Include="AspNetCore.HealthChecks.MongoDb" Version="7.0.0" />
     <PackageVersion Include="AspNetCore.HealthChecks.Publisher.ApplicationInsights" Version="7.0.0" />
     <PackageVersion Include="Azure.Identity" Version="1.10.4" />
-    <PackageVersion Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.0.0-beta.8" />
+    <PackageVersion Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.0.0" />
     <PackageVersion Include="Azure.Storage.Blobs" Version="12.19.1" />
     <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
   </ItemGroup>
@@ -27,7 +27,7 @@
     <PackageVersion Include="MassTransit.MongoDb" Version="8.1.2" />
     <PackageVersion Include="MassTransit.Abstractions" Version="8.1.2" />
     <PackageVersion Include="MassTransit.EntityFrameworkCore" Version="8.1.2" />
-    <PackageVersion Include="MongoDB.Entities" Version="22.1.0" />
+    <PackageVersion Include="MongoDB.Entities" Version="23.0.0" />
     <PackageVersion Include="MiniValidation" Version="0.9.0" />
     <PackageVersion Include="FluentValidation" Version="11.8.1" />
     <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
@@ -36,7 +36,7 @@
     <PackageVersion Include="Duende.BFF" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="Meziantou.Analyzer" Version="2.0.112" />
+    <PackageVersion Include="Meziantou.Analyzer" Version="2.0.116" />
     <PackageVersion Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="3.3.4" />
     <PackageVersion Include="Roslynator.Analyzers" Version="4.6.4" />
     <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="4.6.4" />
