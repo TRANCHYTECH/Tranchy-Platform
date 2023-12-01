@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
-using MongoDB.Driver.Core.Configuration;
 using MongoDB.Entities;
 using Tranchy.Question.Data;
 using Tranchy.Question.Validators;

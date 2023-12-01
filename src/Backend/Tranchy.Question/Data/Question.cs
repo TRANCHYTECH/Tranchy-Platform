@@ -39,7 +39,7 @@ public class Question : EntityBase, IOwnEntity
 
     public void FinishConsultation(string userId, string conclusion)
     {
-        if (Status == QuestionStatus.InProgress)
+        if (Status != QuestionStatus.InProgress)
         {
             throw new TranchyAteChillyException("Invalid status");
         }
