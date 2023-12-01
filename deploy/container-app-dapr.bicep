@@ -93,9 +93,9 @@ resource containerApp 'Microsoft.App/containerApps@2022-06-01-preview' = {
         }
       ]
       dapr: {
-        enabled: false
+        enabled: true
         appId: containerAppName
-        appPort: 80
+        appPort: targetPort
         appProtocol: 'http'
         enableApiLogging: true
       }

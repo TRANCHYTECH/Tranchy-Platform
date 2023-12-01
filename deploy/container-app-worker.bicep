@@ -63,7 +63,7 @@ resource uai 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' exist
   name: userAssignedIdentity
 }
 
-resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
+resource containerApp 'Microsoft.App/containerApps@2023-05-02-preview' = {
   name: containerAppName
   location: location
   identity: {
@@ -82,17 +82,6 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
           server: containerRegistry
         }
       ]
-      ingress: {
-        external: true
-        targetPort: 80
-        allowInsecure: false
-        traffic: [
-          {
-            latestRevision: true
-            weight: 100
-          }
-        ]
-      }
     }
     template: {
       containers: [
@@ -118,16 +107,6 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
       scale: {
         minReplicas: minReplicas
         maxReplicas: maxReplicas
-        rules: [
-          {
-            name: 'http-requests'
-            http: {
-              metadata: {
-                concurrentRequests: '10'
-              }
-            }
-          }
-        ]
       }
     }
   }
