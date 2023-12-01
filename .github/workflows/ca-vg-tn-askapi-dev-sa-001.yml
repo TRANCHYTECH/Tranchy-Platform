@@ -8,7 +8,7 @@ env:
   CONTAINER_APP_NAME: ca-vg-tn-askapi-dev-sa-001
   CONTAINER_APP_RESOURCE_GROUP_NAME: rg-vg-tn-dev-sa-001
   CONTAINER_REGISTRY_LOGIN_SERVER: tranchynetworkdev.azurecr.io
-  DOCKER_FILE_PATH: Tranchy.Ask.API/Dockerfile
+  DOCKER_FILE_PATH: src/Backend/Tranchy.Ask.API/Dockerfile
   PROJECT_NAME_FOR_DOCKER: tranchyaskapi
 jobs:
   build:
