@@ -1,41 +1,42 @@
-import React, { FC, useCallback, useState } from "react"
+import React, { FC, useCallback, useRef, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle, StyleSheet } from "react-native"
+import { View, ViewStyle, StyleSheet, Image } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
-import { Screen } from "app/components"
-import { Text } from "react-native-paper"
+import { BottomSheet, BottomSheetBase, Screen, SectionLabel } from "app/components"
+import { Button, Checkbox, HelperText, Text, TextInput, IconButton } from "react-native-paper"
 import { GiftedChat, IChatMessage } from "react-native-gifted-chat"
-import { createQuestionEvent } from "app/services/ask-api/askApi"
+import { createQuestionEvent, finishConsultation } from "app/services/ask-api/askApi"
 import {
   CreateQuestionEventMessageSentInput,
   CreateQuestionEventMessageSentInputType,
 } from "app/services/ask-api/models"
 import { useConversationHub } from "app/services/signalr/useConversationHub"
 import { useFocusEffect } from "@react-navigation/native"
-import { useStores } from "app/models"
+import { QuestionInstance, useStores } from "app/models"
+import { finishConsultationImage, spacing } from "app/theme"
+import { Controller, FormProvider, useForm } from "react-hook-form"
+import { ConclusionFormModel, ConclusionFormSchema } from "./ConclusionFormSchema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { translate } from "app/i18n"
 
 interface QuestionConversationScreenProps extends AppStackScreenProps<"QuestionConversation"> {}
 
 export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = observer(
-  function QuestionConversationScreen({ route }) {
+  function QuestionConversationScreen({ navigation, route }) {
     const { id } = route.params
     const { questionStore, metadataStore } = useStores()
     const [messages, setMessages] = useState([])
+    const [openCategorySelection, setOpenCategorySelection] = useState(false)
+    const bottomSheetRef = useRef<BottomSheet>(null)
+
+    const openBottomSheet = () => {
+      setOpenCategorySelection(true)
+      bottomSheetRef.current.expand()
+    }
 
     useConversationHub({
       receiveEventHandler: (data) => {
-        const receivedEvent = {
-          _id: data.id,
-          text: data.content,
-          createdAt: data.createdOn,
-          user: {
-            _id: data.createdByUserId,
-          },
-        }
-
-        setMessages((previousMessages) =>
-          GiftedChat.append(previousMessages, [receivedEvent], false),
-        )
+        setMessages((previousMessages) => GiftedChat.append(previousMessages, [data], false))
       },
     })
 
@@ -51,6 +52,19 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
       }, []),
     )
 
+    React.useLayoutEffect(() => {
+      const question = questionStore.getQuestion(id)
+      if (question.consultant?.userId === getUserId()) {
+        navigation.setOptions({
+          headerRight: () => (
+            <Button onPress={() => openBottomSheet()}>
+              <Image style={styles.rightHeaderButton} source={finishConsultationImage} />
+            </Button>
+          ),
+        })
+      }
+    }, [navigation])
+
     const onSend = useCallback((messages = []) => {
       const question = questionStore.getQuestion(id)
       const event: CreateQuestionEventMessageSentInput = {
@@ -60,55 +74,168 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
           notifiedUserId: question.permissions.directChatTargetUserId,
         },
       }
+
+      // todo: handle case that could not delivery message. such as exception 500.
       createQuestionEvent(id, event)
 
+      // todo: set default status is sending. Then update status after receive
       setMessages((previousMessages) => GiftedChat.append(previousMessages, messages, false))
     }, [])
 
     const getUserId = () => metadataStore.userId
 
-    // const testHub = () => {
-    //   signalr.createEvent(
-    //     id,
-    //     getSnapshot(CreateQuestionEventMessageSentInput.create({ content: "hello world" })),
-    //   )
-    // }
-
     return (
-      <Screen style={$root} safeAreaEdges={["bottom"]}>
-        <View style={styles.questionListArea}>
-          <Text>
-            user:{metadataStore.userId}|{metadataStore.email}
-          </Text>
-          <Text>requester: {questionStore.getQuestion(id).createdByUserId}</Text>
-          <Text>
-            consultant:{" "}
-            {questionStore.getQuestion(id).consultant?.userId === metadataStore.userId
-              ? "yes"
-              : "no"}
-          </Text>
-          <GiftedChat
-            inverted={false}
-            messages={messages}
-            onSend={(messages) => onSend(messages)}
-            user={{
-              _id: getUserId(),
-            }}
-          />
-        </View>
-      </Screen>
+      <>
+        <Screen style={$root} safeAreaEdges={["bottom"]}>
+          <View style={styles.questionListArea}>
+            <QuestionDetailSection question={questionStore.getQuestion(id)}></QuestionDetailSection>
+            <GiftedChat
+              isCustomViewBottom={true}
+              inverted={false}
+              messages={messages}
+              onSend={(messages) => onSend(messages)}
+              user={{
+                _id: getUserId(),
+              }}
+            />
+          </View>
+        </Screen>
+        <BottomSheetBase bottomInset={46} ref={bottomSheetRef} index={-1} snapPoints={["75%"]}>
+          <View style={styles.bottomSheetContainer}>
+            {openCategorySelection && <ConclusionEditorSection />}
+          </View>
+        </BottomSheetBase>
+      </>
     )
   },
 )
+
+const QuestionDetailSection = ({ question }: { question: QuestionInstance }) => {
+  const { metadataStore } = useStores()
+
+  return (
+    <View style={styles.questionDetails}>
+      <Text variant="titleMedium">Câu hỏi: {question.title}</Text>
+      <Text>
+        Người dùng: {metadataStore.email} (
+        {question.consultant?.userId === metadataStore.userId ? "Consultant" : "Requester"})
+      </Text>
+    </View>
+  )
+}
+
+const ConclusionEditorSection = ({ questionId }: { questionId: string }) => {
+  const form = useForm<ConclusionFormModel>({
+    resolver: zodResolver(ConclusionFormSchema),
+    defaultValues: {
+      conclusion: "",
+    },
+  })
+
+  const submitConclusion = async (form: ConclusionFormModel) => {
+    await finishConsultation(questionId, { conclusion: form.conclusion })
+  }
+
+  const onError = (error) => {
+    console.log(error)
+  }
+
+  return (
+    <>
+      <View style={bottomSheetStyles.title}>
+        <Text variant="titleMedium">Gửi câu trả lời cuối cùng</Text>
+        <IconButton icon="close" size={20} />
+      </View>
+      <FormProvider {...form}>
+        <View style={bottomSheetStyles.contentContainer}>
+          <Controller
+            control={form.control}
+            name="conclusion"
+            render={({ field: { value, onBlur, onChange } }) => (
+              <>
+                <TextInput
+                  style={bottomSheetStyles.textInput}
+                  mode={"outlined"}
+                  value={value}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  error={form.formState.errors.conclusion && true}
+                  label={"Nội dung câu trả lời"}
+                  placeholder={translate("newQuestionScreen.answerGuideline")}
+                  multiline={true}
+                />
+                <HelperText type="error">{form.formState.errors.conclusion?.message}</HelperText>
+              </>
+            )}
+          />
+          <View>
+            <SectionLabel title="Đối với quyền riêng tư" />
+            <Controller
+              control={form.control}
+              name="communityShareAgreement"
+              render={({ field: { value, onChange } }) => (
+                <Checkbox.Item
+                  position="leading"
+                  status={value ? "checked" : "unchecked"}
+                  onPress={() => onChange(!value)}
+                  mode="android"
+                  labelVariant="labelSmall"
+                  label="Cho phép đăng tải câu hỏi lên cộng đồng"
+                />
+              )}
+            ></Controller>
+          </View>
+        </View>
+        <View>
+          <Button mode="contained" onPress={form.handleSubmit(submitConclusion, onError)}>
+            Xác nhận câu trả lời
+          </Button>
+        </View>
+      </FormProvider>
+    </>
+  )
+}
 
 const $root: ViewStyle = {
   flex: 1,
 }
 
 const styles = StyleSheet.create({
+  bottomSheetContainer: {
+    alignItems: "center",
+    flex: 1,
+    padding: spacing.md,
+    paddingTop: 0,
+  },
+  questionDetails: {
+    padding: spacing.md,
+  },
   questionListArea: {
     flex: 1,
     height: "100%",
     minHeight: "100%",
+  },
+  rightHeaderButton: {
+    height: 32,
+    margin: spacing.xs,
+    width: 32,
+  },
+})
+
+const bottomSheetStyles = StyleSheet.create({
+  contentContainer: {
+    alignItems: "center",
+    flex: 1,
+    width: "100%",
+  },
+  textInput: {
+    flex: 1,
+    width: "100%",
+  },
+  title: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
   },
 })

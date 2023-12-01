@@ -12,9 +12,11 @@ export const QuestionStatus = {
   New: "New",
   BeingReviewed: "BeingReviewed",
   Accepted: "Accepted",
+  Cancelled: "Cancelled",
   Payment: "Payment",
   InProgress: "InProgress",
   Rejected: "Rejected",
-  Done: "Done",
+  Resolved: "Resolved",
+  Closed: "Closed",
   Reported: "Reported",
 } as const

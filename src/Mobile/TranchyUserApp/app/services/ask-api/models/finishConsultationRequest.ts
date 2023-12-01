@@ -5,9 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export interface QuestionConsultant {
-  attachmentIds?: string[] | null
+export interface FinishConsultationRequest {
   conclusion?: string | null
-  createdAt?: Date
-  userId?: string | null
 }

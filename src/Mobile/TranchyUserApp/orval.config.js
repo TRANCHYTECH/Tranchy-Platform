@@ -17,8 +17,8 @@ export default defineConfig({
       },
     },
     input: {
-      target1: "https://askapi.vietgeeks.io/swagger/v1/swagger.json",
-      target: "http://localhost:7200/swagger/v1/swagger.json",
+      target: "https://askapi.vietgeeks.io/swagger/v1/swagger.json",
+      target_: "http://localhost:7200/swagger/v1/swagger.json",
     },
   },
 })
