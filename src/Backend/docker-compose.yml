@@ -4,5 +4,5 @@ services:
   tranchy.api:
     image: ${DOCKER_REGISTRY-}tranchyapi
     build:
-      context: ./src/Backend
+      context: .
       dockerfile: Tranchy.Api/Dockerfile

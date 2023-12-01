@@ -26,13 +26,13 @@ public class QuestionModule : IModule
         };
 
         ConventionRegistry.Register("TranchyAskDefaultConventions", conventionPack, _ => true);
-        using var loggerFactory = LoggerFactory.Create(b =>
-        {
-            b.AddSimpleConsole();
-            b.SetMinimumLevel(LogLevel.Debug);
-        });
+        //using var loggerFactory = LoggerFactory.Create(b =>
+        //{
+        //    b.AddSimpleConsole();
+        //    b.SetMinimumLevel(LogLevel.Debug);
+        //});
         var conn = MongoClientSettings.FromConnectionString(databaseOptions.ConnectionString);
-        conn.LoggingSettings = new LoggingSettings(loggerFactory);
+        // conn.LoggingSettings = new LoggingSettings(loggerFactory);
         DB.InitAsync(databaseOptions.DatabaseName, conn).Wait(cancellationToken: default);
 
         DB.DatabaseFor<Data.Question>(databaseOptions.DatabaseName);

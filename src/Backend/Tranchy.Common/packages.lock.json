@@ -1,24 +1,24 @@
 {
   "version": 2,
   "dependencies": {
-    "net7.0": {
+    "net8.0": {
       "FluentValidation": {
         "type": "Direct",
-        "requested": "[11.8.0, )",
-        "resolved": "11.8.0",
-        "contentHash": "TiEaaYqSIAS+wXQv46LRm8Mca092XYNePD0n231Hqlkmm5FuToZoWnjI1ef/vJUxBzqR7/k2vaVQXxijNgVKRQ=="
+        "requested": "[11.8.1, )",
+        "resolved": "11.8.1",
+        "contentHash": "N72rnlE99XYB7EGA1u9y7m7kNTTynqOPBhZqDE8zr1Y0aSR4t5si94LRA7UVdAV09GaXWCErW+EiFhfbg3DSbg=="
       },
       "MassTransit.Abstractions": {
         "type": "Direct",
-        "requested": "[8.1.1, )",
-        "resolved": "8.1.1",
-        "contentHash": "fe6isUE0S87Px/Qkg5fkg8ymhax87SNdcOgOtOxo5ZUm8Er9VgmUBwHGYg8fHywDri6xGCJtLucFSaUIu2Urrw=="
+        "requested": "[8.1.2, )",
+        "resolved": "8.1.2",
+        "contentHash": "121mBA29VOIKtdNp+FyvNZj3BxUkHKLoGbGp3PwrUVJFwDupN3BOxRga1IbOSdNswicPXWt0k94QNcqEHDE0Yw=="
       },
       "Meziantou.Analyzer": {
         "type": "Direct",
-        "requested": "[2.0.62, )",
-        "resolved": "2.0.62",
-        "contentHash": "uG2CiDIm97q8KrUt8B34WdElpEDDLOe4YzrLWpwlQmesXrSX2WuJZ+HwIGWrJgDBBMi2a3tVjeF8oKjV+AhUdA=="
+        "requested": "[2.0.116, )",
+        "resolved": "2.0.116",
+        "contentHash": "r+6UkVHXpg6DXXZmrxHUX2h4eQyF9QaWj+m6hiusY23tX0ZJUew9M9/zOKDHVdE0CNWnTqfcRv86yZ6wb/RA+Q=="
       },
       "Microsoft.CodeAnalysis.BannedApiAnalyzers": {
         "type": "Direct",
@@ -34,25 +34,25 @@
       },
       "MongoDB.Entities": {
         "type": "Direct",
-        "requested": "[22.1.0, )",
-        "resolved": "22.1.0",
-        "contentHash": "N1kq1gDmQOft5CJpbq8OAWmYFVBS9JXTiE54VrQpZqSvFtSRoMbkJ6jd9pXlxSERvBl4maFguSxFtqH9nEdDnQ==",
+        "requested": "[23.0.0, )",
+        "resolved": "23.0.0",
+        "contentHash": "6clMPwr1WL4pqQ8mFr7WF8TShbNSynLGoCbeMOuvnX/Sd4w8RZ6ltI2YrDGUEvsuqXDKjmnVJJGcXuaey7J1uA==",
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
-          "MongoDB.Driver": "2.21.0"
+          "MongoDB.Driver": "2.22.0"
         }
       },
       "Roslynator.Analyzers": {
         "type": "Direct",
-        "requested": "[4.3.0, )",
-        "resolved": "4.3.0",
-        "contentHash": "NZNaV9DAYGHKZ753WfhtBj8eoP40LLJsA6JQXdzhF87iTZAdbKCgp32mI3cnQF4TMXz7bk+CgzF/kDG+m+9bCg=="
+        "requested": "[4.6.4, )",
+        "resolved": "4.6.4",
+        "contentHash": "lOPpqMv4YzqkQNVmfwRPhjtAFTHd7HT7Jzy50sWU/QUOawGdqw462TCwFNW2DlrfjUUVHOzQp89HuhaqGOsDVg=="
       },
       "Roslynator.Formatting.Analyzers": {
         "type": "Direct",
-        "requested": "[4.3.0, )",
-        "resolved": "4.3.0",
-        "contentHash": "fvPmVbNguTZbQoAxI6Onk76S+VN6NA2yAglOZFVqNj5D9C9b5o+IR2SttP9cB093KRzyjOzFmXDHnvAg1NEAqg=="
+        "requested": "[4.6.4, )",
+        "resolved": "4.6.4",
+        "contentHash": "weQmLZMgLhpWBS+0b3Pbq5GK7ZQd/Rc/HAp2NObdUeErc+LMzGLQjkkDZR51586KFVSTosURXRYFhlhreY80wg=="
       },
       "AWSSDK.Core": {
         "type": "Transitive",
@@ -101,8 +101,8 @@
       },
       "MongoDB.Bson": {
         "type": "Transitive",
-        "resolved": "2.21.0",
-        "contentHash": "QT+D1I3Jz6r6S6kCgJD1L9dRCLVJCKlkGRkA+tJ7uLpHRmjDNcNKy4D1T+L9gQrjl95lDN9PHdwEytdvCW/jzA==",
+        "resolved": "2.22.0",
+        "contentHash": "7Z+uP+PeIBrkzzRORTCjrMSYhzQgXxLYkXyML8WsBN7tHddicNY9Xh8Cmp5gRR4U4NuEbXCQtHplju0iVY/KuA==",
         "dependencies": {
           "System.Memory": "4.5.5",
           "System.Runtime.CompilerServices.Unsafe": "5.0.0"
@@ -110,24 +110,24 @@
       },
       "MongoDB.Driver": {
         "type": "Transitive",
-        "resolved": "2.21.0",
-        "contentHash": "VxKj1wuhadiXhaXkykCWRgsYOysdaOYJ202hJFz25UjkrqC/tHA8RS4hdS5HYfGWoI//fypBXnxZCkEjXLXdfw==",
+        "resolved": "2.22.0",
+        "contentHash": "ngswtmzdtfaq+L0Ti1Kjm0QnVLgEJK233YPCpGN2buSArY2xEPsnQ2yos7SPGxuDzZPnxdn+XG9/OBt9atCpWw==",
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "2.0.0",
-          "MongoDB.Bson": "2.21.0",
-          "MongoDB.Driver.Core": "2.21.0",
+          "MongoDB.Bson": "2.22.0",
+          "MongoDB.Driver.Core": "2.22.0",
           "MongoDB.Libmongocrypt": "1.8.0"
         }
       },
       "MongoDB.Driver.Core": {
         "type": "Transitive",
-        "resolved": "2.21.0",
-        "contentHash": "Ac44U3bQfinmdH5KNFjTidJe9LKW87SxkXJ3YuIUJQMITEc4083YF1yvjJxaSeYF9er0YgHSmwhHpsZv0Fwplg==",
+        "resolved": "2.22.0",
+        "contentHash": "aMlyeGbQ9wk/bmy9xSr6dnkOszO3MVgv1wNcsm4ACwiup//VCZxvj5k0Wq/E0xGBYmqs/tNXqJmLy1IawRXPHA==",
         "dependencies": {
           "AWSSDK.SecurityToken": "3.7.100.14",
           "DnsClient": "1.6.1",
           "Microsoft.Extensions.Logging.Abstractions": "2.0.0",
-          "MongoDB.Bson": "2.21.0",
+          "MongoDB.Bson": "2.22.0",
           "MongoDB.Libmongocrypt": "1.8.0",
           "SharpCompress": "0.30.1",
           "Snappier": "1.0.0",
