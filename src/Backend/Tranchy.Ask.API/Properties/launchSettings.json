@@ -19,7 +19,7 @@
         "ASPNETCORE_Kestrel__Certificates__Default__KeyPath": "%HOME%/.aspnet/https/tranchyone.key"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:7200"
+      "applicationUrl": "https://localhost:7200;http://localhost:7300"
     },
     "Docker": {
       "commandName": "Docker",
