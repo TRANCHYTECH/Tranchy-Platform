@@ -1240,6 +1240,13 @@
           "Tranchy.Common": "[1.0.0, )"
         }
       },
+      "tranchy.user": {
+        "type": "Project",
+        "dependencies": {
+          "Mapster": "[7.4.0, )",
+          "Tranchy.Common": "[1.0.0, )"
+        }
+      },
       "Azure.Identity": {
         "type": "CentralTransitive",
         "requested": "[1.10.4, )",

@@ -24,6 +24,7 @@
     <ProjectReference Include="..\Tranchy.Payment\Tranchy.Payment.csproj" />
     <ProjectReference Include="..\Tranchy.Question\Tranchy.Question.csproj" />
     <ProjectReference Include="..\Tranchy.File\Tranchy.File.csproj" />
+    <ProjectReference Include="..\Tranchy.User\Tranchy.User.csproj" />
   </ItemGroup>
 
 </Project>

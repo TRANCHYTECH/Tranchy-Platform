@@ -1,6 +1,6 @@
 using MongoDB.Entities;
 
-namespace Tranchy.Question.Data;
+namespace Tranchy.Common.Data;
 
 public class EntityBase : Entity, ICreatedOn, IModifiedOn
 {
