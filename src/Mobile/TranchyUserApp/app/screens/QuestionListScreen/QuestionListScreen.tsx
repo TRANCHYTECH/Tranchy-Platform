@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react"
+import React, { FC, useCallback, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { StyleSheet, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
@@ -13,10 +13,14 @@ interface QuestionListScreenProps extends AppStackScreenProps<"QuestionList"> {}
 export const QuestionListScreen: FC<QuestionListScreenProps> = observer(
   function QuestionListScreen() {
     const { questionStore } = useStores()
-
+    const [questions, setQuestions] = useState<Question[]>([])
     useFocusEffect(
       useCallback(() => {
-        questionStore.listPublicQuestions()
+        async function load() {
+          await questionStore.listPublicQuestions()
+          setQuestions([...questionStore.getQuestions()])
+        }
+        load()
       }, []),
     )
 
@@ -24,11 +28,12 @@ export const QuestionListScreen: FC<QuestionListScreenProps> = observer(
       <Screen style={$root} preset="scroll">
         <View style={styles.questionListArea}>
           <FlashList<Question>
-            data={questionStore.getQuestions()}
+            data={questions}
             renderItem={({ item }) => {
               return <QuestionItem item={item} />
             }}
             estimatedItemSize={100}
+            keyExtractor={(item) => item.id}
           />
         </View>
       </Screen>

@@ -10,6 +10,7 @@ export const QuestionConsultantModel = types
   .props({
     userId: types.string,
     createdAt: IsoDate,
+    conclusion: types.maybeNull(types.string),
   })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

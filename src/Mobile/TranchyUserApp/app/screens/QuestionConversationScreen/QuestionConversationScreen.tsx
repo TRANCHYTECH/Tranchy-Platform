@@ -12,7 +12,7 @@ import {
 } from "app/services/ask-api/models"
 import { useConversationHub } from "app/services/signalr/useConversationHub"
 import { useFocusEffect } from "@react-navigation/native"
-import { QuestionInstance, useStores } from "app/models"
+import { Question, useStores } from "app/models"
 import { finishConsultationImage, spacing } from "app/theme"
 import { Controller, FormProvider, useForm } from "react-hook-form"
 import { ConclusionFormModel, ConclusionFormSchema } from "./ConclusionFormSchema"
@@ -39,10 +39,15 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
       bottomSheetRef.current.close()
       if (success) {
         Alert.alert(
-          "Chúc mừng bạn đã hoàn thành tư vấn. Hệ thống sẽ chuyển câu trả lời đến... Trong vòng 24 giờ...",
+          "Chúc mừng bạn đã hoàn thành tư vấn",
+          "Hệ thống sẽ chuyển câu trả lời đến... Trong vòng 24 giờ...",
+          [
+            {
+              text: "Danh sách câu hỏi",
+              onPress: () => navigation.navigate("MyTabs", { screen: "CommunityQuestionList" }),
+            },
+          ],
         )
-
-        // How to update status? Need response from server also
       }
     }
 
@@ -124,7 +129,7 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
   },
 )
 
-const QuestionDetailSection = ({ question }: { question: QuestionInstance }) => {
+const QuestionDetailSection = ({ question }: { question: Question }) => {
   const { metadataStore } = useStores()
 
   return (

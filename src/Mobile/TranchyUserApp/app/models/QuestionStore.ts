@@ -2,7 +2,7 @@ import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { QuestionModel } from "./Question"
 import { listCommunityQuestions } from "app/services/ask-api/askApi"
-import { Question } from "app/services/ask-api/models"
+import { Question as BackendQuestion } from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"
 
 // setLivelinessChecking("error")
@@ -16,7 +16,7 @@ export const QuestionStoreModel = types
   .actions(withSetPropAction)
   .views((self) => ({
     getQuestions() {
-      return self.questions.filter((_) => true)
+      return self.questions
     },
     getQuestion(id: string) {
       return self.questions.find((q) => q.id === id)
@@ -26,7 +26,7 @@ export const QuestionStoreModel = types
     listPublicQuestions: flow(function* fetchPublicQuestions() {
       try {
         self.isLoading = true
-        const response: ApiResponse<Question[]> = yield listCommunityQuestions()
+        const response: ApiResponse<BackendQuestion[]> = yield listCommunityQuestions()
         if (response.ok) {
           self.questions = cast(response.data)
         }

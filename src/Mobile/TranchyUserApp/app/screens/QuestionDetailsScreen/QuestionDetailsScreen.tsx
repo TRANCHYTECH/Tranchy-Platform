@@ -4,20 +4,21 @@ import { View, ViewStyle } from "react-native"
 import { AppStackParamList, AppStackScreenProps } from "app/navigators"
 import { Screen } from "app/components"
 import { Text, Button } from "react-native-paper"
-import { Question, QuestionSnapshotOut, useStores } from "app/models"
+import { Question, useStores } from "app/models"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 
 interface QuestionDetailsScreenProps extends AppStackScreenProps<"QuestionDetails"> {}
 
 // todo: use observer. https://mobx-state-tree.js.org/intro/getting-started
-const QuestionForm = ({ question }: { question: QuestionSnapshotOut }) => {
+const QuestionForm = ({ question }: { question: Question }) => {
   return (
     <View>
       <Text>Question: {question.title}</Text>
-      <Text>Status: {question.status}</Text>
       <Text>Created by: {question.createdByUserId}</Text>
       <Text>Consultant: {question.consultant?.userId}</Text>
+      <Text>Status: {question.status}</Text>
+      <Text>Kết luận: {question.consultant?.conclusion}</Text>
     </View>
   )
 }

@@ -59,7 +59,7 @@ export function MyTabs() {
           title: translate("tab.questions"),
           tabBarLabel: translate("tab.questions"),
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <MaterialCommunityIcons name="cloud-question" color={color} size={size} />
           ),
         }}
       />
