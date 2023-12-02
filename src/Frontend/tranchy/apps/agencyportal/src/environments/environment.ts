@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  askApiBaseUrl_: 'https://localhost:7200',
-  askApiBaseUrl: 'https://askapi.vietgeeks.io',
+  askApiBaseUrl: 'https://localhost:7200',
+  askApiBaseUrl_: 'https://askapi.vietgeeks.io',
 };
