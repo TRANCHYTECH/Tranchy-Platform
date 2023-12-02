@@ -18,13 +18,8 @@ export default defineConfig({
       mode: 'single',
       target: 'apps/agencyportal/src/app/_state/askapi/askapi.service.ts',
       schemas: 'apps/agencyportal/src/app/_state/askapi/models',
-      // client: 'angular',
+      client: 'angular',
       prettier: true,
-      override: {
-        mutator: {
-          path: 'apps/agencyportal/src/app/_state/askapi/askapi.service.ts',
-        },
-      },
     },
     input: {
       target: 'https://askapi.vietgeeks.io/swagger/v1/swagger.json',

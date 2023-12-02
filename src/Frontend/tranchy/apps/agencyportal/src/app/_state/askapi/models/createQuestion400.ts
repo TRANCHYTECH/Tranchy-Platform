@@ -5,6 +5,4 @@
  * OpenAPI spec version: v1
  */
 
-export interface QuestionOutput {
-  id?: string | null;
-}
+export type CreateQuestion400 = { [key: string]: string[] };

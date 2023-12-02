@@ -5,6 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export interface QuestionOutput {
+export interface CreateQuestionResponse {
   id?: string | null;
 }

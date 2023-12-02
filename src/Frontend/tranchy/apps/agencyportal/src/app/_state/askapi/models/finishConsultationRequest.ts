@@ -5,6 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export interface QuestionOutput {
-  id?: string | null;
+export interface FinishConsultationRequest {
+  conclusion?: string | null;
 }

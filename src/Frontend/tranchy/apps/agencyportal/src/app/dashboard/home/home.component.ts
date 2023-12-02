@@ -1,10 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+  signal,
+} from '@angular/core';
 import { injectPortalConfig } from '@tranchy/core';
 import { SharedModule } from '@tranchy/shared';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { TranchyAskAPIService } from '../../_state/askapi/askapi.service';
+import { TranchyAskApiDocumentationService } from '../../_state/askapi/askapi.service';
 import { QuestionOutput } from '../../_state/askapi/models';
 import { PortalConfig } from '../../app.config';
 
@@ -17,7 +23,7 @@ import { PortalConfig } from '../../app.config';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
-  askAPIService = inject(TranchyAskAPIService);
+  askAPIService = inject(TranchyAskApiDocumentationService);
   httpClient = inject(HttpClient);
   appConfig = injectPortalConfig<PortalConfig>();
 
@@ -28,8 +34,10 @@ export class HomeComponent implements OnInit {
   user = signal<Partial<Object>>({});
 
   async ngOnInit(): Promise<void> {
-    this.askAPIService.getQuestionById('1245').subscribe(q => this.question.set(q));
-    this.httpClient.get('/ask:/bff/user').subscribe(u => this.user.set(u));
+    this.askAPIService
+      .getQuestionById('1245')
+      .subscribe((q) => this.question.set(q));
+    this.httpClient.get('/ask:/bff/user').subscribe((u) => this.user.set(u));
   }
 
   confirm1() {
@@ -38,11 +46,19 @@ export class HomeComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted' });
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Confirmed',
+          detail: 'You have accepted',
+        });
       },
       reject: () => {
-        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
-      }
-    })
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
+      },
+    });
   }
 }
