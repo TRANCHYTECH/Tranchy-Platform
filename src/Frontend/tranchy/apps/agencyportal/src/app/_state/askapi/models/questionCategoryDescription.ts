@@ -5,6 +5,4 @@
  * OpenAPI spec version: v1
  */
 
-export interface QuestionOutput {
-  id?: string | null;
-}
+export type QuestionCategoryDescription = { [key: string]: string } | null;

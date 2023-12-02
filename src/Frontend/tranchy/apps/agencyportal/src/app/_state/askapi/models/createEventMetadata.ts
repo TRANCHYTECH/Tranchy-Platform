@@ -5,6 +5,7 @@
  * OpenAPI spec version: v1
  */
 
-export interface QuestionOutput {
-  id?: string | null;
+export interface CreateEventMetadata {
+  notifiedUserId?: string | null;
+  questionId?: string | null;
 }
