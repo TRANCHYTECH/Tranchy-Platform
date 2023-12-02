@@ -1253,10 +1253,16 @@
           "MassTransit": "[8.1.2, )",
           "MassTransit.Azure.ServiceBus.Core": "[8.1.2, )",
           "MassTransit.MongoDb": "[8.1.2, )",
-          "Microsoft.AspNetCore.OpenApi": "[8.0.0, )",
           "Microsoft.Azure.SignalR": "[1.22.0, )",
           "MongoDB.Entities": "[23.0.0, )",
           "Swashbuckle.AspNetCore.Annotations": "[6.5.0, )",
+          "Tranchy.Common": "[1.0.0, )"
+        }
+      },
+      "tranchy.user": {
+        "type": "Project",
+        "dependencies": {
+          "Mapster": "[7.4.0, )",
           "Tranchy.Common": "[1.0.0, )"
         }
       },

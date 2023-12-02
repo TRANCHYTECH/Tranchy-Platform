@@ -1,9 +1,10 @@
-﻿using MassTransit;
+using MassTransit;
 using MongoDB.Entities;
 using Tranchy.Common;
 using Tranchy.File;
 using Tranchy.Payment;
 using Tranchy.Question;
+using Tranchy.User;
 
 namespace Tranchy.Ask.API;
 
@@ -15,6 +16,7 @@ public static class ServiceCollectionExtensions
         QuestionModule.ConfigureServices(services, configuration);
         FileModule.ConfigureServices(services, configuration);
         PaymentModule.ConfigureServices(services, configuration);
+        UserModule.ConfigureServices(services, configuration);
         services.AddMassTransit(c =>
         {
             c.ConfigureHealthCheckOptions(cfg => cfg.FailureStatus = Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);

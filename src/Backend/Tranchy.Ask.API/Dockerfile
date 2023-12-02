@@ -17,12 +17,14 @@ COPY ["Tranchy.Common/Tranchy.Common.csproj", "Tranchy.Common/"]
 COPY ["Tranchy.Payment/Tranchy.Payment.csproj", "Tranchy.Payment/"]
 COPY ["Tranchy.Question/Tranchy.Question.csproj", "Tranchy.Question/"]
 COPY ["Tranchy.File/Tranchy.File.csproj", "Tranchy.File/"]
+COPY ["Tranchy.User/Tranchy.User.csproj", "Tranchy.User/"]
 
 COPY ["Tranchy.Ask.API/packages.lock.json", "Tranchy.Ask.API/"]
 COPY ["Tranchy.Common/packages.lock.json", "Tranchy.Common/"]
 COPY ["Tranchy.Payment/packages.lock.json", "Tranchy.Payment/"]
 COPY ["Tranchy.Question/packages.lock.json", "Tranchy.Question/"]
 COPY ["Tranchy.File/packages.lock.json", "Tranchy.File/"]
+COPY ["Tranchy.User/packages.lock.json", "Tranchy.User/"]
 
 RUN dotnet restore "./Tranchy.Ask.API/./Tranchy.Ask.API.csproj"
 COPY . .

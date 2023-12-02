@@ -1,4 +1,4 @@
-﻿namespace Tranchy.Common;
+namespace Tranchy.Common;
 
 public class AppSettings
 {
@@ -7,6 +7,7 @@ public class AppSettings
     public string AgencyPortalSpaUrl { get; set; } = default!;
 
     public DatabaseOptions QuestionDb { get; set; } = default!;
+    public DatabaseOptions UserDb { get; set; } = default!;
 
     public string ServiceBusConnectionString { get; set; } = default!;
 

@@ -14,6 +14,7 @@ using Tranchy.File;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Tranchy.User;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
 
@@ -167,6 +168,7 @@ app.UseCors(agencyPortalSpaPolicy);
 app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
 app.MapGroup("/file").MapEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint();
 app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
+app.MapGroup("/user").MapEndpoints<UserModule>().RequireAuthorization().AsBffApiEndpoint();
 
 // Redirect after login
 app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, permanent: true));
