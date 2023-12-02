@@ -23,5 +23,9 @@ public class PickQuestion : IEndpoint
         return TypedResults.Ok(question);
     }
 
-    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapPost("/{id}/pick", Pick).WithName("PickQuestion").WithTags("Question");
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapPost("/{id}/pick", Pick)
+        .WithName("PickQuestion")
+        .WithSummary("Take consultation")
+        .WithTags("Question Action")
+        .WithOpenApi();
 }

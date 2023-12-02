@@ -31,5 +31,10 @@ public class FinishConsultation : IEndpoint
         return TypedResults.Ok();
     }
 
-    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapPost("/{id}/finish", Finish).WithName("FinishConsultation").WithTags("Question");
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
+        .MapPost("/{id}/finish", Finish)
+        .WithName("FinishConsultation")
+        .WithTags("Question Action")
+        .WithSummary("Finish consultation")
+        .WithOpenApi();
 }
