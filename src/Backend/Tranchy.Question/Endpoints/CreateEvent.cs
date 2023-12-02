@@ -43,6 +43,9 @@ public class CreateQuestionEvent : IEndpoint
         return TypedResults.Ok<QuestionOutput>(new(newQuestionEvent.ID!));
     }
 
-    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapPost("/{questionId}/Event", Create)
-            .WithName(nameof(CreateQuestionEvent)).WithTags("Question");
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapPost("/{questionId}/event", Create)
+            .WithName(nameof(CreateQuestionEvent))
+            .WithTags("Question Action")
+            .WithSummary("Create a question event")
+            .WithOpenApi();
 }

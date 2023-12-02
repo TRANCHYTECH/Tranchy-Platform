@@ -1,6 +1,5 @@
 using MongoDB.Entities;
 using Tranchy.Common.Services;
-using Tranchy.Question.Contracts;
 using Tranchy.Question.Data;
 
 namespace Tranchy.Question.Endpoints;

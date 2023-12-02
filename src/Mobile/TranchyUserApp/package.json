@@ -184,6 +184,9 @@
       "jest": false,
       "it": false
     },
+    "ignorePatterns": [
+      "**/ask-api/models/*.ts"
+    ],
     "rules": {
       "@typescript-eslint/ban-ts-ignore": 0,
       "@typescript-eslint/ban-ts-comment": 0,

@@ -15,5 +15,10 @@ public class ListEvents : IEndpoint
         return TypedResults.Ok(response);
     }
 
-    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapGet("/mobile/{id}/events", ListQuestionEvents).WithName("ListMobileQuestionEvents").WithTags("Question");
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
+        .MapGet("/mobile/{id}/events", ListQuestionEvents)
+        .WithName("ListMobileQuestionEvents")
+        .WithSummary("List question events for mobile devices")
+        .WithTags("Question Action")
+        .WithOpenApi();
 }

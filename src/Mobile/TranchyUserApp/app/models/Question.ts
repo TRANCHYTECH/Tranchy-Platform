@@ -4,7 +4,10 @@ import { SupportLevels } from "./Constants"
 import { QuestionConsultantModel } from "./QuestionConsultant"
 import { QuestionPermissionsModel } from "./QuestionPermissions"
 import { ApiResponse } from "apisauce"
-import { MobileQuestionEventMessageSent, Question } from "app/services/ask-api/models"
+import {
+  MobileQuestionEventMessageSent,
+  Question as BackendQuestion,
+} from "app/services/ask-api/models"
 import { listMobileQuestionEvents, pickQuestion } from "app/services/ask-api/askApi"
 import { IsoDate } from "./helpers/isoDateType"
 
@@ -50,14 +53,14 @@ export const QuestionModel = types
       }
     }),
     takeConsultation: flow(function* takeConsultation() {
-      const response: ApiResponse<Question> = yield pickQuestion(self.id)
+      const response: ApiResponse<BackendQuestion> = yield pickQuestion(self.id)
       if (response.ok) {
         self = Object.assign(self, response.data)
       }
     }),
   }))
 
-export interface QuestionInstance extends Instance<typeof QuestionModel> {}
+export interface Question extends Instance<typeof QuestionModel> {}
 export interface QuestionSnapshotOut extends SnapshotOut<typeof QuestionModel> {}
 export interface QuestionSnapshotIn extends SnapshotIn<typeof QuestionModel> {}
 export const createQuestionDefaultModel = () => types.optional(QuestionModel, {})
