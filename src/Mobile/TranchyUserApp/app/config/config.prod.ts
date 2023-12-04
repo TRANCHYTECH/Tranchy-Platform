@@ -6,7 +6,7 @@
  * https://reactnative.dev/docs/security#storing-sensitive-info
  */
 export default {
-  API_URL: "https://askapi.vietgeeks.io/",
-  auth0ProviderDomain: "dev-kz3mgkb4xl50tobe.us.auth0.com",
-  auth0ProviderClientId: "YMiSVPGoRAUZ9pwuNoy83MXHxnw3KslD",
+  API_URL: "https://askapi.tranchy.tech/",
+  auth0ProviderDomain: "dev-nkhte1hawwbq5ac2.us.auth0.com",
+  auth0ProviderClientId: "Y0B0XOVUC1EXjUEXFgBzWP3Tx7w6R2Ix",
 }
