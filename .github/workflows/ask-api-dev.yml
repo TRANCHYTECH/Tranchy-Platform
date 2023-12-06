@@ -14,7 +14,7 @@ env:
   CONTAINER_APP_ENV_NAME: cae-vg-tn-dev-sa-001
   CONTIANER_APP_USER_ID: id-ca-vg-tn-dev-sa-001
   CONTIANER_APP_AZURE_CLIENT_ID: ab25b142-2288-4372-97c1-80b60b52e92e
-  CONTAINER_APP_SUBDOMAIN_CERTIFICATE: askapi.vietgeeks.io-cae-vg-t-230811171329
+  CONTAINER_APP_SUBDOMAIN_CERTIFICATE: askapi.tranchy.tech-cae-vg-t-231203133603
   CONTAINER_REGISTRY_LOGIN_SERVER: tranchynetworkdev.azurecr.io
   DOCKER_FILE_PATH: src/Backend/Tranchy.Ask.API/Dockerfile
   PROJECT_NAME_FOR_DOCKER: tranchyasknapi

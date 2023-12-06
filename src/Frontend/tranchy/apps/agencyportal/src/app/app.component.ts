@@ -1,6 +1,5 @@
 import { Component, OnInit, effect, inject, untracked } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HorizontalComponent } from './_layout/horizontal/horizontal.component';
 import { PrimeNGConfig } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import defaultLanguage from '../assets/i18n/vi.json';
@@ -8,7 +7,7 @@ import { SharedModule } from '@tranchy/shared';
 
 @Component({
   standalone: true,
-  imports: [SharedModule, RouterModule, HorizontalComponent],
+  imports: [SharedModule, RouterModule],
   selector: 'tranchy-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
