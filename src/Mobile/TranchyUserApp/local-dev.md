@@ -31,3 +31,5 @@ at ChildProcess.completionListener (/Users/taudang/Source/Repo/tranchy-platform/
 Solution:
 delete node_module, android, ios
 Run yarn
+If problem still persisted.
+Remove ruby 3.1 in /Users/taudang/.gem/ruby, use latest in /opt/

@@ -9,6 +9,7 @@ import { spacing } from "app/theme"
 import { useAuth0 } from "react-native-auth0"
 import { Button, Text } from "react-native-paper"
 import { useStores } from "app/models"
+import Config from "app/config"
 
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
@@ -21,7 +22,7 @@ export const LoginScreen: FC<LoginScreenProps> = observer(function LoginScreen(_
   const { authorize, getCredentials } = useAuth0()
   const login = async () => {
     setIsProcessing(true)
-    await authorize({ scope: "offline_access", audience: "https://ask-api" })
+    await authorize({ scope: "offline_access", audience: Config.auth0Audience })
     const credentials = await getCredentials()
     authenticationStore.setAuthToken(credentials.accessToken)
     authenticationStore.distributeAuthToken()

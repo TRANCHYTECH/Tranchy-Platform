@@ -4,6 +4,7 @@ export interface ConfigBaseProps {
   exitRoutes: string[]
   auth0ProviderDomain: string
   auth0ProviderClientId: string
+  auth0Audience: string
 }
 
 export type PersistNavigationConfig = ConfigBaseProps["persistNavigation"]
@@ -24,6 +25,9 @@ const BaseConfig: ConfigBaseProps = {
    */
   // todo: check this value
   exitRoutes: ["Welcome"],
+  auth0ProviderDomain: "",
+  auth0ProviderClientId: "",
+  auth0Audience: "",
 }
 
 export default BaseConfig

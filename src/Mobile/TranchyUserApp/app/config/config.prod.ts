@@ -9,4 +9,5 @@ export default {
   API_URL: "https://askapi.tranchy.tech/",
   auth0ProviderDomain: "dev-nkhte1hawwbq5ac2.us.auth0.com",
   auth0ProviderClientId: "Y0B0XOVUC1EXjUEXFgBzWP3Tx7w6R2Ix",
+  auth0Audience: "https://askapi",
 }
