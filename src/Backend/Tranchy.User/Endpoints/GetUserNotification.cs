@@ -17,7 +17,7 @@ public class GetUserNotification : IEndpoint
 
     public static void Register(RouteGroupBuilder routeGroupBuilder)
     {
-        routeGroupBuilder.MapGet("Notifications", Get).WithName("GetUserNotification");
+        routeGroupBuilder.MapGet("Notifications", Get).WithName("GetUserNotification").WithTags("User");
     }
 }
 

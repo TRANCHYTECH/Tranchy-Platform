@@ -22,7 +22,7 @@ public class GetUser : IEndpoint
 
     public static void Register(RouteGroupBuilder routeGroupBuilder)
     {
-        routeGroupBuilder.MapGet(string.Empty, GetCurrentUser).WithName("GetCurrentUser");
+        routeGroupBuilder.MapGet(string.Empty, GetCurrentUser).WithName("GetCurrentUser").WithTags("User");
     }
 }
 
