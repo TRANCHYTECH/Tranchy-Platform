@@ -5,6 +5,7 @@
 
   <ItemGroup>
     <PackageReference Include="Mapster" />
+    <PackageReference Include="MassTransit.MongoDb" />
   </ItemGroup>
 
   <ItemGroup>
