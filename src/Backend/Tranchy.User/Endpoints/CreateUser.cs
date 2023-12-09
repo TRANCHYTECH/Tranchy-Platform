@@ -2,7 +2,7 @@ using MassTransit;
 using MassTransit.MongoDbIntegration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Entities;
-using Tranchy.Question.Events;
+using Tranchy.User.Events;
 using Tranchy.User.Mappers;
 
 namespace Tranchy.User.Endpoints;
