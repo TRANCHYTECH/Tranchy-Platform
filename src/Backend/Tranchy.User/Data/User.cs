@@ -15,18 +15,18 @@ public class User : EntityBase
     public Gender Gender { get; set; }
     public string[]? CategoryIds { get; set; }
     public UserRole[] Roles { get; set; } = Array.Empty<UserRole>();
-    public UserExpertise[] Expertises { get; set; } = Array.Empty<UserExpertise>();
-    public UserContact[] Contacts { get; set; } = Array.Empty<UserContact>();
+    public IList<UserExpertise> Expertises { get; set; } = new List<UserExpertise>();
+    public IList<UserContact> Contacts { get; set; } = new List<UserContact>();
 }
 
-public class UserExpertise
+public class UserExpertise : EntityBase
 {
     public ExpertiseType ExpertiseType { get; set; }
     public required string Title { get; set; }
     public string? MetaData { get; set; }
 }
 
-public class UserContact
+public class UserContact : EntityBase
 {
     public ContactType ContactType { get; set; }
     public required string Value { get; set; }
