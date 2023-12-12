@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
     <PackageReference Include="MiniValidation" />
+    <PackageReference Include="softaware.Authentication.Hmac.AspNetCore" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
 	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="MassTransit" />
@@ -20,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\softaware.Authentication.Hmac.AspNetCore\softaware.Authentication.Hmac.AspNetCore.csproj" />
     <ProjectReference Include="..\Tranchy.Common\Tranchy.Common.csproj" />
     <ProjectReference Include="..\Tranchy.Payment\Tranchy.Payment.csproj" />
     <ProjectReference Include="..\Tranchy.Question\Tranchy.Question.csproj" />

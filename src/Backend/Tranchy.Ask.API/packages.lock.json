@@ -193,6 +193,18 @@
         "resolved": "4.6.4",
         "contentHash": "weQmLZMgLhpWBS+0b3Pbq5GK7ZQd/Rc/HAp2NObdUeErc+LMzGLQjkkDZR51586KFVSTosURXRYFhlhreY80wg=="
       },
+      "softaware.Authentication.Hmac.AspNetCore": {
+        "type": "Direct",
+        "requested": "[4.0.1, )",
+        "resolved": "4.0.1",
+        "contentHash": "6SluqQcZVpwnpUJd7hT6M1WjjaKEPznIo/5RK5+WY3e89v/E2O20P6Vskp4+24bvfoApxvOkBJbCEIjD84BqTw==",
+        "dependencies": {
+          "Microsoft.AspNetCore.Authentication": "2.2.0",
+          "Microsoft.AspNetCore.Http": "2.2.2",
+          "Microsoft.Extensions.Caching.Memory": "7.0.0",
+          "softaware.Authentication.Hmac": "2.0.0"
+        }
+      },
       "Swashbuckle.AspNetCore": {
         "type": "Direct",
         "requested": "[6.5.0, )",
@@ -1292,18 +1304,6 @@
         "resolved": "0.6.2",
         "contentHash": "jPao/LdUNLUz8rn3H1D8W7wQbZsRZM0iayvWI4xGejJg3XJHT56gcmYdgmCGPdJF1UEBqUjucCRrFB+4HbJsbw=="
       },
-      "softaware.authentication.hmac": {
-        "type": "Project"
-      },
-      "softaware.authentication.hmac.aspnetcore": {
-        "type": "Project",
-        "dependencies": {
-          "Microsoft.AspNetCore.Authentication": "[2.2.0, )",
-          "Microsoft.AspNetCore.Http": "[2.2.2, )",
-          "Microsoft.Extensions.Caching.Memory": "[7.0.0, )",
-          "softaware.Authentication.Hmac": "[2.0.0, )"
-        }
-      },
       "tranchy.common": {
         "type": "Project",
         "dependencies": {
@@ -1431,6 +1431,12 @@
           "Microsoft.Data.SqlClient": "5.1.1",
           "Microsoft.EntityFrameworkCore.Relational": "8.0.0"
         }
+      },
+      "softaware.Authentication.Hmac": {
+        "type": "CentralTransitive",
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "PS88gsWwxzu0zZhzaNC9YkgvfxexKqzWo3L4n/CrxLTsHFeLegOC09Gxq02OawgkyIwC3BOmz5VmT7zTdoH8Fg=="
       },
       "Swashbuckle.AspNetCore.Annotations": {
         "type": "CentralTransitive",

@@ -135,8 +135,8 @@ builder.Services.AddAuthentication(options =>
             }
         };
     })
-    .AddHmacAuthentication(HmacAuthenticationDefaults.AuthenticationScheme, "HMAC Authentication", options => { })
     .AddJwtBearer()
+    .AddHmacAuthentication()
     .AddPolicyScheme("MultiAuthSchemes", "Multi Auth Schemes", options =>
     {
         options.ForwardDefaultSelector = context =>
@@ -149,7 +149,7 @@ builder.Services.AddAuthentication(options =>
 
             if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Hmac ", StringComparison.Ordinal))
             {
-                return "Hmac";
+                return HmacAuthenticationDefaults.AuthenticationScheme;
             }
 
             return CookieAuthenticationDefaults.AuthenticationScheme;
@@ -163,12 +163,12 @@ var hmacAuthenticatedApps = builder.Configuration
 
 builder.Services.AddTransient<IHmacAuthorizationProvider>(_ => new MemoryHmacAuthenticationProvider(hmacAuthenticatedApps));
 
-// builder.Services.AddAuthorizationBuilder()
-//     .AddPolicy(AuthPolicyNames.OAuth0Action, policy =>
-//     {
-//         policy.AuthenticationSchemes.Add(HmacAuthenticationDefaults.AuthenticationScheme);
-//         policy.RequireAuthenticatedUser();
-//     });
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy(AuthPolicyNames.OAuth0Action, policy =>
+    {
+        policy.AuthenticationSchemes.Add(HmacAuthenticationDefaults.AuthenticationScheme);
+        policy.RequireAuthenticatedUser();
+    });
 
 builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
 {

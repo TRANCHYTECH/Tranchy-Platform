@@ -1,16 +1,12 @@
-import { randomBytes, createHash } from 'crypto';
+import { randomBytes, createHash, createHmac } from 'crypto';
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 
-function unixTimestamp(date: number) {
-  return Math.floor(date / 1000);
-}
+const unixTimestamp = (date: number) => Math.floor(date / 1000);
 
-function generateNonce() {
-  const nonce = randomBytes(16).toString('base64');
-  return nonce;
-}
+const generateNonce = () => randomBytes(16).toString('base64');
 
-export type CreateUserHookOptions = {
+type CreateUserHookOptions = {
   appId: string;
   apiKey: string;
   requestUri: string;
@@ -21,40 +17,46 @@ export type CreateUserHookOptions = {
 
 export async function createUserHook(
   options: CreateUserHookOptions
-): Promise<string> {
+): Promise<void> {
+  axiosRetry(axios, {
+    retries: 3,
+    retryCondition: () => true,
+    retryDelay: axiosRetry.exponentialDelay,
+  });
+
   const requestBody = JSON.stringify(options.requestBody);
-  const appId = options.appId;
-  const apiKey = options.apiKey;
   const requestHttpMethod = 'POST';
-  const requestUri = encodeURIComponent(options.requestUri); // OK
   const hmacHashingMethod = 'HMACSHA256';
   const requestBodyHashingMethod = 'SHA256';
 
-  // UNIX time. OK
   const requestTimeStamp = unixTimestamp(Date.now());
-
-  // create random nonce for each request
   const nonce = generateNonce();
 
-  // Hashing the request body, any change in request body will result in different hash, we'll incure message integrity
   const hashAlgorithm = createHash(requestBodyHashingMethod);
   const requestContentHash = hashAlgorithm.update(requestBody);
   const requestContentBase64String = requestContentHash.digest('base64');
 
-  // Creating the raw signature string
-  const signatureRawData = `${appId}${requestHttpMethod}${requestUri}${requestTimeStamp}${nonce}${requestContentBase64String}`;
+  const signatureRawData = `${
+    options.appId
+  }${requestHttpMethod}${encodeURIComponent(
+    options.requestUri
+  )}${requestTimeStamp}${nonce}${requestContentBase64String}`;
 
-  const { createHmac } = await import('crypto');
-  const hmac = createHmac('sha256', Buffer.from(apiKey, 'base64'));
+  const hmac = createHmac('sha256', Buffer.from(options.apiKey, 'base64'));
   hmac.update(signatureRawData, 'utf8');
-
   const requestSignatureBase64String = hmac.digest('base64');
 
-  const authHeader = `${hmacHashingMethod}:${requestBodyHashingMethod}:${appId}:${requestSignatureBase64String}:${nonce}:${requestTimeStamp}`;
+  const authHeader = `${hmacHashingMethod}:${requestBodyHashingMethod}:${options.appId}:${requestSignatureBase64String}:${nonce}:${requestTimeStamp}`;
 
-  const response = await axios.post(options.requestUri, options.requestBody, {
-    headers: { Authorization: `Hmac ${authHeader}`, 'x-csrf': '1' },
-  });
+  try {
+    const response = await axios.post(options.requestUri, options.requestBody, {
+      headers: { Authorization: `Hmac ${authHeader}`, 'x-csrf': '1' },
+    });
 
-  return authHeader;
+    if (response.status !== 202) {
+      throw new Error('could not send');
+    }
+  } catch (error) {
+    throw new Error('could not send after retrying');
+  }
 }
