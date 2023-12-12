@@ -1,5 +1,5 @@
 import { randomBytes, createHash, createHmac } from 'crypto';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
 const unixTimestamp = (date: number) => Math.floor(date / 1000);
