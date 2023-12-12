@@ -12,8 +12,4 @@
     <ProjectReference Include="..\Tranchy.Common\Tranchy.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Requests\" />
-  </ItemGroup>
-
 </Project>

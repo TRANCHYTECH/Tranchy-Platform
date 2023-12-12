@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
     <PackageReference Include="MiniValidation" />
+    <PackageReference Include="softaware.Authentication.Hmac.AspNetCore" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
 	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="MassTransit" />

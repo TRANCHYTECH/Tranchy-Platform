@@ -1,4 +1,6 @@
 using Microsoft.Extensions.Logging;
+using Tranchy.User.Endpoints;
+using Tranchy.User.Requests;
 
 namespace Tranchy.User;
 
@@ -27,4 +29,10 @@ public static partial class Logs
     Level = LogLevel.Information,
     Message = "Updated user expertise with id=`{id}` for user {userId}")]
     public static partial void UpdatedUserExpertise(this ILogger logger, string id, string userId);
+
+    [LoggerMessage(
+        EventId = 1,
+        Level = LogLevel.Information,
+        Message = "Creating user hook invoked {request}")]
+    public static partial void CreateUserHook(this ILogger logger, CreateUserHookRequest request);
 }
