@@ -33,6 +33,6 @@ public static partial class Logs
     [LoggerMessage(
         EventId = 1,
         Level = LogLevel.Information,
-        Message = "Creating user hook invoked")]
+        Message = "Creating user hook invoked {request}")]
     public static partial void CreateUserHook(this ILogger logger, CreateUserHookRequest request);
 }

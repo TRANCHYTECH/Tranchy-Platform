@@ -8,4 +8,3 @@ public record CreateUserHookRequest
 
     public required DateTime CreatedAt { get; set; }
 }
-
