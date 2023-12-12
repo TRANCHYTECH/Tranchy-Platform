@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\softaware.Authentication.Hmac.AspNetCore\softaware.Authentication.Hmac.AspNetCore.csproj" />
     <ProjectReference Include="..\Tranchy.Common\Tranchy.Common.csproj" />
     <ProjectReference Include="..\Tranchy.Payment\Tranchy.Payment.csproj" />
     <ProjectReference Include="..\Tranchy.Question\Tranchy.Question.csproj" />

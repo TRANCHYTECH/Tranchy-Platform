@@ -14,6 +14,10 @@ using Tranchy.File;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using softaware.Authentication.Hmac;
+using softaware.Authentication.Hmac.AspNetCore;
+using softaware.Authentication.Hmac.AuthorizationProvider;
+using Tranchy.Common.Constants;
 using Tranchy.User;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
@@ -41,6 +45,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options => options.Forwarded
 var appSettings = new AppSettings();
 builder.Configuration.Bind(appSettings);
 builder.Services.Configure<AppSettings>(builder.Configuration);
+builder.Services.AddMemoryCache();
 
 builder.Services.RegisterModules(appSettings);
 
@@ -68,82 +73,102 @@ builder.Services.AddBff(options =>
 });
 
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = "MultiAuthSchemes";
-    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-    options.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
-    // options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-}).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-{
-    // host prefixed cookie name
-    options.Cookie.Name = "__Host.Web.Ask";
-
-    // strict SameSite handling
-    options.Cookie.SameSite = SameSiteMode.Strict;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-}).AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
-{
-    options.Authority = appSettings.Authentication.Schemes.OpenIdConnect.Authority;
-    // confidential client using code flow + PKCE
-    options.ClientId = appSettings.Authentication.Schemes.OpenIdConnect.ClientId;
-    options.ClientSecret = appSettings.Authentication.Schemes.OpenIdConnect.ClientSecret;
-    options.ResponseType = "code";
-    options.ResponseMode = "query";
-    options.MapInboundClaims = false;
-    options.GetClaimsFromUserInfoEndpoint = true;
-    options.SaveTokens = true;
-    // request scopes + refresh tokens
-    options.Scope.Clear();
-    foreach (string scope in appSettings.Authentication.Schemes.OpenIdConnect.Scopes)
     {
-        options.Scope.Add(scope);
-    }
-
-    options.Events = new OpenIdConnectEvents
+        options.DefaultScheme = "MultiAuthSchemes";
+        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+        options.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
+        // options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
     {
-        OnRedirectToIdentityProvider = context =>
-        {
-            context.ProtocolMessage.SetParameter("audience", appSettings.Authentication.Schemes.OpenIdConnect.ValidAudiences[0]);
-            return Task.FromResult(0);
-        },
-        OnRedirectToIdentityProviderForSignOut = (context) =>
-        {
-            string logoutUri = $"{appSettings.Authentication.Schemes.OpenIdConnect.Authority}/v2/logout?client_id={appSettings.Authentication.Schemes.OpenIdConnect.ClientId}";
+        // host prefixed cookie name
+        options.Cookie.Name = "__Host.Web.Ask";
 
-            string? postLogoutUri = context.Properties.RedirectUri;
-            if (!string.IsNullOrEmpty(postLogoutUri))
+        // strict SameSite handling
+        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    }).AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+    {
+        options.Authority = appSettings.Authentication.Schemes.OpenIdConnect.Authority;
+        // confidential client using code flow + PKCE
+        options.ClientId = appSettings.Authentication.Schemes.OpenIdConnect.ClientId;
+        options.ClientSecret = appSettings.Authentication.Schemes.OpenIdConnect.ClientSecret;
+        options.ResponseType = "code";
+        options.ResponseMode = "query";
+        options.MapInboundClaims = false;
+        options.GetClaimsFromUserInfoEndpoint = true;
+        options.SaveTokens = true;
+        // request scopes + refresh tokens
+        options.Scope.Clear();
+        foreach (string scope in appSettings.Authentication.Schemes.OpenIdConnect.Scopes)
+        {
+            options.Scope.Add(scope);
+        }
+
+        options.Events = new OpenIdConnectEvents
+        {
+            OnRedirectToIdentityProvider = context =>
             {
-                if (string.Equals(postLogoutUri, "/agency-portal", StringComparison.Ordinal))
+                context.ProtocolMessage.SetParameter("audience",
+                    appSettings.Authentication.Schemes.OpenIdConnect.ValidAudiences[0]);
+                return Task.FromResult(0);
+            },
+            OnRedirectToIdentityProviderForSignOut = (context) =>
+            {
+                string logoutUri =
+                    $"{appSettings.Authentication.Schemes.OpenIdConnect.Authority}/v2/logout?client_id={appSettings.Authentication.Schemes.OpenIdConnect.ClientId}";
+
+                string? postLogoutUri = context.Properties.RedirectUri;
+                if (!string.IsNullOrEmpty(postLogoutUri))
                 {
-                    postLogoutUri = appSettings.AgencyPortalSpaUrl;
+                    if (string.Equals(postLogoutUri, "/agency-portal", StringComparison.Ordinal))
+                    {
+                        postLogoutUri = appSettings.AgencyPortalSpaUrl;
+                    }
+
+                    logoutUri += $"&returnTo={Uri.EscapeDataString(postLogoutUri)}";
                 }
 
-                logoutUri += $"&returnTo={Uri.EscapeDataString(postLogoutUri)}";
+                context.Response.Redirect(logoutUri);
+                context.HandleResponse();
+
+                return Task.CompletedTask;
+            }
+        };
+    })
+    .AddHmacAuthentication(HmacAuthenticationDefaults.AuthenticationScheme, "HMAC Authentication", options => { })
+    .AddJwtBearer()
+    .AddPolicyScheme("MultiAuthSchemes", "Multi Auth Schemes", options =>
+    {
+        options.ForwardDefaultSelector = context =>
+        {
+            string? authorization = context.Request.Headers.Authorization;
+            if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer ", StringComparison.Ordinal))
+            {
+                return "Bearer";
             }
 
-            context.Response.Redirect(logoutUri);
-            context.HandleResponse();
+            if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Hmac ", StringComparison.Ordinal))
+            {
+                return "Hmac";
+            }
 
-            return Task.CompletedTask;
-        }
-    };
-})
-.AddJwtBearer()
-.AddPolicyScheme("MultiAuthSchemes", "Multi Auth Schemes", options =>
-{
-    options.ForwardDefaultSelector = context =>
-    {
-        string? authorization = context.Request.Headers.Authorization;
-        if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer ", StringComparison.Ordinal))
-        {
-            return "Bearer";
-        }
+            return CookieAuthenticationDefaults.AuthenticationScheme;
+        };
+    });
 
-        return CookieAuthenticationDefaults.AuthenticationScheme;
-    };
-});
+var hmacAuthenticatedApps = builder.Configuration
+    .GetSection("Authentication:Schemes:HmacAuthenticatedApps")
+    .Get<HmacAuthenticationClientConfiguration[]>()!
+    .ToDictionary(e => e.AppId, e => e.ApiKey, StringComparer.Ordinal);
 
-builder.Services.AddAuthorization();
+builder.Services.AddTransient<IHmacAuthorizationProvider>(_ => new MemoryHmacAuthenticationProvider(hmacAuthenticatedApps));
+
+// builder.Services.AddAuthorizationBuilder()
+//     .AddPolicy(AuthPolicyNames.OAuth0Action, policy =>
+//     {
+//         policy.AuthenticationSchemes.Add(HmacAuthenticationDefaults.AuthenticationScheme);
+//         policy.RequireAuthenticatedUser();
+//     });
 
 builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
 {
@@ -168,7 +193,7 @@ app.UseCors(agencyPortalSpaPolicy);
 app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
 app.MapGroup("/file").MapEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint();
 app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
-app.MapGroup("/user").MapEndpoints<UserModule>().RequireAuthorization().AsBffApiEndpoint();
+app.MapGroup("/user").MapEndpoints<UserModule>().RequireAuthorization();
 
 // Redirect after login
 app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, permanent: true));
