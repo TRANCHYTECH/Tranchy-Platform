@@ -1,6 +1,6 @@
 namespace Tranchy.User.Events;
 
-public record UserCreated
+public record UserUpdated
 {
     public required string Id { get; set; }
 }

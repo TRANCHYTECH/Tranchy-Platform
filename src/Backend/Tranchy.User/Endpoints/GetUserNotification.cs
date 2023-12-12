@@ -20,4 +20,3 @@ public class GetUserNotification : IEndpoint
         routeGroupBuilder.MapGet("Notifications", Get).WithName("GetUserNotification").WithTags("User");
     }
 }
-
