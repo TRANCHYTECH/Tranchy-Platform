@@ -1,5 +1,5 @@
 import { randomBytes, createHash, createHmac } from 'crypto';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import axiosRetry from 'axios-retry';
 
 const unixTimestamp = (date: number) => Math.floor(date / 1000);
@@ -11,7 +11,9 @@ type CreateUserHookOptions = {
   apiKey: string;
   requestUri: string;
   requestBody: {
-    userName: string;
+    userId: string;
+    email: string;
+    createdAt: Date;
   };
 };
 
@@ -47,16 +49,11 @@ export async function createUserHook(
   const requestSignatureBase64String = hmac.digest('base64');
 
   const authHeader = `${hmacHashingMethod}:${requestBodyHashingMethod}:${options.appId}:${requestSignatureBase64String}:${nonce}:${requestTimeStamp}`;
+  const response = await axios.post(options.requestUri, options.requestBody, {
+    headers: { Authorization: `Hmac ${authHeader}`, 'x-csrf': '1' },
+  });
 
-  try {
-    const response = await axios.post(options.requestUri, options.requestBody, {
-      headers: { Authorization: `Hmac ${authHeader}`, 'x-csrf': '1' },
-    });
-
-    if (response.status !== 202) {
-      throw new Error('could not send');
-    }
-  } catch (error) {
-    throw new Error('could not send after retrying');
+  if (response.status !== 202) {
+    throw new Error('could not finish sending');
   }
 }
