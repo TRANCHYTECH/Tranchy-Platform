@@ -15,8 +15,6 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_Kestrel__Certificates__Default__Path": "%HOME%/.aspnet/https/tranchyone.pem",
-        "ASPNETCORE_Kestrel__Certificates__Default__KeyPath": "%HOME%/.aspnet/https/tranchyone.key"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7200;http://localhost:7300"
