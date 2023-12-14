@@ -2,6 +2,7 @@ using MassTransit;
 using MassTransit.MongoDbIntegration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Entities;
+using Tranchy.Common.Constants;
 using Tranchy.User.Events;
 using Tranchy.User.Mappers;
 
@@ -33,5 +34,10 @@ public class CreateUser : IEndpoint
     public static void Register(RouteGroupBuilder routeGroupBuilder)
     {
         routeGroupBuilder.MapPost(string.Empty, Create).WithName("CreateUser").WithTags("User");
+
+        routeGroupBuilder.MapPost("oauth0/create", Create)
+            .RequireAuthorization(AuthPolicyNames.OAuth0Action)
+            .WithName("PostUserRegistrationOAuthAction")
+            .WithTags("OAuth0 Integration");
     }
 }
