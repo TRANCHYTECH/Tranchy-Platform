@@ -1,6 +1,4 @@
 using Microsoft.Extensions.Logging;
-using Tranchy.User.Endpoints;
-using Tranchy.User.Requests;
 
 namespace Tranchy.User;
 
@@ -33,6 +31,13 @@ public static partial class Logs
     [LoggerMessage(
         EventId = 1,
         Level = LogLevel.Information,
-        Message = "Creating user hook invoked {request}")]
-    public static partial void CreateUserHook(this ILogger logger, CreateUserHookRequest request);
+        Message = "Received auth0 action: Create User. UserId: {userId}.Email: {email}")]
+    public static partial void ReceviedCreatingUserAction(this ILogger logger, string userId, string email);
+
+
+    [LoggerMessage(
+    EventId = 1100,
+    Level = LogLevel.Error,
+    Message = "Could not create user. Duplidated User Id or Email")]
+    public static partial void DuplicatedUser(this ILogger logger, Exception exception);
 }

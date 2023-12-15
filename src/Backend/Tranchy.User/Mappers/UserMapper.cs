@@ -1,5 +1,6 @@
 using Mapster;
 using Tranchy.User.Endpoints;
+using Tranchy.User.Requests;
 using Tranchy.User.Responses;
 
 namespace Tranchy.User.Mappers;
