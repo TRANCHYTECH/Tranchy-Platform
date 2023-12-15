@@ -13,7 +13,7 @@ public class User : EntityBase
     /// </summary>
     static User() =>
         DB.Index<User>()
-            .Key(x => x.Email, KeyType.Text)
+            .Key(x => x.Email, KeyType.Descending)
             .Option(o =>
             {
                 o.Name = "Email";
