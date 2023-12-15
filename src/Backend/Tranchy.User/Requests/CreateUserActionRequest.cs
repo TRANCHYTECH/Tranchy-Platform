@@ -2,13 +2,11 @@ using Tranchy.Common.Exceptions;
 
 namespace Tranchy.User.Requests;
 
-public record CreateUserHookRequest
+public record CreateUserActionRequest
 {
     public required string UserId { get; set; }
 
     public required string Email { get; set; }
-
-    public required DateTime CreatedAt { get; set; }
 
     public (string ProviderId, string UserId) ParseUserId()
     {
