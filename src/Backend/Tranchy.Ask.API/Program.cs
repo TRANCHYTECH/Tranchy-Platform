@@ -14,9 +14,6 @@ using Tranchy.File;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using softaware.Authentication.Hmac;
-using softaware.Authentication.Hmac.AspNetCore;
-using softaware.Authentication.Hmac.AuthorizationProvider;
 using Tranchy.Common.Constants;
 using Tranchy.User;
 
@@ -136,7 +133,6 @@ builder.Services.AddAuthentication(options =>
         };
     })
     .AddJwtBearer()
-    .AddHmacAuthentication()
     .AddPolicyScheme("MultiAuthSchemes", "Multi Auth Schemes", options =>
     {
         options.ForwardDefaultSelector = context =>
@@ -147,27 +143,15 @@ builder.Services.AddAuthentication(options =>
                 return "Bearer";
             }
 
-            if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Hmac ", StringComparison.Ordinal))
-            {
-                return HmacAuthenticationDefaults.AuthenticationScheme;
-            }
-
             return CookieAuthenticationDefaults.AuthenticationScheme;
         };
     });
 
-var hmacAuthenticatedApps = builder.Configuration
-    .GetSection("Authentication:Schemes:HmacAuthenticatedApps")
-    .Get<HmacAuthenticationClientConfiguration[]>()!
-    .ToDictionary(e => e.AppId, e => e.ApiKey, StringComparer.Ordinal);
-
-builder.Services.AddTransient<IHmacAuthorizationProvider>(_ => new MemoryHmacAuthenticationProvider(hmacAuthenticatedApps));
-
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy(AuthPolicyNames.OAuth0Action, policy =>
+    .AddPolicy(AuthPolicyNames.CreateUserPolicy, policy =>
     {
-        policy.AuthenticationSchemes.Add(HmacAuthenticationDefaults.AuthenticationScheme);
         policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "write:users");
     });
 
 builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
