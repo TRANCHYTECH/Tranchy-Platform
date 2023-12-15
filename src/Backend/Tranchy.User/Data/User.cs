@@ -6,11 +6,17 @@ namespace Tranchy.User.Data;
 [Collection("User")]
 public class User : EntityBase
 {
+    // todo: check if it's better to move this function to script deployment.
+
+    /// <summary>
+    /// This function creates the unique index for field Email.
+    /// </summary>
     static User() =>
         DB.Index<User>()
             .Key(x => x.Email, KeyType.Text)
             .Option(o =>
             {
+                o.Name = "Email";
                 o.Background = false;
                 o.Unique = true;
             })
