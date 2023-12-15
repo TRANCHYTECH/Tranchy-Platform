@@ -14,7 +14,6 @@ type CreateUserActionOptions = {
   requestBody: {
     userId: string;
     email: string;
-    createdAt: Date;
   };
 };
 

@@ -14,7 +14,6 @@ describe('oauth0 create user action', () => {
       requestBody: {
         userId: 'auth0|5f7c8ec7c33c6c004bbafe83',
         email: 'tau.dang2@example.tech',
-        createdAt: new Date('2023-12-12T12:47:33.944Z'),
       },
     });
   });
@@ -32,7 +31,6 @@ describe('oauth0 create user action', () => {
         requestBody: {
           userId: 'auth0|5f7c8ec7c33c6c004bbafe82',
           email: 'tau.dang@example.tech',
-          createdAt: new Date('2023-12-12T12:47:33.944Z'),
         },
       })
     ).rejects.toThrow(/401/);
