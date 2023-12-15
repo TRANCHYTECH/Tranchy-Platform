@@ -31,7 +31,7 @@ public class CreateUser : IEndpoint
         return TypedResults.Ok(user.ID);
     }
 
-    private static async Task<Results<Accepted, BadRequest<string>>> CreateUserHook(
+    private static async Task<Results<Accepted, BadRequest<string>>> CreateUserAction(
         [FromBody] CreateUserHookRequest request,
         [FromServices] MongoDbContext dbContext,
         [FromServices] IPublishEndpoint publishEndpoint,
@@ -73,8 +73,8 @@ public class CreateUser : IEndpoint
     {
         routeGroupBuilder.MapPost(string.Empty, Create).WithName("CreateUser").WithTags("User");
 
-        routeGroupBuilder.MapPost("oauth0/create", CreateUserHook)
-            .RequireAuthorization(AuthPolicyNames.OAuth0Action)
+        routeGroupBuilder.MapPost("oauth0/create", CreateUserAction)
+            .RequireAuthorization(AuthPolicyNames.CreateUserPolicy)
             .WithName("CreateUserAction")
             .WithTags("User", "OAuth0 Integration");
     }
