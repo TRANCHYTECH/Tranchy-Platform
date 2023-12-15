@@ -1,4 +1,4 @@
-import { env } from 'process';
+
 import { createUserAction } from './createUserAction';
 
 describe('oauth0 create user action', () => {
@@ -6,14 +6,14 @@ describe('oauth0 create user action', () => {
     await createUserAction({
       client: {
         authority: 'https://dev-nkhte1hawwbq5ac2.us.auth0.com',
-        clientId: env["Auth0actorTest_ClientId"]!,
-        clientSecret: env["Auth0actorTest_ClientSecret"]!,
+        clientId: process.env["Auth0actorTest_ClientId"]!,
+        clientSecret: process.env["Auth0actorTest_ClientSecret"]!,
         audience: 'https://askapi',
       },
       requestUri: 'http://localhost:7300/user/oauth0/create',
       requestBody: {
-        userId: 'auth0|5f7c8ec7c33c6c004bbafe82',
-        email: 'tau.dang@example.tech',
+        userId: 'auth0|5f7c8ec7c33c6c004bbafe83',
+        email: 'tau.dang2@example.tech',
         createdAt: new Date('2023-12-12T12:47:33.944Z'),
       },
     });
