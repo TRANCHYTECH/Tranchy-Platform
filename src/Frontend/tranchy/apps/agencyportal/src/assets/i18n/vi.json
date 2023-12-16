@@ -7,6 +7,10 @@
         "title": "Dashboard"
     },
     "user-list": {
-        "title": "Manage users"
+        "title": "Manage users",
+        "username":"Username",
+        "email":"Email",
+        "firstname":"First name",
+        "lastname":"Last name"
     }
 }
