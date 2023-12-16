@@ -19,6 +19,12 @@ export const appRoutes: Route[] = [
           import('./setting/setting.routes').then((m) => m.ROUTES),
         canActivate: [AuthGuard],
       },
+      {
+        path: 'user',
+        loadChildren: () =>
+          import('./user/user.routes').then((m) => m.ROUTES),
+        canActivate: [AuthGuard],
+      },
     ],
   },
 ];

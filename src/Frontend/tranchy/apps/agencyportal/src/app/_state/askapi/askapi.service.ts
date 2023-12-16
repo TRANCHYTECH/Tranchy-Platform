@@ -16,13 +16,19 @@ import type {
   CreateQuestionEventBody,
   CreateQuestionRequest,
   CreateQuestionResponse,
+  CreateUserActionRequest,
+  CreateUserExpertiseRequest,
+  CreateUserRequest,
   FinishConsultationRequest,
   GetQuestionConfigurationsResponse,
+  GetUserExpertiseResponse,
   GetUserNotificationResponse,
   GetUserResponse,
   MobileQuestionEventMessageSent,
   Question,
   QuestionOutput,
+  UpdateUserExpertiseRequest,
+  UpdateUserRequest,
   UploadFileForQuestionBody,
   UploadFileForQuestionParams,
   UploadQuestionFileResponse,
@@ -53,6 +59,12 @@ type HttpClientOptions = {
 @Injectable({ providedIn: 'root' })
 export class TranchyAskApiDocumentationService {
   constructor(private http: HttpClient) {}
+  getUsers<TData = GetUserResponse[]>(
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.get<TData>(`/ask:/user/management/user`, options);
+  }
+
   createQuestion<TData = CreateQuestionResponse>(
     createQuestionRequest: CreateQuestionRequest,
     options?: HttpClientOptions
@@ -62,16 +74,6 @@ export class TranchyAskApiDocumentationService {
       createQuestionRequest,
       options
     );
-  }
-
-  createUser<TData = void>(options?: HttpClientOptions): Observable<TData> {
-    return this.http.post<TData>(`/ask:/user`, undefined, options);
-  }
-
-  getCurrentUser<TData = GetUserResponse>(
-    options?: HttpClientOptions
-  ): Observable<TData> {
-    return this.http.get<TData>(`/ask:/user`, options);
   }
 
   getQuestionConfigurations<TData = GetQuestionConfigurationsResponse>(
@@ -92,12 +94,6 @@ export class TranchyAskApiDocumentationService {
     options?: HttpClientOptions
   ): Observable<TData> {
     return this.http.get<TData>(`/ask:/question/user/${user}`, options);
-  }
-
-  getUserNotification<TData = GetUserNotificationResponse[]>(
-    options?: HttpClientOptions
-  ): Observable<TData> {
-    return this.http.get<TData>(`/ask:/user/Notifications`, options);
   }
 
   /**
@@ -218,18 +214,85 @@ export class TranchyAskApiDocumentationService {
       }
     );
   }
+
+  createUser<TData = void>(
+    createUserRequest: CreateUserRequest,
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.post<TData>(`/ask:/user`, createUserRequest, options);
+  }
+
+  getCurrentUser<TData = GetUserResponse>(
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.get<TData>(`/ask:/user`, options);
+  }
+
+  updateUser<TData = void>(
+    updateUserRequest: UpdateUserRequest,
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.put<TData>(`/ask:/user`, updateUserRequest, options);
+  }
+
+  createUserAction<TData = void>(
+    createUserActionRequest: CreateUserActionRequest,
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.post<TData>(
+      `/ask:/user/oauth0/create`,
+      createUserActionRequest,
+      options
+    );
+  }
+
+  createUserExpertise<TData = void>(
+    createUserExpertiseRequest: CreateUserExpertiseRequest,
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.post<TData>(
+      `/ask:/user/expertise`,
+      createUserExpertiseRequest,
+      options
+    );
+  }
+
+  getUserExpertise<TData = GetUserExpertiseResponse[]>(
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.get<TData>(`/ask:/user/expertise`, options);
+  }
+
+  updateUserExpertise<TData = void>(
+    updateUserExpertiseRequest: UpdateUserExpertiseRequest,
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.put<TData>(
+      `/ask:/user/expertise`,
+      updateUserExpertiseRequest,
+      options
+    );
+  }
+
+  getCurrentUserContacts<TData = GetUserExpertiseResponse[]>(
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.get<TData>(`/ask:/user/contact`, options);
+  }
+
+  getUserNotification<TData = GetUserNotificationResponse[]>(
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.get<TData>(`/ask:/user/Notifications`, options);
+  }
 }
 
+export type GetUsersClientResult = NonNullable<GetUserResponse[]>;
 export type CreateQuestionClientResult = NonNullable<CreateQuestionResponse>;
-export type CreateUserClientResult = NonNullable<void>;
-export type GetCurrentUserClientResult = NonNullable<GetUserResponse>;
 export type GetQuestionConfigurationsClientResult =
   NonNullable<GetQuestionConfigurationsResponse>;
 export type GetQuestionByIdClientResult = NonNullable<QuestionOutput>;
 export type GetQuestionByUserClientResult = NonNullable<QuestionOutput>;
-export type GetUserNotificationClientResult = NonNullable<
-  GetUserNotificationResponse[]
->;
 export type CreateQuestionEventClientResult = NonNullable<QuestionOutput>;
 export type FinishConsultationClientResult = NonNullable<void>;
 export type ListMobileQuestionEventsClientResult = NonNullable<
@@ -243,3 +306,18 @@ export type SeedMetadataClientResult = NonNullable<void>;
 export type GetAskAgencyPortalClientResult = NonNullable<void>;
 export type UploadFileForQuestionClientResult =
   NonNullable<UploadQuestionFileResponse>;
+export type CreateUserClientResult = NonNullable<void>;
+export type GetCurrentUserClientResult = NonNullable<GetUserResponse>;
+export type UpdateUserClientResult = NonNullable<void>;
+export type CreateUserActionClientResult = NonNullable<void>;
+export type CreateUserExpertiseClientResult = NonNullable<void>;
+export type GetUserExpertiseClientResult = NonNullable<
+  GetUserExpertiseResponse[]
+>;
+export type UpdateUserExpertiseClientResult = NonNullable<void>;
+export type GetCurrentUserContactsClientResult = NonNullable<
+  GetUserExpertiseResponse[]
+>;
+export type GetUserNotificationClientResult = NonNullable<
+  GetUserNotificationResponse[]
+>;

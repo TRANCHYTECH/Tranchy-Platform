@@ -25,7 +25,7 @@ internal static class QuestionEventMapper
         .Include<CreateQuestionEventStatusChangedInput, Data.QuestionEventStatusChanged>()
         .Include<CreateQuestionEventFileAttachedInput, Data.QuestionEventFileAttached>()
         .Include<CreateQuestionEventVoiceCalledInput, Data.QuestionEventVoiceCalled>()
-        .Include<CreateQuestionEventVideoCalledInput, Data.QuestionEventVoiceCalled>()
+        .Include<CreateQuestionEventVideoCalledInput, Data.QuestionEventVideoCalled>()
         .Map(dest => dest.QuestionId, _ => MapContext.Current!.Parameters["questionId"])
         .Map(dest => dest.CreatedByUserId, _ => MapContext.Current!.Parameters[nameof(ITenant.UserId)]);
 
