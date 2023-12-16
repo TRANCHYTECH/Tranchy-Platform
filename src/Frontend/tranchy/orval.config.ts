@@ -22,7 +22,7 @@ export default defineConfig({
       prettier: true,
     },
     input: {
-      target: 'https://askapi.vietgeeks.io/swagger/v1/swagger.json',
+      target: 'swagger.json',
       override: {
         transformer: askApiPrefixFn,
       },

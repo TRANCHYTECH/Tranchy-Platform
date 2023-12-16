@@ -4,12 +4,11 @@
  * Tranchy Ask Api Documentation
  * OpenAPI spec version: v1
  */
+import type { Gender } from './gender';
 
-export interface GetUserResponse {
+export interface UpdateUserRequest {
   firstName?: string | null;
+  gender?: Gender;
   headline?: string | null;
-  id?: string | null;
   lastName?: string | null;
-  profilePictureBlobLocation?: string | null;
-  userName?: string | null;
 }
