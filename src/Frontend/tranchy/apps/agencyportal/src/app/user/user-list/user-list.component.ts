@@ -12,16 +12,19 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 
 import { TranchyAskApiDocumentationService } from '../../_state/askapi/askapi.service';
 import { GetUserResponse, QuestionOutput } from '../../_state/askapi/models';
 import { PortalConfig } from '../../app.config';
 import { firstValueFrom } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'tranchy-user-list',
   standalone: true,
-  imports: [SharedModule, ConfirmDialogModule, TableModule, DialogModule],
+  imports: [SharedModule, ConfirmDialogModule, TableModule, DialogModule, InputTextModule, ReactiveFormsModule],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,6 +43,21 @@ export class UserListComponent implements OnInit {
   showUserDialog = false;
   user: Partial<GetUserResponse> = {};
 
+  fb = inject(FormBuilder);
+  userForm: FormGroup;
+
+  /**
+   *
+   */
+  constructor() {
+    this.userForm = this.fb.group({
+      userName: null,
+      email: null,
+      firstName: null,
+      lastName: null
+    });
+  }
+
   async ngOnInit(): Promise<void> {
     const users = await firstValueFrom(this.askAPIService.getUsers());
     this.users.set(users);
@@ -47,7 +65,10 @@ export class UserListComponent implements OnInit {
 
   viewDetail(user: GetUserResponse) {
     this.showUserDialog = true;
-    this.user = user;
+
+    const formData = (({ userName, email, firstName, lastName }) => ({ userName, email, firstName, lastName }))(user);
+
+    this.userForm.setValue(formData);
   }
 
   hideDetail() {

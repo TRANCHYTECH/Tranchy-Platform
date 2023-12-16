@@ -6,6 +6,7 @@
  */
 
 export interface GetUserResponse {
+  email?: string | null;
   firstName?: string | null;
   headline?: string | null;
   id?: string | null;
