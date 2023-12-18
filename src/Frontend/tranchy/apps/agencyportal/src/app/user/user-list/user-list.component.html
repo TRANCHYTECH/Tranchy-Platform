@@ -1,3 +1,4 @@
+<tranchy-breadcrumbs title="USER" [breadcrumbItems]="[]"></tranchy-breadcrumbs>
 <div class="grid">
   <div class="col-12">
     <div class="card">
@@ -20,8 +21,13 @@
               <td>{{ user.firstName }}</td>
               <td>{{ user.lastName }}</td>
               <td>
-                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
-                  (click)="viewDetail(user)"></button>
+                <button
+                  pButton
+                  pRipple
+                  icon="pi pi-pencil"
+                  class="p-button-rounded p-button-success mr-2"
+                  (click)="viewDetail(user)"
+                ></button>
               </td>
             </tr>
           </ng-template>
@@ -32,32 +38,72 @@
   </div>
 </div>
 
-<p-dialog [(visible)]="showUserDialog" [style]="{ width: '450px' }" header="User Details" [modal]="true"
-  styleClass="p-fluid">
+<p-dialog
+  [(visible)]="showUserDialog"
+  [style]="{ width: '450px' }"
+  header="User Details"
+  [modal]="true"
+  styleClass="p-fluid"
+>
   <ng-template pTemplate="content">
     <form [formGroup]="userForm">
       <div class="field">
         <label for="Username">{{ 'user-list.username' | translate }}</label>
-        <input type="text" pInputText id="Username" formControlName="userName" required autofocus />
+        <input
+          type="text"
+          pInputText
+          id="Username"
+          formControlName="userName"
+          required
+          autofocus
+        />
       </div>
       <div class="field">
         <label for="Email">{{ 'user-list.email' | translate }}</label>
-        <input type="text" pInputText id="Email" formControlName="email" required autofocus />
+        <input
+          type="text"
+          pInputText
+          id="Email"
+          formControlName="email"
+          required
+          autofocus
+        />
       </div>
 
       <div class="field">
         <label for="FirstName">{{ 'user-list.firstname' | translate }}</label>
-        <input type="text" pInputText id="FirstName" formControlName="firstName" required autofocus />
+        <input
+          type="text"
+          pInputText
+          id="FirstName"
+          formControlName="firstName"
+          required
+          autofocus
+        />
       </div>
 
       <div class="field">
         <label for="LastName">{{ 'user-list.lastname' | translate }}</label>
-        <input type="text" pInputText id="LastName" formControlName="lastName" required autofocus />
+        <input
+          type="text"
+          pInputText
+          id="LastName"
+          formControlName="lastName"
+          required
+          autofocus
+        />
       </div>
     </form>
   </ng-template>
 
   <ng-template pTemplate="footer">
-    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDetail()"></button>
+    <button
+      pButton
+      pRipple
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDetail()"
+    ></button>
   </ng-template>
 </p-dialog>

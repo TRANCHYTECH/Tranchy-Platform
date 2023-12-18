@@ -5,43 +5,50 @@ import { firstValueFrom, tap, catchError, of } from 'rxjs';
 import { CORE_CONFIG } from '../core.config';
 
 export type User = {
-  isLoggedIn: boolean,
-  name: string
-}
+  isLoggedIn: boolean;
+  name: string;
+};
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   httpClient = inject(HttpClient);
   router = inject(Router);
   coreConfig = inject(CORE_CONFIG);
-  
+
   user = computed<User>(() => {
     const user = this._user();
 
     if (user === null) {
       return {
         isLoggedIn: false,
-        name: ''
-      }
+        name: '',
+      };
     }
 
     return {
       isLoggedIn: true,
-      name: user.find(c => c.type === 'name')?.value as string
-    }
+      name: user.find((c) => c.type === 'name')?.value as string,
+    };
   });
 
-  private _user = signal<{ type: string, value: string | number }[] | null>(null);
+  private _user = signal<{ type: string; value: string | number }[] | null>(
+    null
+  );
 
   getUser() {
-    return firstValueFrom(this.httpClient.get('/ask:/bff/user').pipe(tap((res: any) => {
-      this._user.set(res);
-    }), catchError(error => {
-      console.log('error get user', error);
-      return of(null);
-    })));
+    return firstValueFrom(
+      this.httpClient.get('/ask:/bff/user').pipe(
+        tap((res: any) => {
+          this._user.set(res);
+        }),
+        catchError((error) => {
+          console.log('error get user', error);
+          return of(null);
+        })
+      )
+    );
   }
 
   login() {
@@ -50,17 +57,15 @@ export class UserService {
 
   logout() {
     const user = this._user();
-    if (user === null)
-      return;
+    if (user === null) return;
 
-    const logoutUrl = user.find(c => c.type === 'bff:logout_url');
+    const logoutUrl = user.find((c) => c.type === 'bff:logout_url');
     window.location.href = `${this.coreConfig.askApiBaseUrl}${logoutUrl?.value}&returnUrl=/agency-portal`;
   }
 }
 
 export const AuthGuard: CanActivateFn = async () => {
   const userService = inject(UserService);
-  const router = inject(Router);
   const coreConfig = inject(CORE_CONFIG);
   const user = await userService.getUser();
 
