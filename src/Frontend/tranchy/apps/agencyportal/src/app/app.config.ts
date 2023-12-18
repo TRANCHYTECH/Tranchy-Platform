@@ -16,7 +16,7 @@ import { AskApiHttpInterceptor, CoreConfig, provideCore } from '@tranchy/core';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { SharedModule } from '@tranchy/shared';
-import { LayoutsModule } from './layouts/layouts.module';
+import { LayoutsModule } from './_layouts/layouts.module';
 
 export interface PortalConfig extends CoreConfig {
   production: boolean;

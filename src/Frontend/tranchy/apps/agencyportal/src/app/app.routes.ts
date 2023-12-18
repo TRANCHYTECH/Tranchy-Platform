@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { AuthGuard } from '@tranchy/core';
-import { LayoutComponent } from './layouts/layout.component';
+import { LayoutComponent } from './_layouts/layout.component';
 
 export const appRoutes: Route[] = [
   {
@@ -21,8 +21,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'user',
-        loadChildren: () =>
-          import('./user/user.routes').then((m) => m.ROUTES),
+        loadChildren: () => import('./user/user.routes').then((m) => m.ROUTES),
         canActivate: [AuthGuard],
       },
     ],
