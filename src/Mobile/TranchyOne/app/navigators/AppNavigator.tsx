@@ -20,6 +20,7 @@ import { useStores } from "../models"
 import { DemoNavigator, DemoTabParamList } from "./DemoNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { colors } from "app/theme"
+import { MyTabParamList } from "./BottomNavigator"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -38,6 +39,11 @@ export type AppStackParamList = {
   Welcome: undefined
   Login: undefined
   Demo: NavigatorScreenParams<DemoTabParamList>
+  NewQuestion: undefined
+  QuestionList: undefined
+  QuestionDetails: { id: string }
+  QuestionConversation: { id: string }
+  MyTabs: NavigatorScreenParams<MyTabParamList>
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }

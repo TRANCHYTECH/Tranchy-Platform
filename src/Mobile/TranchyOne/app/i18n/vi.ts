@@ -1,4 +1,4 @@
-const en = {
+const vi = {
   common: {
     ok: "OK!",
     cancel: "Cancel",
@@ -144,5 +144,5 @@ const en = {
   },
 }
 
-export default en
-export type Translations = typeof en
+export default vi
+export type Translations = typeof vi

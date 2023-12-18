@@ -10,6 +10,7 @@ import parseISO from "date-fns/parseISO"
 import ar from "date-fns/locale/ar-SA"
 import ko from "date-fns/locale/ko"
 import en from "date-fns/locale/en-US"
+import formatDistance from "date-fns/formatDistance"
 
 type Options = Parameters<typeof format>[2]
 
@@ -25,4 +26,8 @@ export const formatDate = (date: string, dateFormat?: string, options?: Options)
     locale,
   }
   return format(parseISO(date), dateFormat ?? "MMM dd, yyyy", dateOptions)
+}
+
+export const timeAgo = (date: string) => {
+  return formatDistance(new Date(date), new Date(), { addSuffix: true, locale: vi })
 }
