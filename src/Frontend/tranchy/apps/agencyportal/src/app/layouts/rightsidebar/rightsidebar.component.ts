@@ -1,19 +1,37 @@
-import { Component, ViewChild, OnInit, Output, EventEmitter, TemplateRef } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  OnInit,
+  Output,
+  EventEmitter,
+  TemplateRef,
+} from '@angular/core';
 import { EventService } from '../../core/services/event.service';
-import { LAYOUT, LAYOUT_MODE, LAYOUT_WIDTH, LAYOUT_POSITION, TOPBAR, SIDEBAR_SIZE, SIDEBAR_VIEW, SIDEBAR_COLOR, SIDEBAR_IMAGE, DATA_PRELOADER, SIDEBAR_VISIBILITY } from '../layout.model';
+import {
+  LAYOUT,
+  LAYOUT_MODE,
+  LAYOUT_WIDTH,
+  LAYOUT_POSITION,
+  TOPBAR,
+  SIDEBAR_SIZE,
+  SIDEBAR_VIEW,
+  SIDEBAR_COLOR,
+  SIDEBAR_IMAGE,
+  DATA_PRELOADER,
+  SIDEBAR_VISIBILITY,
+} from '../layout.model';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-rightsidebar',
   templateUrl: './rightsidebar.component.html',
-  styleUrls: ['./rightsidebar.component.scss']
+  styleUrls: ['./rightsidebar.component.scss'],
 })
 
 /**
  * Right Sidebar component
  */
 export class RightsidebarComponent implements OnInit {
-
   layout: string | undefined;
   mode: string | undefined;
   width: string | undefined;
@@ -30,14 +48,12 @@ export class RightsidebarComponent implements OnInit {
   @ViewChild('filtetcontent') filtetcontent!: TemplateRef<any>;
   @Output() settingsButtonClicked = new EventEmitter();
 
-  constructor(private eventService: EventService, private offcanvasService: NgbOffcanvas) { }
+  constructor(
+    private eventService: EventService,
+    private offcanvasService: NgbOffcanvas
+  ) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
-      if (this.offcanvasService.hasOpenOffcanvas() == false) {
-        this.openEnd(this.filtetcontent);
-      };
-    }, 1000);
     this.layout = LAYOUT;
     this.mode = LAYOUT_MODE;
     this.width = LAYOUT_WIDTH;
@@ -47,12 +63,12 @@ export class RightsidebarComponent implements OnInit {
     this.sidebarView = SIDEBAR_VIEW;
     this.sidebar = SIDEBAR_COLOR;
     this.sidebarImage = SIDEBAR_IMAGE;
-    this.sidebarVisibility = SIDEBAR_VISIBILITY
+    this.sidebarVisibility = SIDEBAR_VISIBILITY;
     this.preLoader = DATA_PRELOADER;
     this.attribute = '';
   }
 
-  ngAfterViewInit() { }
+  ngAfterViewInit() {}
 
   /**
    * Change the layout onclick
@@ -75,7 +91,7 @@ export class RightsidebarComponent implements OnInit {
   // Add Active Class
   addActive(grdSidebar: any) {
     this.grd = grdSidebar;
-    document.documentElement.setAttribute('data-sidebar', grdSidebar)
+    document.documentElement.setAttribute('data-sidebar', grdSidebar);
     document.getElementById('collapseBgGradient')?.classList.toggle('show');
     document.getElementById('collapseBgGradient1')?.classList.add('active');
   }
@@ -98,9 +114,11 @@ export class RightsidebarComponent implements OnInit {
     this.offcanvasService.open(content, { position: 'end' });
 
     setTimeout(() => {
-      this.attribute = document.documentElement.getAttribute('data-layout')
+      this.attribute = document.documentElement.getAttribute('data-layout');
       if (this.attribute == 'vertical') {
-        var vertical = document.getElementById('customizer-layout01') as HTMLInputElement;
+        var vertical = document.getElementById(
+          'customizer-layout01'
+        ) as HTMLInputElement;
         if (vertical != null) {
           vertical.setAttribute('checked', 'true');
         }
@@ -129,15 +147,17 @@ export class RightsidebarComponent implements OnInit {
   // Mode Change
   changeMode(mode: string) {
     this.mode = mode;
-    document.documentElement.setAttribute('data-bs-theme', mode)
+    document.documentElement.setAttribute('data-bs-theme', mode);
   }
 
   // Visibility Change
   changeVisibility(visibility: string) {
     this.sidebarVisibility = visibility;
-    document.documentElement.setAttribute('data-sidebar-visibility', visibility)
+    document.documentElement.setAttribute(
+      'data-sidebar-visibility',
+      visibility
+    );
   }
-
 
   // Width Change
   changeWidth(width: string, size: string) {
@@ -158,13 +178,13 @@ export class RightsidebarComponent implements OnInit {
   // Topbar Change
   changeTopColor(color: string) {
     this.topbar = color;
-    document.documentElement.setAttribute('data-topbar', color)
+    document.documentElement.setAttribute('data-topbar', color);
   }
 
   // Sidebar Size Change
   changeSidebarSize(size: string) {
     this.size = size;
-    document.documentElement.setAttribute('data-sidebar-size', size)
+    document.documentElement.setAttribute('data-sidebar-size', size);
   }
 
   // Sidebar Size Change
@@ -176,7 +196,7 @@ export class RightsidebarComponent implements OnInit {
   // Sidebar Color Change
   changeSidebarColor(color: string) {
     this.sidebar = color;
-    document.documentElement.setAttribute('data-sidebar', color)
+    document.documentElement.setAttribute('data-sidebar', color);
   }
 
   // Sidebar Image Change
@@ -189,13 +209,14 @@ export class RightsidebarComponent implements OnInit {
   changeLoader(loader: string) {
     this.preLoader = loader;
     document.documentElement.setAttribute('data-preloader', loader);
-    var preloader = document.getElementById("preloader");
+    var preloader = document.getElementById('preloader');
     if (preloader) {
       setTimeout(function () {
-        (document.getElementById("preloader") as HTMLElement).style.opacity = "0";
-        (document.getElementById("preloader") as HTMLElement).style.visibility = "hidden";
+        (document.getElementById('preloader') as HTMLElement).style.opacity =
+          '0';
+        (document.getElementById('preloader') as HTMLElement).style.visibility =
+          'hidden';
       }, 1000);
     }
   }
-
 }
