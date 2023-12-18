@@ -13,16 +13,19 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TranchyAskApiDocumentationService } from '../../_state/askapi/askapi.service';
 import { QuestionOutput } from '../../_state/askapi/models';
 import { PortalConfig } from '../../app.config';
+import { BreadcrumbItem, BreadcrumbsComponent } from '../../shared/breadcrumbs/breadcrumbs.component';
 
 @Component({
   selector: 'tranchy-home',
   standalone: true,
-  imports: [SharedModule, ConfirmDialogModule],
+  imports: [SharedModule, ConfirmDialogModule, BreadcrumbsComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
+  breadCrumbItems!: Array<BreadcrumbItem>;
+
   askAPIService = inject(TranchyAskApiDocumentationService);
   httpClient = inject(HttpClient);
   appConfig = injectPortalConfig<PortalConfig>();
@@ -34,6 +37,11 @@ export class HomeComponent implements OnInit {
   user = signal<Partial<Object>>({});
 
   async ngOnInit(): Promise<void> {
+    this.breadCrumbItems = [
+      { label: 'Dashboards' },
+      { label: 'Home', active: true }
+    ];
+
     this.askAPIService
       .getQuestionById('1245')
       .subscribe((q) => this.question.set(q));

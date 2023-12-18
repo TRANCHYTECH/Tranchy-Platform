@@ -6,7 +6,7 @@
     "generate-rest": "npx orval --config ./orval.config.ts",
     "build:agencyportal": "nx build agencyportal",
     "start:agencyportal": "nx serve agencyportal --port 4200 --ssl --ssl-cert tls/tranchyone.pem --ssl-key tls/tranchyone.pem",
-    "start:agencyportal_macos": "nx serve agencyportal --port 4200 --ssl --ssl-cert $HOME/.aspnet/https/tranchyone.pem --ssl-key $HOME/.aspnet/https/tranchyone.key"
+    "start:agencyportal_macos": "nx serve agencyportal --port 4200 --ssl --ssl-cert %HOME%/.aspnet/https/tranchyone.pem --ssl-key %HOME%/.aspnet/https/tranchyone.key"
   },
   "private": true,
   "dependencies": {
@@ -32,7 +32,17 @@
     "primeng": "^17.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "0.14.2"
+    "zone.js": "0.14.2",
+    "@ng-bootstrap/ng-bootstrap": "16.0.0",
+    "bootstrap": "5.3.2",
+    "ngx-cookie-service": "^17.0.1",
+    "@asymmetrik/ngx-leaflet": "^17.0.0",
+    "leaflet": "^1.9.4",
+    "simplebar-angular": "^3.2.4",
+    "angular-feather": "^6.5.0",
+    "lord-icon-element": "^4.1.2",
+    "lottie-web": "^5.12.2",
+    "@popperjs/core": "^2.11.8"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "17.0.5",

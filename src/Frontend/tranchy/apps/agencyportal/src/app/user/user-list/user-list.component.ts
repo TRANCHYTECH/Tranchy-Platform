@@ -18,13 +18,13 @@ import { TranchyAskApiDocumentationService } from '../../_state/askapi/askapi.se
 import { GetUserResponse, QuestionOutput } from '../../_state/askapi/models';
 import { PortalConfig } from '../../app.config';
 import { firstValueFrom } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { BreadcrumbItem, BreadcrumbsComponent } from '../../shared/breadcrumbs/breadcrumbs.component';
 
 @Component({
   selector: 'tranchy-user-list',
   standalone: true,
-  imports: [SharedModule, ConfirmDialogModule, TableModule, DialogModule, InputTextModule, ReactiveFormsModule],
+  imports: [SharedModule, ConfirmDialogModule, TableModule, DialogModule, InputTextModule, ReactiveFormsModule, BreadcrumbsComponent],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,6 +46,7 @@ export class UserListComponent implements OnInit {
   fb = inject(FormBuilder);
   userForm: FormGroup;
 
+  breadCrumbItems: Array<BreadcrumbItem> = [];
   /**
    *
    */

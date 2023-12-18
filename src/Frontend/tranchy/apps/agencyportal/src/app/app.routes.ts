@@ -1,11 +1,11 @@
 import { Route } from '@angular/router';
 import { AuthGuard } from '@tranchy/core';
-import { AppLayoutComponent } from './_layout/app.layout.component';
+import { LayoutComponent } from './layouts/layout.component';
 
 export const appRoutes: Route[] = [
   {
     path: '',
-    component: AppLayoutComponent,
+    component: LayoutComponent,
     children: [
       {
         path: '',
