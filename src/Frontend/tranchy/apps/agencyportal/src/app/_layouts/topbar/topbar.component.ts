@@ -6,6 +6,7 @@ import {
   Inject,
   ViewChild,
   TemplateRef,
+  inject,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { EventService } from '../../core/services/event.service';
@@ -22,6 +23,7 @@ import { allNotification, messages } from './data';
 import { CartModel } from './topbar.model';
 import { cartData } from './data';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from '@tranchy/core';
 
 @Component({
   selector: 'app-topbar',
@@ -48,6 +50,8 @@ export class TopbarComponent implements OnInit {
   isDropdownOpen = false;
   @ViewChild('removenotification') removenotification!: TemplateRef<any>;
   notifyId: any;
+
+  private _userService = inject(UserService);
 
   constructor(
     @Inject(DOCUMENT) private document: any,
@@ -192,7 +196,7 @@ export class TopbarComponent implements OnInit {
    * Logout the user
    */
   logout() {
-    this.router.navigate(['/auth/login']);
+    this._userService.logout();
   }
 
   windowScroll() {
