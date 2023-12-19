@@ -7,6 +7,8 @@ import {
   ViewChild,
   TemplateRef,
   inject,
+  signal,
+  Signal,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { EventService } from '../../core/services/event.service';
@@ -23,7 +25,7 @@ import { allNotification, messages } from './data';
 import { CartModel } from './topbar.model';
 import { cartData } from './data';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from '@tranchy/core';
+import { User, UserService } from '@tranchy/core';
 
 @Component({
   selector: 'app-topbar',
@@ -51,7 +53,8 @@ export class TopbarComponent implements OnInit {
   @ViewChild('removenotification') removenotification!: TemplateRef<any>;
   notifyId: any;
 
-  private _userService = inject(UserService);
+  user!: User;
+  _userService = inject(UserService);
 
   constructor(
     @Inject(DOCUMENT) private document: any,
@@ -65,6 +68,7 @@ export class TopbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.user = this._userService.user();
     this.userData = this.TokenStorageService.getUser();
     this.element = document.documentElement;
 
@@ -173,13 +177,6 @@ export class TopbarComponent implements OnInit {
   listLang = [
     { text: 'Vietnam', flag: 'assets/images/flags/vn.svg', lang: 'vi' },
     { text: 'English', flag: 'assets/images/flags/us.svg', lang: 'en' },
-    { text: 'Española', flag: 'assets/images/flags/spain.svg', lang: 'es' },
-    { text: 'Deutsche', flag: 'assets/images/flags/germany.svg', lang: 'de' },
-    { text: 'Italiana', flag: 'assets/images/flags/italy.svg', lang: 'it' },
-    { text: 'русский', flag: 'assets/images/flags/russia.svg', lang: 'ru' },
-    { text: '中国人', flag: 'assets/images/flags/china.svg', lang: 'ch' },
-    { text: 'français', flag: 'assets/images/flags/french.svg', lang: 'fr' },
-    { text: 'Arabic', flag: 'assets/images/flags/ar.svg', lang: 'ar' },
   ];
 
   /***

@@ -15,9 +15,8 @@ export const SIDEBAR_VIEW = 'default';
 
 export const SIDEBAR_COLOR = 'light';
 
-export const SIDEBAR_IMAGE = 'none';
+export const SIDEBAR_IMAGE = 'img-2';
 
 export const SIDEBAR_VISIBILITY = 'show';
 
 export const DATA_PRELOADER = 'disable';
-
