@@ -67,13 +67,16 @@ export class UserService {
 export const AuthGuard: CanActivateFn = async () => {
   const userService = inject(UserService);
   const coreConfig = inject(CORE_CONFIG);
+  const router = inject(Router);
+
   const user = await userService.getUser();
 
   if (user !== null) {
     return true;
   }
 
-  window.location.href = `${coreConfig.askApiBaseUrl}/bff/login?returnUrl=/agency-portal`;
+  router.navigate(['auth','login']);
+  // window.location.href = `${coreConfig.askApiBaseUrl}/bff/login?returnUrl=/agency-portal`;
 
   //todo: redirect to unauthorized page. Page has options to login.
   return false;

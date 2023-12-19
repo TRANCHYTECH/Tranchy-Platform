@@ -23,7 +23,11 @@ export const appRoutes: Route[] = [
         path: 'user',
         loadChildren: () => import('./user/user.routes').then((m) => m.ROUTES),
         canActivate: [AuthGuard],
-      },
+      }
     ],
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.routes').then((m) => m.ROUTES)
   },
 ];
