@@ -7,7 +7,7 @@ export const QuestionCategoryModel = types
   .model("QuestionCategory")
   .props({
     key: backendTypes.simpleType(types.string),
-    title: backendTypes.simpleType(types.frozen<LocalizedAttribute>()),
+    title: backendTypes.frozenType<LocalizedAttribute>(),
     description: backendTypes.frozenType<LocalizedAttribute>(),
   })
   .actions(withSetPropAction)

@@ -6,6 +6,7 @@ import { getQuestionConfigurations } from "app/services/ask-api/askApi"
 import { GetQuestionConfigurationsResponse } from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"
 import { load, save } from "app/utils/storage"
+import { backendTypes } from "./helpers/backendTypes"
 
 /**
  * Model description here for TypeScript hints.
@@ -13,10 +14,10 @@ import { load, save } from "app/utils/storage"
 export const MetadataStoreModel = types
   .model("MetadataStore")
   .props({
-    userId: types.maybe(types.maybeNull(types.string)),
-    email: types.maybe(types.maybeNull(types.string)),
-    categories: types.union(types.null, types.array(QuestionCategoryModel)),
-    priorities: types.union(types.undefined, types.null, types.array(QuestionPriorityModel)),
+    userId: backendTypes.simpleType(types.string),
+    email: backendTypes.frozenSubType(types.string),
+    categories: backendTypes.arrayType(QuestionCategoryModel),
+    priorities: backendTypes.arrayType(QuestionPriorityModel),
   })
   .actions(withSetPropAction)
   .views((self) => ({

@@ -1,11 +1,7 @@
-import { IAnyType, ISimpleType, types } from "mobx-state-tree"
+import { IAnyType, ISimpleType, IType, types } from "mobx-state-tree"
 import { IsoDate } from "./isoDateType"
 
 function simpleType<T>(type: ISimpleType<T>) {
-  return types.union(types.null, types.undefined, type)
-}
-
-function anyType(type: IAnyType) {
   return types.union(types.null, types.undefined, type)
 }
 
@@ -21,7 +17,7 @@ function frozenType<T>() {
   return types.union(types.null, types.undefined, types.frozen<T>())
 }
 
-function frozenSubType<T>(subType: T) {
+function frozenSubType<T>(subType: IType<T, any, any>) {
   return types.union(types.null, types.undefined, types.frozen(subType))
 }
 

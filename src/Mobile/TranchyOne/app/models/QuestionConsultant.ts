@@ -20,5 +20,5 @@ export interface QuestionConsultant extends Instance<typeof QuestionConsultantMo
 export interface QuestionConsultantSnapshotOut
   extends SnapshotOut<typeof QuestionConsultantModel> {}
 export interface QuestionConsultantSnapshotIn extends SnapshotIn<typeof QuestionConsultantModel> {}
-// export const createQuestionConsultantDefaultModel = () =>
-//   types.optional(QuestionConsultantModel, {})
+export const createQuestionConsultantDefaultModel = () =>
+  types.optional(QuestionConsultantModel, {})

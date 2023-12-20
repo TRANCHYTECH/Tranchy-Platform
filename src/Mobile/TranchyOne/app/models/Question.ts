@@ -1,16 +1,15 @@
+import { ApiResponse } from "apisauce"
+import { listMobileQuestionEvents, pickQuestion } from "app/services/ask-api/askApi"
+import {
+  Question as BackendQuestion,
+  MobileQuestionEventMessageSent,
+} from "app/services/ask-api/models"
 import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state-tree"
-import { withSetPropAction } from "./helpers/withSetPropAction"
 import { SupportLevels } from "./Constants"
 import { QuestionConsultantModel } from "./QuestionConsultant"
 import { QuestionPermissionsModel } from "./QuestionPermissions"
-import { ApiResponse } from "apisauce"
-import {
-  MobileQuestionEventMessageSent,
-  Question as BackendQuestion,
-  User,
-} from "app/services/ask-api/models"
-import { listMobileQuestionEvents, pickQuestion } from "app/services/ask-api/askApi"
 import { backendTypes } from "./helpers/backendTypes"
+import { withSetPropAction } from "./helpers/withSetPropAction"
 
 export const QuestionEventUserModel = types.model("QuestionEventUser").props({
   _id: backendTypes.simpleType(types.string),
@@ -21,7 +20,7 @@ export const QuestionEventModel = types.model("QuestionEvent").props({
   _id: backendTypes.simpleType(types.identifier),
   text: backendTypes.simpleType(types.string),
   createdAt: backendTypes.isoDateType(),
-  user: types.union(types.undefined, types.null, types.frozen<User>()),
+  user: backendTypes.frozenSubType(QuestionEventUserModel),
 })
 
 export const QuestionModel = types
@@ -36,26 +35,26 @@ export const QuestionModel = types
     communityShareAgreement: backendTypes.simpleType(types.boolean),
     createdOn: backendTypes.isoDateType(),
     createdByUserId: backendTypes.simpleType(types.string),
-    consultant: types.maybeNull(QuestionConsultantModel),
-    permissions: types.maybe(QuestionPermissionsModel),
+    consultant: backendTypes.simpleType(QuestionConsultantModel),
+    permissions: backendTypes.simpleType(QuestionPermissionsModel),
     events: backendTypes.arrayType(QuestionEventModel),
   })
   .actions(withSetPropAction)
   .views((self) => ({
     getNotifiedUserId: (userId: string) =>
-    self.events[0].user?._id
       self.consultant?.userId?.trim() === userId.trim() ? self.createdByUserId : userId,
+    questionId: self.id || "",
   }))
   .actions((self) => ({
     loadQuestionEvents: flow(function* loadQuestionEvents() {
       const response: ApiResponse<MobileQuestionEventMessageSent[]> =
-        yield listMobileQuestionEvents(self.id)
-      if (response.ok && response.data !== undefined && response.data !== null) {
+        yield listMobileQuestionEvents(self.questionId)
+      if (response.ok) {
         self.events = cast(response.data)
       }
     }),
     takeConsultation: flow(function* takeConsultation() {
-      const response: ApiResponse<BackendQuestion> = yield pickQuestion(self.id)
+      const response: ApiResponse<BackendQuestion> = yield pickQuestion(self.questionId)
       if (response.ok) {
         self = Object.assign(self, response.data)
       }
@@ -65,4 +64,4 @@ export const QuestionModel = types
 export interface Question extends Instance<typeof QuestionModel> {}
 export interface QuestionSnapshotOut extends SnapshotOut<typeof QuestionModel> {}
 export interface QuestionSnapshotIn extends SnapshotIn<typeof QuestionModel> {}
-// export const createQuestionDefaultModel = () => types.optional(QuestionModel, {})
+export const createQuestionDefaultModel = () => types.optional(QuestionModel, {})
