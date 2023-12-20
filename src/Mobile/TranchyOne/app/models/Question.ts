@@ -7,48 +7,50 @@ import { ApiResponse } from "apisauce"
 import {
   MobileQuestionEventMessageSent,
   Question as BackendQuestion,
+  User,
 } from "app/services/ask-api/models"
 import { listMobileQuestionEvents, pickQuestion } from "app/services/ask-api/askApi"
-import { IsoDate } from "./helpers/isoDateType"
+import { backendTypes } from "./helpers/backendTypes"
 
 export const QuestionEventUserModel = types.model("QuestionEventUser").props({
-  _id: types.identifier,
+  _id: backendTypes.simpleType(types.string),
 })
 
 export const QuestionEventModel = types.model("QuestionEvent").props({
   $type: types.string,
-  _id: types.identifier,
-  text: types.string,
-  createdAt: IsoDate,
-  user: types.frozen(QuestionEventUserModel),
+  _id: backendTypes.simpleType(types.identifier),
+  text: backendTypes.simpleType(types.string),
+  createdAt: backendTypes.isoDateType(),
+  user: types.union(types.undefined, types.null, types.frozen<User>()),
 })
 
 export const QuestionModel = types
   .model("Question")
   .props({
-    id: types.identifier,
-    title: types.string,
-    questionCategoryIds: types.array(types.string),
-    supportLevel: types.enumeration(SupportLevels),
-    status: types.string,
-    priorityId: types.maybeNull(types.string),
-    communityShareAgreement: types.maybeNull(types.boolean),
-    createdOn: IsoDate,
-    createdByUserId: types.string,
+    id: backendTypes.simpleType(types.identifier),
+    title: backendTypes.simpleType(types.string),
+    questionCategoryIds: backendTypes.arrayType(types.string),
+    supportLevel: backendTypes.enumerationType(SupportLevels),
+    status: backendTypes.simpleType(types.string),
+    priorityId: backendTypes.simpleType(types.string),
+    communityShareAgreement: backendTypes.simpleType(types.boolean),
+    createdOn: backendTypes.isoDateType(),
+    createdByUserId: backendTypes.simpleType(types.string),
     consultant: types.maybeNull(QuestionConsultantModel),
     permissions: types.maybe(QuestionPermissionsModel),
-    events: types.array(QuestionEventModel),
+    events: backendTypes.arrayType(QuestionEventModel),
   })
   .actions(withSetPropAction)
   .views((self) => ({
     getNotifiedUserId: (userId: string) =>
-      self.consultant?.userId.trim() === userId.trim() ? self.createdByUserId : userId,
+    self.events[0].user?._id
+      self.consultant?.userId?.trim() === userId.trim() ? self.createdByUserId : userId,
   }))
   .actions((self) => ({
     loadQuestionEvents: flow(function* loadQuestionEvents() {
       const response: ApiResponse<MobileQuestionEventMessageSent[]> =
         yield listMobileQuestionEvents(self.id)
-      if (response.ok) {
+      if (response.ok && response.data !== undefined && response.data !== null) {
         self.events = cast(response.data)
       }
     }),
@@ -63,4 +65,4 @@ export const QuestionModel = types
 export interface Question extends Instance<typeof QuestionModel> {}
 export interface QuestionSnapshotOut extends SnapshotOut<typeof QuestionModel> {}
 export interface QuestionSnapshotIn extends SnapshotIn<typeof QuestionModel> {}
-export const createQuestionDefaultModel = () => types.optional(QuestionModel, {})
+// export const createQuestionDefaultModel = () => types.optional(QuestionModel, {})

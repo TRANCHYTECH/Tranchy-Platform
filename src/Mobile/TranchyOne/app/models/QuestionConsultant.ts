@@ -1,6 +1,6 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
-import { IsoDate } from "./helpers/isoDateType"
+import { backendTypes } from "./helpers/backendTypes"
 
 /**
  * Model description here for TypeScript hints.
@@ -8,9 +8,9 @@ import { IsoDate } from "./helpers/isoDateType"
 export const QuestionConsultantModel = types
   .model("QuestionConsultant")
   .props({
-    userId: types.string,
-    createdAt: IsoDate,
-    conclusion: types.maybeNull(types.string),
+    userId: backendTypes.simpleType(types.string),
+    createdAt: backendTypes.isoDateType(),
+    conclusion: backendTypes.simpleType(types.string),
   })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -20,5 +20,5 @@ export interface QuestionConsultant extends Instance<typeof QuestionConsultantMo
 export interface QuestionConsultantSnapshotOut
   extends SnapshotOut<typeof QuestionConsultantModel> {}
 export interface QuestionConsultantSnapshotIn extends SnapshotIn<typeof QuestionConsultantModel> {}
-export const createQuestionConsultantDefaultModel = () =>
-  types.optional(QuestionConsultantModel, {})
+// export const createQuestionConsultantDefaultModel = () =>
+//   types.optional(QuestionConsultantModel, {})

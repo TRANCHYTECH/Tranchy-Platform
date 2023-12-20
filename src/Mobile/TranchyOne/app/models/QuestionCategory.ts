@@ -1,14 +1,14 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { LocalizedAttribute } from "./LocalizedAttribute"
-import { backendType } from "./helpers/backendType"
+import { backendTypes } from "./helpers/backendTypes"
 
 export const QuestionCategoryModel = types
   .model("QuestionCategory")
   .props({
-    key: backendType(types.string),
-    title: backendType(types.frozen<LocalizedAttribute>()),
-    description: backendType(types.frozen<LocalizedAttribute>()),
+    key: backendTypes.simpleType(types.string),
+    title: backendTypes.simpleType(types.frozen<LocalizedAttribute>()),
+    description: backendTypes.frozenType<LocalizedAttribute>(),
   })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

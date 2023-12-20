@@ -4,13 +4,14 @@ import { QuestionModel } from "./Question"
 import { listCommunityQuestions } from "app/services/ask-api/askApi"
 import { Question as BackendQuestion } from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"
+import { backendTypes } from "./helpers/backendTypes"
 
 // setLivelinessChecking("error")
 
 export const QuestionStoreModel = types
   .model("QuestionStore")
   .props({
-    questions: types.array(QuestionModel),
+    questions: backendTypes.arrayType(QuestionModel),
     isLoading: types.optional(types.boolean, false),
   })
   .actions(withSetPropAction)
@@ -19,7 +20,7 @@ export const QuestionStoreModel = types
       return self.questions
     },
     getQuestion(id: string) {
-      return self.questions.find((q) => q.id === id)
+      return self.questions?.find((q) => q.id === id)
     },
   }))
   .actions((self) => ({

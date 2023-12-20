@@ -24,8 +24,10 @@ export const IsoDate = types.custom<string, Date>({
     try {
       validateDate(snapshot)
       return ""
-    } catch (error) {
+    } catch (error: any) {
       return error.message
     }
   },
 })
+
+export type IsoDateType = typeof IsoDate

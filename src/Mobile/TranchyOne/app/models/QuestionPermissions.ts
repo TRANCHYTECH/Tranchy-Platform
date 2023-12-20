@@ -1,6 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { QuestionAction } from "app/services/ask-api/models"
+import { backendTypes } from "./helpers/backendTypes"
 
 /**
  * Model description here for TypeScript hints.
@@ -8,16 +9,16 @@ import { QuestionAction } from "app/services/ask-api/models"
 export const QuestionPermissionsModel = types
   .model("QuestionPermissions")
   .props({
-    actions: types.array(types.string),
-    directChatTargetUserId: types.maybeNull(types.string),
+    actions: backendTypes.arrayType(types.string),
+    directChatTargetUserId: backendTypes.simpleType(types.string),
   })
   .actions(withSetPropAction)
   .views((self) => ({
     get canTakeConsultation() {
-      return self.actions.includes(QuestionAction.TakeConsultation)
+      return self.actions?.includes(QuestionAction.TakeConsultation)
     },
     get canTakeConversation() {
-      return self.actions.includes(QuestionAction.GoToConversation)
+      return self.actions?.includes(QuestionAction.GoToConversation)
     },
   }))
   .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

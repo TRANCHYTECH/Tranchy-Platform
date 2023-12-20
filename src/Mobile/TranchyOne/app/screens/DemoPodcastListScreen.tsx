@@ -36,7 +36,6 @@ import { useStores } from "../models"
 import { Episode } from "../models/Episode"
 import { DemoTabScreenProps } from "../navigators/DemoNavigator"
 import { colors, spacing } from "../theme"
-import { delay } from "../utils/delay"
 import { openLinkInBrowser } from "../utils/openLinkInBrowser"
 
 const ICON_SIZE = 14
@@ -57,7 +56,7 @@ export const DemoPodcastListScreen: FC<DemoTabScreenProps<"DemoPodcastList">> = 
     useEffect(() => {
       ;(async function load() {
         setIsLoading(true)
-        await episodeStore.fetchEpisodes()
+        // await episodeStore.fetchEpisodes()
         setIsLoading(false)
       })()
     }, [episodeStore])
@@ -65,7 +64,7 @@ export const DemoPodcastListScreen: FC<DemoTabScreenProps<"DemoPodcastList">> = 
     // simulate a longer refresh, if the refresh is too fast for UX
     async function manualRefresh() {
       setRefreshing(true)
-      await Promise.all([episodeStore.fetchEpisodes(), delay(750)])
+      // await Promise.all([episodeStore.fetchEpisodes(), delay(750)])
       setRefreshing(false)
     }
 

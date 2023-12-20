@@ -1,7 +1,7 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { LocalizedAttribute } from "./LocalizedAttribute"
-import { backendType } from "./helpers/backendType"
+import { backendTypes } from "./helpers/backendTypes"
 
 /**
  * Model description here for TypeScript hints.
@@ -9,14 +9,14 @@ import { backendType } from "./helpers/backendType"
 export const QuestionPriorityModel = types
   .model("QuestionPriority")
   .props({
-    key: types.string,
-    title: backendType(types.frozen<LocalizedAttribute>()),
-    description: backendType(types.frozen<LocalizedAttribute>()),
+    key: backendTypes.simpleType(types.string),
+    title: backendTypes.frozenType<LocalizedAttribute>(),
+    description: backendTypes.frozenType<LocalizedAttribute>(),
   })
   .actions(withSetPropAction)
   .views((self) => ({
     getDescription(locale: string) {
-      return self.description[locale]
+      return self.description && self.description[locale]
     },
   })) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

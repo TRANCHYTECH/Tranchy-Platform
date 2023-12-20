@@ -1,5 +1,4 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
-import { api } from "../services/api"
 import { Episode, EpisodeModel } from "./Episode"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 
@@ -12,14 +11,14 @@ export const EpisodeStoreModel = types
   })
   .actions(withSetPropAction)
   .actions((store) => ({
-    async fetchEpisodes() {
-      const response = await api.getEpisodes()
-      if (response.kind === "ok") {
-        store.setProp("episodes", response.episodes)
-      } else {
-        console.error(`Error fetching episodes: ${JSON.stringify(response)}`)
-      }
-    },
+    // async fetchEpisodes() {
+    //   const response = await api.getEpisodes()
+    //   if (response.kind === "ok") {
+    //     store.setProp("episodes", response.episodes)
+    //   } else {
+    //     console.error(`Error fetching episodes: ${JSON.stringify(response)}`)
+    //   }
+    // },
     addFavorite(episode: Episode) {
       store.favorites.push(episode)
     },

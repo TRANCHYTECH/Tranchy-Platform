@@ -6,7 +6,6 @@ import { getQuestionConfigurations } from "app/services/ask-api/askApi"
 import { GetQuestionConfigurationsResponse } from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"
 import { load, save } from "app/utils/storage"
-import { backendType } from "./helpers/backendType"
 
 /**
  * Model description here for TypeScript hints.
@@ -16,8 +15,8 @@ export const MetadataStoreModel = types
   .props({
     userId: types.maybe(types.maybeNull(types.string)),
     email: types.maybe(types.maybeNull(types.string)),
-    categories: backendType(types.array(QuestionCategoryModel)),
-    priorities: backendType(types.array(QuestionPriorityModel)),
+    categories: types.union(types.null, types.array(QuestionCategoryModel)),
+    priorities: types.union(types.undefined, types.null, types.array(QuestionPriorityModel)),
   })
   .actions(withSetPropAction)
   .views((self) => ({
@@ -27,13 +26,13 @@ export const MetadataStoreModel = types
     get questionPriorities() {
       return self.priorities
     },
-    get questionCategoryIds() {
-      return self.categories.map<string>(function (v) {
-        return v.key
-      })
-    },
+    // get questionCategoryIds() {
+    //   return self.categories?.map<string>(function (v) {
+    //     return v.key
+    //   })
+    // },
     questionPriority(key: string) {
-      return self.priorities.find((p) => p.key === key)
+      return self.priorities?.find((p) => p.key === key)
     },
   }))
   .actions((self) => ({
@@ -54,7 +53,9 @@ export const MetadataStoreModel = types
           }
         } else {
           const metadata = MetadataStoreModel.create(persistedMetadata)
-          console.tron.log(metadata)
+          if (__DEV__) {
+            console.tron.log(metadata)
+          }
           self = metadata
         }
       } catch (error) {
