@@ -17,9 +17,11 @@ const en = {
     Agency: "Doanh nghiệp",
   },
   tab: {
-    community: "Cộng đồng",
-    newQuestion: "Đặt câu hỏi",
-    questions: "Câu hỏi",
+    community: "Community",
+    walkAround: "Questions",
+    askQuestion: "New Question",
+    notification: "Notification",
+    profile: "Profile",
   },
   newQuestionScreen: {
     questionContent: "Nội dung câu hỏi",

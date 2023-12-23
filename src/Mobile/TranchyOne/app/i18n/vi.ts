@@ -18,8 +18,10 @@ const vi = {
   },
   tab: {
     community: "Cộng đồng",
-    newQuestion: "Đặt câu hỏi",
-    questions: "Câu hỏi",
+    walkAround: "Câu hỏi",
+    askQuestion: "Thêm mới",
+    notification: "Thông báo",
+    profile: "Hồ sơ",
   },
   newQuestionScreen: {
     questionContent: "Nội dung câu hỏi",
@@ -95,8 +97,7 @@ const vi = {
   },
   demoShowroomScreen: {
     jumpStart: "Components to jump start your project!",
-    lorem2Sentences:
-      "Nulla cupidatat deserunt amet quis aliquip nostrud do adipisicing. Adipisicing excepteur elit laborum Lorem adipisicing do duis.",
+    lorem2Sentences: "",
     demoHeaderTxExample: "Yay",
     demoViaTxProp: "Via `tx` Prop",
     demoViaSpecifiedTxProp: "Via `{{prop}}Tx` Prop",
@@ -131,8 +132,8 @@ const vi = {
         "Double tap to listen to the episode. Double tap and hold to {{action}} this episode.",
       switch: "Switch on to only show favorites",
       favoriteAction: "Toggle Favorite",
-      favoriteIcon: "Episode not favorited",
-      unfavoriteIcon: "Episode favorited",
+      favoriteIcon: "Episode not favorite",
+      unfavoriteIcon: "Episode favorite",
       publishLabel: "Published {{date}}",
       durationLabel: "Duration: {{hours}} hours {{minutes}} minutes {{seconds}} seconds",
     },
