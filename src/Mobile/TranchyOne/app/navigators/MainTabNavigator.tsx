@@ -22,6 +22,37 @@ export type MainTabScreenProps<T extends keyof MainTabNavigatorParamList> = Comp
   AppStackScreenProps<keyof AppStackParamList>
 >
 
+function tabBarIcon(
+  name:
+    | "home-outline"
+    | "comment-search-outline"
+    | "message-plus"
+    | "bell-outline"
+    | "account-circle-outline",
+  focused: boolean,
+  color: string,
+  size: number,
+): React.ReactNode {
+  return (
+    <View
+      style={
+        focused
+          ? {
+              backgroundColor: colors.palette.accent200,
+              paddingLeft: spacing.md,
+              paddingRight: spacing.md,
+              paddingTop: spacing.xs / 2,
+              paddingBottom: spacing.xs / 2,
+              borderRadius: spacing.md,
+            }
+          : {}
+      }
+    >
+      <MaterialCommunityIcons name={name} size={size} color={color} />
+    </View>
+  )
+}
+
 const Tab = createBottomTabNavigator<MainTabNavigatorParamList>()
 export const MainTabNavigator = () => {
   const { bottom } = useSafeAreaInsets()
@@ -32,7 +63,7 @@ export const MainTabNavigator = () => {
       screenOptions={{
         headerShown: true,
         tabBarHideOnKeyboard: true,
-        tabBarStyle: [$tabBar, { height: bottom + 70 }],
+        tabBarStyle: [$tabBar, { height: bottom + 80 }],
         tabBarActiveTintColor: colors.text,
         tabBarInactiveTintColor: colors.text,
         tabBarLabelStyle: $tabBarLabel,
@@ -45,9 +76,12 @@ export const MainTabNavigator = () => {
         options={{
           title: translate("tab.community"),
           tabBarLabel: translate("tab.community"),
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home-outline" color={color} size={size} />
-          ),
+          tabBarIconStyle: {
+            backgroundColor: colors.background,
+            borderRadius: spacing.lg,
+          },
+          tabBarIcon: ({ focused, color, size }) =>
+            tabBarIcon("home-outline", focused, color, size),
         }}
       />
       <Tab.Screen
@@ -56,9 +90,8 @@ export const MainTabNavigator = () => {
         options={{
           title: translate("tab.walkAround"),
           tabBarLabel: translate("tab.walkAround"),
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="comment-search-outline" color={color} size={size} />
-          ),
+          tabBarIcon: ({ focused, color, size }) =>
+            tabBarIcon("comment-search-outline", focused, color, size),
         }}
       />
       <Tab.Screen
@@ -68,9 +101,8 @@ export const MainTabNavigator = () => {
           title: translate("tab.askQuestion"),
           tabBarLabel: translate("tab.askQuestion"),
           tabBarHideOnKeyboard: true,
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="message-plus" color={color} size={size} />
-          ),
+          tabBarIcon: ({ focused, color, size }) =>
+            tabBarIcon("message-plus", focused, color, size),
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
@@ -86,9 +118,8 @@ export const MainTabNavigator = () => {
           title: translate("tab.notification"),
           tabBarLabel: translate("tab.notification"),
           tabBarBadge: 3,
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="bell-outline" color={color} size={size} />
-          ),
+          tabBarIcon: ({ focused, color, size }) =>
+            tabBarIcon("bell-outline", focused, color, size),
         }}
       />
       <Tab.Screen
@@ -97,9 +128,8 @@ export const MainTabNavigator = () => {
         options={{
           title: translate("tab.profile"),
           tabBarLabel: translate("tab.profile"),
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account-circle-outline" color={color} size={size} />
-          ),
+          tabBarIcon: ({ focused, color, size }) =>
+            tabBarIcon("account-circle-outline", focused, color, size),
         }}
       />
     </Tab.Navigator>
