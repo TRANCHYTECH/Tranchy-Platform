@@ -2,7 +2,9 @@ import React, { FC } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle } from "react-native"
 import { MainTabScreenProps } from "app/navigators"
-import { Screen, Text } from "app/components"
+import { ListView, Screen } from "app/components"
+import { BlockItem, orderedList } from "./WalkAroundScreen/Blocks"
+import { BlockItemType } from "./WalkAroundScreen/BlockItem"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
 
@@ -15,8 +17,13 @@ export const WalkAroundScreen: FC<WalkAroundScreenProps> = observer(function Wal
   // Pull in navigation via hook
   // const navigation = useNavigation()
   return (
-    <Screen style={$root} preset="scroll">
-      <Text text="walkAround" />
+    <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$root}>
+      <ListView<BlockItemType>
+        estimatedItemSize={30}
+        getItemType={(item) => item.type}
+        renderItem={({ item }) => <BlockItem data={item} />}
+        data={orderedList}
+      />
     </Screen>
   )
 })
