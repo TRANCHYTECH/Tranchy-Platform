@@ -5,7 +5,8 @@
  * OpenAPI spec version: v1
  */
 
-export interface CreateUserActionRequest {
+export interface CreateUserHookRequest {
+  createdAt?: Date
   email?: string | null
   userId?: string | null
 }

@@ -29,7 +29,7 @@
     "serve:web": "npx server dist",
     "prebuild:clean": "npx expo prebuild --clean",
     "prebuild": "npx expo prebuild",
-    "generate-rest": "npx orval --config ./orval.config.js",
+    "generate:rest": "npx orval --config ./orval.config.js",
     "doctor": "npx expo-doctor"
   },
   "dependencies": {

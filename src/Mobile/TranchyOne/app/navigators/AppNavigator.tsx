@@ -72,6 +72,7 @@ const AppStack = observer(function AppStack() {
     metadataStore,
   } = useStores()
 
+  console.tron.display("is authenticated", { isAuthenticated: isAuthenticated })
   if (isAuthenticated) {
     distributeAuthToken()
   }

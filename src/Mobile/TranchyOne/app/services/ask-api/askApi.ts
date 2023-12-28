@@ -8,14 +8,15 @@ import type {
   CreateQuestionEventBody,
   CreateQuestionRequest,
   CreateQuestionResponse,
-  CreateUserActionRequest,
   CreateUserExpertiseRequest,
+  CreateUserHookRequest,
   CreateUserRequest,
   FinishConsultationRequest,
   GetQuestionConfigurationsResponse,
   GetUserExpertiseResponse,
   GetUserNotificationResponse,
   GetUserResponse,
+  HighlightSectionsResponse,
   MobileQuestionEventMessageSent,
   Question,
   QuestionOutput,
@@ -27,8 +28,14 @@ import type {
 } from "./models"
 import { apiRequest } from "../api/api"
 
-export const getUsers = () => {
-  return apiRequest<GetUserResponse[]>({ url: `/user/management/user`, method: "GET" })
+/**
+ * @summary Highlight each sections
+ */
+export const highlightSections = () => {
+  return apiRequest<HighlightSectionsResponse>({
+    url: `/question/aggregate/highlight-sections`,
+    method: "GET",
+  })
 }
 
 export const createQuestion = (createQuestionRequest: CreateQuestionRequest) => {
@@ -170,12 +177,12 @@ export const updateUser = (updateUserRequest: UpdateUserRequest) => {
   })
 }
 
-export const createUserAction = (createUserActionRequest: CreateUserActionRequest) => {
+export const createUserAction = (createUserHookRequest: CreateUserHookRequest) => {
   return apiRequest<void>({
     url: `/user/oauth0/create`,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    data: createUserActionRequest,
+    data: createUserHookRequest,
   })
 }
 
@@ -209,7 +216,7 @@ export const getUserNotification = () => {
   return apiRequest<GetUserNotificationResponse[]>({ url: `/user/Notifications`, method: "GET" })
 }
 
-export type GetUsersResult = NonNullable<Awaited<ReturnType<typeof getUsers>>>
+export type HighlightSectionsResult = NonNullable<Awaited<ReturnType<typeof highlightSections>>>
 export type CreateQuestionResult = NonNullable<Awaited<ReturnType<typeof createQuestion>>>
 export type GetQuestionConfigurationsResult = NonNullable<
   Awaited<ReturnType<typeof getQuestionConfigurations>>

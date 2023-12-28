@@ -9,6 +9,6 @@ export * from "./ErrorScreen/ErrorBoundary"
 // export other screens here
 export * from "./ProfileScreen"
 export * from "./CommunityScreen"
-export * from "./WalkAroundScreen"
+export * from "./WalkAroundScreen/WalkAroundScreen"
 export * from "./AskQuestionScreen"
 export * from "./NotificationScreen"

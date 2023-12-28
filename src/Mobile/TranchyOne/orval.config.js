@@ -17,8 +17,8 @@ export default defineConfig({
       },
     },
     input: {
-      target: "https://askapi.tranchy.tech/swagger/v1/swagger.json",
-      target_: "http://localhost:7200/swagger/v1/swagger.json",
+      target_: "https://askapi.tranchy.tech/swagger/v1/swagger.json",
+      target: "http://localhost:7300/swagger/v1/swagger.json",
     },
   },
 })
