@@ -182,6 +182,8 @@ app.MapGroup("/user").MapEndpoints<UserModule>().RequireAuthorization();
 // Redirect after login
 app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, permanent: true));
 
+FileModule.Configure(app);
+
 app.UseTranchySwagger(appSettings);
 app.UseTranchyExceptionHandler();
 

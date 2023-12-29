@@ -60,4 +60,5 @@ public class DatabaseOptions
 public class FileSettings
 {
     public string UnsafeQuestionFileContainerUri { get; set; } = default!;
+    public string BlobStorageConnectionString { get; set; } = default!;
 }

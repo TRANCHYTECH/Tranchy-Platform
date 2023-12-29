@@ -222,11 +222,6 @@
           "System.Threading.Tasks.Extensions": "4.5.4"
         }
       },
-      "Bogus": {
-        "type": "Transitive",
-        "resolved": "35.2.0",
-        "contentHash": "VNPDlWV2yerNsiK/pgTovkGOElljDfp1A1OZvhUxsd5waH4CoLWCd2keYf1IRNEHd4j2zzF7uTFx2PyvxxOljA=="
-      },
       "DnsClient": {
         "type": "Transitive",
         "resolved": "1.6.1",
@@ -1269,6 +1264,12 @@
           "System.Text.Json": "4.7.2",
           "System.Threading.Tasks.Extensions": "4.5.4"
         }
+      },
+      "Bogus": {
+        "type": "CentralTransitive",
+        "requested": "[35.2.0, )",
+        "resolved": "35.2.0",
+        "contentHash": "VNPDlWV2yerNsiK/pgTovkGOElljDfp1A1OZvhUxsd5waH4CoLWCd2keYf1IRNEHd4j2zzF7uTFx2PyvxxOljA=="
       },
       "FluentValidation": {
         "type": "CentralTransitive",

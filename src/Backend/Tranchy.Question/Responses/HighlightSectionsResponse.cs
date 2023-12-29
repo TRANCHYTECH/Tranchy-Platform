@@ -20,6 +20,7 @@ public record QuestionBrief()
     public required IEnumerable<string> Categories { get; set; }
     public string? Price { get; set; }
     public DateTime CreatedAt { get; set; }
+    public string CreatedBy { get; set; }
     public bool Saved { get; set; }
 }
 

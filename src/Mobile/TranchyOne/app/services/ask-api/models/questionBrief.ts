@@ -8,6 +8,7 @@
 export interface QuestionBrief {
   categories?: string[] | null
   createdAt?: Date
+  createdBy?: string | null
   price?: string | null
   saved?: boolean
   title?: string | null

@@ -20,6 +20,8 @@
     <PackageVersion Include="Azure.Identity" Version="1.10.4" />
     <PackageVersion Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.0.0" />
     <PackageVersion Include="Azure.Storage.Blobs" Version="12.19.1" />
+    <PackageVersion Include="SixLabors.ImageSharp.Web" Version="3.1.0" />
+    <PackageVersion Include="SixLabors.ImageSharp.Web.Providers.Azure" Version="3.1.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
   </ItemGroup>
   <ItemGroup>

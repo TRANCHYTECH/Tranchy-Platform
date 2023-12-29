@@ -14,6 +14,8 @@
 	  <PackageReference Include="MassTransit.Azure.ServiceBus.Core" />
 	  <PackageReference Include="MassTransit.MongoDb" />
 	  <PackageReference Include="MongoDB.Entities" />
+	  <PackageReference Include="SixLabors.ImageSharp.Web" />
+	  <PackageReference Include="SixLabors.ImageSharp.Web.Providers.Azure" />
 	</ItemGroup>
   
 </Project>

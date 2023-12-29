@@ -18,7 +18,7 @@ export class SeeMoreItem implements BlockItemBase {
 export const renderSeeMoreItem = (input: SeeMoreItem) => {
   return (
     <View>
-      <Text>Xem thêm {input.data.route}</Text>
+      <Text>Xem thêm /{input.data.route}</Text>
     </View>
   )
 }
