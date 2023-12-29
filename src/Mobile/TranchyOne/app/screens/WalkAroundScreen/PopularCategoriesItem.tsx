@@ -3,6 +3,7 @@ import React from "react"
 import { Text } from "app/components"
 import { Button } from "react-native-paper"
 import { BlockItemBase, BlockType } from "./BlockItem"
+import { CategoryBrief } from "app/services/ask-api/models"
 
 export type PopularCategoriesItemData = {
   text: string
@@ -11,8 +12,8 @@ export type PopularCategoriesItemData = {
 
 export class PopularCategoriesItem implements BlockItemBase {
   type: BlockType = "PopularCategories"
-  data: PopularCategoriesItemData[]
-  constructor(data: PopularCategoriesItemData[]) {
+  data: CategoryBrief[]
+  constructor(data: CategoryBrief[]) {
     this.data = data
   }
 }
@@ -25,7 +26,7 @@ export const renderPopularCategoriesItem = (input: PopularCategoriesItem) => {
         {input.data.map((item, index) => {
           return (
             <Button key={index} mode="outlined">
-              {item.text}
+              {item.title}
             </Button>
           )
         })}

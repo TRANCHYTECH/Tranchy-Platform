@@ -305,6 +305,11 @@
           "System.IO.Hashing": "6.0.0"
         }
       },
+      "Bogus": {
+        "type": "Transitive",
+        "resolved": "35.2.0",
+        "contentHash": "VNPDlWV2yerNsiK/pgTovkGOElljDfp1A1OZvhUxsd5waH4CoLWCd2keYf1IRNEHd4j2zzF7uTFx2PyvxxOljA=="
+      },
       "DnsClient": {
         "type": "Transitive",
         "resolved": "1.6.1",
@@ -1247,6 +1252,7 @@
       "tranchy.question": {
         "type": "Project",
         "dependencies": {
+          "Bogus": "[35.2.0, )",
           "FluentValidation": "[11.8.1, )",
           "FluentValidation.AspNetCore": "[11.3.0, )",
           "Mapster": "[7.4.0, )",

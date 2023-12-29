@@ -37,6 +37,7 @@ export const MetadataStoreModel = types
     },
   }))
   .actions((self) => ({
+    // todo(Tau): no need to save to storage, because store already did
     downloadMetadata: flow(function* downloadMetadataFlow(force: boolean) {
       try {
         const persistedMetadata = load("metadata")

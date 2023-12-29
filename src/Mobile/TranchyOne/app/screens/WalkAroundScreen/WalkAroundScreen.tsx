@@ -3,9 +3,9 @@ import { observer } from "mobx-react-lite"
 import { ViewStyle } from "react-native"
 import { MainTabScreenProps } from "app/navigators"
 import { ListView, Screen } from "app/components"
-import { BlockItem, orderedList } from "./Blocks"
+import { BlockItem, buildBlocks } from "./Blocks"
 import { BlockItemType } from "./BlockItem"
-import { useStores } from "app/models"
+import { HighlightSection, useStores } from "app/models"
 import { useFocusEffect } from "@react-navigation/native"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "app/models"
@@ -38,7 +38,7 @@ export const WalkAroundScreen: FC<WalkAroundScreenProps> = observer(function Wal
         estimatedItemSize={30}
         getItemType={(item) => item.type}
         renderItem={({ item }) => <BlockItem data={item} />}
-        data={orderedList}
+        data={buildBlocks(highlightStore.highlightSections as HighlightSection)}
       />
     </Screen>
   )

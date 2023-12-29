@@ -2,6 +2,7 @@ import { View, ViewStyle } from "react-native"
 import React from "react"
 import { Text } from "app/components"
 import { BlockItemBase, BlockType } from "./BlockItem"
+import { QuestionBrief } from "app/services/ask-api/models"
 
 export type QuestionItemData = {
   title: string
@@ -12,8 +13,8 @@ export type QuestionItemData = {
 
 export class QuestionItem implements BlockItemBase {
   type: BlockType = "QuestionItem"
-  data: QuestionItemData
-  constructor(data: QuestionItemData) {
+  data: QuestionBrief
+  constructor(data: QuestionBrief) {
     this.data = data
   }
 }

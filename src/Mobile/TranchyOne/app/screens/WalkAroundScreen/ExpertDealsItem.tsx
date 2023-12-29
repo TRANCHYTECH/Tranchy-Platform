@@ -4,6 +4,7 @@ import React from "react"
 import { Dimensions, TextStyle, View, ViewStyle } from "react-native"
 import Carousel from "react-native-reanimated-carousel"
 import { BlockItemBase, BlockType } from "./BlockItem"
+import { QuestionBrief } from "app/services/ask-api/models"
 const windowWidth = Dimensions.get("window").width
 const baseOptions = {
   vertical: false,
@@ -16,14 +17,14 @@ const baseOptions = {
 
 export class ExpertDealsItem implements BlockItemBase {
   type: BlockType = "ExpertDeals"
-  data: ExpertDealsItemData[]
-  constructor(data: ExpertDealsItemData[]) {
+  data: QuestionBrief[]
+  constructor(data: QuestionBrief[]) {
     this.data = data
   }
 }
 
 export type ExpertDealsItemData = {
-  title: string
+  title?: string
   categories: string[]
   price: string
 }
@@ -40,7 +41,7 @@ export const renderExpertDealsItem = (input: ExpertDealsItem) => {
             <Text>---Bạn là chuyên gia---</Text>
             <Text>{item.title}</Text>
             <View style={$carouselItemCategories}>
-              {item.categories.map((item, index) => {
+              {item.categories?.map((item, index) => {
                 return (
                   <Text key={index} style={$category}>
                     {item}

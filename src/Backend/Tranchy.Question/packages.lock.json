@@ -2,6 +2,12 @@
   "version": 2,
   "dependencies": {
     "net8.0": {
+      "Bogus": {
+        "type": "Direct",
+        "requested": "[35.2.0, )",
+        "resolved": "35.2.0",
+        "contentHash": "VNPDlWV2yerNsiK/pgTovkGOElljDfp1A1OZvhUxsd5waH4CoLWCd2keYf1IRNEHd4j2zzF7uTFx2PyvxxOljA=="
+      },
       "FluentValidation": {
         "type": "Direct",
         "requested": "[11.8.1, )",

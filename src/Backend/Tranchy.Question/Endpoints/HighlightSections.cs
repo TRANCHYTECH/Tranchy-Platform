@@ -1,3 +1,5 @@
+using Bogus;
+
 namespace Tranchy.Question.Endpoints;
 
 public class HighlightSections : IEndpoint
@@ -11,80 +13,49 @@ public class HighlightSections : IEndpoint
 
     private static Ok<HighlightSectionsResponse> HighlightSectionsFunction()
     {
+        var faker = new Faker("vi");
+
         var response = new HighlightSectionsResponse();
 
-        response.ExpertExclusive.Data.Add(new QuestionBrief
+        for (int i = 0 ; i  <= 4; i ++)
         {
-            Title = "Question 1",
-            Categories = ["Category 1", "Category 2"],
-            Price = "VND 300.000"
-        });
-        response.ExpertExclusive.Data.Add(new QuestionBrief
-        {
-            Title = "Question 2",
-            Categories = ["Category 1", "Category 2"],
-            Price = "VND 400.000"
-        });
-        response.ExpertExclusive.Data.Add(new QuestionBrief
-        {
-            Title = "Question 3",
-            Categories = ["Category 1", "Category 2"],
-            Price = "VND 500.000"
-        });
+            response.ExpertExclusive.Data.Add(new QuestionBrief
+            {
+                Title = faker.Lorem.Sentence(50),
+                Categories = faker.Commerce.Categories(3),
+                Price = "VND 300.000"
+            });
+        }
 
-        response.Recent.Data.Add(new QuestionBrief
+        for (int i = 0; i <= 4; i++)
         {
-            Title = "Question 1",
-            Categories = ["Category 1", "Category 2"],
-            Price = "VND 500.000",
-            CreatedAt = new DateTime()
-        });
-        response.Recent.Data.Add(new QuestionBrief
-        {
-            Title = "Question 2",
-            Categories = ["Category 1", "Category 2"],
-            Price = "VND 500.000",
-            CreatedAt = new DateTime()
-        });
-        response.Recent.Data.Add(new QuestionBrief
-        {
-            Title = "Question 3",
-            Categories = ["Category 1", "Category 2"],
-            Price = "VND 500.000",
-            CreatedAt = new DateTime()
-        });
+            response.Recent.Data.Add(new QuestionBrief
+            {
+                Title = faker.Lorem.Sentence(50),
+                Categories = faker.Commerce.Categories(3),
+                Price = "VND 500.00",
+                CreatedAt = new DateTime()
+            });
+        }
 
-        response.MatchProfile.Data.Add(new QuestionBrief
+        for (int i = 0; i <= 4; i++)
         {
-            Title = "Question 1",
-            Categories = ["Category 1", "Category 2"],
-            Price = "VND 500.000",
-            CreatedAt = new DateTime()
-        });
+            response.MatchProfile.Data.Add(new QuestionBrief
+            {
+                Title = faker.Lorem.Sentence(50),
+                Categories = faker.Commerce.Categories(3),
+                Price = "VND 500.00",
+                CreatedAt = new DateTime()
+            });
+        }
 
-        response.MatchProfile.Data.Add(new QuestionBrief
+        for (int i = 0; i <= 4; i++)
         {
-            Title = "Question 2",
-            Categories = ["Category 1", "Category 2"],
-            Price = "VND 500.000",
-            CreatedAt = new DateTime()
-        });
-        response.MatchProfile.Data.Add(new QuestionBrief
-        {
-            Title = "Question 3",
-            Categories = ["Category 1", "Category 2"],
-            Price = "VND 500.000",
-            CreatedAt = new DateTime()
-        });
-
-        response.PopularCategories.Data.Add(new CategoryBrief
-        {
-            Title = "Category 1"
-        });
-        response.PopularCategories.Data.Add(new CategoryBrief
-        {
-            Title = "Category 2"
-        });
+            response.PopularCategories.Data.Add(new CategoryBrief
+            {
+                Title = faker.Commerce.Categories(1).First()
+            });
+        }
 
         return TypedResults.Ok(response);
     }
