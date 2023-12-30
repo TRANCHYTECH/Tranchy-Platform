@@ -1,15 +1,15 @@
-import { Text } from "app/components"
-import { colors, spacing } from "app/theme"
+import { colors, spacing, typography } from "app/theme"
 import React from "react"
 import { Dimensions, TextStyle, View, ViewStyle } from "react-native"
 import Carousel from "react-native-reanimated-carousel"
 import { BlockItemBase, BlockType } from "./BlockItem"
 import { QuestionBrief } from "app/services/ask-api/models"
+import { Chip, Text } from "react-native-paper"
 const windowWidth = Dimensions.get("window").width
 const baseOptions = {
   vertical: false,
   width: windowWidth * 0.9,
-  height: 132,
+  height: 170,
   loop: false,
   autoPlay: false,
   pagingEnabled: true,
@@ -38,17 +38,30 @@ export const renderExpertDealsItem = (input: ExpertDealsItem) => {
         data={input.data}
         renderItem={({ item }) => (
           <View style={$carouselItem}>
-            <Text>---Bạn là chuyên gia---</Text>
-            <Text>{item.title}</Text>
-            <View style={$carouselItemCategories}>
-              {item.categories?.map((item, index) => {
-                return (
-                  <Text key={index} style={$category}>
-                    {item}
-                  </Text>
-                )
-              })}
-              <Text>{item.price}</Text>
+            <Chip
+              icon="account-circle"
+              style={$expertChip}
+              textStyle={$expertChipText}
+              selectedColor={colors.tint}
+            >
+              Bạn là chuyên gia
+            </Chip>
+            <Text variant="bodyLarge" ellipsizeMode="tail" numberOfLines={3} style={$questionText}>
+              {item.title}
+            </Text>
+            <View style={$bottomTagContainer}>
+              <View style={$carouselItemCategories}>
+                {item.categories?.map((item, index) => {
+                  return (
+                    <Chip key={index} textStyle={$category} style={$categoryChip}>
+                      {item}
+                    </Chip>
+                  )
+                })}
+              </View>
+              <Chip textStyle={[$category, $price]} style={$categoryChip}>
+                {item.price}
+              </Chip>
             </View>
           </View>
         )}
@@ -59,6 +72,7 @@ export const renderExpertDealsItem = (input: ExpertDealsItem) => {
 
 const $container: ViewStyle = {
   flex: 1,
+  paddingBottom: spacing.md,
 }
 
 const $carousel: ViewStyle = {
@@ -69,17 +83,62 @@ const $carousel: ViewStyle = {
 const $carouselItem: ViewStyle = {
   flex: 1,
   marginLeft: "2.5%",
-  backgroundColor: colors.palette.accent200,
+  backgroundColor: colors.palette.accent100,
+  borderTopWidth: spacing.xxxs,
+  borderTopColor: colors.tint,
+  marginTop: spacing.lg,
+  paddingTop: spacing.lg,
+  paddingLeft: spacing.md,
+  paddingRight: spacing.md,
 }
 
 const $carouselItemCategories: ViewStyle = {
   flex: 1,
   flexDirection: "row",
+  columnGap: spacing.xxs,
+}
+
+const $expertChip: ViewStyle = {
+  position: "absolute",
+  top: -16,
+  borderRadius: 24,
+  borderColor: colors.tint,
+  borderWidth: spacing.xxxs,
+  marginLeft: spacing.sm,
+  backgroundColor: colors.background,
+}
+
+const $expertChipText: TextStyle = {
+  fontSize: 12,
+  lineHeight: 12,
+}
+
+const $questionText: TextStyle = {
+  height: spacing.lg * 3,
+  lineHeight: spacing.lg,
+}
+
+const $bottomTagContainer: ViewStyle = {
+  flexDirection: "row",
+  paddingTop: spacing.sm,
+  paddingBottom: spacing.sm,
+}
+
+const $categoryChip: ViewStyle = {
+  borderRadius: spacing.lg,
+  backgroundColor: colors.palette.accent300,
 }
 
 const $category: TextStyle = {
   fontSize: 12,
-  backgroundColor: colors.palette.accent100,
-  borderRadius: spacing.md,
-  // overflow: "hidden",
+  fontFamily: typography.primary.light,
+  lineHeight: 16,
+  marginLeft: spacing.xxs,
+  marginRight: spacing.xxs,
+  marginTop: spacing.xxs,
+  marginBottom: spacing.xxs,
+}
+
+const $price: TextStyle = {
+  fontFamily: typography.primary.medium,
 }

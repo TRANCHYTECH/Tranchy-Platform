@@ -2,7 +2,7 @@ import { TextStyle, View, ViewStyle } from "react-native"
 import React from "react"
 import { Chip } from "react-native-paper"
 import { BlockItemBase, BlockType } from "./BlockItem"
-import { spacing } from "app/theme"
+import { spacing, typography } from "app/theme"
 
 export type QuestionSectionsItemData = {
   text: string
@@ -53,8 +53,9 @@ export const $questionSectionButtonStyle: ViewStyle = {
 }
 
 export const $questionSectionButtonLabelStyle: TextStyle = {
-  fontSize: 12,
-  fontWeight: "500",
+  fontFamily: typography.primary.medium,
+  fontSize: 14,
   lineHeight: spacing.md,
-  fontStyle: "normal",
+  marginLeft: spacing.sm,
+  marginRight: spacing.sm,
 }
