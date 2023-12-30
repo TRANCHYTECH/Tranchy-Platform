@@ -1,4 +1,4 @@
-import { View, ViewStyle } from "react-native"
+import { TextStyle, View, ViewStyle } from "react-native"
 import React from "react"
 import { Text } from "app/components"
 import { colors, spacing } from "app/theme"
@@ -18,19 +18,27 @@ export class SectionTitleItem implements BlockItemBase {
 
 export const renderSectionTitleItem = (input: SectionTitleItem) => {
   return (
-    <View style={$sectionTitleItemOuterStyle}>
-      <View style={$sectionTitleItemInnerStyle}>
-        <Text>{input.data.title}</Text>
-      </View>
+    <View style={$container}>
+      <View style={$separate}></View>
+      <Text style={$text}>{input.data.title}</Text>
     </View>
   )
 }
 
-const $sectionTitleItemOuterStyle: ViewStyle = {
-  paddingTop: spacing.xxs,
-  backgroundColor: "#AFB7C8",
+const $container: ViewStyle = {
+  // backgroundColor: colors.blockBackground,
 }
 
-const $sectionTitleItemInnerStyle: ViewStyle = {
-  backgroundColor: colors.palette.accent500,
+const $separate: ViewStyle = {
+  height: spacing.xxs,
+  backgroundColor: colors.separator,
+}
+
+const $text: TextStyle = {
+  paddingTop: spacing.md,
+  paddingLeft: spacing.md,
+  paddingRight: spacing.md,
+  fontSize: 16,
+  fontWeight: "900",
+  lineHeight: spacing.lg,
 }

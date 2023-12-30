@@ -1,8 +1,9 @@
 import { TextStyle, View, ViewStyle } from "react-native"
 import React from "react"
-import { Button } from "react-native-paper"
+import { Chip } from "react-native-paper"
 import { BlockItemBase, BlockType } from "./BlockItem"
 import { spacing } from "app/theme"
+
 export type QuestionSectionsItemData = {
   text: string
   icon?: string
@@ -23,15 +24,15 @@ export const renderQuestionSectionsItem = (input: QuestionSectionsItem) => {
     <View style={$questionSectionsContainer}>
       {input.data.map((item, index) => {
         return (
-          <Button
+          <Chip
             style={$questionSectionButtonStyle}
-            labelStyle={$questionSectionButtonLabelStyle}
+            textStyle={$questionSectionButtonLabelStyle}
             icon={item.icon}
             mode="outlined"
             key={index}
           >
             {item.text}
-          </Button>
+          </Chip>
         )
       })}
     </View>
@@ -40,12 +41,20 @@ export const renderQuestionSectionsItem = (input: QuestionSectionsItem) => {
 
 export const $questionSectionsContainer: ViewStyle = {
   flexDirection: "row",
-  paddingLeft: spacing.sm,
-  paddingRight: spacing.sm,
+  justifyContent: "center",
+  columnGap: spacing.xxs,
+  paddingTop: spacing.sm,
+  paddingBottom: spacing.sm,
 }
 
 export const $questionSectionButtonStyle: ViewStyle = {
-  flex: 1,
+  borderRadius: 24,
+  borderColor: "#AFB7C8", //todo (tau): move to colors theme
 }
 
-export const $questionSectionButtonLabelStyle: TextStyle = { fontSize: 12 }
+export const $questionSectionButtonLabelStyle: TextStyle = {
+  fontSize: 12,
+  fontWeight: "500",
+  lineHeight: spacing.md,
+  fontStyle: "normal",
+}
