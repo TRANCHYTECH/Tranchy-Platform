@@ -856,6 +856,11 @@
           "Microsoft.IdentityModel.Logging": "7.0.3"
         }
       },
+      "Microsoft.IO.RecyclableMemoryStream": {
+        "type": "Transitive",
+        "resolved": "2.3.2",
+        "contentHash": "Oh1qXXFdJFcHozvb4H6XYLf2W0meZFuG0A+TfapFPj9z5fd4vxiARGEhAaLj/6XWQaMYIv4SH/9Q6H78Hw0E2Q=="
+      },
       "Microsoft.Net.Http.Headers": {
         "type": "Transitive",
         "resolved": "2.1.1",
@@ -1005,6 +1010,20 @@
         "type": "Transitive",
         "resolved": "0.30.1",
         "contentHash": "XqD4TpfyYGa7QTPzaGlMVbcecKnXy4YmYLDWrU+JIj7IuRNl7DH2END+Ll7ekWIY8o3dAMWLFDE1xdhfIWD1nw=="
+      },
+      "SixLabors.ImageSharp": {
+        "type": "Transitive",
+        "resolved": "3.1.0",
+        "contentHash": "ESlqDmrxIFxOd8VcKpyymA6uav51iXFp/j73fYcDMpIXWe2VEsjS2OL8nZGpvgt2Y1LKgQpM5ZpPJa/YlS73Pg=="
+      },
+      "SixLabors.ImageSharp.Web.Providers.Azure": {
+        "type": "Transitive",
+        "resolved": "3.1.0",
+        "contentHash": "lFI5/Q0O/kQ/mQHdRtuoP5R+HkGadpH1AzK2OKndWqfsCXezjXmWV9or3F2AdoK0nllkCVAjHBuleWlhc2zhHQ==",
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.15.1",
+          "SixLabors.ImageSharp.Web": "3.1.0"
+        }
       },
       "Snappier": {
         "type": "Transitive",
@@ -1232,6 +1251,8 @@
           "MassTransit.Azure.ServiceBus.Core": "[8.1.2, )",
           "MassTransit.MongoDb": "[8.1.2, )",
           "MongoDB.Entities": "[23.0.0, )",
+          "SixLabors.ImageSharp.Web": "[3.1.0, )",
+          "SixLabors.ImageSharp.Web.Providers.Azure": "[3.1.0, )",
           "Tranchy.Common": "[1.0.0, )"
         }
       },
@@ -1247,6 +1268,7 @@
       "tranchy.question": {
         "type": "Project",
         "dependencies": {
+          "Bogus": "[35.2.0, )",
           "FluentValidation": "[11.8.1, )",
           "FluentValidation.AspNetCore": "[11.3.0, )",
           "Mapster": "[7.4.0, )",
@@ -1277,6 +1299,12 @@
           "Azure.Storage.Common": "12.18.1",
           "System.Text.Json": "4.7.2"
         }
+      },
+      "Bogus": {
+        "type": "CentralTransitive",
+        "requested": "[35.2.0, )",
+        "resolved": "35.2.0",
+        "contentHash": "VNPDlWV2yerNsiK/pgTovkGOElljDfp1A1OZvhUxsd5waH4CoLWCd2keYf1IRNEHd4j2zzF7uTFx2PyvxxOljA=="
       },
       "FluentValidation": {
         "type": "CentralTransitive",
@@ -1341,6 +1369,16 @@
         "dependencies": {
           "Microsoft.Data.SqlClient": "5.1.1",
           "Microsoft.EntityFrameworkCore.Relational": "8.0.0"
+        }
+      },
+      "SixLabors.ImageSharp.Web": {
+        "type": "CentralTransitive",
+        "requested": "[3.1.0, )",
+        "resolved": "3.1.0",
+        "contentHash": "LoN28idQwfphN6zygY3X1gK9Mwuy6y7Bs5N03sCwfZqUHJRmayc2HRTZLPO+sctvGvC1U4q+xgOwgFMwH2vGVw==",
+        "dependencies": {
+          "Microsoft.IO.RecyclableMemoryStream": "2.3.2",
+          "SixLabors.ImageSharp": "3.1.0"
         }
       },
       "Swashbuckle.AspNetCore.Annotations": {

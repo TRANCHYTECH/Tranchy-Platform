@@ -74,6 +74,7 @@ export function MyTabs() {
         })}
         options={{
           title: translate("tab.newQuestion"),
+          tabBarHideOnKeyboard: true,
           tabBarLabel: translate("tab.newQuestion"),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="file-edit-outline" color={color} size={size} />
