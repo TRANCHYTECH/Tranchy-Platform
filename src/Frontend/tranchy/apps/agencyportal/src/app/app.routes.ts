@@ -24,6 +24,11 @@ export const appRoutes: Route[] = [
         loadChildren: () => import('./user/user.routes').then((m) => m.ROUTES),
         canActivate: [AuthGuard],
       },
+      {
+        path: 'question',
+        loadChildren: () => import('./question/question.routes').then((m) => m.ROUTES),
+        canActivate: [AuthGuard],
+      },
     ],
   },
 ];

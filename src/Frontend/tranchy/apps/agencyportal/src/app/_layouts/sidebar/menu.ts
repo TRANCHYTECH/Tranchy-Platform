@@ -14,4 +14,17 @@ export const MENU: MenuItem[] = [
       },
     ],
   },
+  {
+    id: 3,
+    label: 'menu.question.title',
+    icon: 'home',
+    subItems: [
+      {
+        id: 4,
+        label: 'menu.question.list',
+        link: '/question/question-list',
+        parentId: 3,
+      },
+    ],
+  }
 ];

@@ -24,6 +24,7 @@ import type {
   GetUserExpertiseResponse,
   GetUserNotificationResponse,
   GetUserResponse,
+  HighlightSectionsResponse,
   MobileQuestionEventMessageSent,
   Question,
   QuestionOutput,
@@ -59,6 +60,27 @@ type HttpClientOptions = {
 @Injectable({ providedIn: 'root' })
 export class TranchyAskApiDocumentationService {
   constructor(private http: HttpClient) {}
+  /**
+   * @summary Highlight each sections
+   */
+  highlightSections<TData = HighlightSectionsResponse>(
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.get<TData>(
+      `/ask:/question/aggregate/highlight-sections`,
+      options
+    );
+  }
+
+  /**
+   * @summary List all questions
+   */
+  listAllQuestions<TData = Question[]>(
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.get<TData>(`/ask:/question/management/question`, options);
+  }
+
   getUsers<TData = GetUserResponse[]>(
     options?: HttpClientOptions
   ): Observable<TData> {
@@ -287,6 +309,9 @@ export class TranchyAskApiDocumentationService {
   }
 }
 
+export type HighlightSectionsClientResult =
+  NonNullable<HighlightSectionsResponse>;
+export type ListAllQuestionsClientResult = NonNullable<Question[]>;
 export type GetUsersClientResult = NonNullable<GetUserResponse[]>;
 export type CreateQuestionClientResult = NonNullable<CreateQuestionResponse>;
 export type GetQuestionConfigurationsClientResult =
