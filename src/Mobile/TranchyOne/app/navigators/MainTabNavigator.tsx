@@ -1,13 +1,13 @@
 import React from "react"
 import { CommunityScreen, NotificationScreen, ProfileScreen, WalkAroundScreen } from "app/screens"
 import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { CompositeScreenProps } from "@react-navigation/native"
+import { CommonActions, CompositeScreenProps } from "@react-navigation/native"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 import { translate } from "app/i18n"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
-import { TextStyle, View, ViewStyle } from "react-native"
-import { colors, spacing, typography } from "app/theme"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { View } from "react-native"
+import { colors, spacing } from "app/theme"
+import { BottomNavigation } from "react-native-paper"
 
 export type MainTabNavigatorParamList = {
   Community: undefined
@@ -34,41 +34,83 @@ function tabBarIcon(
   size: number,
 ): React.ReactNode {
   return (
-    <View
-      style={
-        focused
-          ? {
-              backgroundColor: colors.palette.accent200,
-              paddingLeft: spacing.md,
-              paddingRight: spacing.md,
-              paddingTop: spacing.xs / 2,
-              paddingBottom: spacing.xs / 2,
-              borderRadius: spacing.md,
-            }
-          : {}
-      }
-    >
-      <MaterialCommunityIcons name={name} size={size} color={color} />
-    </View>
+    <MaterialCommunityIcons name={name} size={size} color={color} />
+    // <View
+    // style={
+    //   focused
+    //     ? {
+    //         backgroundColor: colors.palette.accent200,
+    //         paddingLeft: spacing.md,
+    //         paddingRight: spacing.md,
+    //         paddingTop: spacing.xs / 2,
+    //         paddingBottom: spacing.xs / 2,
+    //         borderRadius: spacing.md,
+    //       }
+    //     : {}
+    // }
+    // >
+    //   <MaterialCommunityIcons name={name} size={size} color={color} />
+    // </View>
   )
 }
 
 const Tab = createBottomTabNavigator<MainTabNavigatorParamList>()
 export const MainTabNavigator = () => {
-  const { bottom } = useSafeAreaInsets()
+  // const { bottom } = useSafeAreaInsets()
 
   return (
     <Tab.Navigator
       initialRouteName="WalkAround"
       screenOptions={{
         headerShown: true,
-        tabBarHideOnKeyboard: true,
-        tabBarStyle: [$tabBar, { height: bottom + 80 }],
-        tabBarActiveTintColor: colors.text,
-        tabBarInactiveTintColor: colors.text,
-        tabBarLabelStyle: $tabBarLabel,
-        tabBarItemStyle: $tabBarItem,
+        // tabBarHideOnKeyboard: true,
+        // tabBarStyle: [$tabBar, { height: bottom + 50 }],
+        // tabBarActiveTintColor: colors.text,
+        // tabBarInactiveTintColor: colors.text,
+        // tabBarLabelStyle: $tabBarLabel,
+        // tabBarItemStyle: $tabBarItem,
       }}
+      tabBar={({ navigation, state, descriptors, insets }) => (
+        <BottomNavigation.Bar
+          keyboardHidesNavigationBar={true}
+          navigationState={state}
+          safeAreaInsets={insets}
+          onTabPress={({ route, preventDefault }) => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+              canPreventDefault: true,
+            })
+
+            if (event.defaultPrevented) {
+              preventDefault()
+            } else {
+              navigation.dispatch({
+                ...CommonActions.navigate(route.name, route.params),
+                target: state.key,
+              })
+            }
+          }}
+          renderIcon={({ route, focused, color }) => {
+            const { options } = descriptors[route.key]
+            if (options.tabBarIcon) {
+              return options.tabBarIcon({ focused, color, size: 24 })
+            }
+
+            return null
+          }}
+          getLabelText={({ route }) => {
+            const { options } = descriptors[route.key]
+            const label = options.tabBarLabel?.toString() ?? options.title
+
+            return label
+          }}
+          getBadge={({ route }) => {
+            const { options } = descriptors[route.key]
+            return options.tabBarBadge
+          }}
+        />
+      )}
     >
       <Tab.Screen
         name="Community"
@@ -136,17 +178,17 @@ export const MainTabNavigator = () => {
   )
 }
 
-const $tabBar: ViewStyle = {
-  backgroundColor: colors.background,
-  borderTopColor: colors.transparent,
-}
+// const $tabBar: ViewStyle = {
+//   backgroundColor: colors.background,
+//   borderTopColor: colors.transparent,
+// }
 
-const $tabBarItem: ViewStyle = {
-  paddingTop: spacing.md,
-}
+// const $tabBarItem: ViewStyle = {
+//   paddingTop: spacing.md,
+// }
 
-const $tabBarLabel: TextStyle = {
-  fontSize: 12,
-  fontFamily: typography.primary.medium,
-  lineHeight: 16,
-}
+// const $tabBarLabel: TextStyle = {
+//   fontSize: 12,
+//   fontFamily: typography.primary.medium,
+//   lineHeight: 16,
+// }

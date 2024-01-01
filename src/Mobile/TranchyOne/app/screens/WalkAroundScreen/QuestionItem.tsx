@@ -1,10 +1,12 @@
-import { View, ViewStyle } from "react-native"
+import { TextStyle, View, ViewStyle } from "react-native"
 import React from "react"
-import { Text } from "app/components"
 import { BlockItemBase, BlockType } from "./BlockItem"
 import { QuestionBrief } from "app/services/ask-api/models"
-import FastImage from "react-native-fast-image"
-import { Icon, MD3Colors } from "react-native-paper"
+import FastImage, { ImageStyle } from "react-native-fast-image"
+import { Chip, Icon, MD3Colors, Text } from "react-native-paper"
+import Config from "../../config"
+import { colors, spacing, typography } from "app/theme"
+import { timeAgo } from "app/utils/formatDate"
 
 export type QuestionItemData = {
   title: string
@@ -24,22 +26,38 @@ export class QuestionItem implements BlockItemBase {
 export const renderQuestionItem = (input: QuestionItem) => {
   return (
     <View style={$container}>
-      <View style={{ width: 60 }}>
+      <View>
         <FastImage
-          style={{ width: 50, height: 50, borderRadius: 50 }}
+          style={$avatar}
           source={{
-            uri: `http://localhost:7300/avatar/${input.data.createdBy}.jpg?width=50`,
+            uri: `${Config.API_URL}/avatar/${input.data.createdBy}.jpg?width=32`,
             priority: FastImage.priority.normal,
           }}
         />
       </View>
-      <View style={{ flex: 1, flexGrow: 1 }}>
-        <Text>{input.data.title}</Text>
-        {input.data.categories.map((item, index) => {
-          return <Text key={index}>{item}</Text>
-        })}
+      <View style={$question}>
+        <Text variant="bodyLarge" ellipsizeMode="tail" numberOfLines={3}>
+          {input.data.title}
+        </Text>
+        <View style={$bottomLine}>
+          <View>
+            {input.data.categories?.map((item, index) => {
+              return (
+                <Chip key={index} textStyle={$category} style={$categoryChip}>
+                  {item}
+                </Chip>
+              )
+            })}
+          </View>
+          <View>
+            <Chip textStyle={[$category]} style={$categoryChip}>
+              todo
+              {/* {timeAgo(input.data.createdAt ?? new Date())} */}
+            </Chip>
+          </View>
+        </View>
       </View>
-      <View style={{ width: 30 }}>
+      <View style={{}}>
         {input.data.saved ? (
           <Icon source="bookmark-multiple" color={MD3Colors.error50} size={20} />
         ) : (
@@ -53,4 +71,40 @@ export const renderQuestionItem = (input: QuestionItem) => {
 const $container: ViewStyle = {
   flex: 1,
   flexDirection: "row",
+  paddingTop: spacing.md,
+  paddingLeft: spacing.md,
+  paddingRight: spacing.md,
+  columnGap: spacing.md,
+}
+
+const $avatar: ImageStyle = {
+  width: 32,
+  height: 32,
+  borderRadius: 50,
+}
+
+const $question: ViewStyle = {
+  flex: 1,
+  flexGrow: 1,
+}
+
+// todo (tau): reuse it
+const $bottomLine: ViewStyle = {
+  flex: 1,
+  flexDirection: "row",
+  columnGap: spacing.xxs,
+}
+const $categoryChip: ViewStyle = {
+  borderRadius: spacing.lg,
+  backgroundColor: colors.palette.accent300,
+}
+
+const $category: TextStyle = {
+  fontSize: 12,
+  fontFamily: typography.primary.light,
+  lineHeight: 16,
+  marginLeft: spacing.xxs,
+  marginRight: spacing.xxs,
+  marginTop: spacing.xxs,
+  marginBottom: spacing.xxs,
 }
