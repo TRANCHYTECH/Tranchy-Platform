@@ -5,6 +5,11 @@
       "list": "List Users",
       "add": "Add User"
     },
+    "question": {
+      "title": "Questions",
+      "list": "List Questions",
+      "add": "Add Question"
+    },
     "dashboard": {
       "title": "Dashboard"
     }
@@ -16,6 +21,15 @@
       "email": "Email",
       "firstname": "First name",
       "lastname": "Last name"
+    }
+  },
+  "questionModule": {
+    "questionListPage": {
+      "title": "Title",
+      "status": "Status",
+      "priority": "Priority",
+      "questionCategories": "Categories",
+      "createdOn": "Creation date"
     }
   },
   "dashboardModule": {

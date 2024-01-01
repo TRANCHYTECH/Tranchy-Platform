@@ -1016,15 +1016,6 @@
         "resolved": "3.1.0",
         "contentHash": "ESlqDmrxIFxOd8VcKpyymA6uav51iXFp/j73fYcDMpIXWe2VEsjS2OL8nZGpvgt2Y1LKgQpM5ZpPJa/YlS73Pg=="
       },
-      "SixLabors.ImageSharp.Web.Providers.Azure": {
-        "type": "Transitive",
-        "resolved": "3.1.0",
-        "contentHash": "lFI5/Q0O/kQ/mQHdRtuoP5R+HkGadpH1AzK2OKndWqfsCXezjXmWV9or3F2AdoK0nllkCVAjHBuleWlhc2zhHQ==",
-        "dependencies": {
-          "Azure.Storage.Blobs": "12.15.1",
-          "SixLabors.ImageSharp.Web": "3.1.0"
-        }
-      },
       "Snappier": {
         "type": "Transitive",
         "resolved": "1.0.0",
@@ -1379,6 +1370,16 @@
         "dependencies": {
           "Microsoft.IO.RecyclableMemoryStream": "2.3.2",
           "SixLabors.ImageSharp": "3.1.0"
+        }
+      },
+      "SixLabors.ImageSharp.Web.Providers.Azure": {
+        "type": "CentralTransitive",
+        "requested": "[3.1.0, )",
+        "resolved": "3.1.0",
+        "contentHash": "lFI5/Q0O/kQ/mQHdRtuoP5R+HkGadpH1AzK2OKndWqfsCXezjXmWV9or3F2AdoK0nllkCVAjHBuleWlhc2zhHQ==",
+        "dependencies": {
+          "Azure.Storage.Blobs": "12.15.1",
+          "SixLabors.ImageSharp.Web": "3.1.0"
         }
       },
       "Swashbuckle.AspNetCore.Annotations": {

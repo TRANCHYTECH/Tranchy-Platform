@@ -5,6 +5,83 @@
     "version": "v1"
   },
   "paths": {
+    "/question/aggregate/highlight-sections": {
+      "get": {
+        "tags": [
+          "Aggregates"
+        ],
+        "summary": "Highlight each sections",
+        "operationId": "HighlightSections",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HighlightSectionsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/question/management/question": {
+      "get": {
+        "tags": [
+          "BackOffice"
+        ],
+        "summary": "List all questions",
+        "operationId": "ListAllQuestions",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Question"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/management/user": {
       "get": {
         "tags": [
@@ -980,6 +1057,30 @@
   },
   "components": {
     "schemas": {
+      "CategoryBrief": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryBriefSection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryBrief"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateEventMetadata": {
         "type": "object",
         "properties": {
@@ -1306,6 +1407,10 @@
             "type": "string",
             "nullable": true
           },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
           "firstName": {
             "type": "string",
             "nullable": true
@@ -1321,6 +1426,24 @@
           "profilePictureBlobLocation": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HighlightSectionsResponse": {
+        "type": "object",
+        "properties": {
+          "expertExclusive": {
+            "$ref": "#/components/schemas/QuestionBriefSection"
+          },
+          "recent": {
+            "$ref": "#/components/schemas/QuestionBriefSection"
+          },
+          "popularCategories": {
+            "$ref": "#/components/schemas/CategoryBriefSection"
+          },
+          "matchProfile": {
+            "$ref": "#/components/schemas/QuestionBriefSection"
           }
         },
         "additionalProperties": false
@@ -1435,6 +1558,52 @@
           "GoToConversation"
         ],
         "type": "string"
+      },
+      "QuestionBrief": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "price": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuestionBriefSection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionBrief"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
       },
       "QuestionCategory": {
         "type": "object",

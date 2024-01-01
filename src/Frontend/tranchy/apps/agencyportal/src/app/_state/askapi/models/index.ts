@@ -7,6 +7,8 @@
 
 export * from './buyCoffeeInput';
 export * from './buyCoffeeOutput';
+export * from './categoryBrief';
+export * from './categoryBriefSection';
 export * from './createEventMetadata';
 export * from './createQuestion400';
 export * from './createQuestionEvent400';
@@ -36,12 +38,15 @@ export * from './getQuestionConfigurationsResponse';
 export * from './getUserExpertiseResponse';
 export * from './getUserNotificationResponse';
 export * from './getUserResponse';
+export * from './highlightSectionsResponse';
 export * from './mobileQuestionEvent';
 export * from './mobileQuestionEventMessageSent';
 export * from './mobileQuestionEventMessageSentType';
 export * from './notificationType';
 export * from './question';
 export * from './questionAction';
+export * from './questionBrief';
+export * from './questionBriefSection';
 export * from './questionCategory';
 export * from './questionCategoryDescription';
 export * from './questionCategoryTitle';
