@@ -24,7 +24,8 @@ public class HighlightSections : IEndpoint
                 Title = faker.Lorem.Sentence(50),
                 Categories = faker.Commerce.Categories(3),
                 Price = "VND 300.000",
-                CreatedBy = "643b93cb5c7266dc77f91f29"
+                CreatedBy = "643b93cb5c7266dc77f91f29",
+                CreatedAt = DateTime.UtcNow
             });
         }
 
@@ -35,7 +36,7 @@ public class HighlightSections : IEndpoint
                 Title = faker.Lorem.Sentence(50),
                 Categories = faker.Commerce.Categories(3),
                 Price = "VND 500.00",
-                CreatedAt = new DateTime(),
+                CreatedAt = DateTime.UtcNow,
                 CreatedBy = "643b93cb5c7266dc77f91f29"
             });
         }
@@ -47,7 +48,7 @@ public class HighlightSections : IEndpoint
                 Title = faker.Lorem.Sentence(50),
                 Categories = faker.Commerce.Categories(3),
                 Price = "VND 500.00",
-                CreatedAt = new DateTime(),
+                CreatedAt = DateTime.UtcNow,
                 CreatedBy = "643b93cb5c7266dc77f91f29"
             });
         }
