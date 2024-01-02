@@ -3,9 +3,11 @@ import React from "react"
 import { Text } from "app/components"
 import { colors, spacing, typography } from "app/theme"
 import { BlockItemBase, BlockType } from "./BlockItem"
+import { Button } from "react-native-paper"
 
 export type SectionTitleItemData = {
   title: string
+  route?: string
 }
 
 export class SectionTitleItem implements BlockItemBase {
@@ -20,6 +22,11 @@ export const renderSectionTitleItem = (input: SectionTitleItem) => {
   return (
     <View style={$container}>
       <Text style={$text}>{input.data.title}</Text>
+      {input.data.route && (
+        <Button mode="text" style={$moreLink} textColor={colors.moreLink}>
+          Xem thêm
+        </Button>
+      )}
     </View>
   )
 }
@@ -27,6 +34,9 @@ export const renderSectionTitleItem = (input: SectionTitleItem) => {
 const $container: ViewStyle = {
   borderTopWidth: spacing.xxs,
   borderTopColor: colors.separator,
+  flexDirection: "row",
+  alignItems: "baseline",
+  justifyContent: "space-between",
 }
 
 const $text: TextStyle = {
@@ -37,3 +47,5 @@ const $text: TextStyle = {
   paddingRight: spacing.md,
   lineHeight: spacing.lg,
 }
+
+const $moreLink: ViewStyle = {}

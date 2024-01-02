@@ -81,4 +81,12 @@ export const colors = {
    *
    */
   errorBackground: palette.angry100,
+
+  hashTag: "#3058D0",
+
+  date: "#76819B",
+
+  borderLight: "#AFB7C8",
+
+  moreLink: "#3058D0",
 }
