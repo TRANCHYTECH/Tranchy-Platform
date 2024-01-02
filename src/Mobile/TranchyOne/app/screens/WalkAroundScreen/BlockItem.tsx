@@ -9,6 +9,8 @@ export interface BlockItemBase {
   readonly type: BlockType
 }
 
+export type BlockItemPosition = "First" | "Middle" | "Last"
+
 export type BlockType =
   | "QuestionSections"
   | "SectionSeparate"

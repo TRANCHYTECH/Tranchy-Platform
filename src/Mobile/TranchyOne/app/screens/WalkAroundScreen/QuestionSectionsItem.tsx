@@ -2,7 +2,7 @@ import { TextStyle, View, ViewStyle } from "react-native"
 import React from "react"
 import { Chip } from "react-native-paper"
 import { BlockItemBase, BlockType } from "./BlockItem"
-import { spacing, typography } from "app/theme"
+import { colors, spacing, typography } from "app/theme"
 
 export type QuestionSectionsItemData = {
   text: string
@@ -49,7 +49,7 @@ export const $questionSectionsContainer: ViewStyle = {
 
 export const $questionSectionButtonStyle: ViewStyle = {
   borderRadius: 24,
-  borderColor: "#AFB7C8", //todo (tau): move to colors theme
+  borderColor: colors.borderLight,
 }
 
 export const $questionSectionButtonLabelStyle: TextStyle = {
