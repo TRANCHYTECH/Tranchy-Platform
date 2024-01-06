@@ -7,7 +7,7 @@ public class SupportDeveloper : IEndpoint
 {
     public static async Task<Ok> SeedMetadata(CancellationToken cancellation)
     {
-        var questionCatagories = new QuestionCategory[] {
+        var questionCategories = new QuestionCategory[] {
             new() {
                 Key = "technology",
                 Title = LocalizedString.Create("Công nghệ", "Technology"),
@@ -35,7 +35,7 @@ public class SupportDeveloper : IEndpoint
                 },
             };
         await DB.DeleteAsync<QuestionCategory>(_ => true, cancellation: default);
-        await DB.InsertAsync(questionCatagories, cancellation: cancellation);
+        await DB.InsertAsync(questionCategories, cancellation: cancellation);
 
         var questionPriorities = new QuestionPriority[] {
             new() {

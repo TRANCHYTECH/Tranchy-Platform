@@ -5,10 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export type CreateQuestionEventStatusChangedInputType =
-  (typeof CreateQuestionEventStatusChangedInputType)[keyof typeof CreateQuestionEventStatusChangedInputType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateQuestionEventStatusChangedInputType = {
-  StatusChanged: "StatusChanged",
-} as const
+export enum CreateQuestionEventStatusChangedInputType {
+  StatusChanged = "StatusChanged",
+}

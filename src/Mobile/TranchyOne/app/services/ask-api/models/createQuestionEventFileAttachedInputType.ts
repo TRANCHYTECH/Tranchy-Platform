@@ -5,10 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export type CreateQuestionEventFileAttachedInputType =
-  (typeof CreateQuestionEventFileAttachedInputType)[keyof typeof CreateQuestionEventFileAttachedInputType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateQuestionEventFileAttachedInputType = {
-  FileAttached: "FileAttached",
-} as const
+export enum CreateQuestionEventFileAttachedInputType {
+  FileAttached = "FileAttached",
+}

@@ -5,10 +5,7 @@
  * OpenAPI spec version: v1
  */
 
-export type QuestionAction = (typeof QuestionAction)[keyof typeof QuestionAction]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const QuestionAction = {
-  TakeConsultation: "TakeConsultation",
-  GoToConversation: "GoToConversation",
-} as const
+export enum QuestionAction {
+  TakeConsultation = "TakeConsultation",
+  GoToConversation = "GoToConversation",
+}

@@ -32,6 +32,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { ViewStyle } from "react-native"
 import { Auth0Provider } from "react-native-auth0"
 import { PaperProvider } from "react-native-paper"
+import { LoadingProvider } from "./navigators/LoadingProvider"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
@@ -103,11 +104,13 @@ function App(props: AppProps) {
         <ErrorBoundary catchErrors={Config.catchErrors}>
           <GestureHandlerRootView style={$container}>
             <PaperProvider>
-              <AppNavigator
-                linking={linking}
-                initialState={initialNavigationState}
-                onStateChange={onNavigationStateChange}
-              />
+              <LoadingProvider>
+                <AppNavigator
+                  linking={linking}
+                  initialState={initialNavigationState}
+                  onStateChange={onNavigationStateChange}
+                />
+              </LoadingProvider>
             </PaperProvider>
           </GestureHandlerRootView>
         </ErrorBoundary>

@@ -5,11 +5,8 @@
  * OpenAPI spec version: v1
  */
 
-export type Gender = (typeof Gender)[keyof typeof Gender]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const Gender = {
-  Male: "Male",
-  Female: "Female",
-  Other: "Other",
-} as const
+export enum Gender {
+  Male = "Male",
+  Female = "Female",
+  Other = "Other",
+}

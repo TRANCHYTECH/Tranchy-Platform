@@ -9,10 +9,10 @@ import { SectionTitleItem, renderSectionTitleItem } from "./SectionTitleItem"
 import { SeeMoreItem, renderSeeMoreItem } from "./SeeMoreItem"
 import { QuestionSectionsItem, renderQuestionSectionsItem } from "./QuestionSectionsItem"
 import { renderPopularCategoriesItem } from "./PopularCategoriesItem"
-import { HighlightSection } from "app/models"
 import { arrayOrEmptyArray } from "app/utils/arrayHelper"
+import { HighlightSectionsResponse } from "app/services/ask-api/models"
 
-export const buildBlocks = (highlights: HighlightSection) => {
+export const buildBlocks = (highlights: HighlightSectionsResponse) => {
   const orderedList: BlockItemType[] = []
   orderedList.push(
     new QuestionSectionsItem([
@@ -22,13 +22,13 @@ export const buildBlocks = (highlights: HighlightSection) => {
     ]),
   )
 
-  const expertExclusiveData = arrayOrEmptyArray(highlights.expertExclusive?.data)
+  const expertExclusiveData = arrayOrEmptyArray(highlights.expertExclusive.data)
   if (expertExclusiveData.length > 0) {
     orderedList.push(new SectionTitleItem({ title: "Nắm bắt cơ hội" }))
     orderedList.push(new ExpertDealsItem(expertExclusiveData))
   }
 
-  const recentData = arrayOrEmptyArray(highlights.recent?.data)
+  const recentData = arrayOrEmptyArray(highlights.recent.data)
   if (recentData.length > 0) {
     orderedList.push(new SectionTitleItem({ title: "Mới đăng gần đây" }))
     orderedList.push(
@@ -39,13 +39,13 @@ export const buildBlocks = (highlights: HighlightSection) => {
     orderedList.push(new SeeMoreItem({ route: "questions" }))
   }
 
-  const popularCategoriesData = arrayOrEmptyArray(highlights.popularCategories?.data)
+  const popularCategoriesData = arrayOrEmptyArray(highlights.popularCategories.data)
   if (popularCategoriesData.length > 0) {
     orderedList.push(new SectionTitleItem({ title: "Chủ đề nổi bật", route: "todo" }))
     orderedList.push(new PopularCategoriesItem(popularCategoriesData))
   }
 
-  const matchProfileData = arrayOrEmptyArray(highlights.matchProfile?.data)
+  const matchProfileData = arrayOrEmptyArray(highlights.matchProfile.data)
   if (matchProfileData.length > 0) {
     orderedList.push(new SectionTitleItem({ title: "Phù hợp với bạn" }))
     orderedList.push(

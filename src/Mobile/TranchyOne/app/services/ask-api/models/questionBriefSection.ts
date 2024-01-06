@@ -7,5 +7,5 @@
 import type { QuestionBrief } from "./questionBrief"
 
 export interface QuestionBriefSection {
-  readonly data?: QuestionBrief[] | null
+  readonly data: QuestionBrief[]
 }

@@ -5,10 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export type MobileQuestionEventMessageSentType =
-  (typeof MobileQuestionEventMessageSentType)[keyof typeof MobileQuestionEventMessageSentType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const MobileQuestionEventMessageSentType = {
-  MessageSent: "MessageSent",
-} as const
+export enum MobileQuestionEventMessageSentType {
+  MessageSent = "MessageSent",
+}

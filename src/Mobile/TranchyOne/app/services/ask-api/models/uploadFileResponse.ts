@@ -5,4 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export type QuestionPriorityPriorityMetaData = { [key: string]: unknown } | null
+export interface UploadFileResponse {
+  questionId?: string | null
+}

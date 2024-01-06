@@ -4,12 +4,12 @@
  * Tranchy Ask Api Documentation
  * OpenAPI spec version: v1
  */
-import type { QuestionCategory } from "./questionCategory"
-import type { QuestionPriority } from "./questionPriority"
+import type { QuestionCategoryResponse } from "./questionCategoryResponse"
+import type { QuestionPriorityResponse } from "./questionPriorityResponse"
 
 export interface GetQuestionConfigurationsResponse {
-  email?: string | null
-  questionCategories?: QuestionCategory[] | null
-  questionPriorities?: QuestionPriority[] | null
-  userId?: string | null
+  email: string
+  questionCategories: QuestionCategoryResponse[]
+  questionPriorities: QuestionPriorityResponse[]
+  userId: string
 }

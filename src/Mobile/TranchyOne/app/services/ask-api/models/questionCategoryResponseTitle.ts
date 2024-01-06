@@ -5,6 +5,4 @@
  * OpenAPI spec version: v1
  */
 
-export type UploadFileForQuestionBody = {
-  file: Blob
-}
+export type QuestionCategoryResponseTitle = { [key: string]: string }

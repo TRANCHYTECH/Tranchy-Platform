@@ -5,7 +5,7 @@ import { MainTabScreenProps } from "app/navigators"
 import { ListView, Screen } from "app/components"
 import { BlockItem, buildBlocks } from "./Blocks"
 import { BlockItemType } from "./BlockItem"
-import { HighlightSection, useStores } from "app/models"
+import { useStores } from "app/models"
 import { useFocusEffect } from "@react-navigation/native"
 
 interface WalkAroundScreenProps extends MainTabScreenProps<"WalkAround"> {}
@@ -16,11 +16,11 @@ export const WalkAroundScreen: FC<WalkAroundScreenProps> = observer(function Wal
   useFocusEffect(
     useCallback(() => {
       async function load() {
-        await highlightStore.fetchHighlights()
+        await highlightStore.getUserHighlights()
         if (__DEV__) {
           console.tron.display({
             name: "loaded Highlights action",
-            value: highlightStore.highlightSections,
+            value: highlightStore.userHighlights,
           })
         }
       }
@@ -34,7 +34,7 @@ export const WalkAroundScreen: FC<WalkAroundScreenProps> = observer(function Wal
         estimatedItemSize={120}
         getItemType={(item) => item.type}
         renderItem={({ item }) => <BlockItem data={item} />}
-        data={buildBlocks(highlightStore.highlightSections as HighlightSection)}
+        data={buildBlocks(highlightStore.userHighlights)}
       />
     </Screen>
   )

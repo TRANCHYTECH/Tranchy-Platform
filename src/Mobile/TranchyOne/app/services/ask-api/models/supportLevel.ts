@@ -5,11 +5,8 @@
  * OpenAPI spec version: v1
  */
 
-export type SupportLevel = (typeof SupportLevel)[keyof typeof SupportLevel]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const SupportLevel = {
-  Community: "Community",
-  Expert: "Expert",
-  Agency: "Agency",
-} as const
+export enum SupportLevel {
+  Community = "Community",
+  Expert = "Expert",
+  Agency = "Agency",
+}

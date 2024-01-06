@@ -7,6 +7,6 @@ namespace Tranchy.Question.Data;
 public class QuestionCategory : EntityBase
 {
     public required string Key { get; set; }
-    public LocalizedString Title { get; set; } = default!;
-    public LocalizedString Description { get; set; } = default!;
+    public required LocalizedString Title { get; set; }
+    public required LocalizedString Description { get; set; }
 }

@@ -1,7 +1,3 @@
-export interface CreateQuestionResponse {
-  id: string
-}
-
 /**
  * The options used to configure apisauce.
  */

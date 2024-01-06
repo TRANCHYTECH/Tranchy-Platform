@@ -5,10 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export type CreateQuestionEventVideoCalledInputType =
-  (typeof CreateQuestionEventVideoCalledInputType)[keyof typeof CreateQuestionEventVideoCalledInputType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateQuestionEventVideoCalledInputType = {
-  VideoCalled: "VideoCalled",
-} as const
+export enum CreateQuestionEventVideoCalledInputType {
+  VideoCalled = "VideoCalled",
+}

@@ -1,36 +1,40 @@
 import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
-import { HighlightSectionModel } from "./HighlightSection"
 import { ApiResponse } from "apisauce"
-import { HighlightSectionsResponse } from "app/services/ask-api/models"
-import { highlightSections } from "app/services/ask-api/askApi"
+import { GetUserHighlightsResponse } from "app/services/ask-api/models"
+import { getUserHighlights } from "app/services/ask-api/askApi"
 
-/**
- * Model description here for TypeScript hints.
- */
+const createDefaultUserHighlights = () =>
+  <GetUserHighlightsResponse>{
+    expertExclusive: {},
+    popularCategories: {},
+    matchProfile: {},
+    recent: {},
+  }
+
 export const HighlightStoreModel = types
   .model("HighlightStore")
   .props({
-    highlightSections: types.maybe(types.frozen(HighlightSectionModel)),
+    userHighlights: types.frozen<GetUserHighlightsResponse>(createDefaultUserHighlights()),
+    // communityHighlights
   })
   .actions(withSetPropAction)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({
-    fetchHighlights: flow(function* fetchHighlights() {
+    getUserHighlights: flow(function* highlights() {
       try {
-        const response: ApiResponse<HighlightSectionsResponse> = yield highlightSections()
+        const response: ApiResponse<GetUserHighlightsResponse> = yield getUserHighlights()
         if (response.ok) {
-          self.highlightSections = cast(response.data)
+          self.userHighlights = cast(response.data)
         }
       } catch (error) {
-        console.error("Failed to fetch public questions", error)
+        console.error("Failed to fetch user highlights", error)
       } finally {
         // self.isLoading = false
       }
     }),
-  })) // eslint-disable-line @typescript-eslint/no-unused-vars
+  }))
 
 export interface HighlightStore extends Instance<typeof HighlightStoreModel> {}
 export interface HighlightStoreSnapshotOut extends SnapshotOut<typeof HighlightStoreModel> {}
 export interface HighlightStoreSnapshotIn extends SnapshotIn<typeof HighlightStoreModel> {}
-export const createHighlightStoreDefaultModel = () => types.optional(HighlightStoreModel, {})

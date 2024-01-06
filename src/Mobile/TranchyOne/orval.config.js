@@ -14,6 +14,7 @@ export default defineConfig({
           name: "apiRequest",
         },
         useDates: true,
+        useNativeEnums: true,
       },
     },
     input: {
