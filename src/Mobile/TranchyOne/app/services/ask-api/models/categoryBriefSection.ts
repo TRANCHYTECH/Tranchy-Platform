@@ -7,5 +7,5 @@
 import type { CategoryBrief } from "./categoryBrief"
 
 export interface CategoryBriefSection {
-  readonly data?: CategoryBrief[] | null
+  readonly data: CategoryBrief[]
 }

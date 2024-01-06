@@ -7,9 +7,9 @@
 import type { QuestionBriefSection } from "./questionBriefSection"
 import type { CategoryBriefSection } from "./categoryBriefSection"
 
-export interface HighlightSectionsResponse {
-  expertExclusive?: QuestionBriefSection
-  matchProfile?: QuestionBriefSection
-  popularCategories?: CategoryBriefSection
-  recent?: QuestionBriefSection
+export interface GetUserHighlightsResponse {
+  expertExclusive: QuestionBriefSection
+  matchProfile: QuestionBriefSection
+  popularCategories: CategoryBriefSection
+  recent: QuestionBriefSection
 }

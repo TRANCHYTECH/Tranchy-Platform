@@ -5,4 +5,4 @@
  * OpenAPI spec version: v1
  */
 
-export type QuestionCategoryTitle = { [key: string]: string } | null
+export type QuestionPriorityResponsePriorityMetaData = { [key: string]: unknown }

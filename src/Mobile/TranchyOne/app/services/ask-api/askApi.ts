@@ -14,26 +14,26 @@ import type {
   FinishConsultationRequest,
   GetQuestionConfigurationsResponse,
   GetUserExpertiseResponse,
+  GetUserHighlightsResponse,
   GetUserNotificationResponse,
   GetUserResponse,
-  HighlightSectionsResponse,
   MobileQuestionEventMessageSent,
   Question,
   QuestionOutput,
   UpdateUserExpertiseRequest,
   UpdateUserRequest,
-  UploadFileForQuestionBody,
-  UploadFileForQuestionParams,
-  UploadQuestionFileResponse,
+  UploadFileResponse,
+  UploadQuestionFileBody,
+  UploadQuestionFileParams,
 } from "./models"
 import { apiRequest } from "../api/api"
 
 /**
- * @summary Highlight each sections
+ * @summary Get highlights for user
  */
-export const highlightSections = () => {
-  return apiRequest<HighlightSectionsResponse>({
-    url: `/question/aggregate/highlight-sections`,
+export const getUserHighlights = () => {
+  return apiRequest<GetUserHighlightsResponse>({
+    url: `/question/aggregate/user-highlights`,
     method: "GET",
   })
 }
@@ -138,16 +138,16 @@ export const getAgencyPortal = () => {
   return apiRequest<void>({ url: `/agency-portal`, method: "GET" })
 }
 
-export const uploadFileForQuestion = (
+export const uploadQuestionFile = (
   questionId: string,
-  uploadFileForQuestionBody: UploadFileForQuestionBody,
-  params: UploadFileForQuestionParams,
+  uploadQuestionFileBody: UploadQuestionFileBody,
+  params?: UploadQuestionFileParams,
 ) => {
   const formData = new FormData()
-  formData.append("file", uploadFileForQuestionBody.file)
+  formData.append("file", uploadQuestionFileBody.file)
 
-  return apiRequest<UploadQuestionFileResponse>({
-    url: `/file/question/${questionId}`,
+  return apiRequest<UploadFileResponse>({
+    url: `/questions/${questionId}/files`,
     method: "POST",
     headers: { "Content-Type": "multipart/form-data" },
     data: formData,
@@ -216,7 +216,7 @@ export const getUserNotification = () => {
   return apiRequest<GetUserNotificationResponse[]>({ url: `/user/Notifications`, method: "GET" })
 }
 
-export type HighlightSectionsResult = NonNullable<Awaited<ReturnType<typeof highlightSections>>>
+export type GetUserHighlightsResult = NonNullable<Awaited<ReturnType<typeof getUserHighlights>>>
 export type CreateQuestionResult = NonNullable<Awaited<ReturnType<typeof createQuestion>>>
 export type GetQuestionConfigurationsResult = NonNullable<
   Awaited<ReturnType<typeof getQuestionConfigurations>>
@@ -236,9 +236,7 @@ export type ListCommunityQuestionsResult = NonNullable<
 export type ListMyQuestionsResult = NonNullable<Awaited<ReturnType<typeof listMyQuestions>>>
 export type SeedMetadataResult = NonNullable<Awaited<ReturnType<typeof seedMetadata>>>
 export type GetAgencyPortalResult = NonNullable<Awaited<ReturnType<typeof getAgencyPortal>>>
-export type UploadFileForQuestionResult = NonNullable<
-  Awaited<ReturnType<typeof uploadFileForQuestion>>
->
+export type UploadQuestionFileResult = NonNullable<Awaited<ReturnType<typeof uploadQuestionFile>>>
 export type CreateUserResult = NonNullable<Awaited<ReturnType<typeof createUser>>>
 export type GetCurrentUserResult = NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>
 export type UpdateUserResult = NonNullable<Awaited<ReturnType<typeof updateUser>>>

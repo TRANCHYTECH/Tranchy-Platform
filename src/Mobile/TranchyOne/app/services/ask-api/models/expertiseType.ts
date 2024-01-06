@@ -5,11 +5,8 @@
  * OpenAPI spec version: v1
  */
 
-export type ExpertiseType = (typeof ExpertiseType)[keyof typeof ExpertiseType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ExpertiseType = {
-  Education: "Education",
-  Certification: "Certification",
-  WorkExperience: "WorkExperience",
-} as const
+export enum ExpertiseType {
+  Education = "Education",
+  Certification = "Certification",
+  WorkExperience = "WorkExperience",
+}

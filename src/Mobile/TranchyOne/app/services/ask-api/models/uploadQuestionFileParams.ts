@@ -5,4 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export type QuestionCategoryDescription = { [key: string]: string } | null
+export type UploadQuestionFileParams = {
+  fileName?: string
+}

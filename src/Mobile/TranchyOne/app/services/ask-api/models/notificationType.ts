@@ -5,10 +5,7 @@
  * OpenAPI spec version: v1
  */
 
-export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const NotificationType = {
-  MessageReplied: "MessageReplied",
-  QuestionAnswered: "QuestionAnswered",
-} as const
+export enum NotificationType {
+  MessageReplied = "MessageReplied",
+  QuestionAnswered = "QuestionAnswered",
+}

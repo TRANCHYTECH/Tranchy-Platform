@@ -5,4 +5,4 @@
  * OpenAPI spec version: v1
  */
 
-export type QuestionPriorityTitle = { [key: string]: string } | null
+export type QuestionPriorityResponseTitle = { [key: string]: string }

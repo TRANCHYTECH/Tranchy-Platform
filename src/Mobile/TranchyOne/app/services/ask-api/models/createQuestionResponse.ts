@@ -6,5 +6,5 @@
  */
 
 export interface CreateQuestionResponse {
-  id?: string | null
+  id: string
 }

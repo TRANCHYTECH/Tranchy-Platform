@@ -39,7 +39,6 @@ export type AppStackParamList = {
   Welcome: undefined
   Login: undefined
   Demo: NavigatorScreenParams<DemoTabParamList>
-  NewQuestion: undefined
   QuestionList: undefined
   QuestionDetails: { id: string }
   QuestionConversation: { id: string }
@@ -76,7 +75,7 @@ const AppStack = observer(function AppStack() {
     distributeAuthToken()
   }
 
-  metadataStore.downloadMetadata(true)
+  metadataStore.getConfigurations(true)
 
   return (
     <Stack.Navigator
@@ -89,7 +88,7 @@ const AppStack = observer(function AppStack() {
           <Stack.Screen
             name="AskQuestion"
             options={{ headerShown: true, title: "Tạo câu hỏi mới" }}
-            component={Screens.AskQuestionScreen}
+            component={Screens.NewQuestionScreen}
           />
         </>
       ) : (

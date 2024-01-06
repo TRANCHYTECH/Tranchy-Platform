@@ -5,10 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export type QuestionEventReactedType =
-  (typeof QuestionEventReactedType)[keyof typeof QuestionEventReactedType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const QuestionEventReactedType = {
-  EventReacted: "EventReacted",
-} as const
+export enum QuestionEventReactedType {
+  EventReacted = "EventReacted",
+}

@@ -41,9 +41,12 @@ public class CreateQuestion : IEndpoint
         );
         await dbContext.CommitTransaction(cancellation);
 
-        logger.CreatedQuestion(newQuestion.ID!, newQuestion.Title);
+        logger.CreatedQuestion(newQuestion.ID, newQuestion.Title);
 
-        return TypedResults.Ok<CreateQuestionResponse>(new(newQuestion.ID!));
+        return TypedResults.Ok(new CreateQuestionResponse
+        {
+            Id = newQuestion.ID
+        });
     }
 
     public static void Register(RouteGroupBuilder routeGroupBuilder) =>

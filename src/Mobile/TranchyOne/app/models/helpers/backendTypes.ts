@@ -1,4 +1,4 @@
-import { IAnyType, ISimpleType, IType, types } from "mobx-state-tree"
+import { ISimpleType, IType, types } from "mobx-state-tree"
 import { IsoDate } from "./isoDateType"
 
 function simpleType<T>(type: ISimpleType<T>) {

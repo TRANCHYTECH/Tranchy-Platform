@@ -5,6 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export interface UploadQuestionFileResponse {
-  questionId?: string | null
+export type UploadQuestionFileBody = {
+  file: Blob
 }

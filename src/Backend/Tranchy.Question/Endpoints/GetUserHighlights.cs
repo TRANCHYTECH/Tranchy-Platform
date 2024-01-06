@@ -2,20 +2,20 @@ using Bogus;
 
 namespace Tranchy.Question.Endpoints;
 
-public class HighlightSections : IEndpoint
+public class GetUserHighlights : IEndpoint
 {
     public static void Register(RouteGroupBuilder routeGroupBuilder) =>
-        routeGroupBuilder.MapGet("/aggregate/highlight-sections", HighlightSectionsFunction)
-            .WithName("HighlightSections")
-            .WithSummary("Highlight each sections")
+        routeGroupBuilder.MapGet("/aggregate/user-highlights", HighlightSectionsFunction)
+            .WithName("GetUserHighlights")
+            .WithSummary("Get highlights for user")
             .WithTags("Aggregates")
             .WithOpenApi();
 
-    private static Ok<HighlightSectionsResponse> HighlightSectionsFunction()
+    private static Ok<GetUserHighlightsResponse> HighlightSectionsFunction()
     {
         var faker = new Faker("vi");
 
-        var response = new HighlightSectionsResponse();
+        var response = new GetUserHighlightsResponse();
 
         for (int i = 0 ; i  <= 4; i ++)
         {

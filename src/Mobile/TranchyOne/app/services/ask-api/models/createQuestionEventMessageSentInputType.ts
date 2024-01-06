@@ -5,10 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export type CreateQuestionEventMessageSentInputType =
-  (typeof CreateQuestionEventMessageSentInputType)[keyof typeof CreateQuestionEventMessageSentInputType]
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CreateQuestionEventMessageSentInputType = {
-  MessageSent: "MessageSent",
-} as const
+export enum CreateQuestionEventMessageSentInputType {
+  MessageSent = "MessageSent",
+}

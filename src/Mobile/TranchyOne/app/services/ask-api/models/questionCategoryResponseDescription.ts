@@ -5,6 +5,4 @@
  * OpenAPI spec version: v1
  */
 
-export type UploadFileForQuestionParams = {
-  fileName: string
-}
+export type QuestionCategoryResponseDescription = { [key: string]: string }
