@@ -1,0 +1,1940 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Tranchy Ask Api Documentation",
+    "version": "v1"
+  },
+  "paths": {
+    "/question/aggregate/highlight-sections": {
+      "get": {
+        "tags": [
+          "Aggregates"
+        ],
+        "summary": "Highlight each sections",
+        "operationId": "HighlightSections",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HighlightSectionsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/question/management/question": {
+      "get": {
+        "tags": [
+          "BackOffice"
+        ],
+        "summary": "List all questions",
+        "operationId": "ListAllQuestions",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Question"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/management/user": {
+      "get": {
+        "tags": [
+          "BackOffice"
+        ],
+        "operationId": "GetUsers",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetUserResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/question": {
+      "post": {
+        "tags": [
+          "CreateQuestion"
+        ],
+        "operationId": "CreateQuestion",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateQuestionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateQuestionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/question/configurations": {
+      "get": {
+        "tags": [
+          "GetMetadata"
+        ],
+        "operationId": "GetQuestionConfigurations",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetQuestionConfigurationsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/question/{id}": {
+      "get": {
+        "tags": [
+          "GetQuestion"
+        ],
+        "operationId": "GetQuestionById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestionOutput"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/question/user/{user}": {
+      "get": {
+        "tags": [
+          "GetQuestion"
+        ],
+        "operationId": "GetQuestionByUser",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestionOutput"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/question/{questionId}/event": {
+      "post": {
+        "tags": [
+          "Question Action"
+        ],
+        "summary": "Create a question event",
+        "operationId": "CreateQuestionEvent",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventMessageSentInput"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventStatusChangedInput"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventFileAttachedInput"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventVoiceCalledInput"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventVideoCalledInput"
+                  },
+                  {
+                    "$ref": "#/components/schemas/QuestionEventReacted"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestionOutput"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/question/{id}/finish": {
+      "post": {
+        "tags": [
+          "Question Action"
+        ],
+        "summary": "Finish consultation",
+        "operationId": "FinishConsultation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FinishConsultationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/question/mobile/{id}/events": {
+      "get": {
+        "tags": [
+          "Question Action"
+        ],
+        "summary": "List question events for mobile devices",
+        "operationId": "ListMobileQuestionEvents",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/MobileQuestionEventMessageSent"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/question/{id}/pick": {
+      "post": {
+        "tags": [
+          "Question Action"
+        ],
+        "summary": "Take consultation",
+        "operationId": "PickQuestion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Question"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/question/{id}/accept": {
+      "post": {
+        "tags": [
+          "Question Action"
+        ],
+        "summary": "Accept question",
+        "operationId": "AcceptQuestion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/question/list/community": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "summary": "List community questions",
+        "operationId": "ListCommunityQuestions",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Question"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/question/list/mine": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "summary": "List my questions",
+        "operationId": "ListMyQuestions",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Question"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/question/suportdeveloper/seedmetadata": {
+      "post": {
+        "tags": [
+          "SupportDeveloper"
+        ],
+        "operationId": "SeedMetadata",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/agency-portal": {
+      "get": {
+        "tags": [
+          "Tranchy.Ask.API"
+        ],
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/file/question/{questionId}": {
+      "post": {
+        "tags": [
+          "UploadQuestionFile"
+        ],
+        "operationId": "UploadFileForQuestion",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileName",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadQuestionFileResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "CreateUser",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "GetCurrentUser",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "UpdateUser",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/user/oauth0/create": {
+      "post": {
+        "tags": [
+          "User",
+          "OAuth0 Integration"
+        ],
+        "operationId": "CreateUserAction",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserActionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/expertise": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "CreateUserExpertise",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserExpertiseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "GetUserExpertise",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetUserExpertiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "UpdateUserExpertise",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserExpertiseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/user/contact": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "GetCurrentUserContacts",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetUserExpertiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/Notifications": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "GetUserNotification",
+        "parameters": [
+          {
+            "name": "x-csrf",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetUserNotificationResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CategoryBrief": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryBriefSection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryBrief"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateEventMetadata": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "notifiedUserId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateQuestionEventFileAttachedInput": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateQuestionEventRequest"
+          }
+        ],
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileType": {
+            "type": "string",
+            "nullable": true
+          },
+          "blobLocation": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateQuestionEventMessageSentInput": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateQuestionEventRequest"
+          }
+        ],
+        "properties": {
+          "content": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateQuestionEventRequest": {
+        "required": [
+          "$type"
+        ],
+        "type": "object",
+        "properties": {
+          "$type": {
+            "type": "string"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/CreateEventMetadata"
+          }
+        },
+        "additionalProperties": false,
+        "discriminator": {
+          "propertyName": "$type",
+          "mapping": {
+            "MessageSent": "#/components/schemas/CreateQuestionEventMessageSentInput",
+            "StatusChanged": "#/components/schemas/CreateQuestionEventStatusChangedInput",
+            "FileAttached": "#/components/schemas/CreateQuestionEventFileAttachedInput",
+            "VoiceCalled": "#/components/schemas/CreateQuestionEventVoiceCalledInput",
+            "VideoCalled": "#/components/schemas/CreateQuestionEventVideoCalledInput",
+            "EventReacted": "#/components/schemas/QuestionEventReacted"
+          }
+        }
+      },
+      "CreateQuestionEventStatusChangedInput": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateQuestionEventRequest"
+          }
+        ],
+        "properties": {
+          "previousStatusChangedEventId": {
+            "type": "string",
+            "nullable": true
+          },
+          "questionStatus": {
+            "$ref": "#/components/schemas/QuestionStatus"
+          },
+          "statusMetaData": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateQuestionEventVideoCalledInput": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateQuestionEventRequest"
+          }
+        ],
+        "properties": {
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "blobLocation": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateQuestionEventVoiceCalledInput": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateQuestionEventRequest"
+          }
+        ],
+        "properties": {
+          "content": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateQuestionRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "supportLevel": {
+            "$ref": "#/components/schemas/SupportLevel"
+          },
+          "priorityId": {
+            "type": "string",
+            "nullable": true
+          },
+          "questionCategoryIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "communityShareAgreement": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateQuestionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateUserActionRequest": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateUserExpertiseRequest": {
+        "type": "object",
+        "properties": {
+          "expertiseType": {
+            "$ref": "#/components/schemas/ExpertiseType"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "metaData": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateUserRequest": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExpertiseType": {
+        "enum": [
+          "Education",
+          "Certification",
+          "WorkExperience"
+        ],
+        "type": "string"
+      },
+      "FinishConsultationRequest": {
+        "type": "object",
+        "properties": {
+          "conclusion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Gender": {
+        "enum": [
+          "Male",
+          "Female",
+          "Other"
+        ],
+        "type": "string"
+      },
+      "GetQuestionConfigurationsResponse": {
+        "type": "object",
+        "properties": {
+          "questionCategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionCategory"
+            },
+            "nullable": true
+          },
+          "questionPriorities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionPriority"
+            },
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetUserExpertiseResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "expertiseType": {
+            "$ref": "#/components/schemas/ExpertiseType"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "metaData": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetUserNotificationResponse": {
+        "type": "object",
+        "properties": {
+          "notificationType": {
+            "$ref": "#/components/schemas/NotificationType"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "isRead": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetUserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "headline": {
+            "type": "string",
+            "nullable": true
+          },
+          "profilePictureBlobLocation": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HighlightSectionsResponse": {
+        "type": "object",
+        "properties": {
+          "expertExclusive": {
+            "$ref": "#/components/schemas/QuestionBriefSection"
+          },
+          "recent": {
+            "$ref": "#/components/schemas/QuestionBriefSection"
+          },
+          "popularCategories": {
+            "$ref": "#/components/schemas/CategoryBriefSection"
+          },
+          "matchProfile": {
+            "$ref": "#/components/schemas/QuestionBriefSection"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MobileQuestionEvent": {
+        "required": [
+          "$type"
+        ],
+        "type": "object",
+        "properties": {
+          "$type": {
+            "type": "string"
+          },
+          "_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "additionalProperties": false,
+        "discriminator": {
+          "propertyName": "$type",
+          "mapping": {
+            "MessageSent": "#/components/schemas/MobileQuestionEventMessageSent"
+          }
+        }
+      },
+      "MobileQuestionEventMessageSent": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MobileQuestionEvent"
+          }
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NotificationType": {
+        "enum": [
+          "MessageReplied",
+          "QuestionAnswered"
+        ],
+        "type": "string"
+      },
+      "Question": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modifiedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "supportLevel": {
+            "$ref": "#/components/schemas/SupportLevel"
+          },
+          "status": {
+            "$ref": "#/components/schemas/QuestionStatus"
+          },
+          "createdByUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "priorityId": {
+            "type": "string",
+            "nullable": true
+          },
+          "questionCategoryIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "communityShareAgreement": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "consultant": {
+            "$ref": "#/components/schemas/QuestionConsultant"
+          },
+          "permissions": {
+            "$ref": "#/components/schemas/QuestionPermissions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuestionAction": {
+        "enum": [
+          "TakeConsultation",
+          "GoToConversation"
+        ],
+        "type": "string"
+      },
+      "QuestionBrief": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "price": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuestionBriefSection": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionBrief"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuestionCategory": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modifiedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "description": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuestionConsultant": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "conclusion": {
+            "type": "string",
+            "nullable": true
+          },
+          "attachmentIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuestionEventReacted": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateQuestionEventRequest"
+          }
+        ],
+        "additionalProperties": false
+      },
+      "QuestionOutput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuestionPermissions": {
+        "type": "object",
+        "properties": {
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionAction"
+            },
+            "nullable": true
+          },
+          "directChatTargetUserId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuestionPriority": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "description": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "rank": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "priorityMetaData": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          },
+          "duration": {
+            "$ref": "#/components/schemas/TimeSpan"
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modifiedOn": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuestionStatus": {
+        "enum": [
+          "New",
+          "BeingReviewed",
+          "Accepted",
+          "Cancelled",
+          "Payment",
+          "InProgress",
+          "Rejected",
+          "Resolved",
+          "Closed",
+          "Reported"
+        ],
+        "type": "string"
+      },
+      "SupportLevel": {
+        "enum": [
+          "Community",
+          "Expert",
+          "Agency"
+        ],
+        "type": "string"
+      },
+      "TimeSpan": {
+        "type": "object",
+        "properties": {
+          "ticks": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "days": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "hours": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "milliseconds": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "microseconds": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "nanoseconds": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "minutes": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "seconds": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalDays": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "totalHours": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "totalMilliseconds": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "totalMicroseconds": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "totalNanoseconds": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "totalMinutes": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "totalSeconds": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateUserExpertiseRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "expertiseType": {
+            "$ref": "#/components/schemas/ExpertiseType"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "metaData": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "headline": {
+            "type": "string",
+            "nullable": true
+          },
+          "gender": {
+            "$ref": "#/components/schemas/Gender"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UploadQuestionFileResponse": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "OAuth": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://dev-nkhte1hawwbq5ac2.us.auth0.com/authorize",
+            "tokenUrl": "https://dev-nkhte1hawwbq5ac2.us.auth0.com/oauth/token",
+            "scopes": {
+              "openid": "openid",
+              "profile": "profile"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth": [ ]
+    }
+  ]
+}

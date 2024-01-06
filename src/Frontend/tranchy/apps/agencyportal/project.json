@@ -25,7 +25,10 @@
           "apps/agencyportal/src/assets"
         ],
         "styles": [
-          "apps/agencyportal/src/styles.scss"
+          "apps/agencyportal/src/styles.scss",
+          "apps/agencyportal/src/assets/scss/icons.scss",
+          "apps/agencyportal/src/assets/scss/config/minimal/bootstrap.scss",
+          "apps/agencyportal/src/assets/scss/config/minimal/app.scss"
         ],
         "scripts": []
       },
@@ -34,8 +37,8 @@
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "1mb",
-              "maximumError": "2mb"
+              "maximumWarning": "3mb",
+              "maximumError": "4mb"
             },
             {
               "type": "anyComponentStyle",
