@@ -47,18 +47,18 @@
   <ng-template pTemplate="content">
     <form [formGroup]="userForm">
       <div class="field">
-        <label for="Username">{{ 'user-list.username' | translate }}</label>
+        <label for="Username" class="form-label">{{ 'userModule.userListPage.username' | translate }}</label>
         <input
           type="text"
           pInputText
           id="Username"
           formControlName="userName"
           required
-          autofocus
+          autofocus class="form-control"
         />
       </div>
       <div class="field">
-        <label for="Email">{{ 'user-list.email' | translate }}</label>
+        <label for="Email" class="form-label">{{ 'userModule.userListPage.email' | translate }}</label>
         <input
           type="text"
           pInputText
@@ -66,11 +66,12 @@
           formControlName="email"
           required
           autofocus
+          class="form-control"
         />
       </div>
 
       <div class="field">
-        <label for="FirstName">{{ 'user-list.firstname' | translate }}</label>
+        <label for="FirstName" class="form-label">{{ 'userModule.userListPage.firstname' | translate }}</label>
         <input
           type="text"
           pInputText
@@ -78,11 +79,12 @@
           formControlName="firstName"
           required
           autofocus
+          class="form-control"
         />
       </div>
 
       <div class="field">
-        <label for="LastName">{{ 'user-list.lastname' | translate }}</label>
+        <label for="LastName" class="form-label">{{ 'userModule.userListPage.lastname' | translate }}</label>
         <input
           type="text"
           pInputText
@@ -90,6 +92,7 @@
           formControlName="lastName"
           required
           autofocus
+          class="form-control"
         />
       </div>
     </form>

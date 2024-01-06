@@ -40,22 +40,22 @@ export class QuestionListComponent implements OnInit {
   question = signal<Partial<QuestionOutput>>({});
 
   questions = signal<Question[]>([]);
-  showUserDialog = false;
+  showQuestionDialog = false;
   user: Partial<GetUserResponse> = {};
 
   fb = inject(FormBuilder);
-  userForm: FormGroup;
+  questionForm: FormGroup;
 
   breadCrumbItems: Array<BreadcrumbItem> = [];
   /**
    *
    */
   constructor() {
-    this.userForm = this.fb.group({
-      userName: null,
-      email: null,
-      firstName: null,
-      lastName: null
+    this.questionForm = this.fb.group({
+      title: null,
+      status: null,
+      priority: null,
+      categories: null
     });
   }
 
@@ -64,15 +64,20 @@ export class QuestionListComponent implements OnInit {
     this.questions.set(questions);
   }
 
-  viewDetail(user: GetUserResponse) {
-    this.showUserDialog = true;
+  viewDetail(question: Question) {
+    this.showQuestionDialog = true;
 
-    const formData = (({ userName, email, firstName, lastName }) => ({ userName, email, firstName, lastName }))(user);
+    const formData = (({ priorityId, questionCategoryIds, status, supportLevel, title }) => ({ priorityId, questionCategoryIds, status, supportLevel, title }))(question);
 
-    this.userForm.setValue(formData);
+    this.questionForm.setValue({
+      title: formData.title,
+      status: formData.status,
+      priority: formData.priorityId,
+      categories: formData.questionCategoryIds?.join(', ')
+    });
   }
 
   hideDetail() {
-    this.showUserDialog = false;
+    this.showQuestionDialog = false;
   }
 }
