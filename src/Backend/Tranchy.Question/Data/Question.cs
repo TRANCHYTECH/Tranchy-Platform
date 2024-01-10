@@ -8,6 +8,7 @@ namespace Tranchy.Question.Data;
 public class Question : EntityBase, IOwnEntity
 {
     // todo: check if it's better to move this function to script deployment.
+    // todo: index for status?
     /// <summary>
     /// This function creates the unique index for field QueryIndex.
     /// </summary>
@@ -21,6 +22,7 @@ public class Question : EntityBase, IOwnEntity
                 o.Unique = true;
             })
             .CreateAsync(default).GetAwaiter().GetResult();
+
     public required string Title { get; set; }
     public required SupportLevel SupportLevel { get; set; }
     public QuestionStatus Status { get; private set; } = QuestionStatus.New;
@@ -33,7 +35,7 @@ public class Question : EntityBase, IOwnEntity
     [Ignore]
     public QuestionPermissions? Permissions { get; private set; }
 
-    public long QueryIndex { get; set; }
+    public long QueryIndex { get; private set; }
 
     public void Approve() => Status = QuestionStatus.Accepted;
 

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Tranchy.Question.Responses;
@@ -32,13 +33,27 @@ public record QuestionBrief()
     public string? Price { get; set; }
 
     [Required]
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedOn { get; set; }
 
     [Required]
-    public required string CreatedOn { get; set; }
+    public required string CreatedBy { get; set; }
 
     [Required]
     public bool Saved { get; set; }
+
+    [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
+    public long QueryIndex { get; internal set; }
+
+    public static QuestionBrief ToQuesionBrief(Data.Question q) => new()
+    {
+        ID = q.ID,
+        Title = q.Title,
+        Categories = q.QuestionCategoryIds,
+        CreatedOn = q.CreatedOn,
+        Saved = false,
+        Price = "vnd 500",
+        CreatedBy = q.CreatedByUserId
+    };
 }
 
 public class CategoryBrief

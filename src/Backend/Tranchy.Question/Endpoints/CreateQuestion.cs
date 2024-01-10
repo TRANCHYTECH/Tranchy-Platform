@@ -23,9 +23,10 @@ public class CreateQuestion : IEndpoint
         CancellationToken cancellation
     )
     {
-        var newQuestion = request.ToEntity(tenant.UserId);
+        var newQuestion = request.ToEntity(tenant.UserId, idGenerator.CreateId());
         await questionValidator.TryValidate(newQuestion, cancellation);
-        newQuestion.QueryIndex = idGenerator.CreateId();
+
+        // var queryIndex = await DB.NextSequentialNumberAsync<Data.Question>(cancellation);
         await dbContext.BeginTransaction(cancellation);
         await DB.InsertAsync(newQuestion, dbContext.Session, cancellation);
 

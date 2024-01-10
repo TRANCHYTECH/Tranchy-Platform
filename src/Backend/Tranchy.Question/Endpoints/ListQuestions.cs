@@ -1,5 +1,5 @@
+using System.ComponentModel.DataAnnotations;
 using MongoDB.Entities;
-using Tranchy.Common.Responses;
 using Tranchy.Common.Services;
 using Tranchy.Question.Data;
 
@@ -7,7 +7,8 @@ namespace Tranchy.Question.Endpoints;
 
 public class ListQuestions : IEndpoint
 {
-    public static async Task<Ok<Data.Question[]>> ListCommunityQuestions([FromServices] ITenant tenant,
+    public static async Task<Ok<Data.Question[]>> GetCommunityQuestions(
+        [FromServices] ITenant tenant,
         CancellationToken cancellation)
     {
         var acceptedStatuses = new[] { QuestionStatus.Accepted, QuestionStatus.InProgress, QuestionStatus.Resolved };
@@ -20,7 +21,8 @@ public class ListQuestions : IEndpoint
         return TypedResults.Ok(questions.ToArray());
     }
 
-    public static async Task<Ok<Data.Question[]>> ListMyQuestions([FromServices] ITenant tenant,
+    public static async Task<Ok<Data.Question[]>> GetMyQuestions(
+        [FromServices] ITenant tenant,
         CancellationToken cancellation)
     {
         var questions = await DB.Find<Data.Question>().Mine(tenant).ExecuteAsync(cancellation);
@@ -28,37 +30,56 @@ public class ListQuestions : IEndpoint
         return TypedResults.Ok(questions.ToArray());
     }
 
-    public static async Task<Ok<PagedSearchResponse<QuestionBrief>>> RecentQuestions([FromServices] ITenant tenant,
-        CancellationToken cancellation)
+    public static async Task<Ok<ICollection<QuestionBrief>>> GetRecentQuestions(
+        [FromServices] ITenant tenant,
+        [FromQuery] long? lastQueryIndex,
+        [FromQuery][Range(1, 100)] int pageSize = 10,
+        CancellationToken cancellation = default)
     {
-        // todo: how to solve when if getting latest, then question status changed, lead to wrong condition.
-        // var questions = await DB.Find<Data.Question>()
-        //     .Other(tenant)
-        //     .Sort(q => q.CreatedOn, Order.Descending)
-        //     .Limit(10)
-        //     .ExecuteAsync(cancellation);
+        var allowedStatuses = new[] { QuestionStatus.Accepted };
 
-        return TypedResults.Ok(new PagedSearchResponse<QuestionBrief>
+        var questionsQuery = DB.Find<Data.Question, QuestionBrief>()
+           .Match(q => allowedStatuses.Contains(q.Status))
+           .Other(tenant);
+
+        // Order by latest created on, so the usage of query index should be the same as Sort condition
+        if (lastQueryIndex is not null)
         {
-            Data = Array.Empty<QuestionBrief>(),
-            PageCount = 1,
-            TotalCount = 1
-        });
+            questionsQuery = questionsQuery.Match(q => q.QueryIndex < lastQueryIndex);
+        }
+
+        ICollection<QuestionBrief> questions = await questionsQuery
+            .Sort(q => q.CreatedOn, Order.Descending)
+            .Project(q => new QuestionBrief
+            {
+                ID = q.ID,
+                Title = q.Title,
+                Categories = q.QuestionCategoryIds,
+                CreatedOn = q.CreatedOn,
+                Saved = false,
+                Price = "vnd 500",
+                CreatedBy = q.CreatedByUserId,
+                QueryIndex = q.QueryIndex
+            })
+            .Limit(pageSize)
+            .ExecuteAsync(cancellation);
+
+        return TypedResults.Ok(questions);
     }
 
     public static void Register(RouteGroupBuilder routeGroupBuilder)
     {
-        routeGroupBuilder.MapGet("/list/community", ListCommunityQuestions)
+        routeGroupBuilder.MapGet("/sections/community", GetCommunityQuestions)
             .WithName("ListCommunityQuestions")
             .WithSummary("List community questions")
             .WithTags("Questions")
             .WithOpenApi();
-        routeGroupBuilder.MapGet("/list/mine", ListMyQuestions)
+        routeGroupBuilder.MapGet("/sections/mine", GetMyQuestions)
             .WithName("ListMyQuestions")
             .WithSummary("List my questions")
             .WithTags("Questions")
             .WithOpenApi();
-        routeGroupBuilder.MapGet("/list/recent", ListMyQuestions)
+        routeGroupBuilder.MapGet("/sections/recent", GetRecentQuestions)
             .WithName("GetRecentQuestions")
             .WithSummary("Get recent questions")
             .WithTags("Questions")

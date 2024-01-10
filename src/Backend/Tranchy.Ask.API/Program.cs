@@ -175,7 +175,7 @@ app.UseForwardedHeaders();
 app.UseCors(agencyPortalSpaPolicy);
 
 // Could take advantage of IHostingStartup
-app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
+app.MapGroup("/questions").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
 app.MapGroup("/questions").MapEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint().DisableAntiforgery();
 app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
 app.MapGroup("/user").MapEndpoints<UserModule>().RequireAuthorization();

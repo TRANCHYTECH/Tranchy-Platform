@@ -33,10 +33,10 @@ public class GetUserHighlights : IEndpoint
                 ID = q.ID,
                 Title = q.Title,
                 Categories = q.QuestionCategoryIds,
-                CreatedAt = q.CreatedOn,
+                CreatedOn = q.CreatedOn,
                 Saved = false,
                 Price = "vnd 500",
-                CreatedOn = q.CreatedByUserId
+                CreatedBy = q.CreatedByUserId
             })
             .Limit(5)
             .ExecuteAsync(cancellation);
@@ -50,8 +50,8 @@ public class GetUserHighlights : IEndpoint
                 Title = faker.Lorem.Sentence(50),
                 Categories = faker.Commerce.Categories(3),
                 Price = "VND 500.00",
-                CreatedAt = DateTime.UtcNow,
-                CreatedOn = "643b93cb5c7266dc77f91f29"
+                CreatedOn = DateTime.UtcNow,
+                CreatedBy = "643b93cb5c7266dc77f91f29"
             });
         }
 
@@ -63,8 +63,8 @@ public class GetUserHighlights : IEndpoint
                 Title = faker.Lorem.Sentence(50),
                 Categories = faker.Commerce.Categories(3),
                 Price = "VND 500.00",
-                CreatedAt = DateTime.UtcNow,
-                CreatedOn = "643b93cb5c7266dc77f91f29"
+                CreatedOn = DateTime.UtcNow,
+                CreatedBy = "643b93cb5c7266dc77f91f29"
             });
         }
 
