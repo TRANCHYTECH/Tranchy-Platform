@@ -239,6 +239,11 @@
           "Microsoft.Extensions.Dependencyinjection.Abstractions": "2.1.0"
         }
       },
+      "IdGen": {
+        "type": "Transitive",
+        "resolved": "3.0.3",
+        "contentHash": "gS1rrJlmmaMiWcwEB8xq9X4driH2ojNMnU++PzTCq+FGlGxOWtCZDvQCPC1qtfY2/zQOcMgOW4dXposk9kMonw=="
+      },
       "Mapster.Core": {
         "type": "Transitive",
         "resolved": "1.2.1",
@@ -1231,6 +1236,7 @@
           "Bogus": "[35.2.0, )",
           "FluentValidation": "[11.8.1, )",
           "FluentValidation.AspNetCore": "[11.3.0, )",
+          "IdGen": "[3.0.3, )",
           "Mapster": "[7.4.0, )",
           "MassTransit": "[8.1.2, )",
           "MassTransit.Azure.ServiceBus.Core": "[8.1.2, )",

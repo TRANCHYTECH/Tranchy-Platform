@@ -1,4 +1,7 @@
 using Bogus;
+using MongoDB.Entities;
+using Tranchy.Common.Services;
+using Tranchy.Question.Data;
 
 namespace Tranchy.Question.Endpoints;
 
@@ -11,33 +14,44 @@ public class GetUserHighlights : IEndpoint
             .WithTags("Aggregates")
             .WithOpenApi();
 
-    private static Ok<GetUserHighlightsResponse> HighlightSectionsFunction()
+    private static async Task<Ok<GetUserHighlightsResponse>> HighlightSectionsFunction(
+        [FromServices] ITenant tenant,
+        CancellationToken cancellation)
     {
         var faker = new Faker("vi");
 
         var response = new GetUserHighlightsResponse();
 
-        for (int i = 0 ; i  <= 4; i ++)
-        {
-            response.ExpertExclusive.Data.Add(new QuestionBrief
+        // Expert exclusive.
+        // todo: by others, and status
+        var query = await DB.Find<Data.Question, QuestionBrief>()
+            // .Other(tenant)
+            .Match(q => q.SupportLevel == SupportLevel.Expert && q.Status == QuestionStatus.New)
+            .Sort(q => q.CreatedOn, Order.Descending)
+            .Project(q => new QuestionBrief
             {
-                Title = faker.Lorem.Sentence(50),
-                Categories = faker.Commerce.Categories(3),
-                Price = "VND 300.000",
-                CreatedBy = "643b93cb5c7266dc77f91f29",
-                CreatedAt = DateTime.UtcNow
-            });
-        }
+                ID = q.ID,
+                Title = q.Title,
+                Categories = q.QuestionCategoryIds,
+                CreatedAt = q.CreatedOn,
+                Saved = false,
+                Price = "vnd 500",
+                CreatedOn = q.CreatedByUserId
+            })
+            .Limit(5)
+            .ExecuteAsync(cancellation);
 
+        response.ExpertExclusive.Data = query;
         for (int i = 0; i <= 4; i++)
         {
             response.Recent.Data.Add(new QuestionBrief
             {
+                ID = $"{i}",
                 Title = faker.Lorem.Sentence(50),
                 Categories = faker.Commerce.Categories(3),
                 Price = "VND 500.00",
                 CreatedAt = DateTime.UtcNow,
-                CreatedBy = "643b93cb5c7266dc77f91f29"
+                CreatedOn = "643b93cb5c7266dc77f91f29"
             });
         }
 
@@ -45,11 +59,12 @@ public class GetUserHighlights : IEndpoint
         {
             response.MatchProfile.Data.Add(new QuestionBrief
             {
+                ID = $"{i}",
                 Title = faker.Lorem.Sentence(50),
                 Categories = faker.Commerce.Categories(3),
                 Price = "VND 500.00",
                 CreatedAt = DateTime.UtcNow,
-                CreatedBy = "643b93cb5c7266dc77f91f29"
+                CreatedOn = "643b93cb5c7266dc77f91f29"
             });
         }
 

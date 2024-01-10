@@ -9,6 +9,7 @@
 	
 	<ItemGroup>
 	  <PackageReference Include="Bogus" />
+	  <PackageReference Include="IdGen" />
 	  <PackageReference Include="MassTransit" />
 	  <PackageReference Include="MassTransit.Azure.ServiceBus.Core" />
 	  <PackageReference Include="MassTransit.MongoDb" />

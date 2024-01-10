@@ -86,7 +86,6 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
   const insets = useSafeAreaInsets()
   const { navigation } = _props
   // const $bottomContainerInsets = useSafeAreaInsetsStyle(["bottom"])
-  console.tron.debug("rerender because of toggle loading from new question")
   const { metadataStore, uiStore } = useStores()
 
   const form = useForm<QuestionFormModel>({
@@ -150,7 +149,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
         })
 
         if (uploadResponse.kind !== "ok") {
-          Alert.alert(`Không thể upload file ${file?.name}`)
+          Alert.alert(`Không thể upload file ${file.name}`)
         }
       }
 

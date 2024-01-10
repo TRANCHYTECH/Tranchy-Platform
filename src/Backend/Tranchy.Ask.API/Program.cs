@@ -12,6 +12,7 @@ using Azure.Monitor.OpenTelemetry.AspNetCore;
 // using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Tranchy.File;
 using System.Text.Json.Serialization;
+using IdGen.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Tranchy.Common.Constants;
@@ -167,7 +168,7 @@ builder.Services.AddHealthChecks()
 
 builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.Configure<JsonOptions>(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-
+builder.Services.AddIdGen(3);
 
 var app = builder.Build();
 app.UseForwardedHeaders();

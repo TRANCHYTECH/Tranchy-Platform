@@ -20,6 +20,9 @@ public record GetUserHighlightsResponse
 public record QuestionBrief()
 {
     [Required]
+    public required string ID { get; set; }
+
+    [Required]
     public required string Title { get; set; }
 
     [Required]
@@ -32,7 +35,7 @@ public record QuestionBrief()
     public DateTime CreatedAt { get; set; }
 
     [Required]
-    public required string CreatedBy { get; set; }
+    public required string CreatedOn { get; set; }
 
     [Required]
     public bool Saved { get; set; }
@@ -47,5 +50,5 @@ public class CategoryBrief
 public record Section<T> where T : class
 {
     [SwaggerSchema(Nullable = false)]
-    public ICollection<T> Data { get; } = new List<T>();
+    public ICollection<T> Data { get; set; } = new List<T>();
 }

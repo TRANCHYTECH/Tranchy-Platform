@@ -3,6 +3,7 @@ import React from "react"
 import { BlockItemBase, BlockType } from "./BlockItem"
 import { colors, spacing } from "app/theme"
 import { Button } from "react-native-paper"
+import { NavigationContext } from "@react-navigation/core"
 
 export type SeeMoreItemData = {
   route: string
@@ -18,9 +19,18 @@ export class SeeMoreItem implements BlockItemBase {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const renderSeeMoreItem = (input: SeeMoreItem) => {
+  const navigation = React.useContext(NavigationContext)
+  // const { navigation } = useNavigation<MainTabScreenProps<"WalkAround">>()
+
   return (
     <View style={$container}>
-      <Button icon="chevron-right" mode="text" contentStyle={$moreContent} labelStyle={$moreText}>
+      <Button
+        icon="chevron-right"
+        mode="text"
+        contentStyle={$moreContent}
+        labelStyle={$moreText}
+        onPress={() => navigation?.navigate("QuestionList")}
+      >
         Xem thêm
       </Button>
     </View>

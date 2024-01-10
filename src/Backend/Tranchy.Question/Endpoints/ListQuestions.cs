@@ -1,4 +1,5 @@
 using MongoDB.Entities;
+using Tranchy.Common.Responses;
 using Tranchy.Common.Services;
 using Tranchy.Question.Data;
 
@@ -27,6 +28,24 @@ public class ListQuestions : IEndpoint
         return TypedResults.Ok(questions.ToArray());
     }
 
+    public static async Task<Ok<PagedSearchResponse<QuestionBrief>>> RecentQuestions([FromServices] ITenant tenant,
+        CancellationToken cancellation)
+    {
+        // todo: how to solve when if getting latest, then question status changed, lead to wrong condition.
+        // var questions = await DB.Find<Data.Question>()
+        //     .Other(tenant)
+        //     .Sort(q => q.CreatedOn, Order.Descending)
+        //     .Limit(10)
+        //     .ExecuteAsync(cancellation);
+
+        return TypedResults.Ok(new PagedSearchResponse<QuestionBrief>
+        {
+            Data = Array.Empty<QuestionBrief>(),
+            PageCount = 1,
+            TotalCount = 1
+        });
+    }
+
     public static void Register(RouteGroupBuilder routeGroupBuilder)
     {
         routeGroupBuilder.MapGet("/list/community", ListCommunityQuestions)
@@ -37,6 +56,11 @@ public class ListQuestions : IEndpoint
         routeGroupBuilder.MapGet("/list/mine", ListMyQuestions)
             .WithName("ListMyQuestions")
             .WithSummary("List my questions")
+            .WithTags("Questions")
+            .WithOpenApi();
+        routeGroupBuilder.MapGet("/list/recent", ListMyQuestions)
+            .WithName("GetRecentQuestions")
+            .WithSummary("Get recent questions")
             .WithTags("Questions")
             .WithOpenApi();
     }

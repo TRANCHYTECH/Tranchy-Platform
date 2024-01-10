@@ -1,6 +1,7 @@
 using Tranchy.Common.Data;
 using Tranchy.Common.Services;
 
+// ReSharper disable once CheckNamespace
 namespace MongoDB.Entities;
 
 public static class QueryExtensions

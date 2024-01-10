@@ -3,7 +3,7 @@ using MongoDB.Entities;
 using MassTransit.MongoDbIntegration;
 using Tranchy.Question.Consumers;
 using Tranchy.Common.Services;
-
+using IdGen;
 namespace Tranchy.Question.Endpoints;
 
 public class CreateQuestion : IEndpoint
@@ -19,15 +19,14 @@ public class CreateQuestion : IEndpoint
         [FromServices] IPublishEndpoint publishEndpoint,
         [FromServices] ILogger<CreateQuestion> logger,
         [FromServices] ITenant tenant,
+        [FromServices] IdGenerator idGenerator,
         CancellationToken cancellation
     )
     {
         var newQuestion = request.ToEntity(tenant.UserId);
-
         await questionValidator.TryValidate(newQuestion, cancellation);
-
+        newQuestion.QueryIndex = idGenerator.CreateId();
         await dbContext.BeginTransaction(cancellation);
-
         await DB.InsertAsync(newQuestion, dbContext.Session, cancellation);
 
         await publishEndpoint.Publish(new QuestionCreated { Id = newQuestion.ID! }, cancellation);
