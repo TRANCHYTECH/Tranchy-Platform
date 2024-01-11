@@ -1,5 +1,3 @@
-using MongoDB.Entities;
-
 namespace Tranchy.Question.Data;
 
 [Collection("QuestionPriority")]

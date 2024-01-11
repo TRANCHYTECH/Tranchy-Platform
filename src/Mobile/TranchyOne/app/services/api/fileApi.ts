@@ -37,9 +37,10 @@ export const uploadFile = async (
   } catch (error) {
     // todo(tranchy): log for insight.
     if (__DEV__) {
-      console.tron.error("unknown error during uploading file", error)
+      console.tron.debug("unknown error during uploading file " + JSON.stringify(error))
     }
 
+    // Alert.alert(`Không thể upload file. error:` + JSON.stringify(error))
     return { kind: "unknown", temporary: true }
   }
 }

@@ -12,6 +12,7 @@ using Azure.Monitor.OpenTelemetry.AspNetCore;
 // using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Tranchy.File;
 using System.Text.Json.Serialization;
+using IdGen.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Tranchy.Common.Constants;
@@ -167,22 +168,30 @@ builder.Services.AddHealthChecks()
 
 builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.Configure<JsonOptions>(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-
+builder.Services.AddIdGen(3);
 
 var app = builder.Build();
 app.UseForwardedHeaders();
 app.UseCors(agencyPortalSpaPolicy);
 
-// Could take advantage of IHostingStartup
-app.MapGroup("/question").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
-app.MapGroup("/questions").MapEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint().DisableAntiforgery();
-app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
-app.MapGroup("/user").MapEndpoints<UserModule>().RequireAuthorization();
+var mobileGroupBuilder = app.MapGroup("/mobile");
+mobileGroupBuilder.MapGroup("questions").MapMobileEndpoints<QuestionModule>().RequireAuthorization();
+mobileGroupBuilder.MapMobileEndpoints<FileModule>().RequireAuthorization();
+mobileGroupBuilder.MapGroup("users").MapMobileEndpoints<UserModule>().RequireAuthorization();
+
+var backofficeGroupBuilder = app.MapGroup("/management");
+backofficeGroupBuilder.MapGroup("questions").MapBackOfficeEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
+backofficeGroupBuilder.MapGroup("files").MapBackOfficeEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint();
+backofficeGroupBuilder.MapGroup("users").MapBackOfficeEndpoints<UserModule>().RequireAuthorization().AsBffApiEndpoint();
+backofficeGroupBuilder.MapGroup("payment").MapBackOfficeEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
+
+var integrationGroupBuilder = app.MapGroup("/integration");
+integrationGroupBuilder.MapIntegrationEndpoints<UserModule>().RequireAuthorization();
 
 // Redirect after login
-app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, permanent: true));
-
-FileModule.Configure(app);
+app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, permanent: true))
+    .WithSummary("Redirect after user login via portal")
+    .WithOpenApi();
 
 app.UseTranchySwagger(appSettings);
 app.UseTranchyExceptionHandler();

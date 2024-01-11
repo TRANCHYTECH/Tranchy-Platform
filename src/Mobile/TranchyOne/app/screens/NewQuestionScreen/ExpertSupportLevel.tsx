@@ -26,6 +26,9 @@ const ExpertSupportLevel = () => {
       // todo: handle deleting files
       // todo: style for document picker btn in case there are any files
       result.assets.forEach((result) => {
+        if (__DEV__) {
+          console.tron.debug("selected uri: " + result.uri)
+        }
         append({ name: result.name, uri: result.uri, size: result.size ?? 0 })
       })
     }

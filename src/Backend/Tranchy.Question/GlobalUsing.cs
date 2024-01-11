@@ -11,3 +11,4 @@ global using Tranchy.Question.Requests;
 global using Tranchy.Question.Responses;
 global using Microsoft.AspNetCore.Builder;
 global using Mapster;
+global using MongoDB.Entities;

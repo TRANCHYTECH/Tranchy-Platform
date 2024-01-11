@@ -2,7 +2,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using MongoDB.Entities;
+
 namespace Tranchy.Question.Hubs;
 
 [Authorize]

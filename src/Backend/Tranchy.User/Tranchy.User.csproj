@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mapster" />
-    <PackageReference Include="MassTransit.MongoDb" />
+    <PackageReference Include="Mapster"/>
+    <PackageReference Include="MassTransit.MongoDb"/>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tranchy.Common\Tranchy.Common.csproj" />
+    <ProjectReference Include="..\Tranchy.Common\Tranchy.Common.csproj"/>
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,3 @@
-using MongoDB.Entities;
 using Tranchy.Common.Data;
 
 namespace Tranchy.User.Data;
@@ -9,7 +8,7 @@ public class User : EntityBase
     // todo: check if it's better to move this function to script deployment.
 
     /// <summary>
-    /// This function creates the unique index for field Email.
+    ///     This function creates the unique index for field Email.
     /// </summary>
     static User() =>
         DB.Index<User>()
@@ -20,7 +19,7 @@ public class User : EntityBase
                 o.Background = false;
                 o.Unique = true;
             })
-            .CreateAsync(default).GetAwaiter().GetResult();
+            .CreateAsync(CancellationToken.None).GetAwaiter().GetResult();
 
     public string? ProviderId { get; set; }
     public required string UserName { get; set; }

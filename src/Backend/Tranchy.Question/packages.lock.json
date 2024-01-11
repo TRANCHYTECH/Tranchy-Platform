@@ -24,6 +24,12 @@
           "FluentValidation.DependencyInjectionExtensions": "11.5.1"
         }
       },
+      "IdGen": {
+        "type": "Direct",
+        "requested": "[3.0.3, )",
+        "resolved": "3.0.3",
+        "contentHash": "gS1rrJlmmaMiWcwEB8xq9X4driH2ojNMnU++PzTCq+FGlGxOWtCZDvQCPC1qtfY2/zQOcMgOW4dXposk9kMonw=="
+      },
       "Mapster": {
         "type": "Direct",
         "requested": "[7.4.0, )",

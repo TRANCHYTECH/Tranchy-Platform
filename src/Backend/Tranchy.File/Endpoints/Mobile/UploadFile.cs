@@ -1,15 +1,24 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Options;
+using Tranchy.Common.Constants;
 using Tranchy.Common.Events;
 using Tranchy.Common.Services;
 using Tranchy.File.Responses;
 
-namespace Tranchy.File.Endpoints;
+namespace Tranchy.File.Endpoints.Mobile;
 
 public class UploadFile : IEndpoint
 {
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
+        .MapPost("/questions/{questionId}/files", Upload)
+        .WithName("UploadQuestionFile")
+        .WithSummary("Upload file for question")
+        .WithTags(Tags.Mobile)
+        .WithOpenApi();
+
     //todo: how to encrypt questionId, so that this api could verify easily like test session of test master.
+    // use shortid lib id protection lib .net
     private static async Task<Results<Ok<UploadFileResponse>, BadRequest>> Upload(
         [FromServices] ITenant tenant,
         [FromServices] IOptions<AppSettings> appSettings,
@@ -27,32 +36,29 @@ public class UploadFile : IEndpoint
             return TypedResults.BadRequest();
         }
 
-        var container = new Uri(appSettings.Value.File.UnsafeQuestionFileContainerUri).GetBlobContainerClient(cancellation);
+        var container =
+            new Uri(appSettings.Value.File.UnsafeQuestionFileContainerUri).GetBlobContainerClient(cancellation);
 
         //todo: move to deployment bicep.
         await container.CreateIfNotExistsAsync(cancellationToken: cancellation);
 
         string finalizedFileName = fileName ?? file.FileName;
         var blob = container.GetBlobClient($"{questionId}/{finalizedFileName}");
-        await blob.UploadAsync(fileContent, new BlobUploadOptions
-        {
-            Metadata = new Dictionary<string, string>(StringComparer.Ordinal)
+        await blob.UploadAsync(fileContent,
+            new BlobUploadOptions
             {
-                { "TranchyQuestionId", questionId },
-                { "TranchyFileName", finalizedFileName },
-                { "TranchyCreatedBy", tenant.UserId }
-            },
-            HttpHeaders = new BlobHttpHeaders
-            {
-                ContentType = file.ContentType
-            },
-        }, cancellation);
+                Metadata = new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    { "TranchyQuestionId", questionId },
+                    { "TranchyFileName", finalizedFileName },
+                    { "TranchyCreatedBy", tenant.UserId }
+                },
+                HttpHeaders = new BlobHttpHeaders { ContentType = file.ContentType }
+            }, cancellation);
 
-        publishEndpoint.Publish(new QuestionFileUploaded { QuestionId = questionId, FilePath = blob.Uri.AbsolutePath }, cancellation).Forget();
+        publishEndpoint.Publish(new QuestionFileUploaded { QuestionId = questionId, FilePath = blob.Uri.AbsolutePath },
+            cancellation).Forget();
 
         return TypedResults.Ok(new UploadFileResponse(questionId));
     }
-
-    public static void Register(RouteGroupBuilder routeGroupBuilder)
-        => routeGroupBuilder.MapPost("/{questionId}/files", Upload).WithName("UploadQuestionFile");
 }

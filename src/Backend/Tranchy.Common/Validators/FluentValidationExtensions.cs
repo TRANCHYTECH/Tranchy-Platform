@@ -1,7 +1,8 @@
+using FluentValidation;
 using FluentValidation.Results;
 using Tranchy.Common.Exceptions;
 
-namespace FluentValidation;
+namespace Tranchy.Common.Validators;
 
 public static class FluentValidationExtensions
 {
@@ -19,11 +20,13 @@ public static class FluentValidationExtensions
 
     private static void CheckResultThrowException(ValidationResult result)
     {
-        if (!result.IsValid)
+        if (result.IsValid)
         {
-            var ex = new ValidationException(result.Errors);
-            throw new TranchyAteChillyException(ex.Message, ex);
+            return;
         }
+
+        var ex = new ValidationException(result.Errors);
+        throw new TranchyAteChillyException(ex.Message, ex);
     }
 
     public static void AddFailureWithErrorCode<T>(this ValidationContext<T> context, string errorCode)

@@ -59,6 +59,17 @@
           "Duende.AccessTokenManagement.OpenIdConnect": "2.1.0"
         }
       },
+      "IdGen.DependencyInjection": {
+        "type": "Direct",
+        "requested": "[3.0.0, )",
+        "resolved": "3.0.0",
+        "contentHash": "Neb4xmPel7e0NrZAzgzYuxZfs++G9yWxvUALE+HUoYNDdbeiUt4b+r5THBtI2wFspW0Y7oUvUbcGhNdPnXdpzw==",
+        "dependencies": {
+          "IdGen": "3.0.1",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Options": "6.0.0"
+        }
+      },
       "MassTransit": {
         "type": "Direct",
         "requested": "[8.1.2, )",
@@ -1264,6 +1275,7 @@
           "MassTransit": "[8.1.2, )",
           "MassTransit.Azure.ServiceBus.Core": "[8.1.2, )",
           "MassTransit.MongoDb": "[8.1.2, )",
+          "Microsoft.AspNetCore.OpenApi": "[8.0.0, )",
           "MongoDB.Entities": "[23.0.0, )",
           "SixLabors.ImageSharp.Web": "[3.1.0, )",
           "SixLabors.ImageSharp.Web.Providers.Azure": "[3.1.0, )",
@@ -1275,6 +1287,7 @@
         "dependencies": {
           "MassTransit": "[8.1.2, )",
           "MassTransit.EntityFrameworkCore": "[8.1.2, )",
+          "Microsoft.AspNetCore.OpenApi": "[8.0.0, )",
           "Microsoft.EntityFrameworkCore.SqlServer": "[8.0.0, )",
           "Tranchy.Common": "[1.0.0, )"
         }
@@ -1285,6 +1298,7 @@
           "Bogus": "[35.2.0, )",
           "FluentValidation": "[11.8.1, )",
           "FluentValidation.AspNetCore": "[11.3.0, )",
+          "IdGen": "[3.0.3, )",
           "Mapster": "[7.4.0, )",
           "MassTransit": "[8.1.2, )",
           "MassTransit.Azure.ServiceBus.Core": "[8.1.2, )",
@@ -1301,6 +1315,7 @@
         "dependencies": {
           "Mapster": "[7.4.0, )",
           "MassTransit.MongoDb": "[8.1.2, )",
+          "Microsoft.AspNetCore.OpenApi": "[8.0.0, )",
           "Tranchy.Common": "[1.0.0, )"
         }
       },
@@ -1335,6 +1350,12 @@
           "FluentValidation": "11.5.1",
           "FluentValidation.DependencyInjectionExtensions": "11.5.1"
         }
+      },
+      "IdGen": {
+        "type": "CentralTransitive",
+        "requested": "[3.0.3, )",
+        "resolved": "3.0.3",
+        "contentHash": "gS1rrJlmmaMiWcwEB8xq9X4driH2ojNMnU++PzTCq+FGlGxOWtCZDvQCPC1qtfY2/zQOcMgOW4dXposk9kMonw=="
       },
       "Mapster": {
         "type": "CentralTransitive",

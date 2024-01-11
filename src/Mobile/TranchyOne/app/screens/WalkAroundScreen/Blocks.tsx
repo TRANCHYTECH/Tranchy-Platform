@@ -10,9 +10,9 @@ import { SeeMoreItem, renderSeeMoreItem } from "./SeeMoreItem"
 import { QuestionSectionsItem, renderQuestionSectionsItem } from "./QuestionSectionsItem"
 import { renderPopularCategoriesItem } from "./PopularCategoriesItem"
 import { arrayOrEmptyArray } from "app/utils/arrayHelper"
-import { HighlightSectionsResponse } from "app/services/ask-api/models"
+import { GetUserHighlightsResponse } from "app/services/ask-api/models"
 
-export const buildBlocks = (highlights: HighlightSectionsResponse) => {
+export const buildBlocks = (highlights: GetUserHighlightsResponse) => {
   const orderedList: BlockItemType[] = []
   orderedList.push(
     new QuestionSectionsItem([
@@ -36,7 +36,7 @@ export const buildBlocks = (highlights: HighlightSectionsResponse) => {
         (q, index, source) => new QuestionItem(q, getPosition(index, source.length)),
       ),
     )
-    orderedList.push(new SeeMoreItem({ route: "questions" }))
+    orderedList.push(new SeeMoreItem({ route: "QuestionList" }))
   }
 
   const popularCategoriesData = arrayOrEmptyArray(highlights.popularCategories.data)

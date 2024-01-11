@@ -13,9 +13,14 @@
 	  <PackageReference Include="MassTransit" />
 	  <PackageReference Include="MassTransit.Azure.ServiceBus.Core" />
 	  <PackageReference Include="MassTransit.MongoDb" />
+	  <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
 	  <PackageReference Include="MongoDB.Entities" />
 	  <PackageReference Include="SixLabors.ImageSharp.Web" />
 	  <PackageReference Include="SixLabors.ImageSharp.Web.Providers.Azure" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Endpoints\BackOffice\" />
 	</ItemGroup>
   
 </Project>

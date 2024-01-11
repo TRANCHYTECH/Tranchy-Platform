@@ -1,0 +1,34 @@
+using Tranchy.Common.Constants;
+using Tranchy.Common.Services;
+
+namespace Tranchy.Question.Endpoints.Mobile;
+
+public class FinishConsultation : IEndpoint
+{
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
+        .MapPost("/{questionId}:resolve", Finish)
+        .WithName("FinishConsultation")
+        .WithTags(Tags.Mobile)
+        .WithSummary("Finish consultation")
+        .WithOpenApi();
+
+    private static async Task<Results<Ok, BadRequest>> Finish(
+        [FromRoute] string questionId,
+        [FromBody] FinishConsultationRequest request,
+        [FromServices] ITenant tenant,
+        CancellationToken cancellation)
+    {
+        var question = await DB.Find<Data.Question>()
+            .Match(q => q.ID == questionId && q.Consultant != null && q.Consultant.UserId == tenant.UserId)
+            .ExecuteSingleAsync(cancellation);
+        if (question is null)
+        {
+            return TypedResults.BadRequest();
+        }
+
+        question.FinishConsultation(tenant.UserId, request.Conclusion);
+        await DB.SaveAsync(question, cancellation: cancellation);
+
+        return TypedResults.Ok();
+    }
+}

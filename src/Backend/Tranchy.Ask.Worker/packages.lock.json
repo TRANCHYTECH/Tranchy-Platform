@@ -1221,6 +1221,7 @@
         "dependencies": {
           "MassTransit": "[8.1.2, )",
           "MassTransit.EntityFrameworkCore": "[8.1.2, )",
+          "Microsoft.AspNetCore.OpenApi": "[8.0.0, )",
           "Microsoft.EntityFrameworkCore.SqlServer": "[8.0.0, )",
           "Tranchy.Common": "[1.0.0, )"
         }
@@ -1231,6 +1232,7 @@
           "Bogus": "[35.2.0, )",
           "FluentValidation": "[11.8.1, )",
           "FluentValidation.AspNetCore": "[11.3.0, )",
+          "IdGen": "[3.0.3, )",
           "Mapster": "[7.4.0, )",
           "MassTransit": "[8.1.2, )",
           "MassTransit.Azure.ServiceBus.Core": "[8.1.2, )",
@@ -1247,6 +1249,7 @@
         "dependencies": {
           "Mapster": "[7.4.0, )",
           "MassTransit.MongoDb": "[8.1.2, )",
+          "Microsoft.AspNetCore.OpenApi": "[8.0.0, )",
           "Tranchy.Common": "[1.0.0, )"
         }
       },
@@ -1286,6 +1289,12 @@
           "FluentValidation": "11.5.1",
           "FluentValidation.DependencyInjectionExtensions": "11.5.1"
         }
+      },
+      "IdGen": {
+        "type": "CentralTransitive",
+        "requested": "[3.0.3, )",
+        "resolved": "3.0.3",
+        "contentHash": "gS1rrJlmmaMiWcwEB8xq9X4driH2ojNMnU++PzTCq+FGlGxOWtCZDvQCPC1qtfY2/zQOcMgOW4dXposk9kMonw=="
       },
       "Mapster": {
         "type": "CentralTransitive",
