@@ -21,11 +21,11 @@ internal static class QuestionEventMapper
     {
         TypeAdapterConfig<CreateQuestionEventRequest, Data.QuestionEvent>
         .NewConfig()
-        .Include<CreateQuestionEventMessageSentInput, Data.QuestionEventMessageSent>()
-        .Include<CreateQuestionEventStatusChangedInput, Data.QuestionEventStatusChanged>()
-        .Include<CreateQuestionEventFileAttachedInput, Data.QuestionEventFileAttached>()
-        .Include<CreateQuestionEventVoiceCalledInput, Data.QuestionEventVoiceCalled>()
-        .Include<CreateQuestionEventVideoCalledInput, Data.QuestionEventVideoCalled>()
+        .Include<CreateQuestionEventMessageSentRequest, Data.QuestionEventMessageSent>()
+        .Include<CreateQuestionEventStatusChangedRequest, Data.QuestionEventStatusChanged>()
+        .Include<CreateQuestionEventFileAttachedRequest, Data.QuestionEventFileAttached>()
+        .Include<CreateQuestionEventVoiceCalledRequest, Data.QuestionEventVoiceCalled>()
+        .Include<CreateQuestionEventVideoCalledRequest, Data.QuestionEventVideoCalled>()
         .Map(dest => dest.QuestionId, _ => MapContext.Current!.Parameters["questionId"])
         .Map(dest => dest.CreatedByUserId, _ => MapContext.Current!.Parameters[nameof(ITenant.UserId)]);
 

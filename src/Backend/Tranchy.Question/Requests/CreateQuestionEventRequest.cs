@@ -5,54 +5,53 @@ namespace Tranchy.Question.Requests;
 
 [SwaggerDiscriminator("$type")]
 
-[JsonDerivedType(typeof(CreateQuestionEventMessageSentInput), nameof(QuestionEventType.MessageSent))]
-[SwaggerSubType(typeof(CreateQuestionEventMessageSentInput), DiscriminatorValue = nameof(QuestionEventType.MessageSent))]
+[JsonDerivedType(typeof(CreateQuestionEventMessageSentRequest), nameof(QuestionEventType.MessageSent))]
+[SwaggerSubType(typeof(CreateQuestionEventMessageSentRequest), DiscriminatorValue = nameof(QuestionEventType.MessageSent))]
 
-[JsonDerivedType(typeof(CreateQuestionEventStatusChangedInput), nameof(QuestionEventType.StatusChanged))]
-[SwaggerSubType(typeof(CreateQuestionEventStatusChangedInput), DiscriminatorValue = nameof(QuestionEventType.StatusChanged))]
+[JsonDerivedType(typeof(CreateQuestionEventStatusChangedRequest), nameof(QuestionEventType.StatusChanged))]
+[SwaggerSubType(typeof(CreateQuestionEventStatusChangedRequest), DiscriminatorValue = nameof(QuestionEventType.StatusChanged))]
 
-[JsonDerivedType(typeof(CreateQuestionEventFileAttachedInput), nameof(QuestionEventType.FileAttached))]
-[SwaggerSubType(typeof(CreateQuestionEventFileAttachedInput), DiscriminatorValue = nameof(QuestionEventType.FileAttached))]
+[JsonDerivedType(typeof(CreateQuestionEventFileAttachedRequest), nameof(QuestionEventType.FileAttached))]
+[SwaggerSubType(typeof(CreateQuestionEventFileAttachedRequest), DiscriminatorValue = nameof(QuestionEventType.FileAttached))]
 
-[JsonDerivedType(typeof(CreateQuestionEventVoiceCalledInput), nameof(QuestionEventType.VoiceCalled))]
-[SwaggerSubType(typeof(CreateQuestionEventVoiceCalledInput), DiscriminatorValue = nameof(QuestionEventType.VoiceCalled))]
+[JsonDerivedType(typeof(CreateQuestionEventVoiceCalledRequest), nameof(QuestionEventType.VoiceCalled))]
+[SwaggerSubType(typeof(CreateQuestionEventVoiceCalledRequest), DiscriminatorValue = nameof(QuestionEventType.VoiceCalled))]
 
-[JsonDerivedType(typeof(CreateQuestionEventVideoCalledInput), nameof(QuestionEventType.VideoCalled))]
-[SwaggerSubType(typeof(CreateQuestionEventVideoCalledInput), DiscriminatorValue = nameof(QuestionEventType.VideoCalled))]
+[JsonDerivedType(typeof(CreateQuestionEventVideoCalledRequest), nameof(QuestionEventType.VideoCalled))]
+[SwaggerSubType(typeof(CreateQuestionEventVideoCalledRequest), DiscriminatorValue = nameof(QuestionEventType.VideoCalled))]
 
-[JsonDerivedType(typeof(QuestionEventReacted), nameof(QuestionEventType.EventReacted))]
-[SwaggerSubType(typeof(QuestionEventReacted), DiscriminatorValue = nameof(QuestionEventType.EventReacted))]
+[JsonDerivedType(typeof(CreateQuestionEventReactedRequest), nameof(QuestionEventType.EventReacted))]
+[SwaggerSubType(typeof(CreateQuestionEventReactedRequest), DiscriminatorValue = nameof(QuestionEventType.EventReacted))]
 public class CreateQuestionEventRequest
 {
     public required CreateEventMetadata Metadata { get; set; }
 }
 
-public class CreateQuestionEventMessageSentInput : CreateQuestionEventRequest
+public class CreateQuestionEventMessageSentRequest : CreateQuestionEventRequest
 {
     public required string Content { get; set; }
 }
 
-
-public class CreateQuestionEventStatusChangedInput : CreateQuestionEventRequest
+public class CreateQuestionEventStatusChangedRequest : CreateQuestionEventRequest
 {
     public required string PreviousStatusChangedEventId { get; set; }
     public QuestionStatus QuestionStatus { get; set; }
     public object? StatusMetaData { get; set; }
 }
 
-public class CreateQuestionEventFileAttachedInput : CreateQuestionEventRequest
+public class CreateQuestionEventFileAttachedRequest : CreateQuestionEventRequest
 {
     public required string FileName { get; set; }
     public required string FileType { get; set; }
     public required string BlobLocation { get; set; }
 }
 
-public class CreateQuestionEventVoiceCalledInput : CreateQuestionEventRequest
+public class CreateQuestionEventVoiceCalledRequest : CreateQuestionEventRequest
 {
     public required string Content { get; set; }
 }
 
-public class CreateQuestionEventVideoCalledInput : CreateQuestionEventRequest
+public class CreateQuestionEventVideoCalledRequest : CreateQuestionEventRequest
 {
     public DateTime StartedAt { get; set; }
     public DateTime EndedAt { get; set; }
@@ -60,7 +59,7 @@ public class CreateQuestionEventVideoCalledInput : CreateQuestionEventRequest
 }
 
 // TBD
-public class QuestionEventReacted : CreateQuestionEventRequest
+public class CreateQuestionEventReactedRequest : CreateQuestionEventRequest
 {
 }
 
