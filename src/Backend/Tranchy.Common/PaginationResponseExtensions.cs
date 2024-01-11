@@ -1,7 +1,6 @@
 using Tranchy.Common.Data;
-using Tranchy.Common.Requests;
 
-namespace Tranchy.Common.Responses;
+namespace Tranchy.Common;
 
 public static class PaginationResponseExtensions
 {

@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Tranchy.Common.Requests;
+namespace Tranchy.Common;
 
 public class PaginationParameters
 {

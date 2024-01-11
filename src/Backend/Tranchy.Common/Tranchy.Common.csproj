@@ -12,7 +12,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Attributes\" />
 	  <Folder Include="Services\" />
 	</ItemGroup>
 	

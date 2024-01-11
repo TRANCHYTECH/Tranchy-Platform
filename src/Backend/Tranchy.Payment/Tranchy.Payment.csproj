@@ -22,9 +22,4 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Activities\" />
-	  <Folder Include="Endpoints\" />
-	</ItemGroup>
 </Project>

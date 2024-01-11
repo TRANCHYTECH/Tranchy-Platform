@@ -2,18 +2,18 @@ namespace Tranchy.Common;
 
 public class AppSettings
 {
-    public AuthenticationSettings Authentication { get; set; } = default!;
+    public AuthenticationSettings Authentication { get; init; } = default!;
 
-    public string AgencyPortalSpaUrl { get; set; } = default!;
+    public string AgencyPortalSpaUrl { get; init; } = default!;
 
-    public DatabaseOptions QuestionDb { get; set; } = default!;
-    public DatabaseOptions UserDb { get; set; } = default!;
+    public DatabaseOptions QuestionDb { get; init; } = default!;
+    public DatabaseOptions UserDb { get; init; } = default!;
 
-    public string ServiceBusConnectionString { get; set; } = default!;
+    public string ServiceBusConnectionString { get; init; } = default!;
 
-    public AzureMonitorSettings AzureMonitor { get; set; } = default!;
+    public AzureMonitorSettings AzureMonitor { get; init; } = default!;
 
-    public FileSettings File { get; set; } = default!;
+    public FileSettings File { get; init; } = default!;
 }
 
 public class AzureMonitorSettings

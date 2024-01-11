@@ -1,6 +1,4 @@
 using Tranchy.Common.Constants;
-using Tranchy.Common.Requests;
-using Tranchy.Common.Responses;
 using Tranchy.Common.Services;
 using Tranchy.Question.Data;
 

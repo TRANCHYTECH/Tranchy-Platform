@@ -20,7 +20,7 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
                 o.Background = false;
                 o.Unique = true;
             })
-            .CreateAsync(default).GetAwaiter().GetResult();
+            .CreateAsync(CancellationToken.None).GetAwaiter().GetResult();
 
     public required string Title { get; set; }
     public required SupportLevel SupportLevel { get; set; }

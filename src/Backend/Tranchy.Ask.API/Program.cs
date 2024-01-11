@@ -193,8 +193,6 @@ app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSetting
     .WithSummary("Redirect after user login via portal")
     .WithOpenApi();
 
-FileModule.Configure(app);
-
 app.UseTranchySwagger(appSettings);
 app.UseTranchyExceptionHandler();
 

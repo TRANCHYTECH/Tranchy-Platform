@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Tranchy.Common.Responses;
+namespace Tranchy.Common;
 
 public class PaginationResponse<T>
 {

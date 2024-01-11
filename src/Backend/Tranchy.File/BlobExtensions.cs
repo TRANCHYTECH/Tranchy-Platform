@@ -1,6 +1,7 @@
 using Azure.Identity;
+using Azure.Storage.Blobs;
 
-namespace Azure.Storage.Blobs;
+namespace Tranchy.File;
 
 public static class BlobExtensions
 {

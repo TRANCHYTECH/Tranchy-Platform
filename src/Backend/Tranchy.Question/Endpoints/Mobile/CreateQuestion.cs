@@ -2,6 +2,7 @@ using IdGen;
 using MassTransit.MongoDbIntegration;
 using Tranchy.Common.Constants;
 using Tranchy.Common.Services;
+using Tranchy.Common.Validators;
 using Tranchy.Question.Consumers;
 using Tranchy.Question.Events;
 
