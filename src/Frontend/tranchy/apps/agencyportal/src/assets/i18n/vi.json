@@ -25,11 +25,13 @@
   },
   "questionModule": {
     "questionListPage": {
-      "title": "Title",
+      "title": "Manage questions",
+      "question-title": "Title",
       "status": "Status",
       "priority": "Priority",
-      "questionCategories": "Categories",
-      "createdOn": "Creation date"
+      "question-categories": "Categories",
+      "created-on": "Creation date",
+      "details": "Details"
     }
   },
   "dashboardModule": {
