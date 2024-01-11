@@ -1,15 +1,15 @@
 using Mapster;
+using Tranchy.User.Data;
 using Tranchy.User.Responses;
 
 namespace Tranchy.User.Mappers;
 
 internal static class UserNotificationMapper
 {
-    internal static GetUserNotificationResponse FromEntity(this Data.UserNotification data) => data.BuildAdapter().AdaptToType<GetUserNotificationResponse>();
+    static UserNotificationMapper() =>
+        TypeAdapterConfig<UserNotification, GetUserNotificationResponse>
+            .NewConfig();
 
-    static UserNotificationMapper()
-    {
-        TypeAdapterConfig<Data.UserNotification, GetUserNotificationResponse>
-        .NewConfig();
-    }
+    internal static GetUserNotificationResponse FromEntity(this UserNotification data) =>
+        data.BuildAdapter().AdaptToType<GetUserNotificationResponse>();
 }

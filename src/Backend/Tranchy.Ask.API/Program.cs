@@ -174,14 +174,24 @@ var app = builder.Build();
 app.UseForwardedHeaders();
 app.UseCors(agencyPortalSpaPolicy);
 
-// Could take advantage of IHostingStartup
-app.MapGroup("/questions").MapEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
-app.MapGroup("/questions").MapEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint().DisableAntiforgery();
-app.MapGroup("/payment").MapEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
-app.MapGroup("/user").MapEndpoints<UserModule>().RequireAuthorization();
+var mobileGroupBuilder = app.MapGroup("/mobile");
+mobileGroupBuilder.MapGroup("questions").MapMobileEndpoints<QuestionModule>().RequireAuthorization();
+mobileGroupBuilder.MapMobileEndpoints<FileModule>().RequireAuthorization();
+mobileGroupBuilder.MapGroup("users").MapMobileEndpoints<UserModule>().RequireAuthorization();
+
+var backofficeGroupBuilder = app.MapGroup("/management");
+backofficeGroupBuilder.MapGroup("questions").MapBackOfficeEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
+backofficeGroupBuilder.MapGroup("files").MapBackOfficeEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint();
+backofficeGroupBuilder.MapGroup("users").MapBackOfficeEndpoints<UserModule>().RequireAuthorization().AsBffApiEndpoint();
+backofficeGroupBuilder.MapGroup("payment").MapBackOfficeEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
+
+var integrationGroupBuilder = app.MapGroup("/integration");
+integrationGroupBuilder.MapIntegrationEndpoints<UserModule>().RequireAuthorization();
 
 // Redirect after login
-app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, permanent: true));
+app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, permanent: true))
+    .WithSummary("Redirect after user login via portal")
+    .WithOpenApi();
 
 FileModule.Configure(app);
 

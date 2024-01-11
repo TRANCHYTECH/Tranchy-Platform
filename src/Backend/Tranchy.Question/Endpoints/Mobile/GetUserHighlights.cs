@@ -1,18 +1,18 @@
 using Bogus;
-using MongoDB.Entities;
+using Tranchy.Common.Constants;
 using Tranchy.Common.Services;
 using Tranchy.Question.Data;
 
-namespace Tranchy.Question.Endpoints;
+namespace Tranchy.Question.Endpoints.Mobile;
 
 public class GetUserHighlights : IEndpoint
 {
-    public static void Register(RouteGroupBuilder routeGroupBuilder) =>
-        routeGroupBuilder.MapGet("/aggregate/user-highlights", HighlightSectionsFunction)
-            .WithName("GetUserHighlights")
-            .WithSummary("Get highlights for user")
-            .WithTags("Aggregates")
-            .WithOpenApi();
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
+        .MapGet("/aggregates/user-highlights", HighlightSectionsFunction)
+        .WithName("GetUserHighlights")
+        .WithSummary("Get highlights for user")
+        .WithTags(Tags.Mobile)
+        .WithOpenApi();
 
     private static async Task<Ok<GetUserHighlightsResponse>> HighlightSectionsFunction(
         [FromServices] ITenant tenant,
@@ -70,10 +70,7 @@ public class GetUserHighlights : IEndpoint
 
         for (int i = 0; i <= 4; i++)
         {
-            response.PopularCategories.Data.Add(new CategoryBrief
-            {
-                Title = faker.Commerce.Categories(1).First()
-            });
+            response.PopularCategories.Data.Add(new CategoryBrief { Title = faker.Commerce.Categories(1).First() });
         }
 
         return TypedResults.Ok(response);

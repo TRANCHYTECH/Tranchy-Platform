@@ -1,19 +1,28 @@
-using MongoDB.Entities;
+using Tranchy.Common.Constants;
 using Tranchy.Common.Services;
 using Tranchy.Question.Data;
 
-namespace Tranchy.Question.Endpoints;
+namespace Tranchy.Question.Endpoints.Mobile;
 
-public class GetMetadata : IEndpoint
+public class GetConfigurations : IEndpoint
 {
-    public static async Task<Ok<GetQuestionConfigurationsResponse>> GetQuestionConfigurations([FromServices] ITenant tenant, CancellationToken cancellationToken)
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
+        .MapGet("/configurations", GetUserConfigurations)
+        .WithName("GetUserConfigurations")
+        .WithSummary("Get configurations for user")
+        .WithTags(Tags.Mobile)
+        .WithOpenApi();
+
+    private static async Task<Ok<GetQuestionConfigurationsResponse>> GetUserConfigurations(
+        [FromServices] ITenant tenant,
+        CancellationToken cancellationToken)
     {
         var response = new GetQuestionConfigurationsResponse
         {
             UserId = tenant.UserId,
             Email = tenant.Email,
             QuestionCategories = await GetQuestionCategories(cancellationToken),
-            QuestionPriorities = await GetQuestionPriorities(cancellationToken),
+            QuestionPriorities = await GetQuestionPriorities(cancellationToken)
         };
 
         return TypedResults.Ok(response);
@@ -21,12 +30,7 @@ public class GetMetadata : IEndpoint
 
     private static async Task<List<QuestionCategoryResponse>> GetQuestionCategories(CancellationToken cancellationToken)
         => await DB.Find<QuestionCategory, QuestionCategoryResponse>().Match(_ => true)
-            .Project(c => new QuestionCategoryResponse
-            {
-                Key = c.Key,
-                Title = c.Title,
-                Description = c.Description
-            })
+            .Project(c => new QuestionCategoryResponse { Key = c.Key, Title = c.Title, Description = c.Description })
             .ExecuteAsync(cancellationToken);
 
     private static async Task<List<QuestionPriorityResponse>> GetQuestionPriorities(CancellationToken cancellationToken)
@@ -39,6 +43,4 @@ public class GetMetadata : IEndpoint
             PriorityMetaData = c.PriorityMetaData,
             Rank = c.Rank
         }).ManyAsync(_ => true, cancellationToken);
-
-    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder.MapGet("/configurations", GetQuestionConfigurations).WithName("GetQuestionConfigurations");
 }

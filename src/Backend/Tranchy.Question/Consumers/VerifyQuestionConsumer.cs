@@ -1,4 +1,3 @@
-using MongoDB.Entities;
 using Tranchy.Question.Commands;
 
 namespace Tranchy.Question.Consumers;

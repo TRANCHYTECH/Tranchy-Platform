@@ -1,4 +1,3 @@
-using MongoDB.Entities;
 using Tranchy.Common.Data;
 
 namespace Tranchy.User.Data;

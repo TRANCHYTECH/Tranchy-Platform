@@ -5,3 +5,5 @@ global using Microsoft.AspNetCore.Http.HttpResults;
 global using FluentValidation;
 global using Microsoft.AspNetCore.Builder;
 global using Tranchy.Common;
+global using MongoDB.Entities;
+global using Tranchy.Common.Constants;

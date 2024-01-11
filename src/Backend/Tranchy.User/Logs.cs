@@ -17,15 +17,15 @@ public static partial class Logs
     public static partial void UpdatedUser(this ILogger logger, string id, string username);
 
     [LoggerMessage(
-    EventId = 0,
-    Level = LogLevel.Information,
-    Message = "Created user expertise with id=`{id}` for user {userId}")]
+        EventId = 0,
+        Level = LogLevel.Information,
+        Message = "Created user expertise with id=`{id}` for user {userId}")]
     public static partial void CreatedUserExpertise(this ILogger logger, string id, string userId);
 
     [LoggerMessage(
-    EventId = 0,
-    Level = LogLevel.Information,
-    Message = "Updated user expertise with id=`{id}` for user {userId}")]
+        EventId = 0,
+        Level = LogLevel.Information,
+        Message = "Updated user expertise with id=`{id}` for user {userId}")]
     public static partial void UpdatedUserExpertise(this ILogger logger, string id, string userId);
 
     [LoggerMessage(
@@ -36,8 +36,8 @@ public static partial class Logs
 
 
     [LoggerMessage(
-    EventId = 1100,
-    Level = LogLevel.Error,
-    Message = "Could not create user. Duplidated User Id or Email")]
+        EventId = 1100,
+        Level = LogLevel.Error,
+        Message = "Could not create user. Duplidated User Id or Email")]
     public static partial void DuplicatedUser(this ILogger logger, Exception exception);
 }

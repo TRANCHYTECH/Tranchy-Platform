@@ -1,20 +1,24 @@
 using MassTransit;
 using MassTransit.MongoDbIntegration;
 using Microsoft.Extensions.Logging;
-using MongoDB.Entities;
 using Tranchy.Common.Services;
-using Tranchy.User.Data;
 using Tranchy.User.Events;
 using Tranchy.User.Mappers;
 using Tranchy.User.Queries;
+using Tranchy.User.Requests;
 
-namespace Tranchy.User.Endpoints;
-
-public record UpdateUserRequest(string FirstName, string LastName, string Headline, Gender Gender);
+namespace Tranchy.User.Endpoints.Mobile;
 
 public class UpdateUser : IEndpoint
 {
-    public static async Task<IResult> Update(
+    public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
+        .MapPut(Constants.CurrentUserEndpoint, Update)
+        .WithName("UpdateUser")
+        .WithSummary("Update current user")
+        .WithTags(Tags.Mobile)
+        .WithOpenApi();
+
+    private static async Task<IResult> Update(
         [FromBody] UpdateUserRequest request,
         [FromServices] MongoDbContext dbContext,
         [FromServices] IPublishEndpoint publishEndpoint,
@@ -38,11 +42,6 @@ public class UpdateUser : IEndpoint
 
         logger.UpdatedUser(user.ID!, user.UserName!);
 
-        return TypedResults.Ok<string>(new(user.ID!));
-    }
-
-    public static void Register(RouteGroupBuilder routeGroupBuilder)
-    {
-        routeGroupBuilder.MapPut(string.Empty, Update).WithName("UpdateUser").WithTags("User");
+        return TypedResults.Ok(new string(user.ID!));
     }
 }

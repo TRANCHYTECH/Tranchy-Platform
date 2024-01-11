@@ -1,11 +1,10 @@
-using MongoDB.Entities;
 using Tranchy.Common.Data;
 using Tranchy.Common.Exceptions;
 
 namespace Tranchy.Question.Data;
 
 [Collection("Question")]
-public class Question : EntityBase, IOwnEntity
+public class Question : EntityBase, IOwnEntity, IQueryIndex
 {
     // todo: check if it's better to move this function to script deployment.
     // todo: index for status?
@@ -35,7 +34,7 @@ public class Question : EntityBase, IOwnEntity
     [Ignore]
     public QuestionPermissions? Permissions { get; private set; }
 
-    public long QueryIndex { get; private set; }
+    public long QueryIndex { get; init; }
 
     public void Approve() => Status = QuestionStatus.Accepted;
 

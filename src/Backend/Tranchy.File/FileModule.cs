@@ -1,8 +1,6 @@
 ﻿using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver.Core.Configuration;
 using SixLabors.ImageSharp.Web.Caching.Azure;
-using SixLabors.ImageSharp.Web.Commands;
 using SixLabors.ImageSharp.Web.DependencyInjection;
 using SixLabors.ImageSharp.Web.Providers.Azure;
 

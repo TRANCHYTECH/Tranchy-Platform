@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using Swashbuckle.AspNetCore.Annotations;
+using Tranchy.Common.Data;
 
 namespace Tranchy.Question.Responses;
 
@@ -17,43 +17,23 @@ public record GetUserHighlightsResponse
     public Section<QuestionBrief> MatchProfile { get; } = new();
 }
 
-[method: SetsRequiredMembers]
-public record QuestionBrief()
+public class QuestionBrief : IQueryIndex
 {
-    [Required]
-    public required string ID { get; set; }
+    [Required] public required string ID { get; set; }
 
-    [Required]
-    public required string Title { get; set; }
+    [Required] public required string Title { get; set; }
 
-    [Required]
-    public required IEnumerable<string> Categories { get; set; }
+    [Required] public required IEnumerable<string> Categories { get; set; }
 
-    [Required]
-    public string? Price { get; set; }
+    [Required] public string? Price { get; set; }
 
-    [Required]
-    public DateTime CreatedOn { get; set; }
+    [Required] public DateTime CreatedOn { get; set; }
 
-    [Required]
-    public required string CreatedBy { get; set; }
+    [Required] public required string CreatedBy { get; set; }
 
-    [Required]
-    public bool Saved { get; set; }
+    [Required] public bool Saved { get; set; }
 
-    [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
-    public long QueryIndex { get; internal set; }
-
-    public static QuestionBrief ToQuesionBrief(Data.Question q) => new()
-    {
-        ID = q.ID,
-        Title = q.Title,
-        Categories = q.QuestionCategoryIds,
-        CreatedOn = q.CreatedOn,
-        Saved = false,
-        Price = "vnd 500",
-        CreatedBy = q.CreatedByUserId
-    };
+    [JsonIgnore] public long QueryIndex { get; init; }
 }
 
 public class CategoryBrief
@@ -64,6 +44,5 @@ public class CategoryBrief
 [SwaggerSchema(Required = ["data"])]
 public record Section<T> where T : class
 {
-    [SwaggerSchema(Nullable = false)]
-    public ICollection<T> Data { get; set; } = new List<T>();
+    [SwaggerSchema(Nullable = false)] public ICollection<T> Data { get; set; } = new List<T>();
 }

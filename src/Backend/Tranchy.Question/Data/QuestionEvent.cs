@@ -1,5 +1,4 @@
 using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Entities;
 using Tranchy.Common.Data;
 
 namespace Tranchy.Question.Data;
