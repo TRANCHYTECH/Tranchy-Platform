@@ -6,6 +6,7 @@
  */
 import type { QuestionBrief } from "./questionBrief"
 
-export interface QuestionBriefSection {
-  data: QuestionBrief[]
+export interface QuestionBriefPaginationResponse {
+  data?: QuestionBrief[] | null
+  nextQueryIndex?: number | null
 }

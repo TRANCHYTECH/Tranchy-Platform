@@ -2,6 +2,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Tranchy.Common;
+using Tranchy.Common.Constants;
 
 namespace Tranchy.Ask.API;
 
@@ -9,13 +10,17 @@ public class DefaultHeaderFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        operation.Parameters.Add(new OpenApiParameter
+        if (operation.Tags.Any(t => string.Equals(t.Name, Tags.BackOffice, StringComparison.Ordinal)) &&
+            operation.Parameters.All(p => !string.Equals(p.Name, "x-csrf", StringComparison.Ordinal)))
         {
-            Name = "x-csrf",
-            In = ParameterLocation.Header,
-            Required = true,
-            Example = new OpenApiString("1")
-        });
+            operation.Parameters.Add(new OpenApiParameter
+            {
+                Name = "x-csrf",
+                In = ParameterLocation.Header,
+                Required = true,
+                Example = new OpenApiString("1")
+            });
+        }
     }
 }
 

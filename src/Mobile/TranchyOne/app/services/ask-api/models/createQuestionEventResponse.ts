@@ -5,7 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export enum QuestionAction {
-  TakeConsultation = "TakeConsultation",
-  GoToConversation = "GoToConversation",
+export interface CreateQuestionEventResponse {
+  eventId?: string | null
 }
