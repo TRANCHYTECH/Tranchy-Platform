@@ -436,8 +436,8 @@
       },
       "Microsoft.Bcl.AsyncInterfaces": {
         "type": "Transitive",
-        "resolved": "1.1.1",
-        "contentHash": "yuvf07qFWFqtK3P/MRkEKLhn5r2UbSpVueRziSqj0yJQIKFwG1pq9mOayK3zE5qZCTs0CbrwL9M6R8VwqyGy2w=="
+        "resolved": "5.0.0",
+        "contentHash": "W8DPQjkMScOMTtJbPwmPyj9c3zYSFGawDW3jwlBOOsnY+EzZFLgNQ/UMkK35JmkNOVPdCyPr2Tw7Vv9N+KA3ZQ=="
       },
       "Microsoft.CSharp": {
         "type": "Transitive",
@@ -891,6 +891,36 @@
         "resolved": "1.1.0",
         "contentHash": "aOZA3BWfz9RXjpzt0sRJJMjAscAUm3Hoa4UWAfceV9UTYxgwZ1lZt5nO2myFf+/jetYQo4uTP7zS8sJY67BBxg=="
       },
+      "Microsoft.OData.Core": {
+        "type": "Transitive",
+        "resolved": "7.16.0",
+        "contentHash": "6cskc9e8en3dPTHnMiGoDu9vYQ83OWg7klmwxE0ImI623XW8HTNGk7+Khm/Ell8SPGVxWfcju84owyURFUjhkA==",
+        "dependencies": {
+          "Microsoft.Bcl.AsyncInterfaces": "5.0.0",
+          "Microsoft.OData.Edm": "[7.16.0]",
+          "Microsoft.Spatial": "[7.16.0]"
+        }
+      },
+      "Microsoft.OData.Edm": {
+        "type": "Transitive",
+        "resolved": "7.16.0",
+        "contentHash": "nFjO3E+8nFaNOoE/Ne3I5MWmrzQ43W5MeSEwGprKtqw3mn+2ZADxMMmJ2uFWdm2oxDo7CNQNzmb8xQmQP5Aitg==",
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "4.6.0",
+          "System.Text.Encodings.Web": "4.7.2",
+          "System.Text.Json": "4.6.0"
+        }
+      },
+      "Microsoft.OData.ModelBuilder": {
+        "type": "Transitive",
+        "resolved": "1.0.9",
+        "contentHash": "Qt2AVqW4cFiICWiGdY08c7q2pHdFJTc0jth7oO9T6xb+0SZSHFloScqTMdMNv8M9Wfc16wyWqxYQyVyWiODWDg==",
+        "dependencies": {
+          "Microsoft.OData.Edm": "[7.9.0, 8.0.0)",
+          "Microsoft.Spatial": "[7.9.0, 8.0.0)",
+          "System.ComponentModel.Annotations": "4.6.0"
+        }
+      },
       "Microsoft.OpenApi": {
         "type": "Transitive",
         "resolved": "1.4.3",
@@ -903,6 +933,11 @@
         "dependencies": {
           "Newtonsoft.Json": "10.0.3"
         }
+      },
+      "Microsoft.Spatial": {
+        "type": "Transitive",
+        "resolved": "7.16.0",
+        "contentHash": "6MvTlVTYovRA9gXNfYdWq3TLwOaJuWGRG07A1U7LIteQYaHQZ1MejRU93/Hb0RLGXZq5cMZF8a9ZP3UXAshAtw=="
       },
       "Microsoft.SqlServer.Server": {
         "type": "Transitive",
@@ -922,6 +957,15 @@
         "type": "Transitive",
         "resolved": "6.0.0",
         "contentHash": "hqTM5628jSsQiv+HGpiq3WKBl2c8v1KZfby2J6Pr7pEPlK9waPdgEO6b8A/+/xn/yZ9ulv8HuqK71ONy2tg67A=="
+      },
+      "MongoDB.AspNetCore.OData": {
+        "type": "Transitive",
+        "resolved": "1.0.0-rc1",
+        "contentHash": "kqEkXKIoSmwtt3mEwYQZcTidjA0izAf2BWvxVVthVc5vcMSDd/Wl6HfkglWSlZ/TweboKDPpKngrBfv3zQK0eQ==",
+        "dependencies": {
+          "Microsoft.AspNetCore.OData": "8.1.2",
+          "MongoDB.Driver": "2.21.0"
+        }
       },
       "MongoDB.Bson": {
         "type": "Transitive",
@@ -1009,6 +1053,11 @@
         "type": "Transitive",
         "resolved": "4.5.1",
         "contentHash": "Rw7ijyl1qqRS0YQD/WycNst8hUUMgrMH4FCn1nNm27M4VxchZ1js3fVjQaANHO5f3sN4isvP4a+Met9Y4YomAg=="
+      },
+      "System.ComponentModel.Annotations": {
+        "type": "Transitive",
+        "resolved": "4.6.0",
+        "contentHash": "pOd+UhZ3X8xfwKDlgAzowUJNjp8VYVmOHZm++vCd0kq1HZ0zK3mNo2yRXjYgv7Ik/Xi43fmJfND2PLEsQSALCg=="
       },
       "System.Configuration.ConfigurationManager": {
         "type": "Transitive",
@@ -1237,8 +1286,10 @@
           "MassTransit": "[8.1.2, )",
           "MassTransit.Azure.ServiceBus.Core": "[8.1.2, )",
           "MassTransit.MongoDb": "[8.1.2, )",
+          "Microsoft.AspNetCore.OData": "[8.2.3, )",
           "Microsoft.AspNetCore.OpenApi": "[8.0.0, )",
           "Microsoft.Azure.SignalR": "[1.22.0, )",
+          "MongoDB.AspNetCore.OData": "[1.0.0-rc1, )",
           "MongoDB.Entities": "[23.0.0, )",
           "Swashbuckle.AspNetCore.Annotations": "[6.5.0, )",
           "Tranchy.Common": "[1.0.0, )"
@@ -1319,6 +1370,18 @@
         "dependencies": {
           "MassTransit": "8.1.2",
           "Microsoft.EntityFrameworkCore.Relational": "7.0.11"
+        }
+      },
+      "Microsoft.AspNetCore.OData": {
+        "type": "CentralTransitive",
+        "requested": "[8.2.3, )",
+        "resolved": "8.2.3",
+        "contentHash": "Yso0uznce29LwgAdaWE+j9B3vp3g9yoVfsKuO3KzRAJcsjVtuxoi+OKLlBVWXpBp2fki2+6WASo1xolL+3MClw==",
+        "dependencies": {
+          "Microsoft.OData.Core": "[7.16.0, 8.0.0)",
+          "Microsoft.OData.Edm": "[7.16.0, 8.0.0)",
+          "Microsoft.OData.ModelBuilder": "[1.0.9, 2.0.0)",
+          "Microsoft.Spatial": "[7.16.0, 8.0.0)"
         }
       },
       "Microsoft.AspNetCore.OpenApi": {

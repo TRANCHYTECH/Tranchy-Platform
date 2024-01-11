@@ -8,6 +8,7 @@
     <PackageReference Include="Duende.BFF" />
     <PackageReference Include="IdGen.DependencyInjection" />
     <PackageReference Include="MassTransit.Azure.ServiceBus.Core" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Microsoft.Extensions.Azure" />
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" />

@@ -14,8 +14,11 @@ using Tranchy.File;
 using System.Text.Json.Serialization;
 using IdGen.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.OData.ModelBuilder;
 using Tranchy.Common.Constants;
+using Tranchy.Question.Data;
 using Tranchy.User;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
@@ -170,6 +173,16 @@ builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.C
 builder.Services.Configure<JsonOptions>(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddIdGen(3);
 
+var modelBuilder = new ODataConventionModelBuilder();
+modelBuilder.EntitySet<Question>("Questions");
+builder.Services.AddControllers().AddOData(
+    options =>
+    {
+        options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(100).AddRouteComponents(
+            "odata",
+            modelBuilder.GetEdmModel());
+    });
+
 var app = builder.Build();
 app.UseForwardedHeaders();
 app.UseCors(agencyPortalSpaPolicy);
@@ -199,6 +212,7 @@ app.UseTranchyExceptionHandler();
 app.UseAuthentication();
 app.UseBff();
 app.UseAuthorization();
+app.MapControllers();
 app.MapBffManagementEndpoints();
 app.MapTranchyHealthChecks();
 
