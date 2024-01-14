@@ -39,6 +39,7 @@
     "lord-icon-element": "^4.1.2",
     "lottie-web": "^5.12.2",
     "ngx-cookie-service": "^17.0.1",
+    "ngx-spinner": "^16.0.2",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
     "primeng": "^17.0.0",

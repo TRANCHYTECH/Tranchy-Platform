@@ -5,9 +5,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })],
   exports: [CommonModule, RouterModule, TranslateModule, ButtonModule, ToastModule]
 })
 export class SharedModule {

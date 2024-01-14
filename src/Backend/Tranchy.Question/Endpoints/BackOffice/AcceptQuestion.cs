@@ -1,4 +1,6 @@
+using MassTransit.MongoDbIntegration;
 using Tranchy.Common.Constants;
+using Tranchy.Question.Events;
 
 namespace Tranchy.Question.Endpoints.BackOffice;
 
@@ -11,8 +13,11 @@ public class AcceptQuestion : IEndpoint
         .WithTags(Tags.BackOffice)
         .WithOpenApi();
 
-    private static async Task<Results<NoContent, BadRequest>> Accept(
+    private static async Task<Results<Ok, BadRequest>> Accept(
         [FromRoute] string questionId,
+        [FromBody] AcceptQuestionRequest request,
+        [FromServices] MongoDbContext dbContext,
+        [FromServices] IPublishEndpoint publishEndpoint,
         CancellationToken cancellationToken)
     {
         var question = await DB.Find<Data.Question>()
@@ -23,9 +28,13 @@ public class AcceptQuestion : IEndpoint
             return TypedResults.BadRequest();
         }
 
-        question.Approve();
+        var oldStatus = question.Status;
+        question.Approve(request?.Comment);
+        await dbContext.BeginTransaction(cancellationToken);
         await DB.SaveAsync(question, cancellation: cancellationToken);
+        await publishEndpoint.Publish(new QuestionStatusChanged { Id = question.ID!, NewStatus = question.Status, OldStatus = oldStatus }, cancellationToken);
+        await dbContext.CommitTransaction(cancellationToken);
 
-        return TypedResults.NoContent();
+        return TypedResults.Ok();
     }
 }
