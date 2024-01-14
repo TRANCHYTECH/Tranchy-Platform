@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   messageService = inject(MessageService);
 
   question = signal<Partial<QuestionOutput>>({});
-  user = signal<Partial<Object>>({});
+  user = signal<Partial<object>>({});
 
   async ngOnInit(): Promise<void> {
     this.breadCrumbItems = [
@@ -42,9 +42,6 @@ export class HomeComponent implements OnInit {
       { label: 'Home', active: true }
     ];
 
-    this.askAPIService
-      .getQuestionById('1245')
-      .subscribe((q) => this.question.set(q));
     this.httpClient.get('/ask:/bff/user').subscribe((u) => this.user.set(u));
   }
 
