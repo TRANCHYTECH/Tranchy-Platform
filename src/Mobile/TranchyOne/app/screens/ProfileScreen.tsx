@@ -2,13 +2,13 @@ import React, { FC } from "react"
 import { View, ViewStyle } from "react-native"
 import { Screen } from "app/components"
 import { Button, Text } from "react-native-paper"
-import { MyTabScreenProps } from "../navigators/BottomNavigator"
 import { spacing } from "app/theme"
 import { useAuth0 } from "react-native-auth0"
 // import { useNavigation } from "@react-navigation/native"
 import { useStores } from "app/models"
+import { MainTabScreenProps } from "app/navigators"
 
-export const ProfileScreen: FC<MyTabScreenProps<"Profile">> = function ProfileScreen(_props) {
+export const ProfileScreen: FC<MainTabScreenProps<"Profile">> = function ProfileScreen(_props) {
   const { authenticationStore } = useStores()
 
   // Pull in navigation via hook

@@ -15,7 +15,6 @@ export type MainTabNavigatorParamList = {
   AskQuestionTab: undefined
   Notification: undefined
   Profile: undefined
-  QuestionList: undefined
 }
 
 export type MainTabScreenProps<T extends keyof MainTabNavigatorParamList> = CompositeScreenProps<

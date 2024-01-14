@@ -32,7 +32,7 @@ public static partial class Logs
         EventId = 1,
         Level = LogLevel.Information,
         Message = "Received auth0 action: Create User. UserId: {userId}.Email: {email}")]
-    public static partial void ReceviedCreatingUserAction(this ILogger logger, string userId, string email);
+    public static partial void ReceivedCreatingUserAction(this ILogger logger, string userId, string email);
 
 
     [LoggerMessage(

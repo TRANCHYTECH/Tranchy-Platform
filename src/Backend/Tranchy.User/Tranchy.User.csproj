@@ -4,6 +4,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Jdenticon-net" />
     <PackageReference Include="Mapster"/>
     <PackageReference Include="MassTransit.MongoDb"/>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>

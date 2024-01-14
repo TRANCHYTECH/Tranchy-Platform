@@ -24,7 +24,7 @@ public class CreateUser : IEndpoint
         [FromServices] ILogger<CreateUser> logger,
         CancellationToken cancellationToken)
     {
-        logger.ReceviedCreatingUserAction(request.UserId, request.Email);
+        logger.ReceivedCreatingUserAction(request.UserId, request.Email);
 
         // Could reuse object id from original source as id of entity User
         (string providerId, string userId) = request.ParseUserId();
@@ -32,7 +32,10 @@ public class CreateUser : IEndpoint
         {
             var userEntity = new Data.User
             {
-                ID = userId, Email = request.Email, UserName = request.Email, ProviderId = providerId
+                ID = userId,
+                Email = request.Email,
+                UserName = request.Email,
+                ProviderId = providerId
             };
 
             await dbContext.BeginTransaction(cancellationToken);

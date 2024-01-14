@@ -1,11 +1,11 @@
-using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace Tranchy.Common;
 
 public class PaginationResponse<T>
 {
+    [Required]
     public IEnumerable<T> Data { get; set; } = new List<T>();
 
-    [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
-    public long? NextQueryIndex { get; set; }
+    public string? NextQueryIndex { get; set; }
 }

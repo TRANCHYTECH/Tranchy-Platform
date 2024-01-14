@@ -17,7 +17,6 @@ export class SeeMoreItem implements BlockItemBase {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const renderSeeMoreItem = (input: SeeMoreItem) => {
   const navigation = React.useContext(NavigationContext)
   // const { navigation } = useNavigation<MainTabScreenProps<"WalkAround">>()
@@ -29,7 +28,7 @@ export const renderSeeMoreItem = (input: SeeMoreItem) => {
         mode="text"
         contentStyle={$moreContent}
         labelStyle={$moreText}
-        onPress={() => navigation?.navigate("QuestionList")}
+        onPress={() => navigation?.navigate(input.data.route)}
       >
         Xem thêm
       </Button>

@@ -13,14 +13,15 @@ import {
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { useColorScheme } from "react-native"
+import { View, useColorScheme } from "react-native"
 import * as Screens from "app/screens"
 import Config from "../config"
 import { useStores } from "../models"
-import { DemoTabParamList } from "./DemoNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { colors } from "app/theme"
 import { MainTabNavigator, MainTabNavigatorParamList } from "./MainTabNavigator"
+import { Text } from "react-native-paper"
+import { translate } from "app/i18n"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -38,7 +39,6 @@ import { MainTabNavigator, MainTabNavigatorParamList } from "./MainTabNavigator"
 export type AppStackParamList = {
   Welcome: undefined
   Login: undefined
-  Demo: NavigatorScreenParams<DemoTabParamList>
   QuestionDetails: { id: string }
   QuestionConversation: { id: string }
   // 🔥 Your screens go here
@@ -47,7 +47,7 @@ export type AppStackParamList = {
   AskQuestion: undefined
   Notification: undefined
   MainTab: NavigatorScreenParams<MainTabNavigatorParamList>
-  QuestionList: undefined
+  RecentQuestions: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -87,8 +87,8 @@ const AppStack = observer(function AppStack() {
           <Stack.Screen name="MainTab" component={MainTabNavigator} />
           <Stack.Screen
             name="AskQuestion"
-            options={{ headerShown: true, title: "Tạo câu hỏi mới" }}
             component={Screens.NewQuestionScreen}
+            options={{ headerShown: true, title: "Tạo câu hỏi mới" }}
           />
         </>
       ) : (
@@ -98,7 +98,19 @@ const AppStack = observer(function AppStack() {
       )}
 
       {/** 🔥 Your screens go here */}
-      <Stack.Screen name="QuestionList" component={Screens.QuestionListScreen} />
+      <Stack.Screen
+        name="RecentQuestions"
+        component={Screens.RecentQuestionsScreen}
+        options={{
+          headerShown: true,
+          title: translate("recentQuestionScreen.title"),
+          headerRight: () => (
+            <View>
+              <Text>Filter</Text>
+            </View>
+          ),
+        }}
+      />
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

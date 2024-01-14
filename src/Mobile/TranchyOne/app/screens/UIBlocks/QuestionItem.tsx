@@ -1,12 +1,12 @@
 import { StyleSheet, View, ViewStyle } from "react-native"
 import React from "react"
-import { BlockItemBase, BlockItemPosition, BlockType } from "./BlockItem"
 import { QuestionBrief } from "app/services/ask-api/models"
 import FastImage, { ImageStyle } from "react-native-fast-image"
 import { Icon, MD3Colors, Text } from "react-native-paper"
 import Config from "../../config"
 import { colors, spacing, typography } from "app/theme"
 import { timeAgo } from "app/utils/formatDate"
+import { BlockItemBase, BlockItemPosition, BlockType } from "./BlockItem"
 
 export type QuestionItemData = {
   title: string
@@ -70,7 +70,7 @@ export const renderQuestionItem = (input: QuestionItem) => {
           })}
         </View>
         <View style={$bottomLine.createdAt}>
-          <Text style={$bottomLine.createdAtText}>{timeAgo(input.data.createdAt)}</Text>
+          <Text style={$bottomLine.createdAtText}>{timeAgo(input.data.createdOn)}</Text>
         </View>
       </View>
       <View

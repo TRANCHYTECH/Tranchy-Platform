@@ -12,6 +12,12 @@
           "System.Text.Json": "4.7.2"
         }
       },
+      "Jdenticon-net": {
+        "type": "Direct",
+        "requested": "[3.1.2, )",
+        "resolved": "3.1.2",
+        "contentHash": "QWmCZab96VDUF+W6wt1d6jaAyBqqBx9ztmjUMjfPA8O4jmQzN9F0kYkGZx13hs9zEL6x9T1YSIoNphsd8S+byA=="
+      },
       "MassTransit": {
         "type": "Direct",
         "requested": "[8.1.2, )",

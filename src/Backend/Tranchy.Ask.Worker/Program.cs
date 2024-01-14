@@ -1,8 +1,10 @@
 using Azure.Identity;
+using Azure.Storage.Blobs;
 using MassTransit;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Tranchy.Common;
+using Tranchy.File.Consumers;
 using Tranchy.Question;
 using Tranchy.Question.Consumers;
 
@@ -26,12 +28,16 @@ builder.Configuration.Bind(appSettings);
 builder.Services.Configure<AppSettings>(builder.Configuration);
 
 QuestionModule.ConfigureDb(appSettings.QuestionDb);
+builder.Services.AddKeyedScoped<BlobContainerClient>("avatar",
+    (sp, key) => new BlobContainerClient(appSettings.File.BlobStorageConnectionString,
+        appSettings.File.AvatarContainerName));
 
 builder.Services.AddMassTransit(c =>
 {
     c.SetKebabCaseEndpointNameFormatter();
 
     c.AddConsumersFromNamespaceContaining<QuestionFileUploadedConsumer>();
+    c.AddConsumersFromNamespaceContaining<DefaultAvatarGenerationConsumer>();
     // Issue: call c.AddConsumersFromNamespaceContaining() and c.AddActivitiesFromNamespaceContaining caused missed consumers in container apps env.
 
     c.UsingAzureServiceBus((ctx, cfg) =>
