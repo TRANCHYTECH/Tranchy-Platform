@@ -11,7 +11,7 @@ public static class PaginationResponseExtensions
         if (data.Count > paginationParameters.PageSize)
         {
             response.Data = data.SkipLast(1);
-            response.NextQueryIndex = data.Last().QueryIndex;
+            response.NextQueryIndex = $"{data.Last().QueryIndex}";
         }
         else
         {

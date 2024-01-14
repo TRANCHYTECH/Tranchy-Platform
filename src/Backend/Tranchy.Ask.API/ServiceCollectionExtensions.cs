@@ -2,8 +2,10 @@ using MassTransit;
 using MongoDB.Entities;
 using Tranchy.Common;
 using Tranchy.File;
+using Tranchy.File.Consumers;
 using Tranchy.Payment;
 using Tranchy.Question;
+using Tranchy.Question.Consumers;
 using Tranchy.User;
 
 namespace Tranchy.Ask.API;
@@ -26,18 +28,23 @@ public static class ServiceCollectionExtensions
             //     o.UseBusOutbox();
             // });
 
-            c.AddMongoDbOutbox(o =>
-            {
-                o.ClientFactory(provider => DB.Database(configuration.QuestionDb.DatabaseName).Client);
-                o.DatabaseFactory(provider => DB.Database(configuration.QuestionDb.DatabaseName));
-
-                // todo: check error when enable the service
-                o.UseBusOutbox(c => c.DisableDeliveryService());
-            });
+            // c.AddMongoDbOutbox(o =>
+            // {
+            //     o.ClientFactory(_ => DB.Database(configuration.QuestionDb.DatabaseName).Client);
+            //     o.DatabaseFactory(_ => DB.Database(configuration.QuestionDb.DatabaseName));
+            //
+            //     // todo: check error when enable the service
+            //     o.UseBusOutbox();
+            // });
 
             c.SetKebabCaseEndpointNameFormatter();
-
-            c.UsingAzureServiceBus((ctx, cfg) => cfg.Host(configuration.ServiceBusConnectionString));
+            c.AddConsumersFromNamespaceContaining<QuestionFileUploadedConsumer>();
+            c.AddConsumersFromNamespaceContaining<DefaultAvatarGenerationConsumer>();
+            c.UsingAzureServiceBus((ctx, cfg) =>
+            {
+                cfg.Host(configuration.ServiceBusConnectionString);
+                cfg.ConfigureEndpoints(ctx);
+            });
         });
     }
 }

@@ -1,4 +1,5 @@
-﻿using Azure.Storage.Blobs.Models;
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using SixLabors.ImageSharp.Web.Caching.Azure;
@@ -17,9 +18,12 @@ public class FileModule : IModule, IStartupFilter
             // The "BlobContainers" collection allows registration of multiple containers.
             options.BlobContainers.Add(new AzureBlobContainerClientOptions
             {
-                ConnectionString = configuration.File.BlobStorageConnectionString, ContainerName = "avatar"
+                ConnectionString = configuration.File.BlobStorageConnectionString, ContainerName = configuration.File.AvatarContainerName
             });
         });
+        services.AddKeyedScoped<BlobContainerClient>("avatar",
+            (sp, key) => new BlobContainerClient(configuration.File.BlobStorageConnectionString,
+                configuration.File.AvatarContainerName));
 
         services.Configure<AzureBlobStorageCacheOptions>(options =>
         {

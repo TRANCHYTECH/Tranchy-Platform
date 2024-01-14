@@ -7,18 +7,19 @@ namespace Tranchy.Question.Endpoints.Mobile;
 public class GetConfigurations : IEndpoint
 {
     public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
-        .MapGet("/configurations", GetUserConfigurations)
-        .WithName("GetUserConfigurations")
-        .WithSummary("Get configurations for user")
+        .MapGet("/configurations", GetConfigurationsHandler)
+        .WithName("GetQuestionConfigurations")
+        .WithSummary("Get question configurations for user")
         .WithTags(Tags.Mobile)
         .WithOpenApi();
 
-    private static async Task<Ok<GetQuestionConfigurationsResponse>> GetUserConfigurations(
+    private static async Task<Ok<GetQuestionConfigurationsResponse>> GetConfigurationsHandler(
         [FromServices] ITenant tenant,
         CancellationToken cancellationToken)
     {
         var response = new GetQuestionConfigurationsResponse
         {
+            // todo: move User Id and Email to another endpoint
             UserId = tenant.UserId,
             Email = tenant.Email,
             QuestionCategories = await GetQuestionCategories(cancellationToken),
@@ -30,7 +31,12 @@ public class GetConfigurations : IEndpoint
 
     private static async Task<List<QuestionCategoryResponse>> GetQuestionCategories(CancellationToken cancellationToken)
         => await DB.Find<QuestionCategory, QuestionCategoryResponse>().Match(_ => true)
-            .Project(c => new QuestionCategoryResponse { Key = c.Key, Title = c.Title, Description = c.Description })
+            .Project(c => new QuestionCategoryResponse
+            {
+                Key = c.Key,
+                Title = c.Title,
+                Description = c.Description
+            })
             .ExecuteAsync(cancellationToken);
 
     private static async Task<List<QuestionPriorityResponse>> GetQuestionPriorities(CancellationToken cancellationToken)

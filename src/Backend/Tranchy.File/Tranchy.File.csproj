@@ -10,6 +10,7 @@
 	
 	<ItemGroup>
 	  <PackageReference Include="Azure.Storage.Blobs" />
+	  <PackageReference Include="Jdenticon-net" />
 	  <PackageReference Include="MassTransit" />
 	  <PackageReference Include="MassTransit.Azure.ServiceBus.Core" />
 	  <PackageReference Include="MassTransit.MongoDb" />

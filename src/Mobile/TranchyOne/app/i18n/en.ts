@@ -30,6 +30,9 @@ const en = {
     answerGuideline:
       "Để có 1 câu trả lời hiệu quả, bạn nên tham khảo hướng dẫn về cách đặt vấn đề\r\nBước 1: Xác định vấn đề. \r\nBước 2: Nếu câu hỏi nhạy cảm, bạn nên tuân thủ theo hướng dẫn tại đây.\r\nBước 3: Bạn mong muốn câu trả lời.",
   },
+  recentQuestionScreen: {
+    title: "Recent Questions",
+  },
   welcomeScreen: {
     postscript:
       "psst  — This probably isn't what your app looks like. (Unless your designer handed you these screens, and in that case, ship it!)",

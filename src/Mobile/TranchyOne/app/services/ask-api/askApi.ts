@@ -80,9 +80,9 @@ export const finishConsultation = (
 }
 
 /**
- * @summary Get configurations for user
+ * @summary Get question configurations for user
  */
-export const getUserConfigurations = () => {
+export const getQuestionConfigurations = () => {
   return apiRequest<GetQuestionConfigurationsResponse>({
     url: `/mobile/questions/configurations`,
     method: "GET",
@@ -230,8 +230,8 @@ export type ListMobileQuestionEventsResult = NonNullable<
 >
 export type CreateQuestionResult = NonNullable<Awaited<ReturnType<typeof createQuestion>>>
 export type FinishConsultationResult = NonNullable<Awaited<ReturnType<typeof finishConsultation>>>
-export type GetUserConfigurationsResult = NonNullable<
-  Awaited<ReturnType<typeof getUserConfigurations>>
+export type GetQuestionConfigurationsResult = NonNullable<
+  Awaited<ReturnType<typeof getQuestionConfigurations>>
 >
 export type GetUserHighlightsResult = NonNullable<Awaited<ReturnType<typeof getUserHighlights>>>
 export type ListCommunityQuestionsResult = NonNullable<

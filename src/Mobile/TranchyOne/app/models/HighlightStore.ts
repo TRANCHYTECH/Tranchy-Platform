@@ -4,13 +4,22 @@ import { ApiResponse } from "apisauce"
 import { GetUserHighlightsResponse } from "app/services/ask-api/models"
 import { getUserHighlights } from "app/services/ask-api/askApi"
 
-const createDefaultUserHighlights = () =>
-  <GetUserHighlightsResponse>{
-    expertExclusive: {},
-    popularCategories: {},
-    matchProfile: {},
-    recent: {},
+function createDefaultUserHighlights(): GetUserHighlightsResponse {
+  return {
+    expertExclusive: {
+      data: [],
+    },
+    popularCategories: {
+      data: [],
+    },
+    matchProfile: {
+      data: [],
+    },
+    recent: {
+      data: [],
+    },
   }
+}
 
 export const HighlightStoreModel = types
   .model("HighlightStore")

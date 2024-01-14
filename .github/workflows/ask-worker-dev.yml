@@ -1,11 +1,6 @@
 name: dev:ask-worker
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "src/Backend/**"
 env:
   CONTAINER_APP_LOCATION: southeastasia
   CONTAINER_APP_CONTAINER_NAME: ca-vg-tn-askworker-dev-sa-001

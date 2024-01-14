@@ -3,10 +3,10 @@ import { observer } from "mobx-react-lite"
 import { ViewStyle } from "react-native"
 import { MainTabScreenProps } from "app/navigators"
 import { ListView, Screen } from "app/components"
-import { BlockItem, buildBlocks } from "./Blocks"
-import { BlockItemType } from "./BlockItem"
+import { BlockItem, BlockItemType } from "../UIBlocks/BlockItem"
 import { useStores } from "app/models"
 import { useFocusEffect } from "@react-navigation/native"
+import { buildBlocks } from "./Blocks"
 
 interface WalkAroundScreenProps extends MainTabScreenProps<"WalkAround"> {}
 

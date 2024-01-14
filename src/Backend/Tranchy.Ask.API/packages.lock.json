@@ -1272,6 +1272,7 @@
         "type": "Project",
         "dependencies": {
           "Azure.Storage.Blobs": "[12.19.1, )",
+          "Jdenticon-net": "[3.1.2, )",
           "MassTransit": "[8.1.2, )",
           "MassTransit.Azure.ServiceBus.Core": "[8.1.2, )",
           "MassTransit.MongoDb": "[8.1.2, )",
@@ -1313,6 +1314,7 @@
       "tranchy.user": {
         "type": "Project",
         "dependencies": {
+          "Jdenticon-net": "[3.1.2, )",
           "Mapster": "[7.4.0, )",
           "MassTransit.MongoDb": "[8.1.2, )",
           "Microsoft.AspNetCore.OpenApi": "[8.0.0, )",
@@ -1356,6 +1358,12 @@
         "requested": "[3.0.3, )",
         "resolved": "3.0.3",
         "contentHash": "gS1rrJlmmaMiWcwEB8xq9X4driH2ojNMnU++PzTCq+FGlGxOWtCZDvQCPC1qtfY2/zQOcMgOW4dXposk9kMonw=="
+      },
+      "Jdenticon-net": {
+        "type": "CentralTransitive",
+        "requested": "[3.1.2, )",
+        "resolved": "3.1.2",
+        "contentHash": "QWmCZab96VDUF+W6wt1d6jaAyBqqBx9ztmjUMjfPA8O4jmQzN9F0kYkGZx13hs9zEL6x9T1YSIoNphsd8S+byA=="
       },
       "Mapster": {
         "type": "CentralTransitive",

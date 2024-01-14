@@ -61,4 +61,6 @@ public class FileSettings
 {
     public string UnsafeQuestionFileContainerUri { get; set; } = default!;
     public string BlobStorageConnectionString { get; set; } = default!;
+
+    public string AvatarContainerName { get; set; } = "avatar";
 }
