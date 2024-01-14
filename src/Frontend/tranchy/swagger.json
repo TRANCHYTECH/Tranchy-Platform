@@ -5,20 +5,22 @@
     "version": "v1"
   },
   "paths": {
-    "/question/aggregate/highlight-sections": {
-      "get": {
+    "/management/questions/{questionId}:accept": {
+      "post": {
         "tags": [
-          "Aggregates"
+          "BackOffice"
         ],
-        "summary": "Highlight each sections",
-        "operationId": "HighlightSections",
+        "summary": "Accept question",
+        "operationId": "AcceptQuestion",
         "parameters": [
           {
-            "name": "x-csrf",
-            "in": "header",
+            "name": "questionId",
+            "in": "path",
             "required": true,
             "style": "simple",
-            "example": "1"
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "x-csrf",
@@ -28,21 +30,27 @@
             "example": "1"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HighlightSectionsResponse"
-                }
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcceptQuestionRequest"
               }
             }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
     },
-    "/question/management/question": {
+    "/management/questions": {
       "get": {
         "tags": [
           "BackOffice"
@@ -56,13 +64,6 @@
             "required": true,
             "style": "simple",
             "example": "1"
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
           }
         ],
         "responses": {
@@ -82,211 +83,13 @@
         }
       }
     },
-    "/user/management/user": {
-      "get": {
+    "/management/questions/{questionId}:reject": {
+      "post": {
         "tags": [
           "BackOffice"
         ],
-        "operationId": "GetUsers",
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetUserResponse"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/question": {
-      "post": {
-        "tags": [
-          "CreateQuestion"
-        ],
-        "operationId": "CreateQuestion",
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateQuestionRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateQuestionResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/question/configurations": {
-      "get": {
-        "tags": [
-          "GetMetadata"
-        ],
-        "operationId": "GetQuestionConfigurations",
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetQuestionConfigurationsResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/question/{id}": {
-      "get": {
-        "tags": [
-          "GetQuestion"
-        ],
-        "operationId": "GetQuestionById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QuestionOutput"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/question/user/{user}": {
-      "get": {
-        "tags": [
-          "GetQuestion"
-        ],
-        "operationId": "GetQuestionByUser",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QuestionOutput"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/question/{questionId}/event": {
-      "post": {
-        "tags": [
-          "Question Action"
-        ],
-        "summary": "Create a question event",
-        "operationId": "CreateQuestionEvent",
+        "summary": "Reject question",
+        "operationId": "RejectQuestion",
         "parameters": [
           {
             "name": "questionId",
@@ -303,263 +106,18 @@
             "required": true,
             "style": "simple",
             "example": "1"
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/CreateQuestionEventRequest"
-                  },
-                  {
-                    "$ref": "#/components/schemas/CreateQuestionEventMessageSentInput"
-                  },
-                  {
-                    "$ref": "#/components/schemas/CreateQuestionEventStatusChangedInput"
-                  },
-                  {
-                    "$ref": "#/components/schemas/CreateQuestionEventFileAttachedInput"
-                  },
-                  {
-                    "$ref": "#/components/schemas/CreateQuestionEventVoiceCalledInput"
-                  },
-                  {
-                    "$ref": "#/components/schemas/CreateQuestionEventVideoCalledInput"
-                  },
-                  {
-                    "$ref": "#/components/schemas/QuestionEventReacted"
-                  }
-                ]
+                "$ref": "#/components/schemas/RejectQuestionRequest"
               }
             }
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QuestionOutput"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/question/{id}/finish": {
-      "post": {
-        "tags": [
-          "Question Action"
-        ],
-        "summary": "Finish consultation",
-        "operationId": "FinishConsultation",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinishConsultationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/question/mobile/{id}/events": {
-      "get": {
-        "tags": [
-          "Question Action"
-        ],
-        "summary": "List question events for mobile devices",
-        "operationId": "ListMobileQuestionEvents",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/MobileQuestionEventMessageSent"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/question/{id}/pick": {
-      "post": {
-        "tags": [
-          "Question Action"
-        ],
-        "summary": "Take consultation",
-        "operationId": "PickQuestion",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Question"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/question/{id}/accept": {
-      "post": {
-        "tags": [
-          "Question Action"
-        ],
-        "summary": "Accept question",
-        "operationId": "AcceptQuestion",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
         "responses": {
           "204": {
             "description": "No Content"
@@ -570,206 +128,10 @@
         }
       }
     },
-    "/question/list/community": {
-      "get": {
-        "tags": [
-          "Questions"
-        ],
-        "summary": "List community questions",
-        "operationId": "ListCommunityQuestions",
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Question"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/question/list/mine": {
-      "get": {
-        "tags": [
-          "Questions"
-        ],
-        "summary": "List my questions",
-        "operationId": "ListMyQuestions",
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Question"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/question/suportdeveloper/seedmetadata": {
+    "/management/users": {
       "post": {
         "tags": [
-          "SupportDeveloper"
-        ],
-        "operationId": "SeedMetadata",
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/agency-portal": {
-      "get": {
-        "tags": [
-          "Tranchy.Ask.API"
-        ],
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/file/question/{questionId}": {
-      "post": {
-        "tags": [
-          "UploadQuestionFile"
-        ],
-        "operationId": "UploadFileForQuestion",
-        "parameters": [
-          {
-            "name": "questionId",
-            "in": "path",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fileName",
-            "in": "query",
-            "required": true,
-            "style": "form",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "required": [
-                  "file"
-                ],
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              },
-              "encoding": {
-                "file": {
-                  "style": "form"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UploadQuestionFileResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/user": {
-      "post": {
-        "tags": [
-          "User"
+          "BackOffice"
         ],
         "operationId": "CreateUser",
         "parameters": [
@@ -793,15 +155,15 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           }
         }
       },
       "get": {
         "tags": [
-          "User"
+          "BackOffice"
         ],
-        "operationId": "GetCurrentUser",
+        "operationId": "GetUsers",
         "parameters": [
           {
             "name": "x-csrf",
@@ -813,64 +175,41 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetUserResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetUserResponse"
+                  }
                 }
               }
             }
           }
         }
-      },
-      "put": {
+      }
+    },
+    "/management/questions/development-supports:seed-metadata": {
+      "post": {
         "tags": [
-          "User"
+          "Development Support"
         ],
-        "operationId": "UpdateUser",
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateUserRequest"
-              }
-            }
-          },
-          "required": true
-        },
+        "operationId": "SeedMetadata",
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           }
         }
       }
     },
-    "/user/oauth0/create": {
+    "/integration/oauth0/users": {
       "post": {
         "tags": [
-          "User",
-          "OAuth0 Integration"
+          "Integration"
         ],
+        "summary": "Create user action",
         "operationId": "CreateUserAction",
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -898,21 +237,439 @@
         }
       }
     },
-    "/user/expertise": {
+    "/mobile/questions/{questionId}/events": {
       "post": {
         "tags": [
-          "User"
+          "Mobile"
         ],
-        "operationId": "CreateUserExpertise",
+        "summary": "Create a question event",
+        "operationId": "CreateQuestionEvent",
         "parameters": [
           {
-            "name": "x-csrf",
-            "in": "header",
+            "name": "questionId",
+            "in": "path",
             "required": true,
             "style": "simple",
-            "example": "1"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventMessageSentRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventStatusChangedRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventFileAttachedRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventVoiceCalledRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventVideoCalledRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CreateQuestionEventReactedRequest"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateQuestionEventResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "List question events for mobile devices",
+        "operationId": "ListMobileQuestionEvents",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/MobileQuestionEventMessageSent"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mobile/questions": {
+      "post": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Create question",
+        "operationId": "CreateQuestion",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateQuestionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateQuestionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mobile/questions/{questionId}:resolve": {
+      "post": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Finish consultation",
+        "operationId": "FinishConsultation",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FinishConsultationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/mobile/questions/configurations": {
+      "get": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Get configurations for user",
+        "operationId": "GetUserConfigurations",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetQuestionConfigurationsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mobile/questions/aggregates/user-highlights": {
+      "get": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Get highlights for user",
+        "operationId": "GetUserHighlights",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserHighlightsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mobile/questions/sections/community": {
+      "get": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "List community questions",
+        "operationId": "ListCommunityQuestions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Question"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mobile/questions/sections/mine": {
+      "get": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "List my questions",
+        "operationId": "ListMyQuestions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Question"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mobile/questions/sections/recent": {
+      "get": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Get recent questions",
+        "operationId": "GetRecentQuestions",
+        "parameters": [
+          {
+            "name": "QueryIndex",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestionBriefPaginationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mobile/questions/{questionId}:pick": {
+      "post": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Take consultation",
+        "operationId": "PickQuestion",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Question"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/mobile/questions/{questionId}/files": {
+      "post": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Upload file for question",
+        "operationId": "UploadQuestionFile",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fileName",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadFileResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/mobile/users/me/sections/expertise": {
+      "post": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Create expertise info for current user",
+        "operationId": "CreateUserExpertise",
         "requestBody": {
           "content": {
             "application/json": {
@@ -925,27 +682,19 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           }
         }
       },
       "get": {
         "tags": [
-          "User"
+          "Mobile"
         ],
+        "summary": "Get expertise info of current user",
         "operationId": "GetUserExpertise",
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -956,23 +705,18 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
       "put": {
         "tags": [
-          "User"
+          "Mobile"
         ],
+        "summary": "Update expertise info of current user",
         "operationId": "UpdateUserExpertise",
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -985,29 +729,67 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           }
         }
       }
     },
-    "/user/contact": {
+    "/mobile/users/me": {
       "get": {
         "tags": [
-          "User"
+          "Mobile"
         ],
-        "operationId": "GetCurrentUserContacts",
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
+        "summary": "Get current user",
+        "operationId": "GetCurrentUser",
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Update current user",
+        "operationId": "UpdateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/mobile/users/me/sections/contact": {
+      "get": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Get current user contact",
+        "operationId": "GetCurrentUserContacts",
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1018,28 +800,23 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
     },
-    "/user/Notifications": {
+    "/mobile/users/me/sections/notification": {
       "get": {
         "tags": [
-          "User"
+          "Mobile"
         ],
+        "summary": "Get notifications of current user",
         "operationId": "GetUserNotification",
-        "parameters": [
-          {
-            "name": "x-csrf",
-            "in": "header",
-            "required": true,
-            "style": "simple",
-            "example": "1"
-          }
-        ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -1053,10 +830,33 @@
           }
         }
       }
+    },
+    "/agency-portal": {
+      "get": {
+        "tags": [
+          "Tranchy.Ask.API"
+        ],
+        "summary": "Redirect after user login via portal",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AcceptQuestionRequest": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CategoryBrief": {
         "type": "object",
         "properties": {
@@ -1068,15 +868,16 @@
         "additionalProperties": false
       },
       "CategoryBriefSection": {
+        "required": [
+          "data"
+        ],
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CategoryBrief"
-            },
-            "nullable": true,
-            "readOnly": true
+            }
           }
         },
         "additionalProperties": false
@@ -1095,7 +896,7 @@
         },
         "additionalProperties": false
       },
-      "CreateQuestionEventFileAttachedInput": {
+      "CreateQuestionEventFileAttachedRequest": {
         "type": "object",
         "allOf": [
           {
@@ -1118,7 +919,7 @@
         },
         "additionalProperties": false
       },
-      "CreateQuestionEventMessageSentInput": {
+      "CreateQuestionEventMessageSentRequest": {
         "type": "object",
         "allOf": [
           {
@@ -1131,6 +932,15 @@
             "nullable": true
           }
         },
+        "additionalProperties": false
+      },
+      "CreateQuestionEventReactedRequest": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateQuestionEventRequest"
+          }
+        ],
         "additionalProperties": false
       },
       "CreateQuestionEventRequest": {
@@ -1150,16 +960,26 @@
         "discriminator": {
           "propertyName": "$type",
           "mapping": {
-            "MessageSent": "#/components/schemas/CreateQuestionEventMessageSentInput",
-            "StatusChanged": "#/components/schemas/CreateQuestionEventStatusChangedInput",
-            "FileAttached": "#/components/schemas/CreateQuestionEventFileAttachedInput",
-            "VoiceCalled": "#/components/schemas/CreateQuestionEventVoiceCalledInput",
-            "VideoCalled": "#/components/schemas/CreateQuestionEventVideoCalledInput",
-            "EventReacted": "#/components/schemas/QuestionEventReacted"
+            "MessageSent": "#/components/schemas/CreateQuestionEventMessageSentRequest",
+            "StatusChanged": "#/components/schemas/CreateQuestionEventStatusChangedRequest",
+            "FileAttached": "#/components/schemas/CreateQuestionEventFileAttachedRequest",
+            "VoiceCalled": "#/components/schemas/CreateQuestionEventVoiceCalledRequest",
+            "VideoCalled": "#/components/schemas/CreateQuestionEventVideoCalledRequest",
+            "EventReacted": "#/components/schemas/CreateQuestionEventReactedRequest"
           }
         }
       },
-      "CreateQuestionEventStatusChangedInput": {
+      "CreateQuestionEventResponse": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateQuestionEventStatusChangedRequest": {
         "type": "object",
         "allOf": [
           {
@@ -1180,7 +1000,7 @@
         },
         "additionalProperties": false
       },
-      "CreateQuestionEventVideoCalledInput": {
+      "CreateQuestionEventVideoCalledRequest": {
         "type": "object",
         "allOf": [
           {
@@ -1203,7 +1023,7 @@
         },
         "additionalProperties": false
       },
-      "CreateQuestionEventVoiceCalledInput": {
+      "CreateQuestionEventVoiceCalledRequest": {
         "type": "object",
         "allOf": [
           {
@@ -1247,11 +1067,14 @@
         "additionalProperties": false
       },
       "CreateQuestionResponse": {
+        "required": [
+          "id"
+        ],
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -1328,29 +1151,31 @@
         "type": "string"
       },
       "GetQuestionConfigurationsResponse": {
+        "required": [
+          "email",
+          "questionCategories",
+          "questionPriorities",
+          "userId"
+        ],
         "type": "object",
         "properties": {
           "questionCategories": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/QuestionCategory"
-            },
-            "nullable": true
+              "$ref": "#/components/schemas/QuestionCategoryResponse"
+            }
           },
           "questionPriorities": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/QuestionPriority"
-            },
-            "nullable": true
+              "$ref": "#/components/schemas/QuestionPriorityResponse"
+            }
           },
           "userId": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "email": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -1372,6 +1197,30 @@
           "metaData": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetUserHighlightsResponse": {
+        "required": [
+          "expertExclusive",
+          "matchProfile",
+          "popularCategories",
+          "recent"
+        ],
+        "type": "object",
+        "properties": {
+          "expertExclusive": {
+            "$ref": "#/components/schemas/QuestionBriefSection"
+          },
+          "recent": {
+            "$ref": "#/components/schemas/QuestionBriefSection"
+          },
+          "popularCategories": {
+            "$ref": "#/components/schemas/CategoryBriefSection"
+          },
+          "matchProfile": {
+            "$ref": "#/components/schemas/QuestionBriefSection"
           }
         },
         "additionalProperties": false
@@ -1426,24 +1275,6 @@
           "profilePictureBlobLocation": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "HighlightSectionsResponse": {
-        "type": "object",
-        "properties": {
-          "expertExclusive": {
-            "$ref": "#/components/schemas/QuestionBriefSection"
-          },
-          "recent": {
-            "$ref": "#/components/schemas/QuestionBriefSection"
-          },
-          "popularCategories": {
-            "$ref": "#/components/schemas/CategoryBriefSection"
-          },
-          "matchProfile": {
-            "$ref": "#/components/schemas/QuestionBriefSection"
           }
         },
         "additionalProperties": false
@@ -1548,6 +1379,14 @@
           },
           "permissions": {
             "$ref": "#/components/schemas/QuestionPermissions"
+          },
+          "queryIndex": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1560,30 +1399,42 @@
         "type": "string"
       },
       "QuestionBrief": {
+        "required": [
+          "categories",
+          "createdBy",
+          "createdOn",
+          "id",
+          "price",
+          "saved",
+          "title"
+        ],
         "type": "object",
         "properties": {
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
           "title": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "categories": {
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "nullable": true
+            }
           },
           "price": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
-          "createdAt": {
+          "createdOn": {
             "type": "string",
             "format": "date-time"
           },
           "createdBy": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "saved": {
             "type": "boolean"
@@ -1591,7 +1442,7 @@
         },
         "additionalProperties": false
       },
-      "QuestionBriefSection": {
+      "QuestionBriefPaginationResponse": {
         "type": "object",
         "properties": {
           "data": {
@@ -1599,44 +1450,54 @@
             "items": {
               "$ref": "#/components/schemas/QuestionBrief"
             },
-            "nullable": true,
-            "readOnly": true
+            "nullable": true
+          },
+          "nextQueryIndex": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "QuestionCategory": {
+      "QuestionBriefSection": {
+        "required": [
+          "data"
+        ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdOn": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "modifiedOn": {
-            "type": "string",
-            "format": "date-time"
-          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuestionBrief"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuestionCategoryResponse": {
+        "required": [
+          "description",
+          "key",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
           "key": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "title": {
             "type": "object",
             "additionalProperties": {
               "type": "string"
-            },
-            "nullable": true
+            }
           },
           "description": {
             "type": "object",
             "additionalProperties": {
               "type": "string"
-            },
-            "nullable": true
+            }
           }
         },
         "additionalProperties": false
@@ -1666,25 +1527,6 @@
         },
         "additionalProperties": false
       },
-      "QuestionEventReacted": {
-        "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/CreateQuestionEventRequest"
-          }
-        ],
-        "additionalProperties": false
-      },
-      "QuestionOutput": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "QuestionPermissions": {
         "type": "object",
         "properties": {
@@ -1702,30 +1544,32 @@
         },
         "additionalProperties": false
       },
-      "QuestionPriority": {
+      "QuestionPriorityResponse": {
+        "required": [
+          "description",
+          "duration",
+          "key",
+          "priorityMetaData",
+          "rank",
+          "title"
+        ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
           "key": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "title": {
             "type": "object",
             "additionalProperties": {
               "type": "string"
-            },
-            "nullable": true
+            }
           },
           "description": {
             "type": "object",
             "additionalProperties": {
               "type": "string"
-            },
-            "nullable": true
+            }
           },
           "rank": {
             "type": "integer",
@@ -1733,19 +1577,10 @@
           },
           "priorityMetaData": {
             "type": "object",
-            "additionalProperties": { },
-            "nullable": true
+            "additionalProperties": { }
           },
           "duration": {
             "$ref": "#/components/schemas/TimeSpan"
-          },
-          "createdOn": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "modifiedOn": {
-            "type": "string",
-            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -1764,6 +1599,16 @@
           "Reported"
         ],
         "type": "string"
+      },
+      "RejectQuestionRequest": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "SupportLevel": {
         "enum": [
@@ -1895,7 +1740,7 @@
         },
         "additionalProperties": false
       },
-      "UploadQuestionFileResponse": {
+      "UploadFileResponse": {
         "type": "object",
         "properties": {
           "questionId": {

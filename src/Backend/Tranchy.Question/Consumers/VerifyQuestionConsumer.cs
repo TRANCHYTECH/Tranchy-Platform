@@ -12,7 +12,7 @@ public class VerifyQuestionConsumer(ILogger<VerifyQuestionConsumer> logger) : IC
             return;
         }
 
-        question.Approve();
+        question.Approve(comment: string.Empty);
         await question.SaveAsync(cancellation: context.CancellationToken);
 
         logger.ApprovedQuestion(context.Message.Id, string.Empty);

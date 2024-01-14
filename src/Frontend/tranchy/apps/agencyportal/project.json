@@ -28,7 +28,8 @@
           "apps/agencyportal/src/styles.scss",
           "apps/agencyportal/src/assets/scss/icons.scss",
           "apps/agencyportal/src/assets/scss/config/minimal/bootstrap.scss",
-          "apps/agencyportal/src/assets/scss/config/minimal/app.scss"
+          "apps/agencyportal/src/assets/scss/config/minimal/app.scss",
+          "node_modules/ngx-spinner/animations/ball-fussion.css"
         ],
         "scripts": []
       },

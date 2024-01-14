@@ -36,7 +36,26 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
 
     public long QueryIndex { get; init; }
 
-    public void Approve() => Status = QuestionStatus.Accepted;
+    public void Approve(string? comment)
+    {
+        Status = QuestionStatus.Accepted;
+        if (!string.IsNullOrEmpty(comment))
+        {
+            Comment = comment;
+        }
+    }
+
+    public void Reject(string comment)
+    {
+        Status = QuestionStatus.Rejected;
+        if (!string.IsNullOrEmpty(comment))
+        {
+            Comment = comment;
+        }
+
+    }
+
+    public string Comment { get; set; } = string.Empty;
 
     public void TakeConsultation(string userId)
     {

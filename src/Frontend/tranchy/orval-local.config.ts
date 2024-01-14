@@ -26,6 +26,9 @@ export default defineConfig({
       override: {
         transformer: askApiPrefixFn,
       },
+      filters: {
+        tags: ["BackOffice"],
+      },
     },
   },
 });
