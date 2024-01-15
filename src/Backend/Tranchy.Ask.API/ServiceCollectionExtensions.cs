@@ -1,3 +1,4 @@
+using Azure.Identity;
 using MassTransit;
 using MongoDB.Entities;
 using Tranchy.Common;
@@ -21,28 +22,29 @@ public static class ServiceCollectionExtensions
         UserModule.ConfigureServices(services, configuration);
         services.AddMassTransit(c =>
         {
-            c.ConfigureHealthCheckOptions(cfg => cfg.FailureStatus = Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
+            c.ConfigureHealthCheckOptions(cfg => cfg.MinimalFailureStatus = Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
             // c.AddEntityFrameworkOutbox<PaymentDbContext>(o =>
             // {
             //     o.UseSqlServer();
             //     o.UseBusOutbox();
             // });
 
-            // c.AddMongoDbOutbox(o =>
-            // {
-            //     o.ClientFactory(_ => DB.Database(configuration.QuestionDb.DatabaseName).Client);
-            //     o.DatabaseFactory(_ => DB.Database(configuration.QuestionDb.DatabaseName));
-            //
-            //     // todo: check error when enable the service
-            //     o.UseBusOutbox();
-            // });
+
+            c.AddMongoDbOutbox(o =>
+            {
+                o.ClientFactory(_ => DB.Database(configuration.QuestionDb.DatabaseName).Client);
+                o.DatabaseFactory(_ => DB.Database(configuration.QuestionDb.DatabaseName));
+                o.UseBusOutbox();
+            });
 
             c.SetKebabCaseEndpointNameFormatter();
+
+            //todo: add specific env to topic.
             c.AddConsumersFromNamespaceContaining<QuestionFileUploadedConsumer>();
             c.AddConsumersFromNamespaceContaining<DefaultAvatarGenerationConsumer>();
             c.UsingAzureServiceBus((ctx, cfg) =>
             {
-                cfg.Host(configuration.ServiceBusConnectionString);
+                cfg.Host(configuration.ServiceBusConnectionString, cfg => cfg.TokenCredential = new DefaultAzureCredential());
                 cfg.ConfigureEndpoints(ctx);
             });
         });
