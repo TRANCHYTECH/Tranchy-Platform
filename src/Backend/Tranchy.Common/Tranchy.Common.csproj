@@ -6,12 +6,14 @@
 
 	<ItemGroup>
 	  <PackageReference Include="MassTransit.Abstractions" />
+	  <PackageReference Include="MassTransit.MongoDb" />
 	  <PackageReference Include="MiniValidation" />
 	  <PackageReference Include="MongoDB.Entities" />
 	  <PackageReference Include="FluentValidation" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="MassTransit\" />
 	  <Folder Include="Services\" />
 	</ItemGroup>
 

@@ -29,7 +29,6 @@ public static class ServiceCollectionExtensions
             //     o.UseBusOutbox();
             // });
 
-
             c.AddMongoDbOutbox(o =>
             {
                 o.ClientFactory(_ => DB.Database(configuration.QuestionDb.DatabaseName).Client);
@@ -37,15 +36,16 @@ public static class ServiceCollectionExtensions
                 o.UseBusOutbox();
             });
 
-            c.SetKebabCaseEndpointNameFormatter();
-
-            //todo: add specific env to topic.
+            string endpointPrefix = string.Equals(configuration.ASPNETCORE_ENVIRONMENT, Environments.Development, StringComparison.Ordinal)
+                ? Environment.UserName
+                : string.Empty;
+            c.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter(prefix: endpointPrefix, includeNamespace: false));
             c.AddConsumersFromNamespaceContaining<QuestionFileUploadedConsumer>();
             c.AddConsumersFromNamespaceContaining<DefaultAvatarGenerationConsumer>();
-            c.UsingAzureServiceBus((ctx, cfg) =>
+            c.UsingAzureServiceBus((ctx, factoryConfig) =>
             {
-                cfg.Host(configuration.ServiceBusConnectionString, cfg => cfg.TokenCredential = new DefaultAzureCredential());
-                cfg.ConfigureEndpoints(ctx);
+                factoryConfig.Host(configuration.ServiceBusConnectionString, hostConfig => hostConfig.TokenCredential = new DefaultAzureCredential());
+                factoryConfig.ConfigureEndpoints(ctx);
             });
         });
     }

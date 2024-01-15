@@ -14,6 +14,11 @@ public class AppSettings
     public AzureMonitorSettings AzureMonitor { get; init; } = default!;
 
     public FileSettings File { get; init; } = default!;
+
+#pragma warning disable CA1707
+    // ReSharper disable once InconsistentNaming
+    public string ASPNETCORE_ENVIRONMENT { get; init; } = default!;
+#pragma warning restore CA1707
 }
 
 public class AzureMonitorSettings

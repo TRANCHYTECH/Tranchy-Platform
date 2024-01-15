@@ -1,4 +1,5 @@
 using MassTransit;
+using MassTransit.MongoDbIntegration;
 using Tranchy.Common.Events;
 
 namespace Tranchy.User.Endpoints.BackOffice;
@@ -12,11 +13,14 @@ public class SubmitUser : IEndpoint
         .WithOpenApi();
 
     private static async Task<Ok> Handler(
+        [FromServices] MongoDbContext dbContext,
         [FromServices] IPublishEndpoint publishEndpoint,
         [FromQuery] string userId,
         CancellationToken cancellation)
     {
+        await dbContext.BeginTransaction(cancellation);
         await publishEndpoint.Publish(new UserCreatedEvent { UserId = userId }, cancellation);
+        await dbContext.CommitTransaction(cancellation);
 
         return TypedResults.Ok();
     }

@@ -26,7 +26,7 @@ public class CreateUser : IEndpoint
 
         await dbContext.BeginTransaction(cancellationToken);
         await DB.InsertAsync(user, dbContext.Session, cancellationToken);
-        await publishEndpoint.Publish(new UserCreated { Id = user.ID! }, cancellationToken);
+        await publishEndpoint.Publish(new UserCreated { Id = user.ID }, cancellationToken);
         await dbContext.CommitTransaction(cancellationToken);
 
         logger.CreatedUser(user.ID, user.UserName);
