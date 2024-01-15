@@ -6,13 +6,30 @@
 
 	<ItemGroup>
 	  <PackageReference Include="MassTransit.Abstractions" />
+	  <PackageReference Include="MassTransit.MongoDb" />
 	  <PackageReference Include="MiniValidation" />
 	  <PackageReference Include="MongoDB.Entities" />
 	  <PackageReference Include="FluentValidation" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="MassTransit\" />
 	  <Folder Include="Services\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Meziantou.Analyzer">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Update="Roslynator.Analyzers">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Update="Roslynator.Formatting.Analyzers">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
 	</ItemGroup>
 	
 </Project>

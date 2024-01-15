@@ -21,6 +21,7 @@ using Tranchy.User;
 const string agencyPortalSpaPolicy = "agency-portal-spa";
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false)
 .ConfigureAppConfiguration(config =>
 {
@@ -28,8 +29,8 @@ builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false)
     {
         string? appConfigName = builder.Configuration["AppConfigName"];
         options.Connect(new Uri($"https://{appConfigName}.azconfig.io"), new DefaultAzureCredential())
-        .Select(KeyFilter.Any, builder.Environment.EnvironmentName);
-        options.ConfigureKeyVault(options => options.SetCredential(new DefaultAzureCredential()));
+        .Select(KeyFilter.Any, builder.Environment.EnvironmentName)
+            .ConfigureKeyVault(keyVaultConfig => keyVaultConfig.SetCredential(new DefaultAzureCredential()));
     });
 });
 builder.Services.AddAzureClients(config =>
