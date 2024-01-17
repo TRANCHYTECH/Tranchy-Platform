@@ -5,8 +5,10 @@
  * OpenAPI spec version: v1
  */
 
+export * from "./acceptQuestionRequest"
 export * from "./categoryBrief"
 export * from "./categoryBriefSection"
+export * from "./categoryBriefTitle"
 export * from "./createEventMetadata"
 export * from "./createQuestion400"
 export * from "./createQuestionEvent400"
@@ -59,6 +61,7 @@ export * from "./questionPriorityResponseDescription"
 export * from "./questionPriorityResponsePriorityMetaData"
 export * from "./questionPriorityResponseTitle"
 export * from "./questionStatus"
+export * from "./rejectQuestionRequest"
 export * from "./supportLevel"
 export * from "./timeSpan"
 export * from "./updateUserExpertiseRequest"

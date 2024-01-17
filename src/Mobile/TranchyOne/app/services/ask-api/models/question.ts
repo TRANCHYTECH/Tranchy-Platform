@@ -10,6 +10,7 @@ import type { QuestionStatus } from "./questionStatus"
 import type { SupportLevel } from "./supportLevel"
 
 export interface Question {
+  comment?: string | null
   communityShareAgreement?: boolean | null
   consultant?: QuestionConsultant
   createdByUserId?: string | null

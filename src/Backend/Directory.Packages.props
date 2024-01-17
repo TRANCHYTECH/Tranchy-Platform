@@ -4,7 +4,6 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Bogus" Version="35.4.0" />
     <PackageVersion Include="IdGen" Version="3.0.3" />
     <PackageVersion Include="IdGen.DependencyInjection" Version="3.0.0" />
     <PackageVersion Include="Jdenticon-net" Version="3.1.2" />

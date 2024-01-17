@@ -4,8 +4,5 @@
  * Tranchy Ask Api Documentation
  * OpenAPI spec version: v1
  */
-import type { CategoryBriefTitle } from "./categoryBriefTitle"
 
-export interface CategoryBrief {
-  title?: CategoryBriefTitle
-}
+export type CategoryBriefTitle = { [key: string]: string } | null

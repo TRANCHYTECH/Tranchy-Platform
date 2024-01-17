@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Swashbuckle.AspNetCore.Annotations;
 using Tranchy.Common.Data;
+using Tranchy.Question.Data;
 
 namespace Tranchy.Question.Responses;
 
@@ -38,7 +39,7 @@ public class QuestionBrief : IQueryIndex
 
 public class CategoryBrief
 {
-    public required string Title { get; set; }
+    public required LocalizedString Title { get; set; }
 }
 
 [SwaggerSchema(Required = ["data"])]
