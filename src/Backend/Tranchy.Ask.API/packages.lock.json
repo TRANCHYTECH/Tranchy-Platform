@@ -1299,7 +1299,6 @@
       "tranchy.question": {
         "type": "Project",
         "dependencies": {
-          "Bogus": "[35.4.0, )",
           "FluentValidation": "[11.9.0, )",
           "FluentValidation.AspNetCore": "[11.3.0, )",
           "IdGen": "[3.0.3, )",
@@ -1333,12 +1332,6 @@
           "Azure.Storage.Common": "12.18.1",
           "System.Text.Json": "4.7.2"
         }
-      },
-      "Bogus": {
-        "type": "CentralTransitive",
-        "requested": "[35.4.0, )",
-        "resolved": "35.4.0",
-        "contentHash": "XdUvztqAXJb3CI0+/fJrB4K7p8bOlnmhplibMCDpl4vHG/NRDjG9qionxYf9DKk7cbVfMTUfSkQ7hcxKBdO0Dg=="
       },
       "FluentValidation": {
         "type": "CentralTransitive",
