@@ -1,29 +1,35 @@
-import React, { FC, useCallback } from "react"
+import React, { FC, useCallback, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { ViewStyle } from "react-native"
 import { MainTabScreenProps } from "app/navigators"
 import { ListView, Screen } from "app/components"
-import { BlockItem, BlockItemType } from "../UIBlocks/BlockItem"
+import { BlockItem, BlockItemType, ExtraData } from "../UIBlocks/BlockItem"
 import { useStores } from "app/models"
 import { useFocusEffect } from "@react-navigation/native"
 import { buildBlocks } from "./Blocks"
+import { currentLocale } from "app/i18n"
+
+const locale = currentLocale()
 
 interface WalkAroundScreenProps extends MainTabScreenProps<"WalkAround"> {}
 
 export const WalkAroundScreen: FC<WalkAroundScreenProps> = observer(function WalkAroundScreen() {
-  const { highlightStore } = useStores()
+  const { highlightStore, metadataStore } = useStores()
+  const [extraData, setExtraData] = useState<ExtraData>()
+  const [refreshing, setRefreshing] = useState(false)
+
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true)
+    await highlightStore.getUserHighlights()
+    setRefreshing(false)
+  }, [])
 
   useFocusEffect(
     useCallback(() => {
       async function load() {
         await highlightStore.getUserHighlights()
-        if (__DEV__) {
-          console.tron.display({
-            name: "loaded Highlights action",
-            value: highlightStore.userHighlights,
-          })
-        }
       }
+      setExtraData({ categories: metadataStore.questionCategories, locale })
       load()
     }, []),
   )
@@ -33,8 +39,11 @@ export const WalkAroundScreen: FC<WalkAroundScreenProps> = observer(function Wal
       <ListView<BlockItemType>
         estimatedItemSize={120}
         getItemType={(item) => item.type}
-        renderItem={({ item }) => <BlockItem data={item} />}
+        renderItem={({ item, extraData }) => <BlockItem data={item} extraData={extraData} />}
         data={buildBlocks(highlightStore.userHighlights)}
+        extraData={extraData}
+        onRefresh={handleRefresh}
+        refreshing={refreshing}
       />
     </Screen>
   )

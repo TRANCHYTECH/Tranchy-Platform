@@ -33,7 +33,7 @@ public class GetUserHighlights : IEndpoint
                                         new BsonDocument("$facet",
                                         new BsonDocument
                                             {
-                                                { "TopQuesionsBySupportLevels",
+                                                { "TopQuestionsBySupportLevels",
                                         new BsonArray
                                                 {
                                                     new BsonDocument("$bucket",
@@ -45,7 +45,7 @@ public class GetUserHighlights : IEndpoint
                                                             {
                                                                 1,
                                                                 2,
-                                                                3
+                                                                3,
                                                             } },
                                                             { "default", "Other" },
                                                             { "output",
@@ -89,7 +89,7 @@ public class GetUserHighlights : IEndpoint
                                                     new BsonDocument("$sort",
                                                     new BsonDocument("TotalQuestions", -1)),
                                                     new BsonDocument("$limit", 5)
-                                                } }
+                                                } },
                                             })
                                     };
 #pragma warning restore IDE0090 // Use 'new(...)'
@@ -101,7 +101,7 @@ public class GetUserHighlights : IEndpoint
         }, cancellationToken: cancellation);
         var result = await cursor.FirstOrDefaultAsync(cancellation);
 
-        var expertQuestions = result.TopQuesionsBySupportLevels.SingleOrDefault(t => t.Id == SupportLevel.Expert);
+        var expertQuestions = result.TopQuestionsBySupportLevels.SingleOrDefault(t => t.Id == SupportLevel.Expert);
         if (expertQuestions is not null)
         {
             response.ExpertExclusive.Data = expertQuestions.Questions.Take(5).ToList();

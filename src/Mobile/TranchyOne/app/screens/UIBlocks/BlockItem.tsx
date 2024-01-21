@@ -5,6 +5,12 @@ import { QuestionItem, renderQuestionItem } from "./QuestionItem"
 import { QuestionSectionsItem, renderQuestionSectionsItem } from "./QuestionSectionsItem"
 import { SectionTitleItem, renderSectionTitleItem } from "./SectionTitleItem"
 import { SeeMoreItem, renderSeeMoreItem } from "./SeeMoreItem"
+import { QuestionCategoryResponse } from "app/services/ask-api/models"
+
+export type ExtraData = {
+  categories: QuestionCategoryResponse[]
+  locale: string
+}
 
 export interface BlockItemBase {
   readonly type: BlockType
@@ -41,7 +47,13 @@ export type BlockItemType =
   | PopularCategoriesItem
 export { QuestionItem, PopularCategoriesItem }
 
-export const BlockItem = observer(function BlockItem({ data }: { data: BlockItemType }) {
+export const BlockItem = observer(function BlockItem({
+  data,
+  extraData,
+}: {
+  data: BlockItemType
+  extraData: ExtraData
+}) {
   switch (data.type) {
     case "QuestionSections": {
       return renderQuestionSectionsItem(data as QuestionSectionsItem)
@@ -50,16 +62,16 @@ export const BlockItem = observer(function BlockItem({ data }: { data: BlockItem
       return renderSectionTitleItem(data as SectionTitleItem)
     }
     case "ExpertDeals": {
-      return renderExpertDealsItem(data as ExpertDealsItem)
+      return renderExpertDealsItem(data as ExpertDealsItem, extraData)
     }
     case "QuestionItem": {
-      return renderQuestionItem(data as QuestionItem)
+      return renderQuestionItem(data as QuestionItem, extraData)
     }
     case "SeeMore": {
       return renderSeeMoreItem(data as SeeMoreItem)
     }
     case "PopularCategories": {
-      return renderPopularCategoriesItem(data as PopularCategoriesItem)
+      return renderPopularCategoriesItem(data as PopularCategoriesItem, extraData)
     }
     default:
       throw new Error("Not supported block type")

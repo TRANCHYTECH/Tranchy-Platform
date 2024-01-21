@@ -4,8 +4,8 @@
  * Tranchy Ask Api Documentation
  * OpenAPI spec version: v1
  */
-import type { CategoryBriefTitle } from "./categoryBriefTitle"
 
 export interface CategoryBrief {
-  title?: CategoryBriefTitle
+  id: string
+  totalQuestions?: number
 }
