@@ -39,11 +39,29 @@ public class QuestionBrief : IQueryIndex
 
 public class CategoryBrief
 {
-    public required LocalizedString Title { get; set; }
+    [Required]
+    public required string Id { get; init; }
+
+    public required int TotalQuestions { get; init; }
 }
 
 [SwaggerSchema(Required = ["data"])]
 public record Section<T> where T : class
 {
     [SwaggerSchema(Nullable = false)] public ICollection<T> Data { get; set; } = new List<T>();
+}
+
+public class HighlightAggregate
+{
+    public required ICollection<TopQuestionsBySupportLevel> TopQuestionsBySupportLevels { get; set; }
+
+    public required ICollection<CategoryBrief> TopCategories { get; set; }
+}
+
+public class TopQuestionsBySupportLevel
+{
+    [Field("_id")]
+    public SupportLevel Id { get; set; }
+
+    public required ICollection<QuestionBrief> Questions { get; set; }
 }

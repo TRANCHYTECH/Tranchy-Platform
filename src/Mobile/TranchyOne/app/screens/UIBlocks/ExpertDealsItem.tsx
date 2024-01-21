@@ -2,9 +2,10 @@ import { colors, spacing, typography } from "app/theme"
 import React from "react"
 import { Dimensions, TextStyle, View, ViewStyle } from "react-native"
 import Carousel from "react-native-reanimated-carousel"
-import { BlockItemBase, BlockType } from "./BlockItem"
+import { BlockItemBase, BlockType, ExtraData } from "./BlockItem"
 import { QuestionBrief } from "app/services/ask-api/models"
 import { Chip, Text } from "react-native-paper"
+import { getTitle } from "app/utils/localeTitle"
 const windowWidth = Dimensions.get("window").width
 const baseOptions = {
   vertical: false,
@@ -29,7 +30,7 @@ export type ExpertDealsItemData = {
   price: string
 }
 
-export const renderExpertDealsItem = (input: ExpertDealsItem) => {
+export const renderExpertDealsItem = (input: ExpertDealsItem, extraData: ExtraData) => {
   return (
     <View style={$container}>
       <Carousel
@@ -54,13 +55,13 @@ export const renderExpertDealsItem = (input: ExpertDealsItem) => {
                 {item.categories?.map((item, index) => {
                   return (
                     <Chip key={index} textStyle={$category} style={$categoryChip}>
-                      {item}
+                      {getTitle(extraData.categories, item, extraData.locale)}
                     </Chip>
                   )
                 })}
               </View>
               <Chip textStyle={[$category, $price]} style={$categoryChip}>
-                {item.price}
+                {item.price ?? "No Price"}
               </Chip>
             </View>
           </View>

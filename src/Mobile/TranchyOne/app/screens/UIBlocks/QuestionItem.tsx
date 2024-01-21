@@ -6,7 +6,8 @@ import { Icon, MD3Colors, Text } from "react-native-paper"
 import Config from "../../config"
 import { colors, spacing, typography } from "app/theme"
 import { timeAgo } from "app/utils/formatDate"
-import { BlockItemBase, BlockItemPosition, BlockType } from "./BlockItem"
+import { BlockItemBase, BlockItemPosition, BlockType, ExtraData } from "./BlockItem"
+import { getTitle } from "app/utils/localeTitle"
 
 export type QuestionItemData = {
   title: string
@@ -33,7 +34,7 @@ export class QuestionItem implements BlockItemBase {
   }
 }
 
-export const renderQuestionItem = (input: QuestionItem) => {
+export const renderQuestionItem = (input: QuestionItem, extraData: ExtraData) => {
   return (
     <>
       <View style={$container}>
@@ -64,7 +65,7 @@ export const renderQuestionItem = (input: QuestionItem) => {
           {input.data.categories?.map((item, index) => {
             return (
               <Text key={index} style={$bottomLine.categoryTag}>
-                #{item}
+                #{getTitle(extraData.categories, item, extraData.locale)}
               </Text>
             )
           })}

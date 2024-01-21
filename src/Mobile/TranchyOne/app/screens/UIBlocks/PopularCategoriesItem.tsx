@@ -2,10 +2,11 @@ import { TextStyle, View, ViewStyle } from "react-native"
 import React from "react"
 import { Text } from "app/components"
 import { Button } from "react-native-paper"
-import { BlockItemBase, BlockType } from "./BlockItem"
+import { BlockItemBase, BlockType, ExtraData } from "./BlockItem"
 import { CategoryBrief } from "app/services/ask-api/models"
 import { colors, spacing, typography } from "app/theme"
 import { currentLocale } from "app/i18n"
+import { getTitle } from "app/utils/localeTitle"
 
 const locale = currentLocale()
 
@@ -22,7 +23,7 @@ export class PopularCategoriesItem implements BlockItemBase {
   }
 }
 
-export const renderPopularCategoriesItem = (input: PopularCategoriesItem) => {
+export const renderPopularCategoriesItem = (input: PopularCategoriesItem, extraData: ExtraData) => {
   return (
     <View style={$container}>
       <Text style={$textIntro}>Khám phá những chủ đề phổ biến nhất đang có tại TranChy One</Text>
@@ -36,7 +37,7 @@ export const renderPopularCategoriesItem = (input: PopularCategoriesItem) => {
               textColor={colors.text}
               labelStyle={$categoryButtonText}
             >
-              {item.title && item.title[locale]}
+              {getTitle(extraData.categories, item.id, extraData.locale)}
             </Button>
           )
         })}

@@ -8,7 +8,6 @@
 export * from "./acceptQuestionRequest"
 export * from "./categoryBrief"
 export * from "./categoryBriefSection"
-export * from "./categoryBriefTitle"
 export * from "./createEventMetadata"
 export * from "./createQuestion400"
 export * from "./createQuestionEvent400"
