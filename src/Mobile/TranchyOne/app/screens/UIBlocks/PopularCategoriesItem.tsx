@@ -5,10 +5,7 @@ import { Button } from "react-native-paper"
 import { BlockItemBase, BlockType, ExtraData } from "./BlockItem"
 import { CategoryBrief } from "app/services/ask-api/models"
 import { colors, spacing, typography } from "app/theme"
-import { currentLocale } from "app/i18n"
 import { getTitle } from "app/utils/localeTitle"
-
-const locale = currentLocale()
 
 export type PopularCategoriesItemData = {
   text: string

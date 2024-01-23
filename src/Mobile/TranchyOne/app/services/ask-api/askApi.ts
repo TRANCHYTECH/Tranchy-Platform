@@ -13,6 +13,7 @@ import type {
   FinishConsultationRequest,
   GetQuestionConfigurationsResponse,
   GetRecentQuestionsParams,
+  GetSavedQuestionsResponse,
   GetUserExpertiseResponse,
   GetUserHighlightsResponse,
   GetUserNotificationResponse,
@@ -20,6 +21,8 @@ import type {
   MobileQuestionEventMessageSent,
   Question,
   QuestionBriefPaginationResponse,
+  SaveQuestionRequest,
+  SaveQuestionResponse,
   UpdateUserExpertiseRequest,
   UpdateUserRequest,
   UploadFileResponse,
@@ -186,6 +189,16 @@ export const updateUserExpertise = (updateUserExpertiseRequest: UpdateUserExpert
 }
 
 /**
+ * @summary Get user saved questions
+ */
+export const getSavedQuestions = () => {
+  return apiRequest<GetSavedQuestionsResponse>({
+    url: `/mobile/users/sections/saved-questions`,
+    method: "GET",
+  })
+}
+
+/**
  * @summary Get current user
  */
 export const getCurrentUser = () => {
@@ -224,6 +237,28 @@ export const getUserNotification = () => {
   })
 }
 
+/**
+ * @summary User saves question to their list
+ */
+export const userSaveQuestion = (saveQuestionRequest: SaveQuestionRequest) => {
+  return apiRequest<SaveQuestionResponse>({
+    url: `/mobile/users/me/sections/saved-questions`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: saveQuestionRequest,
+  })
+}
+
+/**
+ * @summary Unsaved question from their list
+ */
+export const unsavedQuestion = (questionId: string) => {
+  return apiRequest<void>({
+    url: `/mobile/users/me/sections/saved-questions/${questionId}`,
+    method: "DELETE",
+  })
+}
+
 export type CreateQuestionEventResult = NonNullable<Awaited<ReturnType<typeof createQuestionEvent>>>
 export type ListMobileQuestionEventsResult = NonNullable<
   Awaited<ReturnType<typeof listMobileQuestionEvents>>
@@ -244,9 +279,12 @@ export type UploadQuestionFileResult = NonNullable<Awaited<ReturnType<typeof upl
 export type CreateUserExpertiseResult = NonNullable<Awaited<ReturnType<typeof createUserExpertise>>>
 export type GetUserExpertiseResult = NonNullable<Awaited<ReturnType<typeof getUserExpertise>>>
 export type UpdateUserExpertiseResult = NonNullable<Awaited<ReturnType<typeof updateUserExpertise>>>
+export type GetSavedQuestionsResult = NonNullable<Awaited<ReturnType<typeof getSavedQuestions>>>
 export type GetCurrentUserResult = NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>
 export type UpdateUserResult = NonNullable<Awaited<ReturnType<typeof updateUser>>>
 export type GetCurrentUserContactsResult = NonNullable<
   Awaited<ReturnType<typeof getCurrentUserContacts>>
 >
 export type GetUserNotificationResult = NonNullable<Awaited<ReturnType<typeof getUserNotification>>>
+export type UserSaveQuestionResult = NonNullable<Awaited<ReturnType<typeof userSaveQuestion>>>
+export type UnsavedQuestionResult = NonNullable<Awaited<ReturnType<typeof unsavedQuestion>>>

@@ -69,13 +69,15 @@ const AppStack = observer(function AppStack() {
   const {
     authenticationStore: { isAuthenticated, distributeAuthToken },
     metadataStore,
+    questionStore,
   } = useStores()
 
   if (isAuthenticated) {
     distributeAuthToken()
+    metadataStore.getConfigurations(true)
+    // todo:  better to get kind of  this info
+    questionStore.getSavedQuestions()
   }
-
-  metadataStore.getConfigurations(true)
 
   return (
     <Stack.Navigator
