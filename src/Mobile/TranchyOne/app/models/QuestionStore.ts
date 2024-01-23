@@ -1,11 +1,19 @@
 import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import { QuestionModel } from "./Question"
-import { getRecentQuestions, listCommunityQuestions } from "app/services/ask-api/askApi"
+import {
+  getRecentQuestions,
+  getSavedQuestions,
+  listCommunityQuestions,
+  unsavedQuestion,
+  userSaveQuestion,
+} from "app/services/ask-api/askApi"
 import {
   Question as BackendQuestion,
+  GetSavedQuestionsResponse,
   QuestionBrief,
   QuestionBriefPaginationResponse,
+  SaveQuestionResponse,
 } from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"
 import { backendTypes } from "./helpers/backendTypes"
@@ -20,6 +28,7 @@ export const QuestionStoreModel = types
     isLoading: types.optional(types.boolean, false),
     recentQuestions: types.optional(types.array(types.frozen<QuestionBrief>()), []),
     nextQueryIndex: types.maybe(types.number),
+    savedQuestions: types.optional(types.array(types.string), []),
   })
   .actions(withSetPropAction)
   .views((self) => ({
@@ -52,7 +61,7 @@ export const QuestionStoreModel = types
         self.isLoading = true
 
         const response: ApiResponse<QuestionBriefPaginationResponse> = yield getRecentQuestions({
-          PageSize: 6,
+          PageSize: 12,
           QueryIndex: firstCall ? undefined : self.nextQueryIndex,
         })
         if (response.ok && response.data && response.data.data.length > 0) {
@@ -68,6 +77,32 @@ export const QuestionStoreModel = types
       } finally {
         self.isLoading = false
       }
+    }),
+    getSavedQuestions: flow(function* func() {
+      const response: ApiResponse<GetSavedQuestionsResponse> = yield getSavedQuestions()
+      if (response.ok && response.data && response.data.questions) {
+        self.savedQuestions = cast(response.data.questions)
+        if (__DEV__) {
+          console.tron.debug("loaded saved questions: " + self.savedQuestions)
+        }
+      }
+    }),
+    toggleSavingQuestion: flow(function* func(questionId: string) {
+      if (self.savedQuestions.includes(questionId)) {
+        const response: ApiResponse<void> = yield unsavedQuestion(questionId)
+        if (response.ok) {
+          self.savedQuestions.remove(questionId)
+          return -1
+        }
+      } else {
+        const response: ApiResponse<SaveQuestionResponse> = yield userSaveQuestion({ questionId })
+        if (response.ok && response.data && response.data.questions) {
+          self.savedQuestions = cast(response.data.questions)
+          return 1
+        }
+      }
+
+      return 0
     }),
   }))
 

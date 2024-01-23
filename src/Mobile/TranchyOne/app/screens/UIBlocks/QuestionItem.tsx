@@ -2,7 +2,7 @@ import { StyleSheet, View, ViewStyle } from "react-native"
 import React from "react"
 import { QuestionBrief } from "app/services/ask-api/models"
 import FastImage, { ImageStyle } from "react-native-fast-image"
-import { Icon, MD3Colors, Text } from "react-native-paper"
+import { Button, Icon, MD3Colors, Text } from "react-native-paper"
 import Config from "../../config"
 import { colors, spacing, typography } from "app/theme"
 import { timeAgo } from "app/utils/formatDate"
@@ -34,7 +34,11 @@ export class QuestionItem implements BlockItemBase {
   }
 }
 
-export const renderQuestionItem = (input: QuestionItem, extraData: ExtraData) => {
+export const renderQuestionItem = (
+  input: QuestionItem,
+  extraData: ExtraData,
+  onPressSaving: (id: string) => void,
+) => {
   return (
     <>
       <View style={$container}>
@@ -53,11 +57,13 @@ export const renderQuestionItem = (input: QuestionItem, extraData: ExtraData) =>
           </Text>
         </View>
         <View style={{}}>
-          {input.data.saved ? (
-            <Icon source="bookmark-multiple" color={MD3Colors.error50} size={20} />
-          ) : (
-            <Icon source="bookmark-multiple-outline" color={colors.date} size={20} />
-          )}
+          <Button onPress={() => onPressSaving(input.data.id)}>
+            {extraData.savedQuestions.includes(input.data.id) ? (
+              <Icon source="bookmark-multiple" color={MD3Colors.error50} size={20} />
+            ) : (
+              <Icon source="bookmark-multiple-outline" color={colors.date} size={20} />
+            )}
+          </Button>
         </View>
       </View>
       <View style={$bottomLine.container}>

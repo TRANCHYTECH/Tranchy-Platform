@@ -32,7 +32,7 @@ public class UserSavedQuestionAction : UserActionBase
         return true;
     }
 
-    public ICollection<string> Questions { get; }
+    public ICollection<string> Questions { get; init; }
 
     public static string GetID(string userId) => $"{userId}_{nameof(UserSavedQuestionAction)}";
 }

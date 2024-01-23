@@ -10,9 +10,9 @@ import { getQuestionConfigurations } from "app/services/ask-api/askApi"
 export const MetadataStoreModel = types
   .model("MetadataStore")
   .props({
-    configurations: types.frozen<GetQuestionConfigurationsResponse>(
-      <GetQuestionConfigurationsResponse>{},
-    ),
+    configurations: types.frozen<GetQuestionConfigurationsResponse>(<
+      GetQuestionConfigurationsResponse
+    >{ questionCategories: [], questionPriorities: [], userId: "", email: "" }),
   })
   .actions(withSetPropAction)
   .views((self) => ({

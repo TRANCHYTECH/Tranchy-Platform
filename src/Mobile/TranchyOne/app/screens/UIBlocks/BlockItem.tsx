@@ -9,6 +9,7 @@ import { QuestionCategoryResponse } from "app/services/ask-api/models"
 
 export type ExtraData = {
   categories: QuestionCategoryResponse[]
+  savedQuestions: string[]
   locale: string
 }
 
@@ -50,9 +51,11 @@ export { QuestionItem, PopularCategoriesItem }
 export const BlockItem = observer(function BlockItem({
   data,
   extraData,
+  onPressSaving,
 }: {
   data: BlockItemType
   extraData: ExtraData
+  onPressSaving: (questionId: string) => void
 }) {
   switch (data.type) {
     case "QuestionSections": {
@@ -65,7 +68,7 @@ export const BlockItem = observer(function BlockItem({
       return renderExpertDealsItem(data as ExpertDealsItem, extraData)
     }
     case "QuestionItem": {
-      return renderQuestionItem(data as QuestionItem, extraData)
+      return renderQuestionItem(data as QuestionItem, extraData, onPressSaving)
     }
     case "SeeMore": {
       return renderSeeMoreItem(data as SeeMoreItem)
