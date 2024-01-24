@@ -4,6 +4,7 @@ import { QuestionModel } from "./Question"
 import {
   getRecentQuestions,
   getSavedQuestions,
+  getUserHighlights,
   listCommunityQuestions,
   unsavedQuestion,
   userSaveQuestion,
@@ -11,6 +12,7 @@ import {
 import {
   Question as BackendQuestion,
   GetSavedQuestionsResponse,
+  GetUserHighlightsResponse,
   QuestionBrief,
   QuestionBriefPaginationResponse,
   SaveQuestionResponse,
@@ -20,6 +22,22 @@ import { backendTypes } from "./helpers/backendTypes"
 import { parseNumber } from "app/utils/methodHelper"
 
 // setLivelinessChecking("error")
+function createDefaultUserHighlights(): GetUserHighlightsResponse {
+  return {
+    expertExclusive: {
+      data: [],
+    },
+    popularCategories: {
+      data: [],
+    },
+    matchProfile: {
+      data: [],
+    },
+    recent: {
+      data: [],
+    },
+  }
+}
 
 export const QuestionStoreModel = types
   .model("QuestionStore")
@@ -29,6 +47,7 @@ export const QuestionStoreModel = types
     recentQuestions: types.optional(types.array(types.frozen<QuestionBrief>()), []),
     nextQueryIndex: types.maybe(types.number),
     savedQuestions: types.optional(types.array(types.string), []),
+    userHighlights: types.frozen<GetUserHighlightsResponse>(createDefaultUserHighlights()),
   })
   .actions(withSetPropAction)
   .views((self) => ({
@@ -53,7 +72,19 @@ export const QuestionStoreModel = types
         self.isLoading = false
       }
     }),
-    getRecentQuestions: flow(function* func(firstCall = true) {
+    getUserHighlights: flow(function* highlights() {
+      try {
+        const response: ApiResponse<GetUserHighlightsResponse> = yield getUserHighlights()
+        if (response.ok) {
+          self.userHighlights = cast(response.data)
+        }
+      } catch (error) {
+        console.error("Failed to fetch user highlights", error)
+      } finally {
+        // self.isLoading = false
+      }
+    }),
+    getRecentQuestions: flow(function* func(firstCall: boolean) {
       try {
         if (__DEV__) {
           console.tron.debug("queryIndex: " + self.nextQueryIndex)
@@ -64,6 +95,7 @@ export const QuestionStoreModel = types
           PageSize: 12,
           QueryIndex: firstCall ? undefined : self.nextQueryIndex,
         })
+        // todo(tau): check wrong logic of nextQueryIndex. case: has data but not next query.
         if (response.ok && response.data && response.data.data.length > 0) {
           firstCall
             ? (self.recentQuestions = cast(response.data.data))

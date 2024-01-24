@@ -8,6 +8,9 @@ import { arrayOrEmptyArray } from "app/utils/methodHelper"
 import { GetUserHighlightsResponse } from "app/services/ask-api/models"
 
 export const buildBlocks = (highlights: GetUserHighlightsResponse) => {
+  if (__DEV__) {
+    console.tron.log("Build blocks of walk around")
+  }
   const orderedList: BlockItemType[] = []
   orderedList.push(
     new QuestionSectionsItem([
@@ -28,7 +31,7 @@ export const buildBlocks = (highlights: GetUserHighlightsResponse) => {
     orderedList.push(new SectionTitleItem({ title: "Mới đăng gần đây" }))
     orderedList.push(
       ...recentData.map<QuestionItem>(
-        (q, index, source) => new QuestionItem(q, getPosition(index, source.length)),
+        (question, index, source) => new QuestionItem(question, getPosition(index, source.length)),
       ),
     )
     orderedList.push(new SeeMoreItem({ route: "RecentQuestions" }))
@@ -45,7 +48,7 @@ export const buildBlocks = (highlights: GetUserHighlightsResponse) => {
     orderedList.push(new SectionTitleItem({ title: "Phù hợp với bạn" }))
     orderedList.push(
       ...matchProfileData.map<QuestionItem>(
-        (q, i, source) => new QuestionItem(q, getPosition(i, source.length)),
+        (question, index, source) => new QuestionItem(question, getPosition(index, source.length)),
       ),
     )
     orderedList.push(new SeeMoreItem({ route: "questions" }))
