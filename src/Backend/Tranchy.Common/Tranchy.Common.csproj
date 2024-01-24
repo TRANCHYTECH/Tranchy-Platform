@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
+	  <Compile Remove="MassTransit\**" />
+	  <EmbeddedResource Remove="MassTransit\**" />
+	  <None Remove="MassTransit\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
@@ -13,7 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="MassTransit\" />
+	  <Folder Include="Events\Payment\" />
 	  <Folder Include="Services\" />
 	</ItemGroup>
 

@@ -1,4 +1,4 @@
-namespace Tranchy.Common.Events;
+namespace Tranchy.Common.Events.User;
 
 public record UserCreatedEvent
 {

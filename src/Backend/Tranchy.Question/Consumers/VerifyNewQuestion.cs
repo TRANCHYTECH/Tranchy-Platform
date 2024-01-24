@@ -2,9 +2,9 @@ using Tranchy.Question.Commands;
 
 namespace Tranchy.Question.Consumers;
 
-public class VerifyQuestionConsumer(ILogger<VerifyQuestionConsumer> logger) : IConsumer<VerifyQuestion>
+public class VerifyNewQuestion(ILogger<VerifyNewQuestion> logger) : IConsumer<VerifyNewQuestionCommand>
 {
-    public async Task Consume(ConsumeContext<VerifyQuestion> context)
+    public async Task Consume(ConsumeContext<VerifyNewQuestionCommand> context)
     {
         var question = await DB.Find<Data.Question>().MatchID(context.Message.Id).ExecuteFirstAsync();
         if (question is null || question.Status != Data.QuestionStatus.New)

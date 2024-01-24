@@ -1,6 +1,6 @@
 using MassTransit;
 using MassTransit.MongoDbIntegration;
-using Tranchy.Common.Events;
+using Tranchy.Common.Events.User;
 
 namespace Tranchy.User.Endpoints.BackOffice;
 

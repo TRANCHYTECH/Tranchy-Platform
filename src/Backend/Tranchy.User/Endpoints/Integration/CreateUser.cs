@@ -2,7 +2,7 @@ using MassTransit;
 using MassTransit.MongoDbIntegration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using Tranchy.User.Events;
+using Tranchy.Common.Events.User;
 using Tranchy.User.Requests;
 
 namespace Tranchy.User.Endpoints.Integration;
@@ -40,7 +40,7 @@ public class CreateUser : IEndpoint
 
             await dbContext.BeginTransaction(cancellationToken);
             await DB.InsertAsync(userEntity, dbContext.Session, cancellationToken);
-            await publishEndpoint.Publish(new UserCreated { Id = userEntity.ID! }, cancellationToken);
+            await publishEndpoint.Publish(new UserCreatedEvent { UserId = userEntity.ID }, cancellationToken);
             await dbContext.CommitTransaction(cancellationToken);
 
             logger.CreatedUser(userEntity.ID, userEntity.UserName);

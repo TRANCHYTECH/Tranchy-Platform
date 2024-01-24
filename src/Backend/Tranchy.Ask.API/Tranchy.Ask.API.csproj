@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tranchy.Common\Tranchy.Common.csproj" />
+    <ProjectReference Include="..\Tranchy.Notification\Tranchy.Notification.csproj" />
     <ProjectReference Include="..\Tranchy.Payment\Tranchy.Payment.csproj" />
     <ProjectReference Include="..\Tranchy.Question\Tranchy.Question.csproj" />
     <ProjectReference Include="..\Tranchy.File\Tranchy.File.csproj" />
