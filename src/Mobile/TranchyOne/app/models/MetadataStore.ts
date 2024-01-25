@@ -1,6 +1,10 @@
-import { Instance, SnapshotIn, SnapshotOut, types, flow } from "mobx-state-tree"
+import { Instance, SnapshotIn, SnapshotOut, types, flow, cast } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
-import { GetQuestionConfigurationsResponse } from "app/services/ask-api/models"
+import {
+  GetQuestionConfigurationsResponse,
+  QuestionCategoryResponse,
+  QuestionPriorityResponse,
+} from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"
 import { getQuestionConfigurations } from "app/services/ask-api/askApi"
 
@@ -10,23 +14,18 @@ import { getQuestionConfigurations } from "app/services/ask-api/askApi"
 export const MetadataStoreModel = types
   .model("MetadataStore")
   .props({
-    configurations: types.frozen<GetQuestionConfigurationsResponse>(
-      <GetQuestionConfigurationsResponse>{},
-    ),
+    questionCategories: types.optional(types.array(types.frozen<QuestionCategoryResponse>()), []),
+    questionPriorities: types.optional(types.array(types.frozen<QuestionPriorityResponse>()), []),
+    userId: types.maybeNull(types.string),
+    email: types.maybeNull(types.string),
   })
   .actions(withSetPropAction)
   .views((self) => ({
-    get questionCategories() {
-      return self.configurations.questionCategories
-    },
-    get questionPriorities() {
-      return self.configurations.questionPriorities
-    },
     questionCategory(key: string) {
-      return this.questionCategories.find((p) => p.key === key)
+      return self.questionCategories.find((p) => p.key === key)
     },
     questionPriority(key: string) {
-      return this.questionPriorities.find((p) => p.key === key)
+      return self.questionPriorities.find((p) => p.key === key)
     },
   }))
   .actions((self) => ({
@@ -36,7 +35,10 @@ export const MetadataStoreModel = types
           const response: ApiResponse<GetQuestionConfigurationsResponse> =
             yield getQuestionConfigurations()
           if (response.ok && response.data) {
-            self.configurations = response.data
+            self.questionCategories = cast(response.data.questionCategories)
+            self.questionPriorities = cast(response.data.questionPriorities)
+            self.userId = response.data.userId
+            self.email = response.data.email
           }
         }
       } catch (error) {
