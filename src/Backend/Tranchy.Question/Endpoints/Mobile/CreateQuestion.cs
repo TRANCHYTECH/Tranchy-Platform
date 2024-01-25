@@ -34,7 +34,7 @@ public class CreateQuestion : IEndpoint
 
         await dbContext.BeginTransaction(cancellation);
         await DB.InsertAsync(newQuestion, dbContext.Session, cancellation);
-        await publishEndpoint.Publish(new QuestionCreated { Id = newQuestion.ID! }, cancellation);
+        await publishEndpoint.Publish(new QuestionCreatedEvent { Id = newQuestion.ID! }, cancellation);
         // Commands.VerifyQuestion command = new() { Id = newQuestion.ID! };
         // await sendEndpointProvider.Send(
         //     command,

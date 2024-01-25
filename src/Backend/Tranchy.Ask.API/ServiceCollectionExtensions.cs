@@ -4,6 +4,8 @@ using MongoDB.Entities;
 using Tranchy.Common;
 using Tranchy.File;
 using Tranchy.File.Consumers;
+using Tranchy.Notification;
+using Tranchy.Notification.Consumers;
 using Tranchy.Payment;
 using Tranchy.Question;
 using Tranchy.Question.Consumers;
@@ -20,6 +22,7 @@ public static class ServiceCollectionExtensions
         FileModule.ConfigureServices(services, configuration);
         PaymentModule.ConfigureServices(services, configuration);
         UserModule.ConfigureServices(services, configuration);
+        NotificationModule.ConfigureServices(services, configuration);
         services.AddMassTransit(c =>
         {
             c.ConfigureHealthCheckOptions(cfg => cfg.MinimalFailureStatus = Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
@@ -40,8 +43,11 @@ public static class ServiceCollectionExtensions
                 ? Environment.UserName
                 : string.Empty;
             c.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter(prefix: endpointPrefix, includeNamespace: false));
-            c.AddConsumersFromNamespaceContaining<QuestionFileUploadedConsumer>();
-            c.AddConsumersFromNamespaceContaining<DefaultAvatarGenerationConsumer>();
+
+            c.AddConsumersFromNamespaceContaining<LogQuestionFileUploaded>();
+            c.AddConsumersFromNamespaceContaining<GenerateDefaultAvatar>();
+            c.AddConsumersFromNamespaceContaining<NotifyQuestionCreatedViaEmail>();
+
             c.UsingAzureServiceBus((ctx, factoryConfig) =>
             {
                 factoryConfig.Host(configuration.ServiceBusConnectionString, hostConfig => hostConfig.TokenCredential = new DefaultAzureCredential());

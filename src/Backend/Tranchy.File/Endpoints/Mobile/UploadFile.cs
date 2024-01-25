@@ -1,8 +1,7 @@
-using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Options;
 using Tranchy.Common.Constants;
-using Tranchy.Common.Events;
+using Tranchy.Common.Events.File;
 using Tranchy.Common.Services;
 using Tranchy.File.Responses;
 
@@ -56,7 +55,7 @@ public class UploadFile : IEndpoint
                 HttpHeaders = new BlobHttpHeaders { ContentType = file.ContentType }
             }, cancellation);
 
-        publishEndpoint.Publish(new QuestionFileUploaded { QuestionId = questionId, FilePath = blob.Uri.AbsolutePath },
+        publishEndpoint.Publish(new QuestionFileUploadedEvent { QuestionId = questionId, FilePath = blob.Uri.AbsolutePath },
             cancellation).Forget();
 
         return TypedResults.Ok(new UploadFileResponse(questionId));

@@ -32,7 +32,7 @@ public class RejectQuestion : IEndpoint
         question.Reject(request.Comment);
         await dbContext.BeginTransaction(cancellationToken);
         await DB.SaveAsync(question, cancellation: cancellationToken);
-        await publishEndpoint.Publish(new QuestionStatusChanged { Id = question.ID!, NewStatus = question.Status, OldStatus = oldStatus }, cancellationToken);
+        await publishEndpoint.Publish(new QuestionStatusChangedEvent { Id = question.ID!, NewStatus = question.Status, OldStatus = oldStatus }, cancellationToken);
         await dbContext.CommitTransaction(cancellationToken);
 
         return TypedResults.NoContent();

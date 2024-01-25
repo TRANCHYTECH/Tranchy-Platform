@@ -1,8 +1,8 @@
 using MassTransit;
 using MassTransit.MongoDbIntegration;
 using Microsoft.Extensions.Logging;
+using Tranchy.Common.Events.User;
 using Tranchy.Common.Services;
-using Tranchy.User.Events;
 using Tranchy.User.Mappers;
 using Tranchy.User.Queries;
 using Tranchy.User.Requests;
@@ -39,7 +39,7 @@ public class CreateUserExpertise : IEndpoint
 
         await dbContext.BeginTransaction(cancellationToken);
         await DB.SaveAsync(user, dbContext.Session, cancellationToken);
-        await publishEndpoint.Publish(new UserExpertiseCreated { UserId = user.ID!, Id = newUserExpertise.ID },
+        await publishEndpoint.Publish(new UserExpertiseCreatedEvent { UserId = user.ID, Id = newUserExpertise.ID },
             cancellationToken);
         await dbContext.CommitTransaction(cancellationToken);
 

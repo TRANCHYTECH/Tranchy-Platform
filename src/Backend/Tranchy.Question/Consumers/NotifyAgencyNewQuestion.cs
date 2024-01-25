@@ -2,9 +2,9 @@ using Tranchy.Question.Events;
 
 namespace Tranchy.Question.Consumers;
 
-public class NotifyAgencyConsumer(ILogger<NotifyAgencyConsumer> logger) : IConsumer<QuestionCreated>
+public class NotifyAgencyNewQuestion(ILogger<NotifyAgencyNewQuestion> logger) : IConsumer<QuestionCreatedEvent>
 {
-    public Task Consume(ConsumeContext<QuestionCreated> context)
+    public Task Consume(ConsumeContext<QuestionCreatedEvent> context)
     {
         logger.CreatedQuestion("User created question '{id}'", context.Message.Id);
 

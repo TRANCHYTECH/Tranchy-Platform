@@ -1,6 +1,6 @@
 namespace Tranchy.Question.Events;
 
-public record QuestionEventCreated
+public record QuestionCreatedEvent
 {
     public required string Id { get; set; }
 }

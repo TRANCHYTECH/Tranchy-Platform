@@ -34,7 +34,7 @@ public class CreateQuestionEvent : IEndpoint
 
         await DB.InsertAsync(newQuestionEvent, dbContext.Session, token);
 
-        await publishEndpoint.Publish(new QuestionEventCreated { Id = newQuestionEvent.ID! }, token);
+        await publishEndpoint.Publish(new QuestionEventCreatedEvent { Id = newQuestionEvent.ID! }, token);
 
         await dbContext.CommitTransaction(token);
 

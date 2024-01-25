@@ -1,8 +1,8 @@
 using MassTransit;
 using MassTransit.MongoDbIntegration;
 using Microsoft.Extensions.Logging;
+using Tranchy.Common.Events.User;
 using Tranchy.Common.Services;
-using Tranchy.User.Events;
 using Tranchy.User.Mappers;
 using Tranchy.User.Queries;
 using Tranchy.User.Requests;
@@ -37,7 +37,7 @@ public class UpdateUser : IEndpoint
         var updatedUser = request.ToEntity(user);
         await dbContext.BeginTransaction(cancellationToken);
         await DB.SaveAsync(updatedUser, dbContext.Session, cancellationToken);
-        await publishEndpoint.Publish(new UserUpdated { Id = user.ID! }, cancellationToken);
+        await publishEndpoint.Publish(new UserUpdatedEvent { Id = user.ID! }, cancellationToken);
         await dbContext.CommitTransaction(cancellationToken);
 
         logger.UpdatedUser(user.ID!, user.UserName!);
