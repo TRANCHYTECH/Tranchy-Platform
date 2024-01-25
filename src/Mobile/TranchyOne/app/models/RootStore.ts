@@ -11,9 +11,9 @@ import { QuestionStoreModel } from "./QuestionStore"
 export const RootStoreModel = types
   .model("RootStore")
   .props({
-    uiStore: types.optional(UiStoreModel, {} as any),
-    metadataStore: types.optional(MetadataStoreModel, {} as any),
-    questionStore: types.optional(QuestionStoreModel, {} as any),
+    uiStore: types.optional(UiStoreModel, {}),
+    metadataStore: types.optional(MetadataStoreModel, {}),
+    questionStore: types.optional(QuestionStoreModel, {}),
     authenticationStore: types.optional(AuthenticationStoreModel, {}),
     episodeStore: types.optional(EpisodeStoreModel, {}),
   })

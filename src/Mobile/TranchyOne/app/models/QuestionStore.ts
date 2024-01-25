@@ -22,32 +22,17 @@ import { backendTypes } from "./helpers/backendTypes"
 import { parseNumber } from "app/utils/methodHelper"
 
 // setLivelinessChecking("error")
-function createDefaultUserHighlights(): GetUserHighlightsResponse {
-  return {
-    expertExclusive: {
-      data: [],
-    },
-    popularCategories: {
-      data: [],
-    },
-    matchProfile: {
-      data: [],
-    },
-    recent: {
-      data: [],
-    },
-  }
-}
+const EndOfPage = -1
 
 export const QuestionStoreModel = types
   .model("QuestionStore")
   .props({
+    userHighlights: types.maybeNull(types.frozen<GetUserHighlightsResponse>()),
+    recentQuestions: types.optional(types.array(types.frozen<QuestionBrief>()), []),
+    savedQuestions: types.optional(types.array(types.string), []),
     questions: backendTypes.arrayType(QuestionModel),
     isLoading: types.optional(types.boolean, false),
-    recentQuestions: types.optional(types.array(types.frozen<QuestionBrief>()), []),
     nextQueryIndex: types.maybe(types.number),
-    savedQuestions: types.optional(types.array(types.string), []),
-    userHighlights: types.frozen<GetUserHighlightsResponse>(createDefaultUserHighlights()),
   })
   .actions(withSetPropAction)
   .views((self) => ({
@@ -59,6 +44,18 @@ export const QuestionStoreModel = types
     },
   }))
   .actions((self) => ({
+    getUserHighlights: flow(function* func() {
+      try {
+        const response: ApiResponse<GetUserHighlightsResponse> = yield getUserHighlights()
+        if (response.ok) {
+          self.userHighlights = cast(response.data)
+        }
+      } catch (error) {
+        console.error("Failed to fetch user highlights", error)
+      } finally {
+        self.isLoading = false
+      }
+    }),
     listPublicQuestions: flow(function* func() {
       try {
         self.isLoading = true
@@ -72,35 +69,29 @@ export const QuestionStoreModel = types
         self.isLoading = false
       }
     }),
-    getUserHighlights: flow(function* highlights() {
-      try {
-        const response: ApiResponse<GetUserHighlightsResponse> = yield getUserHighlights()
-        if (response.ok) {
-          self.userHighlights = cast(response.data)
-        }
-      } catch (error) {
-        console.error("Failed to fetch user highlights", error)
-      } finally {
-        // self.isLoading = false
-      }
-    }),
-    getRecentQuestions: flow(function* func(firstCall: boolean) {
+    getRecentQuestions: flow(function* func(resetQueryIndex: boolean) {
       try {
         if (__DEV__) {
           console.tron.debug("queryIndex: " + self.nextQueryIndex)
         }
+
+        if (!resetQueryIndex && self.nextQueryIndex === EndOfPage) {
+          return
+        }
+
         self.isLoading = true
 
         const response: ApiResponse<QuestionBriefPaginationResponse> = yield getRecentQuestions({
           PageSize: 12,
-          QueryIndex: firstCall ? undefined : self.nextQueryIndex,
+          QueryIndex: resetQueryIndex ? undefined : self.nextQueryIndex,
         })
-        // todo(tau): check wrong logic of nextQueryIndex. case: has data but not next query.
+
         if (response.ok && response.data && response.data.data.length > 0) {
-          firstCall
+          resetQueryIndex
             ? (self.recentQuestions = cast(response.data.data))
             : self.recentQuestions.push(...response.data.data)
-          self.nextQueryIndex = parseNumber(response.data.nextQueryIndex)
+
+          self.nextQueryIndex = parseNumber(response.data.nextQueryIndex) ?? EndOfPage
         }
       } catch (error) {
         if (__DEV__) {
@@ -124,17 +115,17 @@ export const QuestionStoreModel = types
         const response: ApiResponse<void> = yield unsavedQuestion(questionId)
         if (response.ok) {
           self.savedQuestions.remove(questionId)
-          return -1
+          return "Saved"
         }
       } else {
         const response: ApiResponse<SaveQuestionResponse> = yield userSaveQuestion({ questionId })
         if (response.ok && response.data && response.data.questions) {
           self.savedQuestions = cast(response.data.questions)
-          return 1
+          return "Unsaved"
         }
       }
 
-      return 0
+      return "NotMatch"
     }),
   }))
 

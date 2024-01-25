@@ -26,7 +26,11 @@ export function QuestionsScreen({
   enableOnEndReached,
 }: QuestionsScreenProps) {
   const { questionStore, metadataStore } = useStores()
-  const [extraData, setExtraData] = useState<ExtraData>()
+  const [extraData, setExtraData] = useState<ExtraData>({
+    categories: [],
+    savedQuestions: [],
+    locale,
+  })
   const [refreshing, setRefreshing] = useState(false)
   const notification = useRef<FlashMessage>(null)
 
@@ -38,12 +42,12 @@ export function QuestionsScreen({
 
   const handleSaving = async (questionId: string) => {
     const result = await questionStore.toggleSavingQuestion(questionId)
-    if (result === 0) {
+    if (result === "NotMatch") {
       return
     }
 
     notification.current?.showMessage({
-      message: result === 1 ? "Đã lưu câu hỏi" : "Đã huỷ lưu câu hỏi",
+      message: result === "Saved" ? "Đã lưu câu hỏi" : "Đã huỷ lưu câu hỏi",
       type: "success",
       position: "top",
       style: $flashMessage,
