@@ -8,7 +8,7 @@ export const buildBlocks = (questions: QuestionBrief[]) => {
   if (questions.length > 0) {
     orderedList.push(
       ...questions.map<QuestionItem>(
-        (q, i, source) => new QuestionItem(q, getPosition(i, source.length)),
+        (question, index, source) => new QuestionItem(question, getPosition(index, source.length)),
       ),
     )
   }
