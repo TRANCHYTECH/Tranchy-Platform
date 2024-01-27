@@ -1,0 +1,36 @@
+<p-dialog
+  [(visible)]="visible"
+  [style]="{ width: '450px' }"
+  header="{{ 'questionModule.Comment.title' | translate }}"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="approvalForm">
+      <div class="field">
+        <label for="Comment" class="form-label">{{
+          'questionModule.Comment.message.ask-for-comment' | translate
+        }}</label>
+        <textarea
+          rows="5"
+          cols="30"
+          pInputTextarea
+          id="comment"
+          formControlName="comment"
+          required
+          autofocus
+          class="form-control"
+        ></textarea>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button class="mdi mdi-eye" (click)="onConfirmClick()">
+      {{ 'common.buttons.save' | translate }}
+    </button>
+    <button class="p-button-text" (click)="onCancelClick()">
+      {{ 'common.buttons.cancel' | translate }}
+    </button>
+  </ng-template>
+</p-dialog>
