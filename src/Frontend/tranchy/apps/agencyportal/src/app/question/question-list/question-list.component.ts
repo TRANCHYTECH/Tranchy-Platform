@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
+  ViewChild,
   inject,
   signal,
 } from '@angular/core';
@@ -16,21 +17,23 @@ import { InputTextModule } from 'primeng/inputtext';
 import { NgxSpinnerService } from "ngx-spinner";
 
 import { TranchyAskApiDocumentationService } from '../../_state/askapi/askapi.service';
-import { GetUserResponse, Question, QuestionOutput } from '../../_state/askapi/models';
+import { GetUserResponse, Question } from '../../_state/askapi/models';
 import { PortalConfig } from '../../app.config';
 import { firstValueFrom } from 'rxjs';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { BreadcrumbItem, BreadcrumbsComponent } from '../../shared/breadcrumbs/breadcrumbs.component';
+import { QuestionDetailComponent } from './question-detail.component';
+import { ApprovalCommentComponent } from './approval-comment.component';
 
 enum Decision {
-  Accepted,
+  Approved,
   Rejected
 }
 
 @Component({
   selector: 'tranchy-question-list',
   standalone: true,
-  imports: [SharedModule, ConfirmDialogModule, TableModule, DialogModule, InputTextModule, ReactiveFormsModule, BreadcrumbsComponent],
+  imports: [SharedModule, ConfirmDialogModule, TableModule, DialogModule, InputTextModule, ReactiveFormsModule, BreadcrumbsComponent, QuestionDetailComponent, ApprovalCommentComponent],
   templateUrl: './question-list.component.html',
   styleUrls: ['./question-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,33 +48,19 @@ export class QuestionListComponent implements OnInit {
   fb = inject(FormBuilder);
   spinner = inject(NgxSpinnerService);
 
-  question = signal<Partial<QuestionOutput>>({});
   selectedQuestion: Question | undefined = undefined;
 
   questions = signal<Question[]>([]);
-  showQuestionDialog = false;
-  showApprovalDialog = false;
+  @ViewChild("questionDetailDialog") questionDetailDialog!: QuestionDetailComponent;
+  @ViewChild("approvalCommentDialog") approvalCommentDialog!: ApprovalCommentComponent;
+
   decision: Decision | undefined = undefined;
   user: Partial<GetUserResponse> = {};
-
-  questionForm: FormGroup;
-  approvalForm: FormGroup;
-
   breadCrumbItems: Array<BreadcrumbItem> = [];
   /**
    *
    */
   constructor() {
-    this.questionForm = this.fb.group({
-      title: null,
-      status: null,
-      priority: null,
-      categories: null,
-      comment: null
-    });
-    this.approvalForm = this.fb.group({
-      comment: null
-    });
   }
 
   async ngOnInit(): Promise<void> {
@@ -79,69 +68,47 @@ export class QuestionListComponent implements OnInit {
   }
 
   viewDetail(question: Question) {
-    this.showQuestionDialog = true;
-    this.decision = undefined;
     this.selectedQuestion = question;
-
-    const formData = (({ priorityId, questionCategoryIds, status, supportLevel, title, comment }) => ({ priorityId, questionCategoryIds, status, supportLevel, title, comment }))(question);
-
-    this.questionForm.setValue({
-      title: formData.title,
-      status: formData.status,
-      priority: formData.priorityId,
-      categories: formData.questionCategoryIds?.join(', '),
-      comment: formData.comment
-    });
+    this.questionDetailDialog.show(this.selectedQuestion);
   }
 
   hideDetail() {
-    this.showQuestionDialog = false;
+    this.questionDetailDialog.hide();
   }
 
-  accept() {
-    this.decision = Decision.Accepted;
-    this.ShowApprovalDialog();
+  onApproved() {
+    this.decision = Decision.Approved;
+    this.approvalCommentDialog.show();
   }
 
-  reject() {
+  onRejected() {
     this.decision = Decision.Rejected;
-    this.ShowApprovalDialog();
+    this.approvalCommentDialog.show();
   }
 
-  get canApproval() {
-  return this.selectedQuestion?.status === 'New' || this.selectedQuestion?.status == 'BeingReviewed';
+ cancelApproval() {
+    this.approvalCommentDialog.hide();
   }
 
-  async confirmApproval() {
+  async confirmApproval(comment: string) {
     this.spinner.show();
     switch (this.decision) {
-      case Decision.Accepted:
+      case Decision.Approved:
         await firstValueFrom(this.askAPIService.acceptQuestion(this.selectedQuestion!.id!, {
-          comment: this.approvalForm.get('comment')?.value
+          comment: comment
         }));
         break;
       case Decision.Rejected:
         await firstValueFrom(this.askAPIService.rejectQuestion(this.selectedQuestion!.id!, {
-          comment: this.approvalForm.get('comment')?.value
+          comment: comment
         }));
         break;
     }
 
-    this.showApprovalDialog = false;
-    this.showQuestionDialog = false;
-    this.reloadQuestions();
+    this.approvalCommentDialog.hide();
+    this.questionDetailDialog.hide();
+    await this.reloadQuestions();
     this.spinner.hide();
-  }
-
-  cancelApproval() {
-    this.showApprovalDialog = false;
-  }
-
-  private ShowApprovalDialog() {
-    this.approvalForm.setValue({
-      comment: ''
-    });
-    this.showApprovalDialog = true;
   }
 
   private async reloadQuestions() {

@@ -37,7 +37,8 @@
       "priority": "Priority",
       "question-categories": "Categories",
       "created-on": "Creation date",
-      "details": "Details"
+      "details": "Details",
+      "comment": "Comment"
     },
     "Comment": {
       "title": "Comment",

@@ -1,4 +1,10 @@
 {
+  "common": {
+    "buttons": {
+      "save": "Save",
+      "cancel" :"Cancel"
+    }
+  },
   "menu": {
     "user": {
       "title": "Users",
@@ -31,8 +37,18 @@
       "priority": "Priority",
       "question-categories": "Categories",
       "created-on": "Creation date",
-      "details": "Details"
+      "details": "Details",
+      "comment": "Comment"
+    },
+    "Comment": {
+      "title": "Comment",
+      "accept": "Accept",
+      "reject": "Reject",
+      "message": {
+        "ask-for-comment": "Please leave your comment"
+      }
     }
+    
   },
   "dashboardModule": {
     "homePage": {

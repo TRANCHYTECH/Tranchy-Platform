@@ -27,6 +27,7 @@ import { TwoColumnSidebarComponent } from './two-column-sidebar/two-column-sideb
 // Load Icons
 import { defineElement } from 'lord-icon-element';
 import lottie from 'lottie-web';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import lottie from 'lottie-web';
     FormsModule,
     ReactiveFormsModule,
     FeatherModule.pick(allIcons),
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
   ],
   providers: [LanguageService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

@@ -50,12 +50,12 @@
             <td>{{ question.createdOn | date }}</td>
             <td>
               <button
-                pButton
-                pRipple
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-success mr-2"
+                type="button"
+                class="btn btn-sm btn-light"
                 (click)="viewDetail(question)"
-              ></button>
+              >
+                {{ 'questionModule.questionListPage.details' | translate }}
+              </button>
             </td>
           </tr>
         </ng-template>
@@ -65,166 +65,5 @@
   </div>
 </div>
 
-<p-dialog
-  [(visible)]="showQuestionDialog"
-  [style]="{ width: '450px' }"
-  header="{{ 'questionModule.questionListPage.details' | translate }}"
-  [modal]="true"
-  styleClass="p-fluid"
->
-  <ng-template pTemplate="content">
-    <form [formGroup]="questionForm">
-      <div class="field">
-        <label for="Title" class="form-label">{{
-          'questionModule.questionListPage.question-title' | translate
-        }}</label>
-        <textarea
-          rows="5"
-          cols="30"
-          pInputTextarea
-          id="Title"
-          formControlName="title"
-          required
-          autofocus
-          class="form-control"
-        ></textarea>
-      </div>
-      <div class="field">
-        <label for="Status" class="form-label">{{
-          'questionModule.questionListPage.status' | translate
-        }}</label>
-        <input
-          type="text"
-          pInputText
-          id="Status"
-          formControlName="status"
-          required
-          autofocus
-          class="form-control"
-        />
-      </div>
-
-      <div class="field">
-        <label for="priority" class="form-label">{{
-          'questionModule.questionListPage.priority' | translate
-        }}</label>
-        <input
-          type="text"
-          pInputText
-          id="priority"
-          formControlName="priority"
-          required
-          autofocus
-          class="form-control"
-        />
-      </div>
-
-      <div class="field">
-        <label for="categories" class="form-label">{{
-          'questionModule.questionListPage.question-categories' | translate
-        }}</label>
-        <input
-          type="text"
-          pInputText
-          id="categories"
-          formControlName="categories"
-          required
-          autofocus
-          class="form-control"
-        />
-      </div>
-      <div class="field">
-        <label for="Comment" class="form-label">{{
-          'questionModule.questionListPage.comment | translate
-        }}</label>
-        <textarea
-          rows="5"
-          cols="30"
-          pInputTextarea
-          id="Comment"
-          formControlName="comment"
-          required
-          autofocus
-          class="form-control"
-        ></textarea>
-      </div>
-    </form>
-  </ng-template>
-
-  <ng-template pTemplate="footer">
-    <ng-container *ngIf="canApproval">
-      <button
-        pButton
-        pRipple
-        label="{{ 'questionModule.Comment.accept' | translate }}"
-        icon="pi pi-times"
-        class="p-button-text"
-        (click)="accept()"
-      ></button>
-      <button
-        pButton
-        pRipple
-        label="{{ 'questionModule.Comment.reject' | translate }}"
-        icon="pi pi-ban"
-        class="p-button-text"
-        (click)="reject()"
-      ></button>
-    </ng-container>
-
-    <button
-      pButton
-      pRipple
-      label="Cancel"
-      icon="pi pi-times"
-      class="p-button-text"
-      (click)="hideDetail()"
-    ></button>
-  </ng-template>
-</p-dialog>
-
-<p-dialog
-  [(visible)]="showApprovalDialog"
-  [style]="{ width: '450px' }"
-  header="{{ 'questionModule.Comment.title' | translate }}"
-  [modal]="true"
-  styleClass="p-fluid"
->
-  <ng-template pTemplate="content">
-    <form [formGroup]="approvalForm">
-      <div class="field">
-        <label for="Comment" class="form-label">{{
-          'questionModule.Comment.message.ask-for-comment' | translate
-        }}</label>
-        <textarea
-          rows="5"
-          cols="30"
-          pInputTextarea
-          id="comment"
-          formControlName="comment"
-          required
-          autofocus
-          class="form-control"
-        ></textarea>
-      </div>
-    </form>
-  </ng-template>
-
-  <ng-template pTemplate="footer">
-    <button
-      pButton
-      pRipple
-      label="{{ 'common.buttons.save' | translate }}"
-      icon="pi pi-save"
-      class="p-button-text"
-      (click)="confirmApproval()"
-    ></button>
-    <button
-      pButton
-      pRipple
-      label="{{ 'common.buttons.cancel' | translate }}"
-      icon="pi pi-times"
-      class="p-button-text"
-      (click)="cancelApproval()"
-    ></button>
-  </ng-template>
-</p-dialog>
+<tranchy-question-detail #questionDetailDialog (approved)="onApproved()" (rejected)="onRejected()"></tranchy-question-detail>
+<tranchy-approval-comment #approvalCommentDialog (confirmed)="confirmApproval($event)" (cancelled)="cancelApproval()"></tranchy-approval-comment>
