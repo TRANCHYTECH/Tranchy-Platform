@@ -1,4 +1,4 @@
-import { StyleSheet, View, ViewStyle } from "react-native"
+import { Pressable, StyleSheet, View, ViewStyle } from "react-native"
 import React from "react"
 import { QuestionBrief } from "app/services/ask-api/models"
 import FastImage, { ImageStyle } from "react-native-fast-image"
@@ -38,9 +38,10 @@ export const renderQuestionItem = (
   input: QuestionItem,
   extraData: ExtraData,
   onPressSaving: (id: string) => void,
+  onPressQuestion: (id: string) => void,
 ) => {
   return (
-    <>
+    <Pressable onPress={() => onPressQuestion(input.data.id)}>
       <View style={$container}>
         <View>
           <FastImage
@@ -86,7 +87,7 @@ export const renderQuestionItem = (
           input.position === "Last" ? $bottomLine.separateLast : $bottomLine.separateFirst,
         ]}
       ></View>
-    </>
+    </Pressable>
   )
 }
 

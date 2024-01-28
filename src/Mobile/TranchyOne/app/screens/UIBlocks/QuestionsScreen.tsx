@@ -2,13 +2,15 @@ import React, { useCallback, useRef, useState } from "react"
 import { View, ViewStyle } from "react-native"
 import { ListView, Screen } from "app/components"
 import { useStores } from "app/models"
-import { useFocusEffect } from "@react-navigation/native"
+import { useFocusEffect, useNavigation } from "@react-navigation/native"
 import { BlockItem, BlockItemType, ExtraData } from "./BlockItem"
 import { currentLocale } from "app/i18n"
 import FlashMessage from "react-native-flash-message"
 import { Button, Icon, MD3Colors } from "react-native-paper"
 import { colors, spacing } from "app/theme"
 import { invoke } from "lodash-es"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { AppStackParamList } from "app/navigators"
 
 const locale = currentLocale()
 
@@ -33,7 +35,9 @@ export function QuestionsScreen({
   })
   const [refreshing, setRefreshing] = useState(false)
   const notification = useRef<FlashMessage>(null)
+  const { navigate } = useNavigation<NativeStackNavigationProp<AppStackParamList>>()
 
+  const goToQuestionDetail = () => navigate("QuestionDetail", { id: "1" })
   const handleRefresh = useCallback(async () => {
     setRefreshing(true)
     await invoke(questionStore, loadQuestionsMethod, true)
@@ -83,7 +87,12 @@ export function QuestionsScreen({
         estimatedItemSize={120}
         getItemType={(item) => item.type}
         renderItem={({ item, extraData }) => (
-          <BlockItem data={item} onPressSaving={handleSaving} extraData={extraData} />
+          <BlockItem
+            data={item}
+            onPressSaving={handleSaving}
+            extraData={extraData}
+            onPressQuestion={goToQuestionDetail}
+          />
         )}
         data={buildBlocks(questionStore[loadQuestionsProperty])}
         extraData={extraData}

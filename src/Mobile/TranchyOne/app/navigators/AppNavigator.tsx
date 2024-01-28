@@ -39,7 +39,6 @@ import { translate } from "app/i18n"
 export type AppStackParamList = {
   Welcome: undefined
   Login: undefined
-  QuestionDetails: { id: string }
   QuestionConversation: { id: string }
   // 🔥 Your screens go here
   Community: undefined
@@ -48,6 +47,7 @@ export type AppStackParamList = {
   Notification: undefined
   MainTab: NavigatorScreenParams<MainTabNavigatorParamList>
   RecentQuestions: undefined
+  QuestionDetail: { id: string }
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -111,6 +111,16 @@ const AppStack = observer(function AppStack() {
               <Text>Filter</Text>
             </View>
           ),
+        }}
+      />
+      <Stack.Screen
+        name="QuestionDetail"
+        component={Screens.QuestionDetailScreen}
+        options={{
+          headerShown: true,
+          title: "Câu hỏi",
+          headerBackVisible: true,
+          headerBackTitleVisible: false,
         }}
       />
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
