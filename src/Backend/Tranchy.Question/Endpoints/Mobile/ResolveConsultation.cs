@@ -3,13 +3,13 @@ using Tranchy.Common.Services;
 
 namespace Tranchy.Question.Endpoints.Mobile;
 
-public class FinishConsultation : IEndpoint
+public class ResolveConsultation : IEndpoint
 {
     public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
         .MapPost("/{questionId}:resolve", Finish)
-        .WithName("FinishConsultation")
+        .WithName("ResolveConsultation")
         .WithTags(Tags.Mobile)
-        .WithSummary("Finish consultation")
+        .WithSummary("Resolve consultation")
         .WithOpenApi();
 
     private static async Task<Results<Ok, BadRequest>> Finish(
