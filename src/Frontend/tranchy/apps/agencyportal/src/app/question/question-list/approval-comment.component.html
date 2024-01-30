@@ -4,6 +4,7 @@
   header="{{ 'questionModule.Comment.title' | translate }}"
   [modal]="true"
   styleClass="p-fluid"
+  [closable]="false"
 >
   <ng-template pTemplate="content">
     <form [formGroup]="approvalForm">
@@ -26,10 +27,10 @@
   </ng-template>
 
   <ng-template pTemplate="footer">
-    <button class="mdi mdi-eye" (click)="onConfirmClick()">
+    <button pButton pRipple class="mdi mdi-eye" (click)="onConfirmClick()">
       {{ 'common.buttons.save' | translate }}
     </button>
-    <button class="p-button-text" (click)="onCancelClick()">
+    <button pButton pRipple class="p-button-text" (click)="onCancelClick()">
       {{ 'common.buttons.cancel' | translate }}
     </button>
   </ng-template>

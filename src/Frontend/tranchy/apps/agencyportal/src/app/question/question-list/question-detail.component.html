@@ -4,83 +4,84 @@
   header="{{ 'questionModule.questionListPage.details' | translate }}"
   [modal]="true"
   styleClass="p-fluid"
+  [closable]="false"
 >
   <ng-template pTemplate="content">
     <form [formGroup]="questionForm">
-      <div class="field">
-        <label for="Title" class="form-label">{{
-          'questionModule.questionListPage.question-title' | translate
-        }}</label>
-        <textarea
-          rows="5"
-          cols="30"
-          pInputTextarea
-          id="Title"
-          formControlName="title"
-          required
-          autofocus
-          class="form-control"
-        ></textarea>
-      </div>
-      <div class="field">
-        <label for="Status" class="form-label">{{
-          'questionModule.questionListPage.status' | translate
-        }}</label>
-        <input
-          type="text"
-          pInputText
-          id="Status"
-          formControlName="status"
-          required
-          autofocus
-          class="form-control"
-        />
-      </div>
+      <fieldset disabled>
+        <div class="mb-3 field">
+          <label for="Title" class="form-label">{{
+            'questionModule.questionListPage.question-title' | translate
+          }}</label>
+          <textarea
+            rows="5"
+            cols="30"
+            pInputTextarea
+            id="Title"
+            formControlName="title"
+            class="form-control disabled"
+          ></textarea>
+        </div>
+        <div class="mb-3 field">
+          <label for="Status" class="form-label">{{
+            'questionModule.questionListPage.status' | translate
+          }}</label>
+          <input
+            type="text"
+            pInputText
+            id="Status"
+            formControlName="status"
+            required
+            autofocus
+            class="form-control"
+          />
+        </div>
 
-      <div class="field">
-        <label for="priority" class="form-label">{{
-          'questionModule.questionListPage.priority' | translate
-        }}</label>
-        <input
-          type="text"
-          pInputText
-          id="priority"
-          formControlName="priority"
-          required
-          autofocus
-          class="form-control"
-        />
-      </div>
+        <div class="mb-3 field">
+          <label for="priority" class="form-label">{{
+            'questionModule.questionListPage.priority' | translate
+          }}</label>
+          <input
+            type="text"
+            pInputText
+            id="priority"
+            formControlName="priority"
+            required
+            autofocus
+            class="form-control"
+          />
+        </div>
 
-      <div class="field">
-        <label for="categories" class="form-label">{{
-          'questionModule.questionListPage.question-categories' | translate
-        }}</label>
-        <input
-          type="text"
-          pInputText
-          id="categories"
-          formControlName="categories"
-          required
-          autofocus
-          class="form-control"
-        />
-      </div>
-      <div class="field">
-        <label for="Comment" class="form-label">{{
-          'questionModule.questionListPage.comment' | translate
-        }}</label>
-        <textarea
-          rows="5"
-          cols="30"
-          pInputTextarea
-          id="Comment"
-          formControlName="comment"
-          required
-          autofocus
-          class="form-control"
-        ></textarea>
-      </div>
+        <div class="mb-3 field">
+          <label for="categories" class="form-label">{{
+            'questionModule.questionListPage.question-categories' | translate
+          }}</label>
+          <input
+            type="text"
+            pInputText
+            id="categories"
+            formControlName="categories"
+            required
+            autofocus
+            class="form-control"
+          />
+        </div>
+        <div class="mb-3 field">
+          <label for="Comment" class="form-label">{{
+            'questionModule.questionListPage.comment' | translate
+          }}</label>
+          <textarea
+            rows="5"
+            cols="30"
+            pInputTextarea
+            id="Comment"
+            formControlName="comment"
+            required
+            autofocus
+            class="form-control"
+          ></textarea>
+        </div>
+      </fieldset>
     </form>
   </ng-template>
 
