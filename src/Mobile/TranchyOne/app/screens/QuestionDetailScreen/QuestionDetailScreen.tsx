@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import { ViewStyle, View, ScrollView, TextStyle, Image } from "react-native"
 import { AppStackParamList, AppStackScreenProps } from "app/navigators"
 import { Screen } from "app/components"
-import { Button, Modal, Portal, Text } from "react-native-paper"
+import { Button, Modal, Portal, ProgressBar, Text } from "react-native-paper"
 import { spacing, privacyImage, colors } from "app/theme"
 import { $rightTextGrow, $row } from "app/theme/styles"
 
@@ -16,7 +16,6 @@ import { currentLocale } from "app/i18n"
 import { formatDate } from "app/utils/formatDate"
 // import { useStores } from "app/models"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
-import { Bar as ProgressBar } from "react-native-progress"
 import { sendQuestionImage } from "app/theme/images"
 
 interface QuestionDetailScreenProps extends AppStackScreenProps<"QuestionDetail"> {}
@@ -35,15 +34,7 @@ const QuestionDetailView = ({
       <ScrollView style={$questionContainer}>
         <View style={$contentBlock}>
           <Text variant="titleSmall">Nội dung câu hỏi</Text>
-          <ProgressBar
-            progress={0.8}
-            height={2}
-            width={null}
-            borderRadius={0}
-            color="#C43442"
-            animated={true}
-            borderColor={colors.background}
-          />
+          <ProgressBar progress={0.8} style={{ height: 2 }} color="#C43442" />
           <View style={$questionTitleBlock}>
             <View style={$priorityBlock}>
               <Text>Cần gấp trong </Text>
