@@ -21,7 +21,11 @@ const getLocale = (): Locale => {
   return locale === "ar" ? ar : locale === "ko" ? ko : en
 }
 
-export const formatDate = (date: string, dateFormat?: string, options?: Options) => {
+export const formatDate = (date?: string, dateFormat?: string, options?: Options) => {
+  if (date === undefined) {
+    return ""
+  }
+
   const locale = getLocale()
   const dateOptions = {
     ...options,
@@ -30,12 +34,15 @@ export const formatDate = (date: string, dateFormat?: string, options?: Options)
   return format(parseISO(date), dateFormat ?? "MMM dd, yyyy", dateOptions)
 }
 
-export const timeAgo = (date?: Date) => {
-  // todo (tau): remove this mock
-  date = new Date(2024, 0, 1)
-  if (date === undefined || !isValid(date)) {
+export const timeAgo = (date?: string) => {
+  if (date === undefined) {
     return ""
   }
 
-  return formatDistance(date, new Date(), { addSuffix: true, locale: vi })
+  const parsedDate = Date.parse(date)
+  if (parsedDate === undefined || !isValid(parsedDate)) {
+    return ""
+  }
+
+  return formatDistance(parsedDate, new Date(), { addSuffix: true, locale: vi })
 }

@@ -7,6 +7,10 @@ import supportLevelExpert from "../../assets/images/support-level-expert.png"
 // @ts-ignore
 import finishConsultationImage from "../../assets/images/finish-consultation-btn.png"
 
+import privacyImage from "../../assets/images/tranchy/privacy.png"
+
+import sendQuestionImage from "../../assets/images/tranchy/send-question.png"
+
 const getSupportLevelImage = (type: SupportLevel) => {
   switch (type) {
     case SupportLevel.Community:
@@ -17,4 +21,4 @@ const getSupportLevelImage = (type: SupportLevel) => {
       return supportLevelCoffee
   }
 }
-export { getSupportLevelImage, finishConsultationImage }
+export { getSupportLevelImage, finishConsultationImage, privacyImage, sendQuestionImage }

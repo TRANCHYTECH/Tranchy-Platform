@@ -19,6 +19,8 @@ public class AppSettings
     // ReSharper disable once InconsistentNaming
     public string ASPNETCORE_ENVIRONMENT { get; init; } = default!;
 #pragma warning restore CA1707
+
+    public NotificationSettings Notification { get; init; } = default!;
 }
 
 public class AzureMonitorSettings
@@ -68,4 +70,11 @@ public class FileSettings
     public string BlobStorageConnectionString { get; set; } = default!;
 
     public string AvatarContainerName { get; set; } = "avatar";
+}
+
+public class NotificationSettings
+{
+    public string MailPublicKey { get; set; } = default!;
+
+    public string MailPrivateKey { get; set; } = default!;
 }

@@ -52,10 +52,12 @@ export const BlockItem = observer(function BlockItem({
   data,
   extraData,
   onPressSaving,
+  onPressQuestion,
 }: {
   data: BlockItemType
   extraData: ExtraData
   onPressSaving: (questionId: string) => void
+  onPressQuestion: (questionId: string) => void
 }) {
   switch (data.type) {
     case "QuestionSections": {
@@ -65,10 +67,10 @@ export const BlockItem = observer(function BlockItem({
       return renderSectionTitleItem(data as SectionTitleItem)
     }
     case "ExpertDeals": {
-      return renderExpertDealsItem(data as ExpertDealsItem, extraData)
+      return renderExpertDealsItem(data as ExpertDealsItem, extraData, onPressQuestion)
     }
     case "QuestionItem": {
-      return renderQuestionItem(data as QuestionItem, extraData, onPressSaving)
+      return renderQuestionItem(data as QuestionItem, extraData, onPressSaving, onPressQuestion)
     }
     case "SeeMore": {
       return renderSeeMoreItem(data as SeeMoreItem)

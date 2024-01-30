@@ -14,9 +14,9 @@ export interface Question {
   communityShareAgreement?: boolean | null
   consultant?: QuestionConsultant
   createdByUserId?: string | null
-  createdOn?: Date
+  createdOn?: string
   id?: string | null
-  modifiedOn?: Date
+  modifiedOn?: string
   permissions?: QuestionPermissions
   priorityId?: string | null
   queryIndex?: number

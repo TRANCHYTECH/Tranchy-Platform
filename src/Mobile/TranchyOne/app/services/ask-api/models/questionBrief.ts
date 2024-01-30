@@ -8,7 +8,7 @@
 export interface QuestionBrief {
   categories: string[]
   createdBy: string
-  createdOn: Date
+  createdOn: string
   id: string
   price: string
   saved: boolean

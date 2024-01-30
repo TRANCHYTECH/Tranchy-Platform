@@ -1,24 +1,23 @@
 import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
-import { QuestionModel } from "./Question"
 import {
+  getQuestion,
   getRecentQuestions,
   getSavedQuestions,
   getUserHighlights,
-  listCommunityQuestions,
+  pickQuestion,
   unsavedQuestion,
   userSaveQuestion,
 } from "app/services/ask-api/askApi"
 import {
-  Question as BackendQuestion,
   GetSavedQuestionsResponse,
   GetUserHighlightsResponse,
+  Question,
   QuestionBrief,
   QuestionBriefPaginationResponse,
   SaveQuestionResponse,
 } from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"
-import { backendTypes } from "./helpers/backendTypes"
 import { parseNumber } from "app/utils/methodHelper"
 
 // setLivelinessChecking("error")
@@ -30,17 +29,14 @@ export const QuestionStoreModel = types
     userHighlights: types.maybeNull(types.frozen<GetUserHighlightsResponse>()),
     recentQuestions: types.optional(types.array(types.frozen<QuestionBrief>()), []),
     savedQuestions: types.optional(types.array(types.string), []),
-    questions: backendTypes.arrayType(QuestionModel),
     isLoading: types.optional(types.boolean, false),
     nextQueryIndex: types.maybe(types.number),
+    currentQuestion: types.maybeNull(types.frozen<Question>()),
   })
   .actions(withSetPropAction)
   .views((self) => ({
-    getQuestions() {
-      return self.questions
-    },
-    getQuestion(id: string) {
-      return self.questions?.find((q) => q.id === id)
+    getCurrentQuestion(id: string) {
+      return self.currentQuestion?.id === id ? self.currentQuestion : null
     },
   }))
   .actions((self) => ({
@@ -52,19 +48,6 @@ export const QuestionStoreModel = types
         }
       } catch (error) {
         console.error("Failed to fetch user highlights", error)
-      } finally {
-        self.isLoading = false
-      }
-    }),
-    listPublicQuestions: flow(function* func() {
-      try {
-        self.isLoading = true
-        const response: ApiResponse<BackendQuestion[]> = yield listCommunityQuestions()
-        if (response.ok) {
-          self.questions = cast(response.data)
-        }
-      } catch (error) {
-        console.error("Failed to fetch public questions", error)
       } finally {
         self.isLoading = false
       }
@@ -126,6 +109,19 @@ export const QuestionStoreModel = types
       }
 
       return "NotMatch"
+    }),
+    getQuestion: flow(function* func(questionId: string) {
+      self.currentQuestion = null
+      const response: ApiResponse<Question> = yield getQuestion(questionId)
+      if (response.ok) {
+        self.currentQuestion = cast(response.data)
+      }
+    }),
+    pickQuestion: flow(function* func(questionId: string) {
+      const response: ApiResponse<Question> = yield pickQuestion(questionId)
+      if (response.ok) {
+        self.currentQuestion = cast(response.data)
+      }
     }),
   }))
 

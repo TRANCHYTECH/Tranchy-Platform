@@ -1,6 +1,6 @@
 import { colors, spacing, typography } from "app/theme"
 import React from "react"
-import { Dimensions, TextStyle, View, ViewStyle } from "react-native"
+import { Dimensions, Pressable, TextStyle, View, ViewStyle } from "react-native"
 import Carousel from "react-native-reanimated-carousel"
 import { BlockItemBase, BlockType, ExtraData } from "./BlockItem"
 import { QuestionBrief } from "app/services/ask-api/models"
@@ -30,7 +30,11 @@ export type ExpertDealsItemData = {
   price: string
 }
 
-export const renderExpertDealsItem = (input: ExpertDealsItem, extraData: ExtraData) => {
+export const renderExpertDealsItem = (
+  input: ExpertDealsItem,
+  extraData: ExtraData,
+  onPressQuestion: (id: string) => void,
+) => {
   return (
     <View style={$container}>
       <Carousel
@@ -38,7 +42,7 @@ export const renderExpertDealsItem = (input: ExpertDealsItem, extraData: ExtraDa
         style={$carousel}
         data={input.data}
         renderItem={({ item }) => (
-          <View style={$carouselItem}>
+          <Pressable style={$carouselItem} onLongPress={() => onPressQuestion(item.id)}>
             <Chip
               icon="account-circle"
               style={$expertChip}
@@ -64,7 +68,7 @@ export const renderExpertDealsItem = (input: ExpertDealsItem, extraData: ExtraDa
                 {item.price ?? "No Price"}
               </Chip>
             </View>
-          </View>
+          </Pressable>
         )}
       />
     </View>
