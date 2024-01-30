@@ -89,4 +89,6 @@ export const colors = {
   borderLight: "#AFB7C8",
 
   moreLink: "#3058D0",
+
+  confirmBackgroundColor: "#F5F0ED",
 }

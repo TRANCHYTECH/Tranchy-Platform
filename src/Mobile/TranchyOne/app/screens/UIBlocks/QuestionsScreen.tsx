@@ -37,7 +37,7 @@ export function QuestionsScreen({
   const notification = useRef<FlashMessage>(null)
   const { navigate } = useNavigation<NativeStackNavigationProp<AppStackParamList>>()
 
-  const goToQuestionDetail = () => navigate("QuestionDetail", { id: "1" })
+  const goToQuestionDetail = (questionId: string) => navigate("QuestionDetail", { id: questionId })
   const handleRefresh = useCallback(async () => {
     setRefreshing(true)
     await invoke(questionStore, loadQuestionsMethod, true)

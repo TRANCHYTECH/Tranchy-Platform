@@ -6,7 +6,7 @@ namespace Tranchy.Question.Endpoints.Mobile;
 public class GetQuestion : IEndpoint
 {
     public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
-        .MapPost("/{questionId}", Handler)
+        .MapGet("/{questionId}", Handler)
         .WithName("GetQuestion")
         .WithSummary("Get question detail")
         .WithTags(Tags.Mobile)

@@ -22,6 +22,7 @@ import { colors } from "app/theme"
 import { MainTabNavigator, MainTabNavigatorParamList } from "./MainTabNavigator"
 import { Text } from "react-native-paper"
 import { translate } from "app/i18n"
+import { useAuth0 } from "react-native-auth0"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -71,7 +72,11 @@ const AppStack = observer(function AppStack() {
     metadataStore,
     questionStore,
   } = useStores()
+  const { user } = useAuth0()
 
+  if (__DEV__) {
+    console.tron.log("auth ", user)
+  }
   if (isAuthenticated) {
     distributeAuthToken()
     metadataStore.getConfigurations(true)
@@ -92,38 +97,38 @@ const AppStack = observer(function AppStack() {
             component={Screens.NewQuestionScreen}
             options={{ headerShown: true, title: "Tạo câu hỏi mới" }}
           />
+
+          {/** 🔥 Your screens go here */}
+          <Stack.Screen
+            name="RecentQuestions"
+            component={Screens.RecentQuestionsScreen}
+            options={{
+              headerShown: true,
+              title: translate("recentQuestionScreen.title"),
+              headerRight: () => (
+                <View>
+                  <Text>Filter</Text>
+                </View>
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="QuestionDetail"
+            component={Screens.QuestionDetailScreen}
+            options={{
+              headerShown: true,
+              title: "Câu hỏi",
+              headerBackVisible: true,
+              headerBackTitleVisible: false,
+            }}
+          />
+          {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
         </>
       ) : (
         <>
           <Stack.Screen name="Login" component={Screens.LoginScreen} />
         </>
       )}
-
-      {/** 🔥 Your screens go here */}
-      <Stack.Screen
-        name="RecentQuestions"
-        component={Screens.RecentQuestionsScreen}
-        options={{
-          headerShown: true,
-          title: translate("recentQuestionScreen.title"),
-          headerRight: () => (
-            <View>
-              <Text>Filter</Text>
-            </View>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name="QuestionDetail"
-        component={Screens.QuestionDetailScreen}
-        options={{
-          headerShown: true,
-          title: "Câu hỏi",
-          headerBackVisible: true,
-          headerBackTitleVisible: false,
-        }}
-      />
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 })

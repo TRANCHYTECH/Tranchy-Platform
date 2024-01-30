@@ -52,7 +52,6 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
         {
             Comment = comment;
         }
-
     }
 
     public string Comment { get; set; } = string.Empty;
@@ -70,7 +69,7 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
         }
 
         Status = QuestionStatus.InProgress;
-        Consultant = new() { UserId = userId, CreatedAt = DateTime.UtcNow };
+        Consultant = new QuestionConsultant { UserId = userId, CreatedAt = DateTime.UtcNow };
     }
 
     public void FinishConsultation(string userId, string conclusion)

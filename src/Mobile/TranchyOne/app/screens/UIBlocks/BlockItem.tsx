@@ -67,7 +67,7 @@ export const BlockItem = observer(function BlockItem({
       return renderSectionTitleItem(data as SectionTitleItem)
     }
     case "ExpertDeals": {
-      return renderExpertDealsItem(data as ExpertDealsItem, extraData)
+      return renderExpertDealsItem(data as ExpertDealsItem, extraData, onPressQuestion)
     }
     case "QuestionItem": {
       return renderQuestionItem(data as QuestionItem, extraData, onPressSaving, onPressQuestion)

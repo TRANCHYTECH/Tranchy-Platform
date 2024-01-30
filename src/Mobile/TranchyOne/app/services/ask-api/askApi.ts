@@ -68,21 +68,6 @@ export const createQuestion = (createQuestionRequest: CreateQuestionRequest) => 
 }
 
 /**
- * @summary Finish consultation
- */
-export const finishConsultation = (
-  questionId: string,
-  finishConsultationRequest: FinishConsultationRequest,
-) => {
-  return apiRequest<void>({
-    url: `/mobile/questions/${questionId}:resolve`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    data: finishConsultationRequest,
-  })
-}
-
-/**
  * @summary Get question configurations for user
  */
 export const getQuestionConfigurations = () => {
@@ -90,6 +75,13 @@ export const getQuestionConfigurations = () => {
     url: `/mobile/questions/configurations`,
     method: "GET",
   })
+}
+
+/**
+ * @summary Get question detail
+ */
+export const getQuestion = (questionId: string) => {
+  return apiRequest<Question>({ url: `/mobile/questions/${questionId}`, method: "GET" })
 }
 
 /**
@@ -132,6 +124,21 @@ export const getRecentQuestions = (params: GetRecentQuestionsParams) => {
  */
 export const pickQuestion = (questionId: string) => {
   return apiRequest<Question>({ url: `/mobile/questions/${questionId}:pick`, method: "POST" })
+}
+
+/**
+ * @summary Resolve consultation
+ */
+export const resolveConsultation = (
+  questionId: string,
+  finishConsultationRequest: FinishConsultationRequest,
+) => {
+  return apiRequest<void>({
+    url: `/mobile/questions/${questionId}:resolve`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: finishConsultationRequest,
+  })
 }
 
 /**
@@ -264,10 +271,10 @@ export type ListMobileQuestionEventsResult = NonNullable<
   Awaited<ReturnType<typeof listMobileQuestionEvents>>
 >
 export type CreateQuestionResult = NonNullable<Awaited<ReturnType<typeof createQuestion>>>
-export type FinishConsultationResult = NonNullable<Awaited<ReturnType<typeof finishConsultation>>>
 export type GetQuestionConfigurationsResult = NonNullable<
   Awaited<ReturnType<typeof getQuestionConfigurations>>
 >
+export type GetQuestionResult = NonNullable<Awaited<ReturnType<typeof getQuestion>>>
 export type GetUserHighlightsResult = NonNullable<Awaited<ReturnType<typeof getUserHighlights>>>
 export type ListCommunityQuestionsResult = NonNullable<
   Awaited<ReturnType<typeof listCommunityQuestions>>
@@ -275,6 +282,7 @@ export type ListCommunityQuestionsResult = NonNullable<
 export type ListMyQuestionsResult = NonNullable<Awaited<ReturnType<typeof listMyQuestions>>>
 export type GetRecentQuestionsResult = NonNullable<Awaited<ReturnType<typeof getRecentQuestions>>>
 export type PickQuestionResult = NonNullable<Awaited<ReturnType<typeof pickQuestion>>>
+export type ResolveConsultationResult = NonNullable<Awaited<ReturnType<typeof resolveConsultation>>>
 export type UploadQuestionFileResult = NonNullable<Awaited<ReturnType<typeof uploadQuestionFile>>>
 export type CreateUserExpertiseResult = NonNullable<Awaited<ReturnType<typeof createUserExpertise>>>
 export type GetUserExpertiseResult = NonNullable<Awaited<ReturnType<typeof getUserExpertise>>>
