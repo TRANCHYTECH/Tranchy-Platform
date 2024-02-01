@@ -6,6 +6,7 @@ import {
 } from "@microsoft/signalr"
 import Config from "../../config"
 import { api } from "../api"
+import "react-native-url-polyfill/auto"
 
 export class ConversationHub {
   private _hubConnection: HubConnection

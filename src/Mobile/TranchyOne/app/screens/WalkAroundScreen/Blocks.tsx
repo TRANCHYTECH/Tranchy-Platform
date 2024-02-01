@@ -14,7 +14,7 @@ export const buildBlocks = (highlights?: GetUserHighlightsResponse) => {
   const orderedList: BlockItemType[] = []
   orderedList.push(
     new QuestionSectionsItem([
-      { text: "Đang trả lời", icon: "comment-outline", route: "route1" },
+      { text: "Đang trả lời", icon: "comment-outline", route: "MyConsultations" },
       { text: "Chờ phản hồi", route: "route1" },
       { text: "Lịch sử câu hỏi", route: "route1" },
     ]),

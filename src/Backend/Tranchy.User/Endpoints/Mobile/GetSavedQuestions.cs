@@ -7,7 +7,7 @@ namespace Tranchy.User.Endpoints.Mobile;
 public class GetSavedQuestions: IEndpoint
 {
     public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
-        .MapGet("/sections/saved-questions", Handler)
+        .MapGet("/me/sections/saved-questions", Handler)
         .WithName("GetSavedQuestions")
         .WithSummary("Get user saved questions")
         .WithTags(Tags.Mobile)

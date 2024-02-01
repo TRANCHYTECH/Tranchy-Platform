@@ -34,7 +34,7 @@ const QuestionDetailView = ({
       <ScrollView style={$questionContainer}>
         <View style={$contentBlock}>
           <Text variant="titleSmall">Nội dung câu hỏi</Text>
-          <ProgressBar progress={0.8} style={{ height: 2 }} color="#C43442" />
+          <ProgressBar progress={0.8} style={{ height: spacing.xxxs }} color="#C43442" />
           <View style={$questionTitleBlock}>
             <View style={$priorityBlock}>
               <Text>Cần gấp trong </Text>
@@ -188,8 +188,9 @@ export const QuestionDetailScreen: FC<QuestionDetailScreenProps> = observer(
     const { navigate } =
       useNavigation<NativeStackNavigationProp<AppStackParamList, "QuestionDetail">>()
 
-    const confirmPickQuestion = useCallback(() => {
-      questionStore.pickQuestion(id)
+    const confirmPickQuestion = useCallback(async () => {
+      await questionStore.pickQuestion(id)
+      navigate("QuestionConversation", { id })
     }, [id])
 
     useFocusEffect(

@@ -9,14 +9,20 @@ public class ListQuestions : IEndpoint
     public static void Register(RouteGroupBuilder routeGroupBuilder)
     {
         routeGroupBuilder.MapGet("/sections/community", GetCommunityQuestions)
-            .WithName("ListCommunityQuestions")
-            .WithSummary("List community questions")
+            .WithName("GetCommunityQuestions")
+            .WithSummary("Get community questions")
             .WithTags(Tags.Mobile)
             .WithOpenApi();
 
         routeGroupBuilder.MapGet("/sections/mine", GetMyQuestions)
-            .WithName("ListMyQuestions")
-            .WithSummary("List my questions")
+            .WithName("GetMyQuestions")
+            .WithSummary("Get my questions")
+            .WithTags(Tags.Mobile)
+            .WithOpenApi();
+
+        routeGroupBuilder.MapGet("/sections/my-consultations", GetMyConsultations)
+            .WithName("GetMyConsultations")
+            .WithSummary("Get my consultations")
             .WithTags(Tags.Mobile)
             .WithOpenApi();
 
@@ -61,12 +67,34 @@ public class ListQuestions : IEndpoint
             .Match(q => allowedStatuses.Contains(q.Status))
             .Other(tenant);
 
+        return await CreatePaginationResponse(questionsQuery, paginationParameters, cancellation);
+    }
+
+    private static async Task<Ok<PaginationResponse<QuestionBrief>>> GetMyConsultations(
+        [FromServices] ITenant tenant,
+        [AsParameters] PaginationParameters paginationParameters,
+        CancellationToken cancellation = default)
+    {
+        var allowedStatuses = new[] { QuestionStatus.InProgress };
+
+        var questionsQuery = DB.Find<Data.Question, QuestionBrief>()
+            .Match(q => allowedStatuses.Contains(q.Status) && q.Consultant != null &&
+                        q.Consultant.UserId == tenant.UserId);
+
         // Order by latest created on, so the usage of query index should be the same as Sort condition
         if (paginationParameters.QueryIndex is not null)
         {
             questionsQuery = questionsQuery.Match(q => q.QueryIndex <= paginationParameters.QueryIndex);
         }
 
+        return await CreatePaginationResponse(questionsQuery, paginationParameters, cancellation);
+    }
+
+    private static async Task<Ok<PaginationResponse<QuestionBrief>>> CreatePaginationResponse(
+        Find<Data.Question, QuestionBrief> questionsQuery,
+        PaginationParameters paginationParameters,
+        CancellationToken cancellation)
+    {
         ICollection<QuestionBrief> questions = await questionsQuery
             .Sort(q => q.CreatedOn, Order.Descending)
             .Project(q => new QuestionBrief
@@ -76,7 +104,7 @@ public class ListQuestions : IEndpoint
                 Categories = q.QuestionCategoryIds,
                 CreatedOn = q.CreatedOn,
                 Saved = false,
-                Price = "vnd 500",
+                Price = "todo",
                 CreatedBy = q.CreatedByUserId,
                 QueryIndex = q.QueryIndex
             })
