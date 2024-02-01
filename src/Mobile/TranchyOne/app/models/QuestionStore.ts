@@ -1,10 +1,12 @@
 import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import {
+  getMyConsultations,
   getQuestion,
   getRecentQuestions,
   getSavedQuestions,
   getUserHighlights,
+  listMobileQuestionEvents,
   pickQuestion,
   unsavedQuestion,
   userSaveQuestion,
@@ -12,6 +14,7 @@ import {
 import {
   GetSavedQuestionsResponse,
   GetUserHighlightsResponse,
+  MobileQuestionEvent,
   Question,
   QuestionBrief,
   QuestionBriefPaginationResponse,
@@ -28,10 +31,12 @@ export const QuestionStoreModel = types
   .props({
     userHighlights: types.maybeNull(types.frozen<GetUserHighlightsResponse>()),
     recentQuestions: types.optional(types.array(types.frozen<QuestionBrief>()), []),
+    myConsultations: types.optional(types.array(types.frozen<QuestionBrief>()), []),
     savedQuestions: types.optional(types.array(types.string), []),
     isLoading: types.optional(types.boolean, false),
     nextQueryIndex: types.maybe(types.number),
     currentQuestion: types.maybeNull(types.frozen<Question>()),
+    currentQuestionEvents: types.optional(types.array(types.frozen<MobileQuestionEvent>()), []),
   })
   .actions(withSetPropAction)
   .views((self) => ({
@@ -84,6 +89,34 @@ export const QuestionStoreModel = types
         self.isLoading = false
       }
     }),
+    getMyConsultations: flow(function* func(resetQueryIndex: boolean) {
+      try {
+        if (!resetQueryIndex && self.nextQueryIndex === EndOfPage) {
+          return
+        }
+
+        self.isLoading = true
+
+        const response: ApiResponse<QuestionBriefPaginationResponse> = yield getMyConsultations({
+          PageSize: 12,
+          QueryIndex: resetQueryIndex ? undefined : self.nextQueryIndex,
+        })
+
+        if (response.ok && response.data && response.data.data.length > 0) {
+          resetQueryIndex
+            ? (self.myConsultations = cast(response.data.data))
+            : self.myConsultations.push(...response.data.data)
+
+          self.nextQueryIndex = parseNumber(response.data.nextQueryIndex) ?? EndOfPage
+        }
+      } catch (error) {
+        if (__DEV__) {
+          console.tron.error("Failed to get my consultations", error)
+        }
+      } finally {
+        self.isLoading = false
+      }
+    }),
     getSavedQuestions: flow(function* func() {
       const response: ApiResponse<GetSavedQuestionsResponse> = yield getSavedQuestions()
       if (response.ok && response.data && response.data.questions) {
@@ -121,6 +154,14 @@ export const QuestionStoreModel = types
       const response: ApiResponse<Question> = yield pickQuestion(questionId)
       if (response.ok) {
         self.currentQuestion = cast(response.data)
+      }
+    }),
+    loadEvents: flow(function* func(questionId: string) {
+      const response: ApiResponse<MobileQuestionEvent[]> = yield listMobileQuestionEvents(
+        questionId,
+      )
+      if (response.ok) {
+        self.currentQuestionEvents = cast(response.data)
       }
     }),
   }))

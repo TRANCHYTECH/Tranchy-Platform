@@ -3,6 +3,7 @@ import React from "react"
 import { Chip } from "react-native-paper"
 import { BlockItemBase, BlockType } from "./BlockItem"
 import { colors, spacing, typography } from "app/theme"
+import { useNavigation } from "@react-navigation/native"
 
 export type QuestionSectionsItemData = {
   text: string
@@ -20,11 +21,14 @@ export class QuestionSectionsItem implements BlockItemBase {
 }
 
 export const renderQuestionSectionsItem = (input: QuestionSectionsItem) => {
+  const nav = useNavigation()
+
   return (
     <View style={$questionSectionsContainer}>
       {input.data.map((item, index) => {
         return (
           <Chip
+            onPress={() => nav.navigate(item.route as never)}
             style={$questionSectionButtonStyle}
             textStyle={$questionSectionButtonLabelStyle}
             icon={item.icon}

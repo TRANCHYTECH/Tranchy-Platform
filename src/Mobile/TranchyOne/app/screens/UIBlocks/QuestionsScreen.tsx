@@ -2,22 +2,21 @@ import React, { useCallback, useRef, useState } from "react"
 import { View, ViewStyle } from "react-native"
 import { ListView, Screen } from "app/components"
 import { useStores } from "app/models"
-import { useFocusEffect, useNavigation } from "@react-navigation/native"
+import { useFocusEffect } from "@react-navigation/native"
 import { BlockItem, BlockItemType, ExtraData } from "./BlockItem"
 import { currentLocale } from "app/i18n"
 import FlashMessage from "react-native-flash-message"
 import { Button, Icon, MD3Colors } from "react-native-paper"
 import { colors, spacing } from "app/theme"
 import { invoke } from "lodash-es"
-import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { AppStackParamList } from "app/navigators"
 
 const locale = currentLocale()
 
 export type QuestionsScreenProps = {
-  loadQuestionsMethod: "getRecentQuestions" | "getUserHighlights"
-  loadQuestionsProperty: "recentQuestions" | "userHighlights"
+  loadQuestionsMethod: "getRecentQuestions" | "getUserHighlights" | "getMyConsultations"
+  loadQuestionsProperty: "recentQuestions" | "userHighlights" | "myConsultations"
   buildBlocks: (data: any) => BlockItemType[]
+  onPressQuestion: (id: string) => void
   enableOnEndReached: boolean
 }
 
@@ -25,6 +24,7 @@ export function QuestionsScreen({
   loadQuestionsMethod,
   loadQuestionsProperty,
   buildBlocks,
+  onPressQuestion,
   enableOnEndReached,
 }: QuestionsScreenProps) {
   const { questionStore, metadataStore } = useStores()
@@ -35,9 +35,7 @@ export function QuestionsScreen({
   })
   const [refreshing, setRefreshing] = useState(false)
   const notification = useRef<FlashMessage>(null)
-  const { navigate } = useNavigation<NativeStackNavigationProp<AppStackParamList>>()
 
-  const goToQuestionDetail = (questionId: string) => navigate("QuestionDetail", { id: questionId })
   const handleRefresh = useCallback(async () => {
     setRefreshing(true)
     await invoke(questionStore, loadQuestionsMethod, true)
@@ -91,7 +89,7 @@ export function QuestionsScreen({
             data={item}
             onPressSaving={handleSaving}
             extraData={extraData}
-            onPressQuestion={goToQuestionDetail}
+            onPressQuestion={onPressQuestion}
           />
         )}
         data={buildBlocks(questionStore[loadQuestionsProperty])}

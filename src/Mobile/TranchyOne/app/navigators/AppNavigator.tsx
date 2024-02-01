@@ -40,7 +40,6 @@ import { useAuth0 } from "react-native-auth0"
 export type AppStackParamList = {
   Welcome: undefined
   Login: undefined
-  QuestionConversation: { id: string }
   // 🔥 Your screens go here
   Community: undefined
   WalkAround: undefined
@@ -49,6 +48,9 @@ export type AppStackParamList = {
   MainTab: NavigatorScreenParams<MainTabNavigatorParamList>
   RecentQuestions: undefined
   QuestionDetail: { id: string }
+  QuestionConversation: { id: string }
+  MyQuestions: undefined
+  MyConsultations: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -118,6 +120,27 @@ const AppStack = observer(function AppStack() {
             options={{
               headerShown: true,
               title: "Câu hỏi",
+              headerBackVisible: true,
+              headerBackTitleVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="QuestionConversation"
+            component={Screens.QuestionConversationScreen}
+            options={{
+              headerShown: true,
+              title: "Trao đổi",
+              headerBackVisible: true,
+              headerBackTitleVisible: false,
+            }}
+          />
+          <Stack.Screen name="MyQuestions" component={Screens.MyQuestionsScreen} />
+          <Stack.Screen
+            name="MyConsultations"
+            component={Screens.MyConsultationsScreen}
+            options={{
+              headerShown: true,
+              title: "Đang trả lời",
               headerBackVisible: true,
               headerBackTitleVisible: false,
             }}
