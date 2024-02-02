@@ -17,7 +17,7 @@ public class GetQuestion : IEndpoint
         [FromServices] ITenant tenant,
         CancellationToken cancellation)
     {
-        var question = await DB.Find<Data.Question>().Other(questionId, tenant).ExecuteSingleAsync(cancellation);
+        var question = await DB.Find<Data.Question>().MatchID(questionId).ExecuteSingleAsync(cancellation);
         if (question is null)
         {
             return TypedResults.BadRequest();

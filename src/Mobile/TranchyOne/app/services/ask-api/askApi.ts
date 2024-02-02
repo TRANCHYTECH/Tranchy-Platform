@@ -12,6 +12,7 @@ import type {
   CreateUserExpertiseRequest,
   FinishConsultationRequest,
   GetMyConsultationsParams,
+  GetMyQuestionsParams,
   GetQuestionConfigurationsResponse,
   GetRecentQuestionsParams,
   GetSavedQuestionsResponse,
@@ -105,8 +106,12 @@ export const getCommunityQuestions = () => {
 /**
  * @summary Get my questions
  */
-export const getMyQuestions = () => {
-  return apiRequest<Question[]>({ url: `/mobile/questions/sections/mine`, method: "GET" })
+export const getMyQuestions = (params: GetMyQuestionsParams) => {
+  return apiRequest<QuestionBriefPaginationResponse>({
+    url: `/mobile/questions/sections/mine`,
+    method: "GET",
+    params,
+  })
 }
 
 /**

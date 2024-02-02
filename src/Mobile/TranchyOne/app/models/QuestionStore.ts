@@ -10,6 +10,7 @@ import {
   pickQuestion,
   unsavedQuestion,
   userSaveQuestion,
+  getMyQuestions,
 } from "app/services/ask-api/askApi"
 import {
   GetSavedQuestionsResponse,
@@ -31,6 +32,7 @@ export const QuestionStoreModel = types
   .props({
     userHighlights: types.maybeNull(types.frozen<GetUserHighlightsResponse>()),
     recentQuestions: types.optional(types.array(types.frozen<QuestionBrief>()), []),
+    myQuestions: types.optional(types.array(types.frozen<QuestionBrief>()), []),
     myConsultations: types.optional(types.array(types.frozen<QuestionBrief>()), []),
     savedQuestions: types.optional(types.array(types.string), []),
     isLoading: types.optional(types.boolean, false),
@@ -53,6 +55,34 @@ export const QuestionStoreModel = types
         }
       } catch (error) {
         console.error("Failed to fetch user highlights", error)
+      } finally {
+        self.isLoading = false
+      }
+    }),
+    getMyQuestions: flow(function* func(resetQueryIndex: boolean) {
+      try {
+        if (!resetQueryIndex && self.nextQueryIndex === EndOfPage) {
+          return
+        }
+
+        self.isLoading = true
+
+        const response: ApiResponse<QuestionBriefPaginationResponse> = yield getMyQuestions({
+          PageSize: 12,
+          QueryIndex: resetQueryIndex ? undefined : self.nextQueryIndex,
+        })
+
+        if (response.ok && response.data && response.data.data.length > 0) {
+          resetQueryIndex
+            ? (self.myQuestions = cast(response.data.data))
+            : self.myQuestions.push(...response.data.data)
+
+          self.nextQueryIndex = parseNumber(response.data.nextQueryIndex) ?? EndOfPage
+        }
+      } catch (error) {
+        if (__DEV__) {
+          console.tron.error("Failed to get my questions" + JSON.stringify(error), error)
+        }
       } finally {
         self.isLoading = false
       }

@@ -172,6 +172,16 @@ const QuestionActionsView = ({
               Tôi muốn trao đổi với người hỏi
             </Button>
           )}
+          {question.permissions?.actions?.includes(QuestionAction.GoToConversation) && (
+            <Button
+              icon="comment-text-multiple"
+              mode="contained"
+              onPress={() => confirmationCallback(true)}
+              buttonColor="#C76632"
+            >
+              Tôi muốn trao đổi với người trả lời
+            </Button>
+          )}
         </View>
         <PickingQuestionConfirmation visible={visible} onResult={confirmationCallback} />
       </>

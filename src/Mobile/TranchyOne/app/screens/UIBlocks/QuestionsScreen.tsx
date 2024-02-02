@@ -13,8 +13,12 @@ import { invoke } from "lodash-es"
 const locale = currentLocale()
 
 export type QuestionsScreenProps = {
-  loadQuestionsMethod: "getRecentQuestions" | "getUserHighlights" | "getMyConsultations"
-  loadQuestionsProperty: "recentQuestions" | "userHighlights" | "myConsultations"
+  loadQuestionsMethod:
+    | "getRecentQuestions"
+    | "getUserHighlights"
+    | "getMyConsultations"
+    | "getMyQuestions"
+  loadQuestionsProperty: "recentQuestions" | "userHighlights" | "myConsultations" | "myQuestions"
   buildBlocks: (data: any) => BlockItemType[]
   onPressQuestion: (id: string) => void
   enableOnEndReached: boolean

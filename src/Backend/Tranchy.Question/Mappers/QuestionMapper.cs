@@ -7,13 +7,12 @@ internal static class QuestionMapper
         .AddParameters(nameof(Data.Question.QueryIndex), queryIndex)
         .AdaptToType<Data.Question>();
 
-    internal static QuestionBrief ToQuesionBrief(Data.Question q) => new()
+    internal static QuestionBrief ToQuestionBrief(Data.Question q) => new()
     {
         ID = q.ID,
         Title = q.Title,
         Categories = q.QuestionCategoryIds,
         CreatedOn = q.CreatedOn,
-        Saved = false,
         Price = "vnd 500",
         CreatedBy = q.CreatedByUserId
     };
