@@ -32,8 +32,6 @@ public class QuestionBrief : IQueryIndex
 
     [Required] public required string CreatedBy { get; set; }
 
-    [Required] public bool Saved { get; set; }
-
     [JsonIgnore] public long QueryIndex { get; init; }
 }
 

@@ -47,13 +47,15 @@ public class ListQuestions : IEndpoint
         return TypedResults.Ok(questions.ToArray());
     }
 
-    private static async Task<Ok<Data.Question[]>> GetMyQuestions(
+    private static async Task<Ok<PaginationResponse<QuestionBrief>>> GetMyQuestions(
         [FromServices] ITenant tenant,
-        CancellationToken cancellation)
+        [AsParameters] PaginationParameters paginationParameters,
+        CancellationToken cancellation = default)
     {
-        var questions = await DB.Find<Data.Question>().Mine(tenant).ExecuteAsync(cancellation);
+        var questionsQuery = DB.Find<Data.Question, QuestionBrief>()
+            .Mine(tenant);
 
-        return TypedResults.Ok(questions.ToArray());
+        return await CreatePaginationResponse(questionsQuery, paginationParameters, cancellation);
     }
 
     private static async Task<Ok<PaginationResponse<QuestionBrief>>> GetRecentQuestions(
@@ -103,7 +105,6 @@ public class ListQuestions : IEndpoint
                 Title = q.Title,
                 Categories = q.QuestionCategoryIds,
                 CreatedOn = q.CreatedOn,
-                Saved = false,
                 Price = "todo",
                 CreatedBy = q.CreatedByUserId,
                 QueryIndex = q.QueryIndex

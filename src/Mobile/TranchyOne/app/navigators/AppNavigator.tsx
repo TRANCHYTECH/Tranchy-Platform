@@ -134,7 +134,16 @@ const AppStack = observer(function AppStack() {
               headerBackTitleVisible: false,
             }}
           />
-          <Stack.Screen name="MyQuestions" component={Screens.MyQuestionsScreen} />
+          <Stack.Screen
+            name="MyQuestions"
+            component={Screens.MyQuestionsScreen}
+            options={{
+              headerShown: true,
+              title: "Lịch sử câu hỏi",
+              headerBackVisible: true,
+              headerBackTitleVisible: false,
+            }}
+          />
           <Stack.Screen
             name="MyConsultations"
             component={Screens.MyConsultationsScreen}

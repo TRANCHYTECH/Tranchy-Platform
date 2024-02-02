@@ -16,7 +16,7 @@ export const buildBlocks = (highlights?: GetUserHighlightsResponse) => {
     new QuestionSectionsItem([
       { text: "Đang trả lời", icon: "comment-outline", route: "MyConsultations" },
       { text: "Chờ phản hồi", route: "route1" },
-      { text: "Lịch sử câu hỏi", route: "route1" },
+      { text: "Lịch sử câu hỏi", route: "MyQuestions" },
     ]),
   )
 
