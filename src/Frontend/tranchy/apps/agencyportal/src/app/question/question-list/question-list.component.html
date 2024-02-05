@@ -4,66 +4,83 @@
 ></tranchy-breadcrumbs>
 <div class="row">
   <div class="col-12">
-    <h2>{{ 'questionModule.questionListPage.title' | translate }}</h2>
-
     <div class="card">
-      <p-table
-        [value]="questions()"
-        [tableStyle]="{ 'min-width': '50rem' }"
-        [paginator]="true"
-        [rows]="10"
-      >
-        <ng-template pTemplate="header">
-          <tr>
-            <th pSortableColumn="title">
-              {{ 'questionModule.questionListPage.question-title' | translate }}
-              <p-sortIcon field="title"></p-sortIcon>
-            </th>
-            <th pSortableColumn="status">
-              {{ 'questionModule.questionListPage.status' | translate }}
-              <p-sortIcon field="status"></p-sortIcon>
-            </th>
-            <th pSortableColumn="priorityId">
-              {{ 'questionModule.questionListPage.priority' | translate }}
-              <p-sortIcon field="priorityId"></p-sortIcon>
-            </th>
-            <th pSortableColumn="questionCategoryIds">
-              {{
-                'questionModule.questionListPage.question-categories'
-                  | translate
-              }}
-              <p-sortIcon field="questionCategoryIds"></p-sortIcon>
-            </th>
-            <th pSortableColumn="createdOn">
-              {{ 'questionModule.questionListPage.created-on' | translate }}
-              <p-sortIcon field="createdOn"></p-sortIcon>
-            </th>
-            <th></th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-question>
-          <tr>
-            <td>{{ question.title }}</td>
-            <td>{{ question.status }}</td>
-            <td>{{ question.priorityId }}</td>
-            <td>{{ question.questionCategoryIds }}</td>
-            <td>{{ question.createdOn | date }}</td>
-            <td>
-              <button
-                type="button"
-                class="btn btn-sm btn-light"
-                (click)="viewDetail(question)"
-              >
-                {{ 'questionModule.questionListPage.details' | translate }}
-              </button>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+      <div class="card-header">
+        <h4 class="card-title mb-0">
+          {{ 'questionModule.questionListPage.title' | translate }}
+        </h4>
+      </div>
+
+      <div class="card-body">
+        <p-table
+          [value]="questions()"
+          styleClass="p-datatable-striped table-card"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          [paginator]="true"
+          [rows]="10"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th pSortableColumn="title">
+                {{
+                  'questionModule.questionListPage.question-title' | translate
+                }}
+                <p-sortIcon field="title"></p-sortIcon>
+              </th>
+              <th pSortableColumn="status">
+                {{ 'questionModule.questionListPage.status' | translate }}
+                <p-sortIcon field="status"></p-sortIcon>
+              </th>
+              <th pSortableColumn="priorityId">
+                {{ 'questionModule.questionListPage.priority' | translate }}
+                <p-sortIcon field="priorityId"></p-sortIcon>
+              </th>
+              <th pSortableColumn="questionCategoryIds">
+                {{
+                  'questionModule.questionListPage.question-categories'
+                    | translate
+                }}
+                <p-sortIcon field="questionCategoryIds"></p-sortIcon>
+              </th>
+              <th pSortableColumn="createdOn">
+                {{ 'questionModule.questionListPage.created-on' | translate }}
+                <p-sortIcon field="createdOn"></p-sortIcon>
+              </th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-question>
+            <tr>
+              <td>{{ question.title }}</td>
+              <td>{{ question.status }}</td>
+              <td>{{ question.priorityId }}</td>
+              <td>{{ question.questionCategoryIds }}</td>
+              <td>{{ question.createdOn | date }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-success"
+                  (click)="viewDetail(question)"
+                >
+                  {{ 'questionModule.questionListPage.details' | translate }}
+                </button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
     </div>
     <p-confirmDialog [style]="{ width: '50vw' }"></p-confirmDialog>
   </div>
 </div>
 
-<tranchy-question-detail #questionDetailDialog (approved)="onApproved()" (rejected)="onRejected()"></tranchy-question-detail>
-<tranchy-approval-comment #approvalCommentDialog (confirmed)="confirmApproval($event)" (cancelled)="cancelApproval()"></tranchy-approval-comment>
+<tranchy-question-detail
+  #questionDetailDialog
+  (approved)="onApproved()"
+  (rejected)="onRejected()"
+></tranchy-question-detail>
+<tranchy-approval-comment
+  #approvalCommentDialog
+  (confirmed)="confirmApproval($event)"
+  (cancelled)="cancelApproval()"
+></tranchy-approval-comment>

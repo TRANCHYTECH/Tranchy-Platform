@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import 'primeng/resources/themes/soho-light/theme.css';
+@import 'primeng/resources/primeng.css';
+
 // Swiper
 .coverflowslide .slide {
   position: relative;
@@ -24,20 +28,18 @@
   margin: 10px;
 }
 
-
-[data-bs-theme="dark"] {
+[data-bs-theme='dark'] {
   .fc {
-      .fc-multimonth-daygrid {
-          background: #212529 !important;
+    .fc-multimonth-daygrid {
+      background: #212529 !important;
+    }
 
-      }
+    .fc-day-disabled {
+      background: #282b2e !important;
+    }
 
-      .fc-day-disabled {
-          background: #282b2e !important;
-      }
-
-      .fc-multimonth {
-          border-color: #32383e !important;
-      }
+    .fc-multimonth {
+      border-color: #32383e !important;
+    }
   }
 }
