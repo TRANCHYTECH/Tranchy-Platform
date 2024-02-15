@@ -62,7 +62,7 @@ export const renderQuestionItem = (
             {extraData.savedQuestions.includes(input.data.id) ? (
               <Icon source="bookmark-multiple" color={MD3Colors.error50} size={20} />
             ) : (
-              <Icon source="bookmark-multiple-outline" color={colors.date} size={20} />
+              <Icon source="bookmark-multiple-outline" color={colors.surfaceOutline} size={20} />
             )}
           </Button>
         </View>
@@ -116,7 +116,7 @@ const $bottomLine = StyleSheet.create({
   },
   createdAt: {},
   createdAtText: {
-    color: colors.date,
+    color: colors.surfaceOutline,
   },
   separate: {
     borderBottomWidth: 1,

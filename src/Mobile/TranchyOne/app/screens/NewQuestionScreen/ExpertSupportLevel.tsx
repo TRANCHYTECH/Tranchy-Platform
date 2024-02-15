@@ -36,6 +36,11 @@ const ExpertSupportLevel = () => {
 
   return (
     <>
+      <View style={{ padding: spacing.xs }}>
+        <Text variant="labelSmall" style={{ color: colors.surfaceOutline }}>
+          Câu hỏi sẽ trả lời bởi chuyên gia.
+        </Text>
+      </View>
       <View>
         <SectionLabel title="Tôi đang cần câu câu trả lời" />
         <View style={styles.row}>
@@ -58,8 +63,11 @@ const ExpertSupportLevel = () => {
                     </Chip>
                   ))}
                 </View>
-                <Text style={{ paddingBottom: spacing.xxs }}>
-                  {value && metadataStore.questionCategory(value)?.description[locale]}
+                <Text
+                  variant="labelSmall"
+                  style={{ color: colors.surfaceOutline, paddingBottom: spacing.xxs }}
+                >
+                  {value && metadataStore.questionPriority(value)?.description[locale]}
                 </Text>
               </>
             )}
@@ -107,7 +115,8 @@ const ExpertSupportLevel = () => {
               onPress={() => onChange(!value)}
               mode="android"
               labelVariant="labelSmall"
-              label="Cho phép đăng tải câu hỏi lên cộng đồng. Khi nhận được sự đồng ý từ chuyên gia trả lời"
+              labelStyle={{ textAlign: "left" }}
+              label="Cho phép đăng tải câu hỏi lên cộng đồng khi nhận được sự đồng ý từ chuyên gia trả lời."
             />
           )}
         ></Controller>

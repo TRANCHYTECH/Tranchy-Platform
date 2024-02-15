@@ -1,15 +1,24 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { BottomSheet, BottomSheetBase, Screen, SectionLabel } from "app/components"
+import { Screen, SectionLabel } from "app/components"
 import { TxKeyPath, currentLocale, translate } from "app/i18n"
 import { SupportLevels, useStores } from "app/models"
 import { AppStackScreenProps } from "app/navigators"
 import { createQuestion } from "app/services/ask-api/askApi"
 import { colors, spacing } from "app/theme"
 import { observer } from "mobx-react-lite"
-import React, { FC, useRef, useState } from "react"
+import React, { FC, useState } from "react"
 import { Controller, FormProvider, useForm } from "react-hook-form"
-import { Alert, StyleSheet, View, ViewStyle } from "react-native"
-import { Button, Chip, HelperText, SegmentedButtons, TextInput } from "react-native-paper"
+import { Alert, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
+import {
+  Button,
+  Chip,
+  HelperText,
+  Modal,
+  Portal,
+  SegmentedButtons,
+  Text,
+  TextInput,
+} from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { AgencySupportLevel } from "./AgencySupportLevel"
 import { CommunitySupportLevel } from "./CommunitySupportLevel"
@@ -32,8 +41,7 @@ const supportLevelOptions = SupportLevels.map<{
   }
 })
 
-// todo: apply observer
-const CategorySelections = ({
+const CategorySelectionContent = ({
   input,
   onClose,
 }: {
@@ -42,9 +50,9 @@ const CategorySelections = ({
 }) => {
   const [values, setValues] = useState<string[]>(input)
   const { metadataStore } = useStores()
-
   return (
     <>
+      <Text variant="titleMedium">Chọn chủ đề cho câu hỏi</Text>
       <View style={{ ...styles.row, padding: spacing.md }}>
         {metadataStore.questionCategories.map((cat) => (
           <Chip
@@ -65,19 +73,49 @@ const CategorySelections = ({
           </Chip>
         ))}
       </View>
-      <View style={styles.row}>
-        <Button mode="outlined" onPress={() => onClose(true, values)}>
-          Huỷ
-        </Button>
-        <Button mode="contained" onPress={() => onClose(false, values)}>
-          Lưu thay đổi
-        </Button>
-      </View>
+      <Button mode="contained" onPress={() => onClose(false, values)}>
+        Lưu thay đổi
+      </Button>
+      <Button
+        mode="contained"
+        buttonColor={colors.background}
+        textColor={colors.text}
+        onPress={() => onClose(true, values)}
+      >
+        Huỷ
+      </Button>
     </>
   )
 }
 
-// todo: use memo if move inside
+const CategorySelectionDialog = ({
+  visible,
+  input,
+  onClose,
+}: {
+  visible: boolean
+  input: string[]
+  onClose: (cancelled: boolean, output: string[]) => void
+}) => {
+  return (
+    <Portal>
+      <Modal
+        visible={visible}
+        dismissable={false}
+        contentContainerStyle={{
+          backgroundColor: colors.background,
+          marginHorizontal: spacing.md,
+          padding: spacing.md,
+          gap: spacing.xs,
+          borderRadius: spacing.md,
+        }}
+      >
+        <CategorySelectionContent input={input} onClose={onClose} />
+      </Modal>
+    </Portal>
+  )
+}
+
 const locale = currentLocale()
 
 export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function NewQuestionScreen(
@@ -102,22 +140,20 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
   // Subscribe form values.
   const supportLevel = form.watch("supportLevel")
   const categories = form.watch("questionCategoryIds")
-
   // Question category selection.
-  const [openCategorySelection, setOpenCategorySelection] = useState(false)
-  const bottomSheetRef = useRef<BottomSheet>(null)
-  const openBottomSheet = () => {
-    setOpenCategorySelection(true)
-    bottomSheetRef.current?.expand()
-  }
-  const closeBottomSheet = (cancelled: boolean, values: string[]) => {
+  const [categorySelectionVisible, setCategorySelectionVisible] = React.useState(false)
+
+  const categorySelectionCallback = (cancelled: boolean, values: string[]) => {
     if (!cancelled) {
       form.setValue("questionCategoryIds", values as [string, ...string[]], {
         shouldValidate: true,
       })
     }
-    setOpenCategorySelection(false)
-    bottomSheetRef.current?.close()
+    setCategorySelectionVisible(false)
+  }
+
+  const openCategorySelectionDialog = () => {
+    setCategorySelectionVisible(true)
   }
 
   // Form submit
@@ -137,9 +173,6 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
         Alert.alert("Lỗi", "Không thể tạo câu hỏi")
         return
       }
-
-      // todo: revert this temp code block
-      // await acceptQuestion(createQuestionResponse.data.id)
 
       for (const file of formModel.files) {
         const uploadResponse = await uploadFile({
@@ -163,19 +196,14 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
 
   const goToList = () => navigation.navigate("MainTab", { screen: "WalkAround" })
   const onError = (error: any) => {
-    console.log(error)
+    if (__DEV__) {
+      console.tron.log(error)
+    }
   }
 
   return (
-    <>
-      <Screen
-        style={$root}
-        contentContainerStyle={{
-          paddingLeft: spacing.md,
-          paddingRight: spacing.md,
-        }}
-        preset="scroll"
-      >
+    <Screen contentContainerStyle={$root} preset="fixed">
+      <ScrollView style={{ flexGrow: 1, paddingLeft: spacing.md, paddingRight: spacing.md }}>
         <FormProvider {...form}>
           <View style={{ paddingTop: spacing.xs }}>
             <Controller
@@ -214,6 +242,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
                         mode={"outlined"}
                         icon="book-education"
                         style={styles.chip}
+                        textStyle={styles.chipText}
                         key={cat}
                         onClose={() => {
                           onChange(value.filter((v) => v !== cat))
@@ -226,8 +255,9 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
                       mode="flat"
                       icon="plus-circle-outline"
                       style={styles.chip}
+                      textStyle={styles.chipText}
                       key="new-cat"
-                      onPress={openBottomSheet}
+                      onPress={openCategorySelectionDialog}
                     >
                       {value.length === 0 ? "Chọn chủ đề" : "Chủ đề khác"}
                     </Chip>
@@ -260,33 +290,28 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
             {supportLevel === "Agency" && <AgencySupportLevel />}
           </View>
         </FormProvider>
-      </Screen>
-      <View style={{ ...styles.bottomRow, marginBottom: insets.bottom }}>
+      </ScrollView>
+      <View style={{ padding: spacing.xs, paddingLeft: spacing.md, paddingRight: spacing.md }}>
         <Button mode={"contained"} onPress={form.handleSubmit(onSubmit, onError)}>
           Gửi câu hỏi
         </Button>
       </View>
-      <BottomSheetBase ref={bottomSheetRef} index={-1} snapPoints={["25%", "50%"]}>
-        <View style={styles.bottomSheetContainer}>
-          {openCategorySelection && (
-            <CategorySelections input={categories} onClose={closeBottomSheet} />
-          )}
-        </View>
-      </BottomSheetBase>
-    </>
+      <CategorySelectionDialog
+        visible={categorySelectionVisible}
+        input={categories}
+        onClose={categorySelectionCallback}
+      />
+    </Screen>
   )
 })
 
 const styles = StyleSheet.create({
-  bottomRow: {
-    padding: spacing.md,
-  },
-  bottomSheetContainer: {
-    alignItems: "center",
-    flex: 1,
-  },
   chip: {
+    borderColor: colors.surfaceOutline,
     borderRadius: spacing.md,
+  },
+  chipText: {
+    fontSize: 14,
   },
   column: {
     flexDirection: "column",
@@ -299,10 +324,8 @@ const styles = StyleSheet.create({
     paddingTop: spacing.xxs,
   },
   selectedChip: {
-    backgroundColor: colors.palette.accent100,
-    borderColor: colors.palette.accent100,
     borderRadius: spacing.lg,
-    color: colors.palette.accent100,
+    color: "#CFDDFB",
   },
 })
 

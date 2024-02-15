@@ -49,7 +49,7 @@ const $container: ViewStyle = {
 }
 
 const $textIntro: TextStyle = {
-  color: colors.date,
+  color: colors.surfaceOutline,
   fontSize: 12,
 }
 const $categoryList: ViewStyle = {
