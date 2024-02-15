@@ -84,7 +84,7 @@ export const colors = {
 
   hashTag: "#3058D0",
 
-  date: "#76819B",
+  surfaceOutline: "#76819B",
 
   borderLight: "#AFB7C8",
 

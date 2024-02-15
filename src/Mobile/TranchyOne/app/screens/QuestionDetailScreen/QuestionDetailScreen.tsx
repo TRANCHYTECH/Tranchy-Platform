@@ -143,6 +143,7 @@ const PickingQuestionConfirmation = ({
     </Portal>
   )
 }
+
 const QuestionActionsView = ({
   question,
   onConfirm,
