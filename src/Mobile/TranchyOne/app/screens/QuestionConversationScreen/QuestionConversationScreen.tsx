@@ -3,13 +3,21 @@ import { observer } from "mobx-react-lite"
 import { View, ViewStyle, StyleSheet, Image, Alert } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
 import { BottomSheet, BottomSheetBase, Screen, SectionLabel } from "app/components"
-import { Button, Checkbox, HelperText, Text, TextInput, IconButton } from "react-native-paper"
+import {
+  Button,
+  Checkbox,
+  HelperText,
+  Text,
+  TextInput,
+  IconButton,
+  MD3Colors,
+} from "react-native-paper"
 import { GiftedChat, IMessage } from "react-native-gifted-chat"
 import { createQuestionEvent, resolveConsultation } from "app/services/ask-api/askApi"
 import { useConversationHub } from "app/services/signalr/useConversationHub"
 import { useFocusEffect } from "@react-navigation/native"
 import { useStores } from "app/models"
-import { finishConsultationImage, spacing } from "app/theme"
+import { colors, finishConsultationImage, spacing } from "app/theme"
 import { Controller, FormProvider, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { translate } from "app/i18n"
@@ -19,11 +27,13 @@ import {
   CreateQuestionEventMessageSentRequestType,
   Question,
 } from "app/services/ask-api/models"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface QuestionConversationScreenProps extends AppStackScreenProps<"QuestionConversation"> {}
 
 export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = observer(
   function QuestionConversationScreen({ navigation, route }) {
+    const insets = useSafeAreaInsets()
     const { id } = route.params
     const { questionStore, metadataStore } = useStores()
     const [messages, setMessages] = useState<any[]>([])
@@ -75,9 +85,15 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
       if (question?.consultant?.userId === getUserId()) {
         navigation.setOptions({
           headerRight: () => (
-            <Button onPress={() => openBottomSheet()}>
-              <Image style={styles.rightHeaderButton} source={finishConsultationImage} />
-            </Button>
+            <IconButton
+              icon={({ size }) => (
+                <Image style={{ width: size, height: size }} source={finishConsultationImage} />
+              )}
+              iconColor={MD3Colors.error50}
+              size={32}
+              style={{ width: 32, height: 32 }}
+              onPress={() => openBottomSheet()}
+            />
           ),
         })
       }
@@ -118,7 +134,14 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
             />
           </View>
         </Screen>
-        <BottomSheetBase bottomInset={46} ref={bottomSheetRef} index={-1} snapPoints={["75%"]}>
+        <BottomSheetBase
+          bottomInset={insets.bottom}
+          ref={bottomSheetRef}
+          index={-1}
+          snapPoints={["100%"]}
+          keyboardBehavior="fillParent"
+          style={{ borderColor: colors.borderLight, border }}
+        >
           <View style={styles.bottomSheetContainer}>
             {openCategorySelection && (
               <ConclusionEditorSection questionId={id} onClose={closeBottomSheet} />
@@ -247,11 +270,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: "100%",
     minHeight: "100%",
-  },
-  rightHeaderButton: {
-    height: 32,
-    margin: spacing.xs,
-    width: 32,
   },
 })
 
