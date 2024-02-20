@@ -11,6 +11,10 @@
       "list": "List Users",
       "add": "Add User"
     },
+    "expert-request": {
+      "title": "Expert requests",
+      "list": "List Expert requests"
+    },
     "question": {
       "title": "Questions",
       "list": "List Questions",

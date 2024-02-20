@@ -29,10 +29,11 @@ public class User : EntityBase
     public string? Headline { get; set; }
     public string? ProfilePictureBlobLocation { get; set; }
     public Gender Gender { get; set; }
+    public UserRegistrationStatus RegistrationStatus { get; set; }
     public string[]? CategoryIds { get; set; }
     public UserRole[] Roles { get; set; } = Array.Empty<UserRole>();
-    public IList<UserExpertise> Expertises { get; set; } = new List<UserExpertise>();
-    public IList<UserContact> Contacts { get; set; } = new List<UserContact>();
+    public IList<UserExpertise> Expertises { get; set; } = [];
+    public IList<UserContact> Contacts { get; set; } = [];
 }
 
 public class UserExpertise : EntityBase

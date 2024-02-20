@@ -3,7 +3,7 @@ using Tranchy.Common.Constants;
 
 namespace Tranchy.Question.Endpoints.BackOffice;
 
-public class SummarizeTotalQuestions: IEndpoint
+public class SummarizeTotalQuestions : IEndpoint
 {
     public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
         .MapGet("/aggregates/category-summary", CategorySummaryFunction)
