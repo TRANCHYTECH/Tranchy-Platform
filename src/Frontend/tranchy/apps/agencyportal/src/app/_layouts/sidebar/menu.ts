@@ -7,11 +7,17 @@ export const MENU: MenuItem[] = [
     icon: 'home',
     subItems: [
       {
-        id: 2,
+        id: 11,
         label: 'menu.user.list',
         link: '/user/user-list',
         parentId: 1,
       },
+      {
+        id: 12,
+        label: 'menu.expert-request.list',
+        link: '/user/expert-request-list',
+        parentId: 1,
+      }
     ],
   },
   {
