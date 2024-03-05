@@ -5,7 +5,8 @@ using Tranchy.Common.Events.User;
 
 namespace Tranchy.File.Consumers;
 
-public class GenerateDefaultAvatar([FromKeyedServices("avatar")] BlobContainerClient blobContainerClient) : IConsumer<UserCreatedEvent>
+public class GenerateDefaultAvatar([FromKeyedServices("avatar")] BlobContainerClient blobContainerClient)
+    : IConsumer<UserCreatedEvent>
 {
     public async Task Consume(ConsumeContext<UserCreatedEvent> context)
     {

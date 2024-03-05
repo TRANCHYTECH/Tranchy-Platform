@@ -4,7 +4,7 @@ using Tranchy.User.Responses;
 
 namespace Tranchy.User.Endpoints.Mobile;
 
-public class GetSavedQuestions: IEndpoint
+public class GetSavedQuestions : IEndpoint
 {
     public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
         .MapGet("/me/sections/saved-questions", Handler)

@@ -1,45 +1,46 @@
+using System.Text.Json.Serialization;
+using Azure.Identity;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+using IdGen.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
-using Tranchy.Question;
-using Tranchy.Ask.API;
-using Tranchy.Payment;
-using Tranchy.Common;
-using Azure.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
-using Azure.Monitor.OpenTelemetry.AspNetCore;
-// using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Tranchy.File;
-using System.Text.Json.Serialization;
-using IdGen.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Tranchy.Ask.API;
+using Tranchy.Common;
 using Tranchy.Common.Constants;
+using Tranchy.File;
+using Tranchy.Payment;
+using Tranchy.Question;
 using Tranchy.User;
+// using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false)
-.ConfigureAppConfiguration(config =>
-{
-    config.AddAzureAppConfiguration(options =>
+    .ConfigureAppConfiguration(config =>
     {
-        string? appConfigName = builder.Configuration["AppConfigName"];
-        options.Connect(new Uri($"https://{appConfigName}.azconfig.io"), new DefaultAzureCredential())
-        .Select(KeyFilter.Any, builder.Environment.EnvironmentName)
-            .ConfigureKeyVault(keyVaultConfig => keyVaultConfig.SetCredential(new DefaultAzureCredential()));
+        config.AddAzureAppConfiguration(options =>
+        {
+            string? appConfigName = builder.Configuration["AppConfigName"];
+            options.Connect(new Uri($"https://{appConfigName}.azconfig.io"), new DefaultAzureCredential())
+                .Select(KeyFilter.Any, builder.Environment.EnvironmentName)
+                .ConfigureKeyVault(keyVaultConfig => keyVaultConfig.SetCredential(new DefaultAzureCredential()));
+        });
     });
-});
 builder.Services.AddAzureClients(config =>
 {
     string? vault = builder.Configuration["KeyVaultName"];
     config.UseCredential(new DefaultAzureCredential());
     config.AddSecretClient(new Uri($"https://{vault}.vault.azure.net"));
 });
-builder.Services.Configure<ForwardedHeadersOptions>(options => options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto);
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto);
 
 var appSettings = new AppSettings();
 builder.Configuration.Bind(appSettings);
@@ -55,14 +56,14 @@ builder.Services.RegisterHubService();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(agencyPortalSpaPolicy,
-                      policyBuilder =>
-                      {
-                          policyBuilder
-                            .WithOrigins(appSettings.AgencyPortalSpaUrl)
-                            .AllowCredentials()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
-                      });
+        policyBuilder =>
+        {
+            policyBuilder
+                .WithOrigins(appSettings.AgencyPortalSpaUrl)
+                .AllowCredentials()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
 });
 
 builder.Services.AddBff(options =>
@@ -111,7 +112,7 @@ builder.Services.AddAuthentication(options =>
                     appSettings.Authentication.Schemes.OpenIdConnect.ValidAudiences[0]);
                 return Task.FromResult(0);
             },
-            OnRedirectToIdentityProviderForSignOut = (context) =>
+            OnRedirectToIdentityProviderForSignOut = context =>
             {
                 string logoutUri =
                     $"{appSettings.Authentication.Schemes.OpenIdConnect.Authority}/v2/logout?client_id={appSettings.Authentication.Schemes.OpenIdConnect.ClientId}";
@@ -164,11 +165,13 @@ builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
 });
 
 builder.Services.AddHealthChecks()
-.AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded)
-.AddApplicationInsightsPublisher();
+    .AddMongoDb(appSettings.QuestionDb.ConnectionString, appSettings.QuestionDb.DatabaseName, HealthStatus.Degraded)
+    .AddApplicationInsightsPublisher();
 
-builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-builder.Services.Configure<JsonOptions>(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+builder.Services.ConfigureHttpJsonOptions(options =>
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+builder.Services.Configure<JsonOptions>(options =>
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddIdGen(3);
 
 var app = builder.Build();
@@ -181,16 +184,18 @@ mobileGroupBuilder.MapMobileEndpoints<FileModule>().RequireAuthorization();
 mobileGroupBuilder.MapGroup("users").MapMobileEndpoints<UserModule>().RequireAuthorization();
 
 var backofficeGroupBuilder = app.MapGroup("/management");
-backofficeGroupBuilder.MapGroup("questions").MapBackOfficeEndpoints<QuestionModule>().RequireAuthorization().AsBffApiEndpoint();
+backofficeGroupBuilder.MapGroup("questions").MapBackOfficeEndpoints<QuestionModule>().RequireAuthorization()
+    .AsBffApiEndpoint();
 backofficeGroupBuilder.MapGroup("files").MapBackOfficeEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint();
 backofficeGroupBuilder.MapGroup("users").MapBackOfficeEndpoints<UserModule>().RequireAuthorization().AsBffApiEndpoint();
-backofficeGroupBuilder.MapGroup("payment").MapBackOfficeEndpoints<PaymentModule>().RequireAuthorization().AsBffApiEndpoint();
+backofficeGroupBuilder.MapGroup("payment").MapBackOfficeEndpoints<PaymentModule>().RequireAuthorization()
+    .AsBffApiEndpoint();
 
 var integrationGroupBuilder = app.MapGroup("/integration");
 integrationGroupBuilder.MapIntegrationEndpoints<UserModule>().RequireAuthorization();
 
 // Redirect after login
-app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, permanent: true))
+app.MapGet("/agency-portal", (HttpRequest _) => TypedResults.Redirect(appSettings.AgencyPortalSpaUrl, true))
     .WithSummary("Redirect after user login via portal")
     .WithOpenApi();
 

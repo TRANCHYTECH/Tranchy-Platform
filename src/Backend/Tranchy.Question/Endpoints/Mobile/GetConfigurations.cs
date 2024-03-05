@@ -31,12 +31,7 @@ public class GetConfigurations : IEndpoint
 
     private static async Task<List<QuestionCategoryResponse>> GetQuestionCategories(CancellationToken cancellationToken)
         => await DB.Find<QuestionCategory, QuestionCategoryResponse>().Match(_ => true)
-            .Project(c => new QuestionCategoryResponse
-            {
-                Key = c.Key,
-                Title = c.Title,
-                Description = c.Description
-            })
+            .Project(c => new QuestionCategoryResponse { Key = c.Key, Title = c.Title, Description = c.Description })
             .ExecuteAsync(cancellationToken);
 
     private static async Task<List<QuestionPriorityResponse>> GetQuestionPriorities(CancellationToken cancellationToken)

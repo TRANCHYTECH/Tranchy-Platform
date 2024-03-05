@@ -5,11 +5,10 @@ namespace Tranchy.Common.Services;
 
 public class Tenant(IHttpContextAccessor httpContextAccessor) : ITenant
 {
+    private IEnumerable<Claim> Claims => httpContextAccessor?.HttpContext?.User?.Claims ?? Array.Empty<Claim>();
     public string Email => GetClaim(ClaimTypes.Email);
 
     public string UserId => GetClaim(ClaimTypes.NameIdentifier);
-
-    private IEnumerable<Claim> Claims => httpContextAccessor?.HttpContext?.User?.Claims ?? Array.Empty<Claim>();
 
     private string GetClaim(string claimType)
     {

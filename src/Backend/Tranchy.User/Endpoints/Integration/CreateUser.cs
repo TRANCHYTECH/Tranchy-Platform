@@ -32,10 +32,7 @@ public class CreateUser : IEndpoint
         {
             var userEntity = new Data.User
             {
-                ID = userId,
-                Email = request.Email,
-                UserName = request.Email,
-                ProviderId = providerId
+                ID = userId, Email = request.Email, UserName = request.Email, ProviderId = providerId
             };
 
             await dbContext.BeginTransaction(cancellationToken);

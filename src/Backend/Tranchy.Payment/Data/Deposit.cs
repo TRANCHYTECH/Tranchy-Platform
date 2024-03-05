@@ -13,8 +13,5 @@ public class Deposit
 
 public class DepositEntityTypeConfiguration : IEntityTypeConfiguration<Deposit>
 {
-    public void Configure(EntityTypeBuilder<Deposit> builder)
-    {
-        builder.HasKey(a => a.Id);
-    }
+    public void Configure(EntityTypeBuilder<Deposit> builder) => builder.HasKey(a => a.Id);
 }

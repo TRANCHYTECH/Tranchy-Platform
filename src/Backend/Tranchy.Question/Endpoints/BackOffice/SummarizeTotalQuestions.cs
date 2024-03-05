@@ -21,7 +21,7 @@ public class SummarizeTotalQuestions : IEndpoint
             new BsonDocument("$group",
                 new BsonDocument
                 {
-                    { "_id", "$QuestionCategoryIds" }, { "TotalQuestions", new BsonDocument("$sum", 1) },
+                    { "_id", "$QuestionCategoryIds" }, { "TotalQuestions", new BsonDocument("$sum", 1) }
                 }),
             new BsonDocument("$merge",
                 new BsonDocument
@@ -29,11 +29,12 @@ public class SummarizeTotalQuestions : IEndpoint
                     { "into", "CategorySummary" },
                     { "on", "_id" },
                     { "whenMatched", "replace" },
-                    { "whenNotMatched", "insert" },
-                }),
+                    { "whenNotMatched", "insert" }
+                })
         };
 
-        await DB.Collection<Data.Question>().AggregateAsync<BsonDocument>(pipeline, cancellationToken: cancellationToken);
+        await DB.Collection<Data.Question>()
+            .AggregateAsync<BsonDocument>(pipeline, cancellationToken: cancellationToken);
         return TypedResults.Ok();
     }
 }

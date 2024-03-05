@@ -1,39 +1,39 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <ProjectReference Include="..\Tranchy.Common\Tranchy.Common.csproj" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <PackageReference Include="IdGen" />
-	  <PackageReference Include="MassTransit" />
-	  <PackageReference Include="MassTransit.Azure.ServiceBus.Core" />
-	  <PackageReference Include="MassTransit.MongoDb" />
-	  <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
-	  <PackageReference Include="Microsoft.Azure.SignalR" />
-	  <PackageReference Include="MongoDB.Entities" />
-	  <PackageReference Include="FluentValidation" />
-	  <PackageReference Include="FluentValidation.AspNetCore" />
-	  <PackageReference Include="Mapster" />
-	  <PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <PackageReference Update="Meziantou.Analyzer">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	  <PackageReference Update="Roslynator.Analyzers">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	  <PackageReference Update="Roslynator.Formatting.Analyzers">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	</ItemGroup>
-  
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tranchy.Common\Tranchy.Common.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IdGen"/>
+    <PackageReference Include="MassTransit"/>
+    <PackageReference Include="MassTransit.Azure.ServiceBus.Core"/>
+    <PackageReference Include="MassTransit.MongoDb"/>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+    <PackageReference Include="Microsoft.Azure.SignalR"/>
+    <PackageReference Include="MongoDB.Entities"/>
+    <PackageReference Include="FluentValidation"/>
+    <PackageReference Include="FluentValidation.AspNetCore"/>
+    <PackageReference Include="Mapster"/>
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Meziantou.Analyzer">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Update="Roslynator.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Update="Roslynator.Formatting.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
 </Project>

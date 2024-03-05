@@ -7,6 +7,5 @@ public class NotificationModule : IModule
 {
     public static void ConfigureServices(IServiceCollection services, AppSettings configuration)
     {
-
     }
 }
