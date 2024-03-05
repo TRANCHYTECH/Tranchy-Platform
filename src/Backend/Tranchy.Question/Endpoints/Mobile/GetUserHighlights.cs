@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+using System;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Tranchy.Common.Constants;
@@ -113,4 +115,51 @@ public class GetUserHighlights : IEndpoint
 
         return TypedResults.Ok(response);
     }
-}
+
+//    private IList<QuestionBrief> GetQuestionsMatchingProfiles()
+//    {
+//        [
+//  {
+//    $match:
+//            /**
+//             * query: The query in MQL.
+//             */
+//            {
+//        $expr:
+//                {
+//          $not:
+//                    {
+//            $eq:
+//                        [
+//              {
+//                $setIntersection:
+//                            [
+//                  "$QuestionCategoryIds",
+//                  ["law", "string"],
+//                ],
+//              },
+//              [],
+//            ],
+//          },
+//        },
+//      },
+//  },
+//]
+
+//var options = new AggregateOptions
+//{
+//    Let = new BsonDocument("user_id", tenant.UserId)
+//};
+
+//        var pipeline = new BsonDocument[]
+//        {
+//    new BsonDocument("$match", new BsonDocument("$expr", new BsonDocument("$eq", new BsonArray { "$user_id", "$$user_id" }))),
+//            // other stages in the pipeline
+//        };
+
+//        var result = collection.Aggregate(pipeline, options);
+//        In this example, the Let property of the AggregateOptions object is set to a BsonDocument with the variable definition. The $$user_id placeholder is used in the $match stage to refer to the value of the user_id variable.
+
+//Make sure to replace "$user_id" with the actual field name in your collection that you want to compare with the user_id variable.
+//    }
+//}
