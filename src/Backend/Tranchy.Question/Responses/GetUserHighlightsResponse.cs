@@ -37,8 +37,7 @@ public class QuestionBrief : IQueryIndex
 
 public class CategoryBrief
 {
-    [Required]
-    public required string Id { get; init; }
+    [Required] public required string Id { get; init; }
 
     public required int TotalQuestions { get; init; }
 }
@@ -58,8 +57,7 @@ public class HighlightAggregate
 
 public class TopQuestionsBySupportLevel
 {
-    [Field("_id")]
-    public SupportLevel Id { get; set; }
+    [Field("_id")] public SupportLevel Id { get; set; }
 
     public required ICollection<QuestionBrief> Questions { get; set; }
 }

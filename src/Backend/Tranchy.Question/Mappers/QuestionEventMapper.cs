@@ -1,10 +1,29 @@
 using Tranchy.Common.Services;
+using Tranchy.Question.Data;
 
 namespace Tranchy.Question.Mappers;
 
 internal static class QuestionEventMapper
 {
-    internal static Data.QuestionEvent ToEntity(
+    static QuestionEventMapper()
+    {
+        TypeAdapterConfig<CreateQuestionEventRequest, QuestionEvent>
+            .NewConfig()
+            .Include<CreateQuestionEventMessageSentRequest, QuestionEventMessageSent>()
+            .Include<CreateQuestionEventStatusChangedRequest, QuestionEventStatusChanged>()
+            .Include<CreateQuestionEventFileAttachedRequest, QuestionEventFileAttached>()
+            .Include<CreateQuestionEventVoiceCalledRequest, QuestionEventVoiceCalled>()
+            .Include<CreateQuestionEventVideoCalledRequest, QuestionEventVideoCalled>()
+            .Map(dest => dest.QuestionId, _ => MapContext.Current!.Parameters["questionId"])
+            .Map(dest => dest.CreatedByUserId, _ => MapContext.Current!.Parameters[nameof(ITenant.UserId)]);
+
+        TypeAdapterConfig<QuestionEvent, MobileQuestionEvent>
+            .NewConfig()
+            .Map(s => s.User.Id, t => t.CreatedByUserId)
+            .Include<QuestionEventMessageSent, MobileQuestionEventMessageSent>();
+    }
+
+    internal static QuestionEvent ToEntity(
         this CreateQuestionEventRequest request,
         string questionId,
         string userId
@@ -13,25 +32,8 @@ internal static class QuestionEventMapper
             .BuildAdapter()
             .AddParameters(nameof(ITenant.UserId), userId)
             .AddParameters("questionId", questionId)
-            .AdaptToType<Data.QuestionEvent>();
+            .AdaptToType<QuestionEvent>();
 
-    internal static MobileQuestionEvent ToMobileModel(this Data.QuestionEvent @event) => @event.BuildAdapter().AdaptToType<MobileQuestionEvent>();
-
-    static QuestionEventMapper()
-    {
-        TypeAdapterConfig<CreateQuestionEventRequest, Data.QuestionEvent>
-        .NewConfig()
-        .Include<CreateQuestionEventMessageSentRequest, Data.QuestionEventMessageSent>()
-        .Include<CreateQuestionEventStatusChangedRequest, Data.QuestionEventStatusChanged>()
-        .Include<CreateQuestionEventFileAttachedRequest, Data.QuestionEventFileAttached>()
-        .Include<CreateQuestionEventVoiceCalledRequest, Data.QuestionEventVoiceCalled>()
-        .Include<CreateQuestionEventVideoCalledRequest, Data.QuestionEventVideoCalled>()
-        .Map(dest => dest.QuestionId, _ => MapContext.Current!.Parameters["questionId"])
-        .Map(dest => dest.CreatedByUserId, _ => MapContext.Current!.Parameters[nameof(ITenant.UserId)]);
-
-        TypeAdapterConfig<Data.QuestionEvent, MobileQuestionEvent>
-        .NewConfig()
-        .Map(s => s.User.Id, t => t.CreatedByUserId)
-        .Include<Data.QuestionEventMessageSent, MobileQuestionEventMessageSent>();
-    }
+    internal static MobileQuestionEvent ToMobileModel(this QuestionEvent @event) =>
+        @event.BuildAdapter().AdaptToType<MobileQuestionEvent>();
 }

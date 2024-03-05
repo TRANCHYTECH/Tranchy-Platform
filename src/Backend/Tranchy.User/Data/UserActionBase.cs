@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace Tranchy.User.Data;
 
 [Collection("UserAction")]
-public abstract class UserActionBase: IEntity
+public abstract class UserActionBase : IEntity
 {
     [BsonId] public string ID { get; protected init; } = default!;
 

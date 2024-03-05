@@ -15,14 +15,15 @@ public static partial class Logs
     public static partial void ApprovedQuestion(this ILogger logger, string id, string title);
 
     [LoggerMessage(
-    EventId = 3,
-    Level = LogLevel.Information,
-    Message = "Handle question file uploaded {question}")]
+        EventId = 3,
+        Level = LogLevel.Information,
+        Message = "Handle question file uploaded {question}")]
     public static partial void HandledQuestion(this ILogger logger, string question);
 
     [LoggerMessage(
-    EventId = 22,
-    Level = LogLevel.Information,
-    Message = "Created question event with id=`{questionEventId}` for question `{questionId}` by user {userId}")]
-    public static partial void CreatedQuestionEvent(this ILogger logger, string questionEventId, string questionId, string userId);
+        EventId = 22,
+        Level = LogLevel.Information,
+        Message = "Created question event with id=`{questionEventId}` for question `{questionId}` by user {userId}")]
+    public static partial void CreatedQuestionEvent(this ILogger logger, string questionEventId, string questionId,
+        string userId);
 }

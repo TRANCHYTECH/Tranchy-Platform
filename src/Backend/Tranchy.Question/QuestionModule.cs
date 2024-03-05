@@ -18,10 +18,7 @@ public class QuestionModule : IModule
 
     public static void ConfigureDb(DatabaseOptions databaseOptions)
     {
-        var conventionPack = new ConventionPack
-        {
-            new IgnoreExtraElementsConvention(true),
-        };
+        var conventionPack = new ConventionPack { new IgnoreExtraElementsConvention(true) };
 
         ConventionRegistry.Register("TranchyAskDefaultConventions", conventionPack, _ => true);
         //using var loggerFactory = LoggerFactory.Create(b =>

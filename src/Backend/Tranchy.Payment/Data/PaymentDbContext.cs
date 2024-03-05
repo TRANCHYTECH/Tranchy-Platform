@@ -7,11 +7,11 @@ public class PaymentDbContext : DbContext
 {
     public const string DbSchema = "payment";
 
-    public DbSet<Deposit> Deposits => Set<Deposit>();
-
     public PaymentDbContext(DbContextOptions options) : base(options)
     {
     }
+
+    public DbSet<Deposit> Deposits => Set<Deposit>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

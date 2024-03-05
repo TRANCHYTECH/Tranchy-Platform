@@ -1,41 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<ItemGroup>
-	  <Compile Remove="MassTransit\**" />
-	  <EmbeddedResource Remove="MassTransit\**" />
-	  <None Remove="MassTransit\**" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="MassTransit\**"/>
+    <EmbeddedResource Remove="MassTransit\**"/>
+    <None Remove="MassTransit\**"/>
+  </ItemGroup>
 
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+  </ItemGroup>
 
-	<ItemGroup>
-	  <PackageReference Include="MassTransit.Abstractions" />
-	  <PackageReference Include="MassTransit.MongoDb" />
-	  <PackageReference Include="MiniValidation" />
-	  <PackageReference Include="MongoDB.Entities" />
-	  <PackageReference Include="FluentValidation" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MassTransit.Abstractions"/>
+    <PackageReference Include="MassTransit.MongoDb"/>
+    <PackageReference Include="MiniValidation"/>
+    <PackageReference Include="MongoDB.Entities"/>
+    <PackageReference Include="FluentValidation"/>
+  </ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Events\Payment\" />
-	  <Folder Include="Services\" />
-	</ItemGroup>
+  <ItemGroup>
+    <Folder Include="Events\Payment\"/>
+    <Folder Include="Services\"/>
+  </ItemGroup>
 
-	<ItemGroup>
-	  <PackageReference Update="Meziantou.Analyzer">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	  <PackageReference Update="Roslynator.Analyzers">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	  <PackageReference Update="Roslynator.Formatting.Analyzers">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
-	</ItemGroup>
-	
+  <ItemGroup>
+    <PackageReference Update="Meziantou.Analyzer">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Update="Roslynator.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Update="Roslynator.Formatting.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
 </Project>

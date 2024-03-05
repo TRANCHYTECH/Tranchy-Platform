@@ -1,25 +1,25 @@
 using System.Text.Json.Serialization;
 using Swashbuckle.AspNetCore.Annotations;
 using Tranchy.Question.Data;
+
 namespace Tranchy.Question.Requests;
 
 [SwaggerDiscriminator("$type")]
-
 [JsonDerivedType(typeof(CreateQuestionEventMessageSentRequest), nameof(QuestionEventType.MessageSent))]
-[SwaggerSubType(typeof(CreateQuestionEventMessageSentRequest), DiscriminatorValue = nameof(QuestionEventType.MessageSent))]
-
+[SwaggerSubType(typeof(CreateQuestionEventMessageSentRequest),
+    DiscriminatorValue = nameof(QuestionEventType.MessageSent))]
 [JsonDerivedType(typeof(CreateQuestionEventStatusChangedRequest), nameof(QuestionEventType.StatusChanged))]
-[SwaggerSubType(typeof(CreateQuestionEventStatusChangedRequest), DiscriminatorValue = nameof(QuestionEventType.StatusChanged))]
-
+[SwaggerSubType(typeof(CreateQuestionEventStatusChangedRequest),
+    DiscriminatorValue = nameof(QuestionEventType.StatusChanged))]
 [JsonDerivedType(typeof(CreateQuestionEventFileAttachedRequest), nameof(QuestionEventType.FileAttached))]
-[SwaggerSubType(typeof(CreateQuestionEventFileAttachedRequest), DiscriminatorValue = nameof(QuestionEventType.FileAttached))]
-
+[SwaggerSubType(typeof(CreateQuestionEventFileAttachedRequest),
+    DiscriminatorValue = nameof(QuestionEventType.FileAttached))]
 [JsonDerivedType(typeof(CreateQuestionEventVoiceCalledRequest), nameof(QuestionEventType.VoiceCalled))]
-[SwaggerSubType(typeof(CreateQuestionEventVoiceCalledRequest), DiscriminatorValue = nameof(QuestionEventType.VoiceCalled))]
-
+[SwaggerSubType(typeof(CreateQuestionEventVoiceCalledRequest),
+    DiscriminatorValue = nameof(QuestionEventType.VoiceCalled))]
 [JsonDerivedType(typeof(CreateQuestionEventVideoCalledRequest), nameof(QuestionEventType.VideoCalled))]
-[SwaggerSubType(typeof(CreateQuestionEventVideoCalledRequest), DiscriminatorValue = nameof(QuestionEventType.VideoCalled))]
-
+[SwaggerSubType(typeof(CreateQuestionEventVideoCalledRequest),
+    DiscriminatorValue = nameof(QuestionEventType.VideoCalled))]
 [JsonDerivedType(typeof(CreateQuestionEventReactedRequest), nameof(QuestionEventType.EventReacted))]
 [SwaggerSubType(typeof(CreateQuestionEventReactedRequest), DiscriminatorValue = nameof(QuestionEventType.EventReacted))]
 public class CreateQuestionEventRequest

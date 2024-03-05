@@ -9,6 +9,6 @@ public class PaymentDbContextDesignTimeDbContextFactory : IDesignTimeDbContextFa
     {
         var options = new DbContextOptionsBuilder<PaymentDbContext>().UseSqlServer("Data Source=Dummy").Options;
 
-        return new(options);
+        return new PaymentDbContext(options);
     }
 }

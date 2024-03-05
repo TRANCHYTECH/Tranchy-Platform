@@ -4,7 +4,8 @@ namespace Tranchy.Common;
 
 public static class PaginationResponseExtensions
 {
-    public static PaginationResponse<T> CreatePaginationResponse<T>(this ICollection<T> data, PaginationParameters paginationParameters)
+    public static PaginationResponse<T> CreatePaginationResponse<T>(this ICollection<T> data,
+        PaginationParameters paginationParameters)
         where T : IQueryIndex
     {
         var response = new PaginationResponse<T>();

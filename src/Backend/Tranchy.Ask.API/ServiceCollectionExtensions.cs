@@ -1,5 +1,6 @@
 using Azure.Identity;
 using MassTransit;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Entities;
 using Tranchy.Common;
 using Tranchy.File;
@@ -25,7 +26,7 @@ public static class ServiceCollectionExtensions
         NotificationModule.ConfigureServices(services, configuration);
         services.AddMassTransit(c =>
         {
-            c.ConfigureHealthCheckOptions(cfg => cfg.MinimalFailureStatus = Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded);
+            c.ConfigureHealthCheckOptions(cfg => cfg.MinimalFailureStatus = HealthStatus.Degraded);
             // c.AddEntityFrameworkOutbox<PaymentDbContext>(o =>
             // {
             //     o.UseSqlServer();
@@ -39,10 +40,11 @@ public static class ServiceCollectionExtensions
                 o.UseBusOutbox();
             });
 
-            string endpointPrefix = string.Equals(configuration.ASPNETCORE_ENVIRONMENT, Environments.Development, StringComparison.Ordinal)
+            string endpointPrefix = string.Equals(configuration.ASPNETCORE_ENVIRONMENT, Environments.Development,
+                StringComparison.Ordinal)
                 ? Environment.UserName
                 : string.Empty;
-            c.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter(prefix: endpointPrefix, includeNamespace: false));
+            c.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter(endpointPrefix, false));
 
             c.AddConsumersFromNamespaceContaining<LogQuestionFileUploaded>();
             c.AddConsumersFromNamespaceContaining<GenerateDefaultAvatar>();
@@ -50,7 +52,8 @@ public static class ServiceCollectionExtensions
 
             c.UsingAzureServiceBus((ctx, factoryConfig) =>
             {
-                factoryConfig.Host(configuration.ServiceBusConnectionString, hostConfig => hostConfig.TokenCredential = new DefaultAzureCredential());
+                factoryConfig.Host(configuration.ServiceBusConnectionString,
+                    hostConfig => hostConfig.TokenCredential = new DefaultAzureCredential());
                 factoryConfig.ConfigureEndpoints(ctx);
             });
         });

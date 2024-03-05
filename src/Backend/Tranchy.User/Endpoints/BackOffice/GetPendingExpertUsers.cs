@@ -14,9 +14,10 @@ public class GetPendingExpertUsers : IEndpoint
     private static async Task<Ok<IEnumerable<GetUserResponse>>> GetAllPendingExperts(
         CancellationToken cancellationToken)
     {
-        var users = await DB.Find<Data.User>().Match(u => u.RegistrationStatus == UserRegistrationStatus.ExpertRequested)
-        .Sort(u => u.ModifiedOn, Order.Ascending)
-        .ExecuteAsync(cancellationToken);
+        var users = await DB.Find<Data.User>()
+            .Match(u => u.RegistrationStatus == UserRegistrationStatus.ExpertRequested)
+            .Sort(u => u.ModifiedOn, Order.Ascending)
+            .ExecuteAsync(cancellationToken);
 
         return TypedResults.Ok(users.Select(u => u.FromEntity()));
     }

@@ -15,10 +15,7 @@ public class DefaultHeaderFilter : IOperationFilter
         {
             operation.Parameters.Add(new OpenApiParameter
             {
-                Name = "x-csrf",
-                In = ParameterLocation.Header,
-                Required = true,
-                Example = new OpenApiString("1")
+                Name = "x-csrf", In = ParameterLocation.Header, Required = true, Example = new OpenApiString("1")
             });
         }
     }
@@ -31,7 +28,7 @@ public static class SwaggerExtensions
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
-            options.EnableAnnotations(enableAnnotationsForInheritance: true, enableAnnotationsForPolymorphism: true);
+            options.EnableAnnotations(true, true);
             options.SwaggerDoc("v1", new OpenApiInfo { Title = "Tranchy Ask Api Documentation", Version = "v1" });
             options.OperationFilter<DefaultHeaderFilter>();
 
@@ -43,8 +40,11 @@ public static class SwaggerExtensions
                 {
                     AuthorizationCode = new OpenApiOAuthFlow
                     {
-                        Scopes = appSettings.Authentication.Schemes.Swagger.Scopes.ToDictionary(k => k, v => v, StringComparer.Ordinal),
-                        AuthorizationUrl = new Uri(appSettings.Authentication.Schemes.Swagger.AuthorizationUrl!),
+                        Scopes =
+                            appSettings.Authentication.Schemes.Swagger.Scopes.ToDictionary(k => k, v => v,
+                                StringComparer.Ordinal),
+                        AuthorizationUrl =
+                            new Uri(appSettings.Authentication.Schemes.Swagger.AuthorizationUrl!),
                         TokenUrl = new Uri(appSettings.Authentication.Schemes.Swagger.TokenUrl!)
                     }
                 },

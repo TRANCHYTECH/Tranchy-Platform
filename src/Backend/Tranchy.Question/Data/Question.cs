@@ -9,7 +9,7 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
     // todo: check if it's better to move this function to script deployment.
     // todo: index for status?
     /// <summary>
-    /// This function creates the unique index for field QueryIndex.
+    ///     This function creates the unique index for field QueryIndex.
     /// </summary>
     static Question() =>
         DB.Index<Question>()
@@ -25,14 +25,15 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
     public required string Title { get; set; }
     public required SupportLevel SupportLevel { get; set; }
     public QuestionStatus Status { get; private set; } = QuestionStatus.New;
-    public required string CreatedByUserId { get; init; }
     public string? PriorityId { get; set; }
     public string[] QuestionCategoryIds { get; set; } = Array.Empty<string>();
     public bool? CommunityShareAgreement { get; set; }
     public QuestionConsultant? Consultant { get; private set; }
 
-    [Ignore]
-    public QuestionPermissions? Permissions { get; private set; }
+    [Ignore] public QuestionPermissions? Permissions { get; private set; }
+
+    public string Comment { get; set; } = string.Empty;
+    public required string CreatedByUserId { get; init; }
 
     public long QueryIndex { get; init; }
 
@@ -53,8 +54,6 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
             Comment = comment;
         }
     }
-
-    public string Comment { get; set; } = string.Empty;
 
     public void TakeConsultation(string userId)
     {

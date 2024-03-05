@@ -35,7 +35,7 @@ public class ConversationHub : Hub
             await DB.InsertAsync(newQuestionEvent, cancellation: Context.ConnectionAborted);
             logger.CreatedQuestionEvent(newQuestionEvent.ID!, questionId, string.Empty);
 
-            await Clients.All.SendAsync("receiveEvent", newQuestionEvent, cancellationToken: Context.ConnectionAborted);
+            await Clients.All.SendAsync("receiveEvent", newQuestionEvent, Context.ConnectionAborted);
         }
     }
 
@@ -43,7 +43,8 @@ public class ConversationHub : Hub
 
     private string GetClaim(string claimType)
     {
-        var claim = Context?.User?.Claims.FirstOrDefault(c => string.Equals(c.Type, claimType, StringComparison.Ordinal));
+        var claim = Context?.User?.Claims.FirstOrDefault(
+            c => string.Equals(c.Type, claimType, StringComparison.Ordinal));
         return claim?.Value ?? string.Empty;
     }
 }

@@ -4,10 +4,12 @@ public class UserSavedQuestionAction : UserActionBase
 {
     public UserSavedQuestionAction(string userId, string questionId)
     {
-        ID =  GetID(userId);
+        ID = GetID(userId);
         Questions = new List<string>();
         Questions.Add(questionId);
     }
+
+    public ICollection<string> Questions { get; init; }
 
     public bool AppendQuestion(string questionId)
     {
@@ -31,8 +33,6 @@ public class UserSavedQuestionAction : UserActionBase
         Questions.Remove(questionId);
         return true;
     }
-
-    public ICollection<string> Questions { get; init; }
 
     public static string GetID(string userId) => $"{userId}_{nameof(UserSavedQuestionAction)}";
 }

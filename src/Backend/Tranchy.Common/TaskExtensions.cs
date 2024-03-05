@@ -10,6 +10,7 @@ public static class TaskExtensions
         }
     }
 #pragma warning disable RCS1090
-    private static async Task ForgetAwaited(Task task) => await task.ConfigureAwait(ConfigureAwaitOptions.SuppressThrowing);
+    private static async Task ForgetAwaited(Task task) =>
+        await task.ConfigureAwait(ConfigureAwaitOptions.SuppressThrowing);
 #pragma warning restore RCS1090
 }

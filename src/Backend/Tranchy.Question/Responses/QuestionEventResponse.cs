@@ -5,28 +5,23 @@ using Tranchy.Question.Data;
 namespace Tranchy.Question.Responses;
 
 [SwaggerDiscriminator("$type")]
-
 [JsonDerivedType(typeof(MobileQuestionEventMessageSent), nameof(QuestionEventType.MessageSent))]
 [SwaggerSubType(typeof(MobileQuestionEventMessageSent), DiscriminatorValue = nameof(QuestionEventType.MessageSent))]
 public abstract class MobileQuestionEvent
 {
-    [JsonPropertyName("_id")]
-    public required string ID { get; set; }
+    [JsonPropertyName("_id")] public required string ID { get; set; }
 
-    [JsonPropertyName("createdAt")]
-    public DateTime CreatedOn { get; set; }
+    [JsonPropertyName("createdAt")] public DateTime CreatedOn { get; set; }
 
-    public User User { get; set; } = new User();
+    public User User { get; set; } = new();
 }
 
 public record User
 {
-    [JsonPropertyName("_id")]
-    public string Id { get; set; } = string.Empty;
+    [JsonPropertyName("_id")] public string Id { get; set; } = string.Empty;
 }
 
 public class MobileQuestionEventMessageSent : MobileQuestionEvent
 {
-    [JsonPropertyName("text")]
-    public required string Content { get; set; }
+    [JsonPropertyName("text")] public required string Content { get; set; }
 }

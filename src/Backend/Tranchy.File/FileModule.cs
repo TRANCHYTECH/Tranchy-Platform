@@ -18,7 +18,8 @@ public class FileModule : IModule, IStartupFilter
             // The "BlobContainers" collection allows registration of multiple containers.
             options.BlobContainers.Add(new AzureBlobContainerClientOptions
             {
-                ConnectionString = configuration.File.BlobStorageConnectionString, ContainerName = configuration.File.AvatarContainerName
+                ConnectionString = configuration.File.BlobStorageConnectionString,
+                ContainerName = configuration.File.AvatarContainerName
             });
         });
         services.AddKeyedScoped<BlobContainerClient>("avatar",
