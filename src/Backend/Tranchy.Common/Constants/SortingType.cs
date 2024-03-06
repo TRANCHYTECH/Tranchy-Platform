@@ -1,4 +1,4 @@
-namespace Tranchy.Common.Data;
+namespace Tranchy.Common.Constants;
 
 public enum SortingType
 {

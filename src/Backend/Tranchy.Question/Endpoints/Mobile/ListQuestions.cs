@@ -1,3 +1,5 @@
+using MongoDB.Bson;
+using MongoDB.Driver;
 using Tranchy.Common.Constants;
 using Tranchy.Common.Services;
 using Tranchy.Question.Data;
@@ -31,6 +33,25 @@ public class ListQuestions : IEndpoint
             .WithSummary("Get recent questions")
             .WithTags(Tags.Mobile)
             .WithOpenApi();
+
+        routeGroupBuilder.MapPost("/sections/query", QueryQuestions)
+            .WithName("QueryQuestions")
+            .WithSummary("Query questions")
+            .WithTags(Tags.Mobile)
+            .WithOpenApi();
+    }
+
+    private static async Task<Ok<PaginationResponse<Data.Question>>> QueryQuestions(
+        [FromServices] ITenant tenant,
+        [FromBody] QueryQuestionsRequest queryParameters,
+        CancellationToken cancellation)
+    {
+        var query = QuestionQueryBuilder.Parse(queryParameters);
+        var aggregateOptions = new AggregateOptions { Let = new BsonDocument("user_id", tenant.UserId) };
+        var questions = await DB.Collection<Data.Question>().Aggregate<Data.Question>(query, aggregateOptions, cancellation).ToListAsync(cancellation);
+        questions.ForEach(q => q.RefinePermissions(tenant.UserId));
+
+        return TypedResults.Ok(questions.CreatePaginationResponse(queryParameters));
     }
 
     private static async Task<Ok<Data.Question[]>> GetCommunityQuestions(

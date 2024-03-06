@@ -9,7 +9,7 @@ public static class PaginationResponseExtensions
         where T : IQueryIndex
     {
         var response = new PaginationResponse<T>();
-        if (data.Count > paginationParameters.PageSize)
+        if (data.Count > paginationParameters.Limit)
         {
             response.Data = data.SkipLast(1);
             response.NextQueryIndex = $"{data.Last().QueryIndex}";

@@ -7,7 +7,7 @@ public class PaginationParameters
 {
     public long? QueryIndex { get; set; }
 
-    [Range(1, 100)] [DefaultValue(10)] public int PageSize { get; set; }
+    [Range(1, 100)][DefaultValue(10)] public int Limit { get; set; }
 
-    public int GetQueryPageSize() => PageSize + 1;
+    public int GetQueryPageSize() => Limit + 1;
 }

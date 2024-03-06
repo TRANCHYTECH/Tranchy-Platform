@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Tranchy.Common.Constants;
+using Tranchy.Common.Data;
 using Tranchy.Question.Data;
 
 namespace Tranchy.Question.Endpoints.BackOffice;

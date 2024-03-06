@@ -1,20 +1,7 @@
 using MongoDB.Bson;
-using Tranchy.Common.Data;
+using Tranchy.Common.Constants;
 
 namespace Tranchy.Question.Data;
-
-public class QueryParameters
-{
-    public bool? Other { get; init; }
-    public SupportLevel? SupportLevel { get; init; }
-    public QuestionStatus? Status { get; init; }
-    public IEnumerable<string>? Categories { get; init; }
-    public SortingType CreatedAtSortingType { get; init; } = SortingType.Ascending;
-    public int Limit { get; init; } = 10;
-    public SortingType? PrioritySorting { get; init; }
-    public IEnumerable<string>? ExceptIds { get; init; }
-    public bool ProjectionTypeQuestionBrief { get; set; } = true;
-}
 
 public class QuestionQueryBuilder
 {
@@ -46,6 +33,8 @@ public class QuestionQueryBuilder
     private void WithCreatedSort(SortingType sortingType) =>
         _aggregate.Add(new BsonDocument("$sort", new BsonDocument("CreatedOn", sortingType)));
 
+    private void WithQueryIndex(string matchType, long queryIndex) => _aggregate.Add(new BsonDocument("$match", new BsonDocument("QueryIndex", new BsonDocument(matchType, queryIndex))));
+
     private void WithPrioritySort(SortingType sortingType) =>
         _aggregate.Add(new BsonDocument("$sort", new BsonDocument("PriorityId", sortingType)));
 
@@ -54,7 +43,7 @@ public class QuestionQueryBuilder
             new BsonDocument("$nin",
                 new BsonArray(questionIds.Select(id => new ObjectId(id)).ToArray())))));
 
-    private void WithProjectionBrief() => _aggregate.Add(new BsonDocument("$project",
+    private void WithProjectQuestionBrief() => _aggregate.Add(new BsonDocument("$project",
         new BsonDocument
         {
             { "ID", new BsonDocument("$toString", "$_id") },
@@ -64,9 +53,9 @@ public class QuestionQueryBuilder
             { "CreatedBy", "$CreatedByUserId" }
         }));
 
-    private BsonDocument[] Value() => _aggregate.ToArray();
+    private BsonDocument[] Value() => [.. _aggregate];
 
-    public static BsonDocument[] Parse(QueryParameters queryParams)
+    public static BsonDocument[] Parse(QueryQuestionsRequest queryParams)
     {
         var builder = new QuestionQueryBuilder();
         if (queryParams.Other == true)
@@ -99,18 +88,24 @@ public class QuestionQueryBuilder
             builder.WithPrioritySort(queryParams.PrioritySorting.Value);
         }
 
+        // Go together.
         builder.WithCreatedSort(queryParams.CreatedAtSortingType);
+        if (queryParams.QueryIndex.HasValue)
+        {
+            string matchType = queryParams.CreatedAtSortingType == SortingType.Ascending ? "$gte" : "$lte";
+            builder.WithQueryIndex(matchType, queryParams.QueryIndex.Value);
+        }
 
         if (queryParams.Limit is < 0 or > 100)
         {
             throw new AggregateException(nameof(queryParams.Limit) + " invalid");
         }
 
-        builder.WithLimit(queryParams.Limit);
+        builder.WithLimit(queryParams.ApplyPagination ? queryParams.Limit + 1 : queryParams.Limit);
 
-        if (queryParams.ProjectionTypeQuestionBrief)
+        if (queryParams.ProjectQuestionBrief)
         {
-            builder.WithProjectionBrief();
+            builder.WithProjectQuestionBrief();
         }
 
         return builder.Value();

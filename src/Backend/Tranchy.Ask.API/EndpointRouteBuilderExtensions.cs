@@ -19,7 +19,8 @@ public static class EndpointRouteBuilderExtensions
                             status = report.Status.ToString(),
                             monitors = report.Entries.Select(e => new
                             {
-                                key = e.Key, value = Enum.GetName(typeof(HealthStatus), e.Value.Status)
+                                key = e.Key,
+                                value = Enum.GetName(typeof(HealthStatus), e.Value.Status)
                             })
                         });
                     context.Response.ContentType = MediaTypeNames.Application.Json;

@@ -1,7 +1,6 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Tranchy.Common.Constants;
-using Tranchy.Common.Data;
 using Tranchy.Common.Services;
 using Tranchy.Question.Data;
 
@@ -22,21 +21,21 @@ public class GetUserHighlights : IEndpoint
     {
         var aggregateOptions = new AggregateOptions { Let = new BsonDocument("user_id", tenant.UserId) };
 
-        var matchedProfileQuery = QuestionQueryBuilder.Parse(new QueryParameters
+        var matchedProfileQuery = QuestionQueryBuilder.Parse(new QueryQuestionsRequest
         {
             Other = true,
             SupportLevel = SupportLevel.Expert,
             Categories = ["law", "string1"], // todo: get user categories
             Status = QuestionStatus.Accepted,
             CreatedAtSortingType = SortingType.Ascending,
-            Limit = 5
+            Limit = 5,
+            ProjectQuestionBrief = true
         });
 
-        //todo: projection
         var matchedProfileQuestions = await DB.Collection<Data.Question>().Aggregate<QuestionBrief>(matchedProfileQuery,
             aggregateOptions, cancellation).ToListAsync(cancellation);
 
-        var opportunitiesQuery = QuestionQueryBuilder.Parse(new QueryParameters
+        var opportunitiesQuery = QuestionQueryBuilder.Parse(new QueryQuestionsRequest
         {
             Other = true,
             SupportLevel = SupportLevel.Expert,
@@ -44,13 +43,14 @@ public class GetUserHighlights : IEndpoint
             PrioritySorting = SortingType.Descending,
             CreatedAtSortingType = SortingType.Ascending,
             ExceptIds = matchedProfileQuestions.Select(c => c.ID),
-            Limit = 5
+            Limit = 5,
+            ProjectQuestionBrief = true
         });
 
         var topPrioritiesQuestions = await DB.Collection<Data.Question>().Aggregate<QuestionBrief>(opportunitiesQuery,
             aggregateOptions, cancellation).ToListAsync(cancellation);
 
-        var recentQuestionsQuery = QuestionQueryBuilder.Parse(new QueryParameters
+        var recentQuestionsQuery = QuestionQueryBuilder.Parse(new QueryQuestionsRequest
         {
             Other = true,
             SupportLevel = SupportLevel.Expert,
