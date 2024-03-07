@@ -13,8 +13,7 @@ export const RecentQuestionsScreen: FC<RecentQuestionsScreenProps> = observer(()
   const { navigate } = useNavigation<NativeStackNavigationProp<AppStackParamList>>()
 
   return QuestionsScreen({
-    loadQuestionsMethod: "getRecentQuestions",
-    loadQuestionsProperty: "recentQuestions",
+    loadForSection: "highlights",
     buildBlocks: (data: QuestionBrief[]) => buildBlocks(data),
     onPressQuestion: (id: string) => navigate("QuestionDetail", { id }),
     enableOnEndReached: true,

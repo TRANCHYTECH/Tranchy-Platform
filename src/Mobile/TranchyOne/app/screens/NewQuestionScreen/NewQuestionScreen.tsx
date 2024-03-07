@@ -167,6 +167,9 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
         questionCategoryIds: formModel.questionCategoryIds,
         supportLevel: formModel.supportLevel,
         priorityId: formModel.priority,
+        priorityRank: formModel.priority
+          ? metadataStore.questionPriority(formModel.priority)?.rank ?? 0
+          : 0,
       })
 
       if (!createQuestionResponse.ok || createQuestionResponse.data === undefined) {

@@ -22,12 +22,12 @@ export default defineConfig({
       prettier: true,
     },
     input: {
-      target: 'swagger.json',
+      target: 'http://localhost:7300/swagger/v1/swagger.json',
       override: {
         transformer: askApiPrefixFn,
       },
       filters: {
-        tags: ["BackOffice"],
+        tags: ['BackOffice'],
       },
     },
   },

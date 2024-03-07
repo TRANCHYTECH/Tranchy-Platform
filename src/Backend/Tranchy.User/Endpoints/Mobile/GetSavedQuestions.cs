@@ -17,7 +17,7 @@ public class GetSavedQuestions : IEndpoint
         [FromServices] ITenant tenant,
         CancellationToken cancellation)
     {
-        string actionId = UserSavedQuestionAction.GetID(tenant.UserId);
+        string actionId = UserSavedQuestionAction.GetID(tenant.Email);
         var action = await DB.Find<UserSavedQuestionAction>()
             .MatchID(actionId)
             .ExecuteSingleAsync(cancellation);

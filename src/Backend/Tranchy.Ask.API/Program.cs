@@ -185,7 +185,7 @@ mobileGroupBuilder.MapGroup("users").MapMobileEndpoints<UserModule>().RequireAut
 
 var backofficeGroupBuilder = app.MapGroup("/management");
 backofficeGroupBuilder.MapGroup("questions").MapBackOfficeEndpoints<QuestionModule>().RequireAuthorization()
-    .AsBffApiEndpoint();
+    .AsBffApiEndpoint().SkipAntiforgery();
 backofficeGroupBuilder.MapGroup("files").MapBackOfficeEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint();
 backofficeGroupBuilder.MapGroup("users").MapBackOfficeEndpoints<UserModule>().RequireAuthorization().AsBffApiEndpoint();
 backofficeGroupBuilder.MapGroup("payment").MapBackOfficeEndpoints<PaymentModule>().RequireAuthorization()

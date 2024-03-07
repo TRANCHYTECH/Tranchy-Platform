@@ -7,5 +7,5 @@
 
 export type GetMyQuestionsParams = {
   QueryIndex?: number
-  PageSize?: number
+  Limit?: number
 }

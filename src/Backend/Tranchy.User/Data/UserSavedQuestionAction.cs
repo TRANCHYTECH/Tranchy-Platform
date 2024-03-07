@@ -2,9 +2,9 @@ namespace Tranchy.User.Data;
 
 public class UserSavedQuestionAction : UserActionBase
 {
-    public UserSavedQuestionAction(string userId, string questionId)
+    public UserSavedQuestionAction(string user, string questionId)
     {
-        ID = GetID(userId);
+        ID = GetID(user);
         Questions = new List<string>();
         Questions.Add(questionId);
     }
@@ -34,5 +34,5 @@ public class UserSavedQuestionAction : UserActionBase
         return true;
     }
 
-    public static string GetID(string userId) => $"{userId}_{nameof(UserSavedQuestionAction)}";
+    public static string GetID(string user) => $"{user}_{nameof(UserSavedQuestionAction)}";
 }

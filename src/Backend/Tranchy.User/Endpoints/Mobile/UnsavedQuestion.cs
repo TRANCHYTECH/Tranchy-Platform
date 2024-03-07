@@ -17,7 +17,7 @@ public class UnsavedQuestion : IEndpoint
         [FromRoute] string questionId,
         CancellationToken cancellation)
     {
-        string actionId = UserSavedQuestionAction.GetID(tenant.UserId);
+        string actionId = UserSavedQuestionAction.GetID(tenant.Email);
 
         var action = await DB.Find<UserSavedQuestionAction>()
             .MatchID(actionId)

@@ -82,7 +82,7 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
 
     React.useLayoutEffect(() => {
       const question = questionStore.currentQuestion
-      if (question?.consultant?.userId === getUserId()) {
+      if (question?.consultant?.user === getUserId()) {
         navigation.setOptions({
           headerRight: () => (
             <IconButton
@@ -105,7 +105,7 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
         $type: CreateQuestionEventMessageSentRequestType.MessageSent,
         content: messages[0].text,
         metadata: {
-          notifiedUserId: question?.permissions?.directChatTargetUserId,
+          notifiedUserId: question?.permissions?.directChatTargetUser,
         },
       }
 
@@ -116,7 +116,7 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
       setMessages((previousMessages) => GiftedChat.append(previousMessages, messages, false))
     }, [])
 
-    const getUserId = () => metadataStore.userId ?? ""
+    const getUserId = () => metadataStore.email ?? ""
 
     return (
       <>
@@ -140,7 +140,7 @@ export const QuestionConversationScreen: FC<QuestionConversationScreenProps> = o
           index={-1}
           snapPoints={["100%"]}
           keyboardBehavior="fillParent"
-          style={{ borderColor: colors.borderLight, border }}
+          style={{ borderColor: colors.borderLight }}
         >
           <View style={styles.bottomSheetContainer}>
             {openCategorySelection && (
@@ -162,7 +162,7 @@ const QuestionDetailSection = ({ question }: { question: Question | null }) => {
         <Text variant="titleMedium">Câu hỏi: {question.title}</Text>
         <Text>
           Người dùng: {metadataStore.email} (
-          {question.consultant?.userId === metadataStore.userId ? "Consultant" : "Requester"})
+          {question.consultant?.user === metadataStore.email ? "Consultant" : "Requester"})
         </Text>
       </View>
     )

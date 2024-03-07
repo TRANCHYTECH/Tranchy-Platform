@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Routing;
+using Tranchy.Common.Constants;
 
 namespace Tranchy.Common;
 
@@ -6,15 +7,15 @@ public static class RouteGroupBuilderExtensions
 {
     public static RouteGroupBuilder MapMobileEndpoints<TModule>(this RouteGroupBuilder group)
         where TModule : class, IModule =>
-        group.MapEndpointsInternal<TModule>("Mobile");
+        group.MapEndpointsInternal<TModule>(Tags.Mobile);
 
     public static RouteGroupBuilder MapBackOfficeEndpoints<TModule>(this RouteGroupBuilder group)
         where TModule : class, IModule =>
-        group.MapEndpointsInternal<TModule>("BackOffice");
+        group.MapEndpointsInternal<TModule>(Tags.BackOffice);
 
     public static RouteGroupBuilder MapIntegrationEndpoints<TModule>(this RouteGroupBuilder group)
         where TModule : class, IModule =>
-        group.MapEndpointsInternal<TModule>("Integration");
+        group.MapEndpointsInternal<TModule>(Tags.Integration);
 
     private static RouteGroupBuilder MapEndpointsInternal<TModule>(this RouteGroupBuilder group, string target)
         where TModule : class, IModule
@@ -28,7 +29,7 @@ public static class RouteGroupBuilderExtensions
         foreach (var endpoint in endpoints)
         {
             var registerRoutesMethod = endpoint.GetMethod(nameof(IEndpoint.Register));
-            registerRoutesMethod?.Invoke(null, new object[] { group });
+            registerRoutesMethod?.Invoke(null, [group]);
         }
 
         return group;

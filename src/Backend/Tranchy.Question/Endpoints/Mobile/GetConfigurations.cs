@@ -19,8 +19,6 @@ public class GetConfigurations : IEndpoint
     {
         var response = new GetQuestionConfigurationsResponse
         {
-            // todo: move User Id and Email to another endpoint
-            UserId = tenant.UserId,
             Email = tenant.Email,
             QuestionCategories = await GetQuestionCategories(cancellationToken),
             QuestionPriorities = await GetQuestionPriorities(cancellationToken)

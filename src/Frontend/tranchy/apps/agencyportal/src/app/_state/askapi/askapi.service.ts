@@ -18,6 +18,7 @@ import type {
   GetUserResponse,
   Question,
   RejectQuestionRequest,
+  SubmitUserParams,
 } from './models';
 
 type HttpClientOptions = {
@@ -84,6 +85,18 @@ export class TranchyAskApiDocumentationService {
     );
   }
 
+  /**
+   * @summary Summarize total questions of categories
+   */
+  summarizeTotalQuestions<TData = void>(
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.get<TData>(
+      `/ask:/management/questions/aggregates/category-summary`,
+      options
+    );
+  }
+
   createUser<TData = void>(
     createUserRequest: CreateUserRequest,
     options?: HttpClientOptions
@@ -100,10 +113,32 @@ export class TranchyAskApiDocumentationService {
   ): Observable<TData> {
     return this.http.get<TData>(`/ask:/management/users`, options);
   }
+
+  getAllPendingExperts<TData = GetUserResponse[]>(
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.get<TData>(
+      `/ask:/management/users/aggregates/pending-experts`,
+      options
+    );
+  }
+
+  submitUser<TData = void>(
+    params: SubmitUserParams,
+    options?: HttpClientOptions
+  ): Observable<TData> {
+    return this.http.get<TData>(`/ask:/management/users/submit-user`, {
+      ...options,
+      params: { ...params, ...options?.params },
+    });
+  }
 }
 
 export type AcceptQuestionClientResult = NonNullable<void>;
 export type ListAllQuestionsClientResult = NonNullable<Question[]>;
 export type RejectQuestionClientResult = NonNullable<void>;
+export type SummarizeTotalQuestionsClientResult = NonNullable<void>;
 export type CreateUserClientResult = NonNullable<void>;
 export type GetUsersClientResult = NonNullable<GetUserResponse[]>;
+export type GetAllPendingExpertsClientResult = NonNullable<GetUserResponse[]>;
+export type SubmitUserClientResult = NonNullable<void>;

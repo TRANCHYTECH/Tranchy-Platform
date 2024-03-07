@@ -8,5 +8,6 @@ public class QuestionValidator : AbstractValidator<Data.Question>
         RuleFor(q => q.SupportLevel).IsInEnum();
         RuleFor(q => q.Status).IsInEnum();
         RuleFor(q => q.QuestionCategoryIds).NotEmpty();
+        RuleFor(q => q.CreatedBy).NotEmpty().EmailAddress();
     }
 }

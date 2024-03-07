@@ -13,12 +13,13 @@ export interface Question {
   comment?: string | null;
   communityShareAgreement?: boolean | null;
   consultant?: QuestionConsultant;
-  createdByUserId?: string | null;
+  createdBy?: string | null;
   createdOn?: string;
   id?: string | null;
   modifiedOn?: string;
   permissions?: QuestionPermissions;
   priorityId?: string | null;
+  priorityRank?: number;
   queryIndex?: number;
   questionCategoryIds?: string[] | null;
   status?: QuestionStatus;

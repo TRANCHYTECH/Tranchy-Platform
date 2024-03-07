@@ -8,6 +8,6 @@
 export interface QuestionConsultant {
   attachmentIds?: string[] | null
   conclusion?: string | null
-  createdAt?: string
-  userId?: string | null
+  createdOn?: string
+  user?: string | null
 }

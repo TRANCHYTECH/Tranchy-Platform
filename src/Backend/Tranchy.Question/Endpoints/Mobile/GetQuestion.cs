@@ -23,7 +23,7 @@ public class GetQuestion : IEndpoint
             return TypedResults.BadRequest();
         }
 
-        question.RefinePermissions(tenant.UserId);
+        question.RefinePermissions(tenant.Email);
 
         return TypedResults.Ok(question);
     }

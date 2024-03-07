@@ -8,5 +8,5 @@ import type { QuestionAction } from './questionAction';
 
 export interface QuestionPermissions {
   actions?: QuestionAction[] | null;
-  directChatTargetUserId?: string | null;
+  directChatTargetUser?: string | null;
 }

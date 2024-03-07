@@ -1,3 +1,5 @@
+using MongoDB.Bson;
+using MongoDB.Driver;
 using Tranchy.Common.Constants;
 using Tranchy.Common.Services;
 using Tranchy.Question.Data;
@@ -31,6 +33,25 @@ public class ListQuestions : IEndpoint
             .WithSummary("Get recent questions")
             .WithTags(Tags.Mobile)
             .WithOpenApi();
+
+        routeGroupBuilder.MapPost("/sections/query", QueryQuestions)
+            .WithName("QueryQuestions")
+            .WithSummary("Query questions")
+            .WithTags(Tags.Mobile)
+            .WithOpenApi();
+    }
+
+    private static async Task<Ok<PaginationResponse<QuestionBrief>>> QueryQuestions(
+        [FromServices] ITenant tenant,
+        [FromBody] QueryQuestionsRequest queryParameters,
+        CancellationToken cancellation)
+    {
+        queryParameters.ProjectQuestionBrief = true;
+        var query = QuestionQueryBuilder.Parse(queryParameters);
+        var aggregateOptions = new AggregateOptions { Let = new BsonDocument("user", tenant.Email) };
+        var questions = await DB.Collection<Data.Question>().Aggregate<QuestionBrief>(query, aggregateOptions, cancellation).ToListAsync(cancellation);
+
+        return TypedResults.Ok(questions.CreatePaginationResponse(queryParameters));
     }
 
     private static async Task<Ok<Data.Question[]>> GetCommunityQuestions(
@@ -42,7 +63,7 @@ public class ListQuestions : IEndpoint
             .Match(q => acceptedStatuses.Contains(q.Status))
             .Sort(q => q.CreatedOn, Order.Descending)
             .ExecuteAsync(cancellation);
-        questions.ForEach(q => q.RefinePermissions(tenant.UserId));
+        questions.ForEach(q => q.RefinePermissions(tenant.Email));
 
         return TypedResults.Ok(questions.ToArray());
     }
@@ -81,7 +102,7 @@ public class ListQuestions : IEndpoint
 
         var questionsQuery = DB.Find<Data.Question, QuestionBrief>()
             .Match(q => allowedStatuses.Contains(q.Status) && q.Consultant != null &&
-                        q.Consultant.UserId == tenant.UserId);
+                        q.Consultant.User == tenant.Email);
 
         // Order by latest created on, so the usage of query index should be the same as Sort condition
         if (paginationParameters.QueryIndex is not null)
@@ -106,7 +127,7 @@ public class ListQuestions : IEndpoint
                 Categories = q.QuestionCategoryIds,
                 CreatedOn = q.CreatedOn,
                 Price = "todo",
-                CreatedBy = q.CreatedByUserId,
+                CreatedBy = q.CreatedBy,
                 QueryIndex = q.QueryIndex
             })
             .Limit(paginationParameters.GetQueryPageSize())

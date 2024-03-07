@@ -19,7 +19,7 @@ public class SaveQuestion : IEndpoint
         [FromBody] SaveQuestionRequest request,
         CancellationToken cancellation)
     {
-        var requestedAction = new UserSavedQuestionAction(tenant.UserId, request.QuestionId);
+        var requestedAction = new UserSavedQuestionAction(tenant.Email, request.QuestionId);
 
         var action = await DB.Find<UserSavedQuestionAction>()
             .MatchID(requestedAction.ID)

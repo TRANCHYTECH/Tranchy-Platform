@@ -1,44 +1,72 @@
 import { Instance, SnapshotIn, SnapshotOut, cast, flow, types } from "mobx-state-tree"
 import { withSetPropAction } from "./helpers/withSetPropAction"
 import {
-  getMyConsultations,
   getQuestion,
-  getRecentQuestions,
   getSavedQuestions,
   getUserHighlights,
   listMobileQuestionEvents,
   pickQuestion,
   unsavedQuestion,
   userSaveQuestion,
-  getMyQuestions,
+  queryQuestions,
 } from "app/services/ask-api/askApi"
 import {
   GetSavedQuestionsResponse,
   GetUserHighlightsResponse,
   MobileQuestionEvent,
+  QueryQuestionsRequest,
   Question,
-  QuestionBrief,
   QuestionBriefPaginationResponse,
+  QuestionStatus,
   SaveQuestionResponse,
+  SortingType,
 } from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"
 import { parseNumber } from "app/utils/methodHelper"
 
 // setLivelinessChecking("error")
-const EndOfPage = -1
+
+// todo: update conditions for each query
+const QueryParams: { [id in QuerySection]: QueryQuestionsRequest } = {
+  mine: {
+    mine: true,
+    limit: 8,
+    applyPagination: true,
+  },
+  consultations: {
+    other: true,
+    myConsultation: true,
+    limit: 5,
+    applyPagination: true,
+  },
+  recent: {
+    other: true,
+    status: QuestionStatus.Accepted,
+    createdAtSortingType: SortingType.Ascending,
+    limit: 5,
+    applyPagination: true,
+  },
+}
+export type QuerySection = keyof Pick<QuestionStoreSnapshotIn, "mine" | "consultations" | "recent">
+export type HighlightSection = keyof Pick<QuestionStoreSnapshotIn, "highlights">
+
+export type QuestionSection = QuerySection | HighlightSection
 
 export const QuestionStoreModel = types
   .model("QuestionStore")
   .props({
-    userHighlights: types.maybeNull(types.frozen<GetUserHighlightsResponse>()),
-    recentQuestions: types.optional(types.array(types.frozen<QuestionBrief>()), []),
-    myQuestions: types.optional(types.array(types.frozen<QuestionBrief>()), []),
-    myConsultations: types.optional(types.array(types.frozen<QuestionBrief>()), []),
     savedQuestions: types.optional(types.array(types.string), []),
     isLoading: types.optional(types.boolean, false),
     nextQueryIndex: types.maybe(types.number),
     currentQuestion: types.maybeNull(types.frozen<Question>()),
     currentQuestionEvents: types.optional(types.array(types.frozen<MobileQuestionEvent>()), []),
+
+    // new implementation
+    mine: types.optional(types.frozen<QuestionBriefPaginationResponse>(), { data: [] }),
+    consultations: types.optional(types.frozen<QuestionBriefPaginationResponse>(), { data: [] }),
+    recent: types.optional(types.frozen<QuestionBriefPaginationResponse>(), { data: [] }),
+
+    highlights: types.maybeNull(types.frozen<GetUserHighlightsResponse>()),
   })
   .actions(withSetPropAction)
   .views((self) => ({
@@ -47,11 +75,11 @@ export const QuestionStoreModel = types
     },
   }))
   .actions((self) => ({
-    getUserHighlights: flow(function* func() {
+    getHighlights: flow(function* func() {
       try {
         const response: ApiResponse<GetUserHighlightsResponse> = yield getUserHighlights()
         if (response.ok) {
-          self.userHighlights = cast(response.data)
+          self.highlights = cast(response.data)
         }
       } catch (error) {
         console.error("Failed to fetch user highlights", error)
@@ -59,89 +87,35 @@ export const QuestionStoreModel = types
         self.isLoading = false
       }
     }),
-    getMyQuestions: flow(function* func(resetQueryIndex: boolean) {
+
+    query: flow(function* func(querySection: QuerySection, resetQuery: boolean) {
       try {
-        if (!resetQueryIndex && self.nextQueryIndex === EndOfPage) {
-          return
+        const queryParams = QueryParams[querySection]
+        if (!resetQuery) {
+          if (!self[querySection].haveNextPage) {
+            return
+          }
+          queryParams.queryIndex = parseNumber(self[querySection].nextQueryIndex)
         }
 
         self.isLoading = true
 
-        const response: ApiResponse<QuestionBriefPaginationResponse> = yield getMyQuestions({
-          PageSize: 12,
-          QueryIndex: resetQueryIndex ? undefined : self.nextQueryIndex,
-        })
+        const response: ApiResponse<QuestionBriefPaginationResponse> = yield queryQuestions(
+          queryParams,
+        )
 
-        if (response.ok && response.data && response.data.data.length > 0) {
-          resetQueryIndex
-            ? (self.myQuestions = cast(response.data.data))
-            : self.myQuestions.push(...response.data.data)
-
-          self.nextQueryIndex = parseNumber(response.data.nextQueryIndex) ?? EndOfPage
+        if (response.ok && response.data) {
+          let data = self[querySection].data ?? []
+          data = resetQuery ? response.data.data : [...data, ...response.data.data]
+          self.setProp(querySection, {
+            data,
+            haveNextPage: response.data.haveNextPage,
+            nextQueryIndex: response.data.nextQueryIndex,
+          })
         }
       } catch (error) {
         if (__DEV__) {
-          console.tron.error("Failed to get my questions" + JSON.stringify(error), error)
-        }
-      } finally {
-        self.isLoading = false
-      }
-    }),
-    getRecentQuestions: flow(function* func(resetQueryIndex: boolean) {
-      try {
-        if (__DEV__) {
-          console.tron.debug("queryIndex: " + self.nextQueryIndex)
-        }
-
-        if (!resetQueryIndex && self.nextQueryIndex === EndOfPage) {
-          return
-        }
-
-        self.isLoading = true
-
-        const response: ApiResponse<QuestionBriefPaginationResponse> = yield getRecentQuestions({
-          PageSize: 12,
-          QueryIndex: resetQueryIndex ? undefined : self.nextQueryIndex,
-        })
-
-        if (response.ok && response.data && response.data.data.length > 0) {
-          resetQueryIndex
-            ? (self.recentQuestions = cast(response.data.data))
-            : self.recentQuestions.push(...response.data.data)
-
-          self.nextQueryIndex = parseNumber(response.data.nextQueryIndex) ?? EndOfPage
-        }
-      } catch (error) {
-        if (__DEV__) {
-          console.tron.error("Failed to get current questions", error)
-        }
-      } finally {
-        self.isLoading = false
-      }
-    }),
-    getMyConsultations: flow(function* func(resetQueryIndex: boolean) {
-      try {
-        if (!resetQueryIndex && self.nextQueryIndex === EndOfPage) {
-          return
-        }
-
-        self.isLoading = true
-
-        const response: ApiResponse<QuestionBriefPaginationResponse> = yield getMyConsultations({
-          PageSize: 12,
-          QueryIndex: resetQueryIndex ? undefined : self.nextQueryIndex,
-        })
-
-        if (response.ok && response.data && response.data.data.length > 0) {
-          resetQueryIndex
-            ? (self.myConsultations = cast(response.data.data))
-            : self.myConsultations.push(...response.data.data)
-
-          self.nextQueryIndex = parseNumber(response.data.nextQueryIndex) ?? EndOfPage
-        }
-      } catch (error) {
-        if (__DEV__) {
-          console.tron.error("Failed to get my consultations", error)
+          console.tron.error("Failed to query questions" + JSON.stringify(error), error)
         }
       } finally {
         self.isLoading = false

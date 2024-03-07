@@ -17,7 +17,7 @@ public class GetUserContact : IEndpoint
         [FromServices] ITenant tenant,
         CancellationToken cancellationToken)
     {
-        var user = await DB.Find<Data.User>().Match(u => u.UserName == tenant.UserId)
+        var user = await DB.Find<Data.User>().Match(u => u.Email == tenant.Email)
             .ExecuteFirstAsync(cancellationToken);
 
         if (user is null)

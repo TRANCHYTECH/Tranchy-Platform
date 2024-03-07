@@ -7,5 +7,5 @@
 
 export type GetRecentQuestionsParams = {
   QueryIndex?: number
-  PageSize?: number
+  Limit?: number
 }

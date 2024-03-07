@@ -4,5 +4,5 @@ namespace Tranchy.Common.Data;
 
 public interface IOwnEntity : IEntity
 {
-    string CreatedByUserId { get; init; }
+    string CreatedBy { get; init; }
 }

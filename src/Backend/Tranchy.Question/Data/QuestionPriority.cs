@@ -1,3 +1,5 @@
+using Tranchy.Common.Data;
+
 namespace Tranchy.Question.Data;
 
 [Collection("QuestionPriority")]

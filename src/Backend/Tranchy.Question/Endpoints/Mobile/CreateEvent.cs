@@ -27,7 +27,7 @@ public class CreateQuestionEvent : IEndpoint
             [FromServices] IHubContext<ConversationHub> hubContext,
             CancellationToken token)
     {
-        var newQuestionEvent = input.ToEntity(questionId, tenant.UserId);
+        var newQuestionEvent = input.ToEntity(questionId, tenant.Email);
 
         // TODO: validation
         await dbContext.BeginTransaction(token);
@@ -44,7 +44,7 @@ public class CreateQuestionEvent : IEndpoint
                 .SendAsync("receiveEvent", newQuestionEvent.ToMobileModel(), token);
         }
 
-        logger.CreatedQuestionEvent(newQuestionEvent.ID, newQuestionEvent.QuestionId, newQuestionEvent.CreatedByUserId);
+        logger.CreatedQuestionEvent(newQuestionEvent.ID, newQuestionEvent.QuestionId, newQuestionEvent.CreatedBy);
 
         return TypedResults.Ok(new CreateQuestionEventResponse { EventId = newQuestionEvent.ID });
     }

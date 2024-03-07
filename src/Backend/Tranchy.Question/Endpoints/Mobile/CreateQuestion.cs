@@ -19,21 +19,21 @@ public class CreateQuestion : IEndpoint
     private static async Task<Results<Ok<CreateQuestionResponse>, BadRequest<IDictionary<string, string[]>>>> Create(
         [FromBody] CreateQuestionRequest request,
         [FromServices] IValidator<Data.Question> questionValidator,
-        [FromServices] IEndpointNameFormatter endpointNameFormatter,
+        // [FromServices] IEndpointNameFormatter endpointNameFormatter,
         [FromServices] MongoDbContext dbContext,
-        [FromServices] ISendEndpointProvider sendEndpointProvider,
+        // [FromServices] ISendEndpointProvider sendEndpointProvider,
         [FromServices] IPublishEndpoint publishEndpoint,
         [FromServices] ILogger<CreateQuestion> logger,
         [FromServices] ITenant tenant,
         [FromServices] IdGenerator idGenerator,
         CancellationToken cancellation)
     {
-        var newQuestion = request.ToEntity(tenant.UserId, idGenerator.CreateId());
+        var newQuestion = request.ToEntity(tenant.Email, idGenerator.CreateId());
         await questionValidator.TryValidate(newQuestion, cancellation);
 
         await dbContext.BeginTransaction(cancellation);
         await DB.InsertAsync(newQuestion, dbContext.Session, cancellation);
-        await publishEndpoint.Publish(new QuestionCreatedEvent { Id = newQuestion.ID! }, cancellation);
+        await publishEndpoint.Publish(new QuestionCreatedEvent { Id = newQuestion.ID }, cancellation);
         // Commands.VerifyQuestion command = new() { Id = newQuestion.ID! };
         // await sendEndpointProvider.Send(
         //     command,

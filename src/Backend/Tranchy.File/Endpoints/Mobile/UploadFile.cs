@@ -50,7 +50,7 @@ public class UploadFile : IEndpoint
                 {
                     { "TranchyQuestionId", questionId },
                     { "TranchyFileName", finalizedFileName },
-                    { "TranchyCreatedBy", tenant.UserId }
+                    { "TranchyCreatedBy", tenant.Email }
                 },
                 HttpHeaders = new BlobHttpHeaders { ContentType = file.ContentType }
             }, cancellation);

@@ -21,6 +21,7 @@ import type {
   GetUserNotificationResponse,
   GetUserResponse,
   MobileQuestionEventMessageSent,
+  QueryQuestionsRequest,
   Question,
   QuestionBriefPaginationResponse,
   SaveQuestionRequest,
@@ -133,6 +134,18 @@ export const getRecentQuestions = (params: GetRecentQuestionsParams) => {
     url: `/mobile/questions/sections/recent`,
     method: "GET",
     params,
+  })
+}
+
+/**
+ * @summary Query questions
+ */
+export const queryQuestions = (queryQuestionsRequest: QueryQuestionsRequest) => {
+  return apiRequest<QuestionBriefPaginationResponse>({
+    url: `/mobile/questions/sections/query`,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: queryQuestionsRequest,
   })
 }
 
@@ -274,6 +287,13 @@ export const getUserNotification = () => {
 }
 
 /**
+ * @summary User requests to become expert
+ */
+export const expertRequest = () => {
+  return apiRequest<void>({ url: `/mobile/users/me:request-expert`, method: "POST" })
+}
+
+/**
  * @summary Unsaved question from their list
  */
 export const unsavedQuestion = (questionId: string) => {
@@ -299,6 +319,7 @@ export type GetCommunityQuestionsResult = NonNullable<
 export type GetMyQuestionsResult = NonNullable<Awaited<ReturnType<typeof getMyQuestions>>>
 export type GetMyConsultationsResult = NonNullable<Awaited<ReturnType<typeof getMyConsultations>>>
 export type GetRecentQuestionsResult = NonNullable<Awaited<ReturnType<typeof getRecentQuestions>>>
+export type QueryQuestionsResult = NonNullable<Awaited<ReturnType<typeof queryQuestions>>>
 export type PickQuestionResult = NonNullable<Awaited<ReturnType<typeof pickQuestion>>>
 export type ResolveConsultationResult = NonNullable<Awaited<ReturnType<typeof resolveConsultation>>>
 export type UploadQuestionFileResult = NonNullable<Awaited<ReturnType<typeof uploadQuestionFile>>>
@@ -313,4 +334,5 @@ export type GetCurrentUserContactsResult = NonNullable<
   Awaited<ReturnType<typeof getCurrentUserContacts>>
 >
 export type GetUserNotificationResult = NonNullable<Awaited<ReturnType<typeof getUserNotification>>>
+export type ExpertRequestResult = NonNullable<Awaited<ReturnType<typeof expertRequest>>>
 export type UnsavedQuestionResult = NonNullable<Awaited<ReturnType<typeof unsavedQuestion>>>

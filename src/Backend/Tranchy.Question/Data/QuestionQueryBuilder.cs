@@ -1,33 +1,34 @@
 using MongoDB.Bson;
-using Tranchy.Common.Data;
+using Tranchy.Common.Constants;
 
 namespace Tranchy.Question.Data;
-
-public class QueryParameters
-{
-    public bool? Other { get; init; }
-    public SupportLevel? SupportLevel { get; init; }
-    public QuestionStatus? Status { get; init; }
-    public IEnumerable<string>? Categories { get; init; }
-    public SortingType CreatedAtSortingType { get; init; } = SortingType.Ascending;
-    public int Limit { get; init; } = 10;
-    public SortingType? PrioritySorting { get; init; }
-    public IEnumerable<string>? ExceptIds { get; init; }
-    public bool ProjectionTypeQuestionBrief { get; set; } = true;
-}
 
 public class QuestionQueryBuilder
 {
     private readonly List<BsonDocument> _aggregate = [];
 
     private void WithOther() => _aggregate.Add(new BsonDocument("$match",
-        new BsonDocument("CreatedByUserId", new BsonDocument("$ne", "$$user_id"))));
+        new BsonDocument("$expr", new BsonDocument("$ne", new BsonArray { "$CreatedBy", "$$user" }))));
+
+    private void WithMine() => _aggregate.Add(new BsonDocument("$match",
+        new BsonDocument("$expr", new BsonDocument("$eq", new BsonArray { "$CreatedBy", "$$user" }))));
 
     private void WithSupportLevel(SupportLevel level) =>
         _aggregate.Add(new BsonDocument("$match", new BsonDocument("SupportLevel", level)));
 
     private void WithStatus(QuestionStatus status) =>
         _aggregate.Add(new BsonDocument("$match", new BsonDocument("Status", status)));
+
+    private void WithStatuses(QuestionStatus[] statues) =>
+        _aggregate.Add(new BsonDocument("$match",
+            new BsonDocument("Status", new BsonDocument("$in", new BsonArray(statues)))));
+
+    private void WithMyConsultation() => _aggregate.Add(new BsonDocument("$match",
+        new BsonDocument
+        {
+            { "Consultant", new BsonDocument("$ne", BsonNull.Value) },
+            { "$expr", new BsonDocument("$eq", new BsonArray { "$Consultant.UserId", "$$user" }) },
+        }));
 
     private void WithLimit(int number) => _aggregate.Add(new BsonDocument("$limit", number));
 
@@ -46,6 +47,9 @@ public class QuestionQueryBuilder
     private void WithCreatedSort(SortingType sortingType) =>
         _aggregate.Add(new BsonDocument("$sort", new BsonDocument("CreatedOn", sortingType)));
 
+    private void WithQueryIndex(string matchType, long queryIndex) => _aggregate.Add(
+        new BsonDocument("$match", new BsonDocument("QueryIndex", new BsonDocument(matchType, queryIndex))));
+
     private void WithPrioritySort(SortingType sortingType) =>
         _aggregate.Add(new BsonDocument("$sort", new BsonDocument("PriorityId", sortingType)));
 
@@ -54,24 +58,30 @@ public class QuestionQueryBuilder
             new BsonDocument("$nin",
                 new BsonArray(questionIds.Select(id => new ObjectId(id)).ToArray())))));
 
-    private void WithProjectionBrief() => _aggregate.Add(new BsonDocument("$project",
+    private void WithProjectQuestionBrief() => _aggregate.Add(new BsonDocument("$project",
         new BsonDocument
         {
             { "ID", new BsonDocument("$toString", "$_id") },
             { "Title", 1 },
             { "Categories", "$QuestionCategoryIds" },
             { "CreatedOn", 1 },
-            { "CreatedBy", "$CreatedByUserId" }
+            { "QueryIndex", 1 },
+            { "CreatedBy", 1 }
         }));
 
-    private BsonDocument[] Value() => _aggregate.ToArray();
+    private BsonDocument[] Value() => [.. _aggregate];
 
-    public static BsonDocument[] Parse(QueryParameters queryParams)
+    public static BsonDocument[] Parse(QueryQuestionsRequest queryParams)
     {
         var builder = new QuestionQueryBuilder();
         if (queryParams.Other == true)
         {
             builder.WithOther();
+        }
+
+        if (queryParams.Mine == true)
+        {
+            builder.WithMine();
         }
 
         if (queryParams.ExceptIds?.Count() > 0)
@@ -89,6 +99,11 @@ public class QuestionQueryBuilder
             builder.WithStatus(queryParams.Status.Value);
         }
 
+        if (queryParams.Statuses?.Length > 0)
+        {
+            builder.WithStatuses(queryParams.Statuses);
+        }
+
         if (queryParams.Categories?.Count() > 0)
         {
             builder.WithCategories(queryParams.Categories);
@@ -99,18 +114,29 @@ public class QuestionQueryBuilder
             builder.WithPrioritySort(queryParams.PrioritySorting.Value);
         }
 
+        if (queryParams.MyConsultation == true)
+        {
+            builder.WithMyConsultation();
+        }
+
+        // Go together.
         builder.WithCreatedSort(queryParams.CreatedAtSortingType);
+        if (queryParams.QueryIndex.HasValue)
+        {
+            string matchType = queryParams.CreatedAtSortingType == SortingType.Ascending ? "$gte" : "$lte";
+            builder.WithQueryIndex(matchType, queryParams.QueryIndex.Value);
+        }
 
         if (queryParams.Limit is < 0 or > 100)
         {
             throw new AggregateException(nameof(queryParams.Limit) + " invalid");
         }
 
-        builder.WithLimit(queryParams.Limit);
+        builder.WithLimit(queryParams.ApplyPagination ? queryParams.Limit + 1 : queryParams.Limit);
 
-        if (queryParams.ProjectionTypeQuestionBrief)
+        if (queryParams.ProjectQuestionBrief)
         {
-            builder.WithProjectionBrief();
+            builder.WithProjectQuestionBrief();
         }
 
         return builder.Value();
