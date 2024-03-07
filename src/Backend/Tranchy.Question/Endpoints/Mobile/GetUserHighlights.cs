@@ -9,23 +9,23 @@ namespace Tranchy.Question.Endpoints.Mobile;
 public class GetUserHighlights : IEndpoint
 {
     public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
-        .MapGet("/aggregates/user-highlights", HighlightSectionsFunction)
+        .MapGet("/aggregates/user-highlights", GetHighlights)
         .WithName("GetUserHighlights")
         .WithSummary("Get highlights for user")
         .WithTags(Tags.Mobile)
         .WithOpenApi();
 
-    private static async Task<Ok<GetUserHighlightsResponse>> HighlightSectionsFunction(
+    private static async Task<Ok<GetUserHighlightsResponse>> GetHighlights(
         [FromServices] ITenant tenant,
         CancellationToken cancellation)
     {
-        var aggregateOptions = new AggregateOptions { Let = new BsonDocument("user_id", tenant.UserId) };
+        var aggregateOptions = new AggregateOptions { Let = new BsonDocument("user", tenant.Email) };
 
         var matchedProfileQuery = QuestionQueryBuilder.Parse(new QueryQuestionsRequest
         {
             Other = true,
             SupportLevel = SupportLevel.Expert,
-            Categories = ["law", "string1"], // todo: get user categories
+            Categories = ["law", "string"], // todo: get user categories
             Status = QuestionStatus.Accepted,
             CreatedAtSortingType = SortingType.Ascending,
             Limit = 5,

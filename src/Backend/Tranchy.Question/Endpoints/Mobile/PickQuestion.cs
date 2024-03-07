@@ -23,9 +23,9 @@ public class PickQuestion : IEndpoint
             return TypedResults.BadRequest();
         }
 
-        question.TakeConsultation(tenant.UserId);
+        question.TakeConsultation(tenant.Email);
         await DB.SaveAsync(question, cancellation: cancellation);
-        question.RefinePermissions(tenant.UserId);
+        question.RefinePermissions(tenant.Email);
 
         return TypedResults.Ok(question);
     }

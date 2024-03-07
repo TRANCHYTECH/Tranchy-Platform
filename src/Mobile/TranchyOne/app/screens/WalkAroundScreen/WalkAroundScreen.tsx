@@ -13,8 +13,7 @@ export const WalkAroundScreen: FC<WalkAroundScreenProps> = observer(() => {
   const { navigate } = useNavigation<NativeStackNavigationProp<AppStackParamList>>()
 
   return QuestionsScreen({
-    loadQuestionsMethod: "getUserHighlights",
-    loadQuestionsProperty: "userHighlights",
+    loadForSection: "highlights",
     buildBlocks: (data: GetUserHighlightsResponse) => buildBlocks(data),
     onPressQuestion: (id: string) => navigate("QuestionDetail", { id }),
     enableOnEndReached: false,

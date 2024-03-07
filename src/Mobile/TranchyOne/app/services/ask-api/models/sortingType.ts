@@ -5,7 +5,7 @@
  * OpenAPI spec version: v1
  */
 
-export interface CategoryBrief {
-  id: string;
-  totalQuestions?: number;
+export enum SortingType {
+  Ascending = "Ascending",
+  Descending = "Descending",
 }

@@ -64,18 +64,21 @@ public class SeedMetadata : IEndpoint
             new()
             {
                 Key = "urgent",
+                Rank = 3,
                 Title = LocalizedString.Create("Gấp", "Urgent"),
                 Description = LocalizedString.Create("Tôi cần trả lời gấp", "I need the answer as right now")
             },
             new()
             {
                 Key = "today",
+                Rank = 5,
                 Title = LocalizedString.Create("Hôm nay", "today"),
                 Description = LocalizedString.Create("Tôi cần trả lời hôm nay", "I need the answer as today")
             },
             new()
             {
                 Key = "week",
+                Rank = 7,
                 Title = LocalizedString.Create("Tuần", "week"),
                 Description =
                     LocalizedString.Create("Tôi cần trả lời trong tuần", "I need the answer as this week")

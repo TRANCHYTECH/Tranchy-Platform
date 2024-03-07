@@ -5,7 +5,6 @@
  * OpenAPI spec version: v1
  */
 
-export interface CategoryBrief {
-  id: string;
-  totalQuestions?: number;
+export interface SaveQuestionResponse {
+  questions?: string[] | null;
 }

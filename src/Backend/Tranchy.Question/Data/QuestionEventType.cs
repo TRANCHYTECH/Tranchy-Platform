@@ -7,5 +7,5 @@ internal enum QuestionEventType
     VoiceCalled = 3,
     VideoCalled = 4,
     StatusChanged = 5,
-    EventReacted = 6
+    EventReacted = 6,
 }

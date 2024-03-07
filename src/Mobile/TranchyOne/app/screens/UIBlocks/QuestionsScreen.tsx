@@ -1,32 +1,25 @@
 import React, { useCallback, useRef, useState } from "react"
 import { View, ViewStyle } from "react-native"
 import { ListView, Screen } from "app/components"
-import { useStores } from "app/models"
+import { QuestionSection, useStores } from "app/models"
 import { useFocusEffect } from "@react-navigation/native"
 import { BlockItem, BlockItemType, ExtraData } from "./BlockItem"
 import { currentLocale } from "app/i18n"
 import FlashMessage from "react-native-flash-message"
 import { Button, Icon, MD3Colors } from "react-native-paper"
 import { colors, spacing } from "app/theme"
-import { invoke } from "lodash-es"
 
 const locale = currentLocale()
 
 export type QuestionsScreenProps = {
-  loadQuestionsMethod:
-    | "getRecentQuestions"
-    | "getUserHighlights"
-    | "getMyConsultations"
-    | "getMyQuestions"
-  loadQuestionsProperty: "recentQuestions" | "userHighlights" | "myConsultations" | "myQuestions"
+  loadForSection: QuestionSection
   buildBlocks: (data: any) => BlockItemType[]
   onPressQuestion: (id: string) => void
   enableOnEndReached: boolean
 }
 
 export function QuestionsScreen({
-  loadQuestionsMethod,
-  loadQuestionsProperty,
+  loadForSection,
   buildBlocks,
   onPressQuestion,
   enableOnEndReached,
@@ -40,9 +33,17 @@ export function QuestionsScreen({
   const [refreshing, setRefreshing] = useState(false)
   const notification = useRef<FlashMessage>(null)
 
+  const loadQuestions = (resetQueryIndex: boolean) => {
+    if (loadForSection === "highlights") {
+      return questionStore.getHighlights()
+    } else {
+      return questionStore.query(loadForSection, resetQueryIndex)
+    }
+  }
+
   const handleRefresh = useCallback(async () => {
     setRefreshing(true)
-    await invoke(questionStore, loadQuestionsMethod, true)
+    await loadQuestions(true)
     setRefreshing(false)
   }, [])
 
@@ -71,15 +72,12 @@ export function QuestionsScreen({
 
   useFocusEffect(
     useCallback(() => {
-      async function load() {
-        await invoke(questionStore, loadQuestionsMethod, true)
-      }
       setExtraData({
         categories: metadataStore.questionCategories,
         savedQuestions: questionStore.savedQuestions,
         locale,
       })
-      load()
+      loadQuestions(true)
     }, []),
   )
 
@@ -96,11 +94,11 @@ export function QuestionsScreen({
             onPressQuestion={onPressQuestion}
           />
         )}
-        data={buildBlocks(questionStore[loadQuestionsProperty])}
+        data={buildBlocks(questionStore[loadForSection])}
         extraData={extraData}
         onRefresh={handleRefresh}
         refreshing={refreshing}
-        onEndReached={() => enableOnEndReached && invoke(questionStore, loadQuestionsMethod, false)}
+        onEndReached={() => enableOnEndReached && loadQuestions(false)}
       />
       <FlashMessage ref={notification} />
     </Screen>

@@ -18,7 +18,7 @@ const en = {
   },
   tab: {
     community: "Community",
-    walkAround: "Questions",
+    walkAround: "Expert",
     askQuestion: "New Question",
     notification: "Notification",
     profile: "Profile",

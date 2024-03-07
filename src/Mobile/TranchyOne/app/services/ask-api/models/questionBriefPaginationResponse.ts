@@ -8,5 +8,6 @@ import type { QuestionBrief } from "./questionBrief"
 
 export interface QuestionBriefPaginationResponse {
   data: QuestionBrief[]
+  haveNextPage?: boolean
   nextQueryIndex?: string | null
 }

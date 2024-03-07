@@ -14,7 +14,7 @@ namespace Tranchy.Question.Data;
 public abstract class QuestionEvent : EntityBase, IOwnEntity
 {
     public required string QuestionId { get; set; }
-    public required string CreatedByUserId { get; init; }
+    public required string CreatedBy { get; init; }
 }
 
 public class QuestionEventMessageSent : QuestionEvent

@@ -9,6 +9,7 @@ import type { SupportLevel } from './supportLevel';
 export interface CreateQuestionRequest {
   communityShareAgreement?: boolean | null;
   priorityId?: string | null;
+  priorityRank?: number;
   questionCategoryIds?: string[] | null;
   supportLevel?: SupportLevel;
   title?: string | null;

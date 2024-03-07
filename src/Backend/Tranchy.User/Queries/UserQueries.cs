@@ -9,6 +9,6 @@ internal static class UserQueries
         CancellationToken cancellationToken
     ) =>
         DB.Find<Data.User>()
-            .Match(e => e.ID == tenant.UserId)
+            .Match(e => e.Email == tenant.Email)
             .ExecuteSingleAsync(cancellationToken);
 }

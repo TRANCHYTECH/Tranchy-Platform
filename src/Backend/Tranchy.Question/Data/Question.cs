@@ -26,6 +26,7 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
     public required SupportLevel SupportLevel { get; set; }
     public QuestionStatus Status { get; private set; } = QuestionStatus.New;
     public string? PriorityId { get; set; }
+    public int PriorityRank { get; set; }
     public string[] QuestionCategoryIds { get; set; } = Array.Empty<string>();
     public bool? CommunityShareAgreement { get; set; }
     public QuestionConsultant? Consultant { get; private set; }
@@ -33,7 +34,7 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
     [Ignore] public QuestionPermissions? Permissions { get; private set; }
 
     public string Comment { get; set; } = string.Empty;
-    public required string CreatedByUserId { get; init; }
+    public required string CreatedBy { get; init; }
 
     public long QueryIndex { get; init; }
 
@@ -55,9 +56,9 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
         }
     }
 
-    public void TakeConsultation(string userId)
+    public void TakeConsultation(string user)
     {
-        if (string.Equals(CreatedByUserId, userId, StringComparison.Ordinal))
+        if (string.Equals(CreatedBy, user, StringComparison.Ordinal))
         {
             throw new TranchyAteChillyException("Could not pick yourself");
         }
@@ -68,7 +69,7 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
         }
 
         Status = QuestionStatus.InProgress;
-        Consultant = new QuestionConsultant { UserId = userId, CreatedAt = DateTime.UtcNow };
+        Consultant = new QuestionConsultant { User = user, CreatedOn = DateTime.UtcNow };
     }
 
     public void FinishConsultation(string userId, string conclusion)
@@ -78,7 +79,7 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
             throw new TranchyAteChillyException("Invalid status");
         }
 
-        if (Consultant is null || !string.Equals(Consultant.UserId, userId, StringComparison.Ordinal))
+        if (Consultant is null || !string.Equals(Consultant.User, userId, StringComparison.Ordinal))
         {
             throw new TranchyAteChillyException("Invalid consultant");
         }
@@ -87,33 +88,52 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
         Status = QuestionStatus.Resolved;
     }
 
-    public void RefinePermissions(string userId)
+    public void RefinePermissions(string user)
     {
         Permissions = new QuestionPermissions();
 
-        // Actions.
-        if (Status == QuestionStatus.Accepted)
+        switch (Status)
         {
-            if (!IsRequester(userId))
-            {
-                Permissions.Actions.Add(QuestionAction.TakeConsultation);
-            }
-        }
-        else if (Status == QuestionStatus.InProgress)
-        {
-            if (IsConsultant(userId))
-            {
-                Permissions.DirectChatTargetUserId = CreatedByUserId;
+            // Actions.
+            case QuestionStatus.Accepted:
+                if (!IsRequester(user))
+                {
+                    Permissions.Actions.Add(QuestionAction.TakeConsultation);
+                }
+
+                break;
+            case QuestionStatus.InProgress when IsConsultant(user):
+                Permissions.DirectChatTargetUser = CreatedBy;
                 Permissions.Actions.Add(QuestionAction.GoToConversation);
-            }
-            else if (IsRequester(userId))
-            {
-                Permissions.DirectChatTargetUserId = Consultant?.UserId;
-                Permissions.Actions.Add(QuestionAction.GoToConversation);
-            }
+                break;
+            case QuestionStatus.InProgress:
+                if (IsRequester(user))
+                {
+                    Permissions.DirectChatTargetUser = Consultant?.User;
+                    Permissions.Actions.Add(QuestionAction.GoToConversation);
+                }
+
+                break;
+
+            case QuestionStatus.New:
+                break;
+            case QuestionStatus.BeingReviewed:
+                break;
+            case QuestionStatus.Cancelled:
+                break;
+            case QuestionStatus.Payment:
+                break;
+            case QuestionStatus.Rejected:
+                break;
+            case QuestionStatus.Resolved:
+                break;
+            case QuestionStatus.Closed:
+                break;
+            case QuestionStatus.Reported:
+                break;
         }
     }
 
-    private bool IsRequester(string userId) => string.Equals(CreatedByUserId, userId, StringComparison.Ordinal);
-    private bool IsConsultant(string userId) => string.Equals(Consultant?.UserId, userId, StringComparison.Ordinal);
+    private bool IsRequester(string user) => string.Equals(CreatedBy, user, StringComparison.Ordinal);
+    private bool IsConsultant(string user) => string.Equals(Consultant?.User, user, StringComparison.Ordinal);
 }

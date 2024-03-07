@@ -22,9 +22,7 @@ public class RequestExpert : IEndpoint
         [FromServices] ILogger<RequestExpert> logger,
         CancellationToken cancellationToken)
     {
-        var users = await DB.Find<Data.User>().ExecuteAsync(cancellationToken);
-
-        var user = await DB.Find<Data.User>().Match(u => tenant.UserId.Contains(u.ID))
+        var user = await DB.Find<Data.User>().Match(u => tenant.Email.Contains(u.ID))
             .ExecuteSingleAsync(cancellationToken);
 
         if (user is null)

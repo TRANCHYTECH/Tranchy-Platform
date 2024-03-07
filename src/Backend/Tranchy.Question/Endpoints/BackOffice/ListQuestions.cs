@@ -12,14 +12,11 @@ public class ListQuestions : IEndpoint
         .WithTags(Tags.BackOffice)
         .WithOpenApi();
 
-    private static async Task<Ok<Data.Question[]>> ListAllQuestions(
-        [FromServices] ITenant tenant,
-        CancellationToken cancellation)
+    private static async Task<Ok<Data.Question[]>> ListAllQuestions(CancellationToken cancellation)
     {
         var questions = await DB.Find<Data.Question>()
             .Sort(q => q.CreatedOn, Order.Descending)
             .ExecuteAsync(cancellation);
-        questions.ForEach(q => q.RefinePermissions(tenant.UserId));
 
         return TypedResults.Ok(questions.ToArray());
     }

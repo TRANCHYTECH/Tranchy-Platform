@@ -11,6 +11,5 @@ export interface QuestionBrief {
   createdOn: string;
   id: string;
   price: string;
-  saved: boolean;
   title: string;
 }

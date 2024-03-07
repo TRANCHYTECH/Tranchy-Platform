@@ -14,9 +14,6 @@ public class GetQuestionConfigurationsResponse
     public required IEnumerable<QuestionPriorityResponse> QuestionPriorities { get; init; }
 
     [SwaggerSchema(Nullable = false)]
-    public required string UserId { get; set; }
-
-    [SwaggerSchema(Nullable = false)]
     public required string Email { get; set; }
 }
 

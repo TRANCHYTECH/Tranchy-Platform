@@ -11,5 +11,4 @@ export interface GetQuestionConfigurationsResponse {
   email: string
   questionCategories: QuestionCategoryResponse[]
   questionPriorities: QuestionPriorityResponse[]
-  userId: string
 }

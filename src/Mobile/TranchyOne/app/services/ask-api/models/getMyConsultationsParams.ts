@@ -7,5 +7,5 @@
 
 export type GetMyConsultationsParams = {
   QueryIndex?: number
-  PageSize?: number
+  Limit?: number
 }

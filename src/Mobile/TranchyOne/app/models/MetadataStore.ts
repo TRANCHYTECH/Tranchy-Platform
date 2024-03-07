@@ -16,7 +16,6 @@ export const MetadataStoreModel = types
   .props({
     questionCategories: types.optional(types.array(types.frozen<QuestionCategoryResponse>()), []),
     questionPriorities: types.optional(types.array(types.frozen<QuestionPriorityResponse>()), []),
-    userId: types.maybeNull(types.string),
     email: types.maybeNull(types.string),
   })
   .actions(withSetPropAction)
@@ -37,7 +36,6 @@ export const MetadataStoreModel = types
           if (response.ok && response.data) {
             self.questionCategories = cast(response.data.questionCategories)
             self.questionPriorities = cast(response.data.questionPriorities)
-            self.userId = response.data.userId
             self.email = response.data.email
           }
         }

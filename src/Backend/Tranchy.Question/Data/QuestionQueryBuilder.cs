@@ -8,13 +8,27 @@ public class QuestionQueryBuilder
     private readonly List<BsonDocument> _aggregate = [];
 
     private void WithOther() => _aggregate.Add(new BsonDocument("$match",
-        new BsonDocument("CreatedByUserId", new BsonDocument("$ne", "$$user_id"))));
+        new BsonDocument("$expr", new BsonDocument("$ne", new BsonArray { "$CreatedBy", "$$user" }))));
+
+    private void WithMine() => _aggregate.Add(new BsonDocument("$match",
+        new BsonDocument("$expr", new BsonDocument("$eq", new BsonArray { "$CreatedBy", "$$user" }))));
 
     private void WithSupportLevel(SupportLevel level) =>
         _aggregate.Add(new BsonDocument("$match", new BsonDocument("SupportLevel", level)));
 
     private void WithStatus(QuestionStatus status) =>
         _aggregate.Add(new BsonDocument("$match", new BsonDocument("Status", status)));
+
+    private void WithStatuses(QuestionStatus[] statues) =>
+        _aggregate.Add(new BsonDocument("$match",
+            new BsonDocument("Status", new BsonDocument("$in", new BsonArray(statues)))));
+
+    private void WithMyConsultation() => _aggregate.Add(new BsonDocument("$match",
+        new BsonDocument
+        {
+            { "Consultant", new BsonDocument("$ne", BsonNull.Value) },
+            { "$expr", new BsonDocument("$eq", new BsonArray { "$Consultant.UserId", "$$user" }) },
+        }));
 
     private void WithLimit(int number) => _aggregate.Add(new BsonDocument("$limit", number));
 
@@ -33,7 +47,8 @@ public class QuestionQueryBuilder
     private void WithCreatedSort(SortingType sortingType) =>
         _aggregate.Add(new BsonDocument("$sort", new BsonDocument("CreatedOn", sortingType)));
 
-    private void WithQueryIndex(string matchType, long queryIndex) => _aggregate.Add(new BsonDocument("$match", new BsonDocument("QueryIndex", new BsonDocument(matchType, queryIndex))));
+    private void WithQueryIndex(string matchType, long queryIndex) => _aggregate.Add(
+        new BsonDocument("$match", new BsonDocument("QueryIndex", new BsonDocument(matchType, queryIndex))));
 
     private void WithPrioritySort(SortingType sortingType) =>
         _aggregate.Add(new BsonDocument("$sort", new BsonDocument("PriorityId", sortingType)));
@@ -50,7 +65,8 @@ public class QuestionQueryBuilder
             { "Title", 1 },
             { "Categories", "$QuestionCategoryIds" },
             { "CreatedOn", 1 },
-            { "CreatedBy", "$CreatedByUserId" }
+            { "QueryIndex", 1 },
+            { "CreatedBy", 1 }
         }));
 
     private BsonDocument[] Value() => [.. _aggregate];
@@ -61,6 +77,11 @@ public class QuestionQueryBuilder
         if (queryParams.Other == true)
         {
             builder.WithOther();
+        }
+
+        if (queryParams.Mine == true)
+        {
+            builder.WithMine();
         }
 
         if (queryParams.ExceptIds?.Count() > 0)
@@ -78,6 +99,11 @@ public class QuestionQueryBuilder
             builder.WithStatus(queryParams.Status.Value);
         }
 
+        if (queryParams.Statuses?.Length > 0)
+        {
+            builder.WithStatuses(queryParams.Statuses);
+        }
+
         if (queryParams.Categories?.Count() > 0)
         {
             builder.WithCategories(queryParams.Categories);
@@ -86,6 +112,11 @@ public class QuestionQueryBuilder
         if (queryParams.PrioritySorting.HasValue)
         {
             builder.WithPrioritySort(queryParams.PrioritySorting.Value);
+        }
+
+        if (queryParams.MyConsultation == true)
+        {
+            builder.WithMyConsultation();
         }
 
         // Go together.

@@ -18,7 +18,7 @@ const vi = {
   },
   tab: {
     community: "Cộng đồng",
-    walkAround: "Câu hỏi",
+    walkAround: "Chuyên gia",
     askQuestion: "Thêm mới",
     notification: "Thông báo",
     profile: "Hồ sơ",

@@ -19,7 +19,7 @@ public class GetUserNotification : IEndpoint
         CancellationToken cancellationToken)
     {
         var notifications = await DB.Find<UserNotification>()
-            .Match(n => n.UserId == tenant.UserId)
+            .Match(n => n.UserId == tenant.Email)
             .ExecuteAsync(cancellationToken);
 
         return TypedResults.Ok(notifications.Select(n => n.FromEntity()));

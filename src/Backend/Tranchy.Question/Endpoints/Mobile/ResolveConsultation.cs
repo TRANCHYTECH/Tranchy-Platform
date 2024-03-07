@@ -19,14 +19,14 @@ public class ResolveConsultation : IEndpoint
         CancellationToken cancellation)
     {
         var question = await DB.Find<Data.Question>()
-            .Match(q => q.ID == questionId && q.Consultant != null && q.Consultant.UserId == tenant.UserId)
+            .Match(q => q.ID == questionId && q.Consultant != null && q.Consultant.User == tenant.Email)
             .ExecuteSingleAsync(cancellation);
         if (question is null)
         {
             return TypedResults.BadRequest();
         }
 
-        question.FinishConsultation(tenant.UserId, request.Conclusion);
+        question.FinishConsultation(tenant.Email, request.Conclusion);
         await DB.SaveAsync(question, cancellation: cancellation);
 
         return TypedResults.Ok();

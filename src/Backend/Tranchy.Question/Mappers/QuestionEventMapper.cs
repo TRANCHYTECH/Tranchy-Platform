@@ -15,22 +15,22 @@ internal static class QuestionEventMapper
             .Include<CreateQuestionEventVoiceCalledRequest, QuestionEventVoiceCalled>()
             .Include<CreateQuestionEventVideoCalledRequest, QuestionEventVideoCalled>()
             .Map(dest => dest.QuestionId, _ => MapContext.Current!.Parameters["questionId"])
-            .Map(dest => dest.CreatedByUserId, _ => MapContext.Current!.Parameters[nameof(ITenant.UserId)]);
+            .Map(dest => dest.CreatedBy, _ => MapContext.Current!.Parameters[nameof(ITenant.Email)]);
 
         TypeAdapterConfig<QuestionEvent, MobileQuestionEvent>
             .NewConfig()
-            .Map(s => s.User.Id, t => t.CreatedByUserId)
+            .Map(s => s.User.Id, t => t.CreatedBy)
             .Include<QuestionEventMessageSent, MobileQuestionEventMessageSent>();
     }
 
     internal static QuestionEvent ToEntity(
         this CreateQuestionEventRequest request,
         string questionId,
-        string userId
+        string user
     ) =>
         request
             .BuildAdapter()
-            .AddParameters(nameof(ITenant.UserId), userId)
+            .AddParameters(nameof(ITenant.Email), user)
             .AddParameters("questionId", questionId)
             .AdaptToType<QuestionEvent>();
 
