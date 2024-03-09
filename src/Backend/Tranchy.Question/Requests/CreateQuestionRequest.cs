@@ -7,6 +7,6 @@ public record CreateQuestionRequest(
     SupportLevel SupportLevel,
     string? PriorityId,
     int PriorityRank,
-    string[] QuestionCategoryIds,
+    string[] CategoryIds,
     bool? CommunityShareAgreement
 );

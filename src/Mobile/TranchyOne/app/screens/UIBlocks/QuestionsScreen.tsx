@@ -8,7 +8,6 @@ import { currentLocale } from "app/i18n"
 import FlashMessage from "react-native-flash-message"
 import { Button, Icon, MD3Colors } from "react-native-paper"
 import { colors, spacing } from "app/theme"
-
 const locale = currentLocale()
 
 export type QuestionsScreenProps = {
@@ -33,11 +32,12 @@ export function QuestionsScreen({
   const [refreshing, setRefreshing] = useState(false)
   const notification = useRef<FlashMessage>(null)
 
-  const loadQuestions = (resetQueryIndex: boolean) => {
+  const loadQuestions = async (resetQuery: boolean) => {
     if (loadForSection === "highlights") {
-      return questionStore.getHighlights()
+      await metadataStore.ensureUserProfile()
+      await questionStore.getHighlights(metadataStore.userProfile?.categoryIds ?? [])
     } else {
-      return questionStore.query(loadForSection, resetQueryIndex)
+      await questionStore.query(loadForSection, resetQuery)
     }
   }
 

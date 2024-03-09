@@ -11,6 +11,7 @@ import type {
   CreateQuestionResponse,
   CreateUserExpertiseRequest,
   FinishConsultationRequest,
+  GetHighlightsRequest,
   GetMyConsultationsParams,
   GetMyQuestionsParams,
   GetQuestionConfigurationsResponse,
@@ -90,10 +91,12 @@ export const getQuestion = (questionId: string) => {
 /**
  * @summary Get highlights for user
  */
-export const getUserHighlights = () => {
+export const getUserHighlights = (getHighlightsRequest: GetHighlightsRequest) => {
   return apiRequest<GetUserHighlightsResponse>({
     url: `/mobile/questions/aggregates/user-highlights`,
-    method: "GET",
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    data: getHighlightsRequest,
   })
 }
 

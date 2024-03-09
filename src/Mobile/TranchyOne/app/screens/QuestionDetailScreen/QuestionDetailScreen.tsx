@@ -42,7 +42,7 @@ const QuestionDetailView = ({
               <Text style={$rightTextGrow}>Còn lại ... phút</Text>
             </View>
             <View style={$categoryBlock}>
-              {question.questionCategoryIds?.map((categoryId, index) => (
+              {question.categoryIds?.map((categoryId, index) => (
                 <Text style={$categoryItem} key={index}>
                   #{getTitle(categories, categoryId, locale)}
                 </Text>

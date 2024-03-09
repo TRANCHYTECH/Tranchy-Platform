@@ -6,26 +6,26 @@ using Tranchy.Question.Data;
 
 namespace Tranchy.Question.Endpoints.Mobile;
 
-public class GetUserHighlights : IEndpoint
+public class GetHighlights : IEndpoint
 {
     public static void Register(RouteGroupBuilder routeGroupBuilder) => routeGroupBuilder
-        .MapGet("/aggregates/user-highlights", GetHighlights)
+        .MapPost("/aggregates/user-highlights", GetHighlightsHandler)
         .WithName("GetUserHighlights")
         .WithSummary("Get highlights for user")
         .WithTags(Tags.Mobile)
         .WithOpenApi();
 
-    private static async Task<Ok<GetUserHighlightsResponse>> GetHighlights(
+    private static async Task<Ok<GetUserHighlightsResponse>> GetHighlightsHandler(
         [FromServices] ITenant tenant,
+        [FromBody] GetHighlightsRequest request,
         CancellationToken cancellation)
     {
-        var aggregateOptions = new AggregateOptions { Let = new BsonDocument("user", tenant.Email) };
-
         var matchedProfileQuery = QuestionQueryBuilder.Parse(new QueryQuestionsRequest
         {
             Other = true,
             SupportLevel = SupportLevel.Expert,
-            Categories = ["law", "string"], // todo: get user categories
+            // In case there is no category provided, set a random to ensure matching expression return no value as expected.
+            Categories = request.Categories.Length > 0 ? request.Categories : [Guid.NewGuid().ToString()],
             Status = QuestionStatus.Accepted,
             CreatedAtSortingType = SortingType.Ascending,
             Limit = 5,
@@ -33,7 +33,7 @@ public class GetUserHighlights : IEndpoint
         });
 
         var matchedProfileQuestions = await DB.Collection<Data.Question>().Aggregate<QuestionBrief>(matchedProfileQuery,
-            aggregateOptions, cancellation).ToListAsync(cancellation);
+            tenant.DefaultAggregateOptions(), cancellation).ToListAsync(cancellation);
 
         var opportunitiesQuery = QuestionQueryBuilder.Parse(new QueryQuestionsRequest
         {
@@ -48,7 +48,7 @@ public class GetUserHighlights : IEndpoint
         });
 
         var topPrioritiesQuestions = await DB.Collection<Data.Question>().Aggregate<QuestionBrief>(opportunitiesQuery,
-            aggregateOptions, cancellation).ToListAsync(cancellation);
+            tenant.DefaultAggregateOptions(), cancellation).ToListAsync(cancellation);
 
         var recentQuestionsQuery = QuestionQueryBuilder.Parse(new QueryQuestionsRequest
         {
@@ -61,24 +61,9 @@ public class GetUserHighlights : IEndpoint
         });
 
         var recentQuestions = await DB.Collection<Data.Question>().Aggregate<QuestionBrief>(recentQuestionsQuery,
-            aggregateOptions, cancellation).ToListAsync(cancellation);
+            tenant.DefaultAggregateOptions(), cancellation).ToListAsync(cancellation);
 
-        var categorySummaryQuery = new BsonDocument[]
-        {
-            new("$unwind",
-                new BsonDocument { { "path", "$QuestionCategoryIds" }, { "preserveNullAndEmptyArrays", false } }),
-            new("$group",
-                new BsonDocument
-                {
-                    { "_id", "$QuestionCategoryIds" }, { "TotalQuestions", new BsonDocument("$sum", 1) }
-                }),
-            new("$sort",
-                new BsonDocument("TotalQuestions", -1)),
-            new("$limit", 5)
-        };
-
-        var categorySummary = await DB.Collection<Data.Question>().Aggregate<CategoryBrief>(categorySummaryQuery,
-            aggregateOptions, cancellation).ToListAsync(cancellation);
+        var categorySummary = await GetCategorySummary(tenant, cancellation);
 
         GetUserHighlightsResponse response = new()
         {
@@ -89,5 +74,26 @@ public class GetUserHighlights : IEndpoint
         };
 
         return TypedResults.Ok(response);
+    }
+
+    private static async Task<List<CategoryBrief>> GetCategorySummary(ITenant tenant, CancellationToken cancellation)
+    {
+        var categorySummaryQuery = new BsonDocument[]
+        {
+            new("$unwind",
+                new BsonDocument { { "path", "$CategoryIds" }, { "preserveNullAndEmptyArrays", false } }),
+            new("$group",
+                new BsonDocument
+                {
+                    { "_id", "$CategoryIds" }, { "TotalQuestions", new BsonDocument("$sum", 1) },
+                }),
+            new("$sort",
+                new BsonDocument("TotalQuestions", -1)),
+            new("$limit", 5),
+        };
+
+        var categorySummary = await DB.Collection<Data.Question>().Aggregate<CategoryBrief>(categorySummaryQuery,
+            tenant.DefaultAggregateOptions(), cancellation).ToListAsync(cancellation);
+        return categorySummary;
     }
 }

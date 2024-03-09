@@ -130,7 +130,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
     resolver: zodResolver(QuestionFormSchema),
     defaultValues: {
       communityShareAgreement: false,
-      questionCategoryIds: [],
+      categoryIds: [],
       supportLevel: SupportLevel.Expert,
       priority: null,
       files: [],
@@ -139,13 +139,13 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
 
   // Subscribe form values.
   const supportLevel = form.watch("supportLevel")
-  const categories = form.watch("questionCategoryIds")
+  const categories = form.watch("categoryIds")
   // Question category selection.
   const [categorySelectionVisible, setCategorySelectionVisible] = React.useState(false)
 
   const categorySelectionCallback = (cancelled: boolean, values: string[]) => {
     if (!cancelled) {
-      form.setValue("questionCategoryIds", values as [string, ...string[]], {
+      form.setValue("categoryIds", values as [string, ...string[]], {
         shouldValidate: true,
       })
     }
@@ -164,7 +164,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
       // todo: rework on response process
       const createQuestionResponse = await createQuestion({
         title: formModel.title,
-        questionCategoryIds: formModel.questionCategoryIds,
+        categoryIds: formModel.categoryIds,
         supportLevel: formModel.supportLevel,
         priorityId: formModel.priority,
         priorityRank: formModel.priority
@@ -237,7 +237,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
             <View style={styles.row}>
               <Controller
                 control={form.control}
-                name="questionCategoryIds"
+                name="categoryIds"
                 render={({ field: { value, onChange } }) => (
                   <>
                     {value.map((cat) => (
@@ -265,7 +265,7 @@ export const NewQuestionScreen: FC<NewQuestionScreenProps> = observer(function N
                       {value.length === 0 ? "Chọn chủ đề" : "Chủ đề khác"}
                     </Chip>
                     <HelperText type="error">
-                      {form.formState.errors.questionCategoryIds?.message}
+                      {form.formState.errors.categoryIds?.message}
                     </HelperText>
                   </>
                 )}

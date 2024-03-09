@@ -12,7 +12,7 @@ import {
 } from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
 import { observer } from "mobx-react-lite"
-import React from "react"
+import React, { useCallback, useEffect } from "react"
 import { View, useColorScheme } from "react-native"
 import * as Screens from "app/screens"
 import Config from "../config"
@@ -22,7 +22,6 @@ import { colors } from "app/theme"
 import { MainTabNavigator, MainTabNavigatorParamList } from "./MainTabNavigator"
 import { Text } from "react-native-paper"
 import { translate } from "app/i18n"
-import { useAuth0 } from "react-native-auth0"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -70,21 +69,27 @@ const Stack = createNativeStackNavigator<AppStackParamList>()
 
 const AppStack = observer(function AppStack() {
   const {
-    authenticationStore: { isAuthenticated, distributeAuthToken },
     metadataStore,
     questionStore,
+    authenticationStore: { distributeAuthToken, isAuthenticated },
   } = useStores()
-  const { user } = useAuth0()
 
-  if (__DEV__) {
-    console.tron.log("auth ", user)
-  }
   if (isAuthenticated) {
+    if (__DEV__) {
+      console.log("distributeAuthToken")
+    }
     distributeAuthToken()
-    metadataStore.getConfigurations(true)
-    // todo:  better to get kind of  this info
-    questionStore.getSavedQuestions()
   }
+
+  useEffect(
+    useCallback(() => {
+      if (isAuthenticated) {
+        metadataStore.getConfigurations(true)
+        // todo:  better to get kind of  this info
+        questionStore.getSavedQuestions()
+      }
+    }, []),
+  )
 
   return (
     <Stack.Navigator

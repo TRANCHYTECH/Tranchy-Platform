@@ -35,12 +35,12 @@
                 {{ 'questionModule.questionListPage.priority' | translate }}
                 <p-sortIcon field="priorityId"></p-sortIcon>
               </th>
-              <th pSortableColumn="questionCategoryIds">
+              <th pSortableColumn="categoryIds">
                 {{
                   'questionModule.questionListPage.question-categories'
                     | translate
                 }}
-                <p-sortIcon field="questionCategoryIds"></p-sortIcon>
+                <p-sortIcon field="categoryIds"></p-sortIcon>
               </th>
               <th pSortableColumn="createdOn">
                 {{ 'questionModule.questionListPage.created-on' | translate }}
@@ -54,7 +54,7 @@
               <td>{{ question.title }}</td>
               <td>{{ question.status }}</td>
               <td>{{ question.priorityId }}</td>
-              <td>{{ question.questionCategoryIds }}</td>
+              <td>{{ question.categoryIds }}</td>
               <td>{{ question.createdOn | date }}</td>
               <td>
                 <button

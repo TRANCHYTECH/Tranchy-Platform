@@ -183,11 +183,12 @@ mobileGroupBuilder.MapGroup("questions").MapMobileEndpoints<QuestionModule>().Re
 mobileGroupBuilder.MapMobileEndpoints<FileModule>().RequireAuthorization();
 mobileGroupBuilder.MapGroup("users").MapMobileEndpoints<UserModule>().RequireAuthorization();
 
+// todo: remove SkipAntiforgery() usage
 var backofficeGroupBuilder = app.MapGroup("/management");
 backofficeGroupBuilder.MapGroup("questions").MapBackOfficeEndpoints<QuestionModule>().RequireAuthorization()
     .AsBffApiEndpoint().SkipAntiforgery();
 backofficeGroupBuilder.MapGroup("files").MapBackOfficeEndpoints<FileModule>().RequireAuthorization().AsBffApiEndpoint();
-backofficeGroupBuilder.MapGroup("users").MapBackOfficeEndpoints<UserModule>().RequireAuthorization().AsBffApiEndpoint();
+backofficeGroupBuilder.MapGroup("users").MapBackOfficeEndpoints<UserModule>().RequireAuthorization().AsBffApiEndpoint().SkipAntiforgery();
 backofficeGroupBuilder.MapGroup("payment").MapBackOfficeEndpoints<PaymentModule>().RequireAuthorization()
     .AsBffApiEndpoint();
 
