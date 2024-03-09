@@ -3,12 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "generate-rest": "npx orval --config ./orval.config.ts",
-    "generate-rest-local": "npx orval --config ./orval-local.config.ts",
+    "generate:rest": "npx orval --config ./orval.config.ts",
+    "generate:rest:local": "npx orval --config ./orval-local.config.ts",
     "build:agencyportal": "nx build agencyportal",
-    "start:agencyportal": "nx serve agencyportal --port 4200 --ssl --ssl-cert tls/tranchyone.pem --ssl-key tls/tranchyone.pem",
-    "start:agencyportal_new": "nx serve agencyportal --port 4200 --ssl --ssl-cert %HOME%/.aspnet/https/tranchyone.pem --ssl-key %HOME%/.aspnet/https/tranchyone.key",
-    "start:agencyportal_macos": "nx serve agencyportal --port 4200 --ssl --ssl-cert $HOME/.aspnet/https/tranchyone.pem --ssl-key $HOME/.aspnet/https/tranchyone.key"
+    "start:agencyportal": "nx serve agencyportal --port 4200 --ssl --ssl-cert $HOME/.aspnet/https/tranchyone.pem --ssl-key $HOME/.aspnet/https/tranchyone.key",
+    "start:agencyportal:win": "nx serve agencyportal --port 4200 --ssl --ssl-cert tls/tranchyone.pem --ssl-key tls/tranchyone.pem"
   },
   "private": true,
   "dependencies": {

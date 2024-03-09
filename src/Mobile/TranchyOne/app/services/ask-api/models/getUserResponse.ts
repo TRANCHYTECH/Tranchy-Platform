@@ -6,6 +6,7 @@
  */
 
 export interface GetUserResponse {
+  categoryIds?: string[] | null
   email?: string | null
   firstName?: string | null
   headline?: string | null

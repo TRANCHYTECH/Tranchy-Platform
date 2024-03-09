@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Output,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Question } from '../../_state/askapi/models';
 import { SharedModule } from '@tranchy/shared';
 import { DialogModule } from 'primeng/dialog';
-
 
 @Component({
   selector: 'tranchy-question-detail',
@@ -23,7 +30,10 @@ export class QuestionDetailComponent {
   question = signal<Question>({});
   approvalEnabled = computed(() => {
     console.log(this.question());
-    return this.question().status === 'New' || this.question().status == 'BeingReviewed';
+    return (
+      this.question().status === 'New' ||
+      this.question().status == 'BeingReviewed'
+    );
   });
 
   private _fb = inject(FormBuilder);
@@ -34,25 +44,34 @@ export class QuestionDetailComponent {
       status: null,
       priority: null,
       categories: null,
-      comment: null
+      comment: null,
     });
   }
 
   show(question: Question) {
-    const formData = (({ priorityId, questionCategoryIds, status, supportLevel, title, comment }) => ({ priorityId, questionCategoryIds, status, supportLevel, title, comment }))(question);
+    const formData = (({
+      priorityId,
+      categoryIds,
+      status,
+      supportLevel,
+      title,
+      comment,
+    }) => ({ priorityId, categoryIds, status, supportLevel, title, comment }))(
+      question
+    );
 
     this.questionForm.setValue({
       title: formData.title,
       status: formData.status,
       priority: formData.priorityId,
-      categories: formData.questionCategoryIds?.join(', '),
-      comment: formData.comment
+      categories: formData.categoryIds?.join(', '),
+      comment: formData.comment,
     });
 
     this.visible.set(true);
     this.question.set(question);
   }
-  
+
   hide() {
     this.visible.set(false);
   }
@@ -65,5 +84,3 @@ export class QuestionDetailComponent {
     this.rejected.emit();
   }
 }
-
-

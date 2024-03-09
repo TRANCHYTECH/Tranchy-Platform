@@ -22,6 +22,10 @@ export class Api {
         "x-csrf": "1",
       },
     })
+    // this.apisauce.axiosInstance.interceptors.request.use((cfg) => {
+    //   console.log("axios intecepter")
+    //   return cfg
+    // })
   }
 }
 

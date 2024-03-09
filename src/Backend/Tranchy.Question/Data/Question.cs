@@ -27,7 +27,7 @@ public class Question : EntityBase, IOwnEntity, IQueryIndex
     public QuestionStatus Status { get; private set; } = QuestionStatus.New;
     public string? PriorityId { get; set; }
     public int PriorityRank { get; set; }
-    public string[] QuestionCategoryIds { get; set; } = Array.Empty<string>();
+    public string[] CategoryIds { get; set; } = Array.Empty<string>();
     public bool? CommunityShareAgreement { get; set; }
     public QuestionConsultant? Consultant { get; private set; }
 

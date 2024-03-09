@@ -27,7 +27,7 @@ public class QuestionQueryBuilder
         new BsonDocument
         {
             { "Consultant", new BsonDocument("$ne", BsonNull.Value) },
-            { "$expr", new BsonDocument("$eq", new BsonArray { "$Consultant.UserId", "$$user" }) },
+            { "$expr", new BsonDocument("$eq", new BsonArray { "$Consultant.User", "$$user" }) },
         }));
 
     private void WithLimit(int number) => _aggregate.Add(new BsonDocument("$limit", number));
@@ -40,7 +40,7 @@ public class QuestionQueryBuilder
                         new BsonArray
                         {
                             new BsonDocument("$setIntersection",
-                                new BsonArray { "$QuestionCategoryIds", new BsonArray(categories) }),
+                                new BsonArray { "$CategoryIds", new BsonArray(categories) }),
                             new BsonArray()
                         })))));
 
@@ -63,7 +63,7 @@ public class QuestionQueryBuilder
         {
             { "ID", new BsonDocument("$toString", "$_id") },
             { "Title", 1 },
-            { "Categories", "$QuestionCategoryIds" },
+            { "Categories", "$CategoryIds" },
             { "CreatedOn", 1 },
             { "QueryIndex", 1 },
             { "CreatedBy", 1 }

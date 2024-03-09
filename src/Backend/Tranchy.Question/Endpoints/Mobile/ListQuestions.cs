@@ -124,7 +124,7 @@ public class ListQuestions : IEndpoint
             {
                 ID = q.ID,
                 Title = q.Title,
-                Categories = q.QuestionCategoryIds,
+                Categories = q.CategoryIds,
                 CreatedOn = q.CreatedOn,
                 Price = "todo",
                 CreatedBy = q.CreatedBy,

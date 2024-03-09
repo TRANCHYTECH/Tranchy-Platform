@@ -9,7 +9,7 @@ import { useStores } from "app/models"
 import { MainTabScreenProps } from "app/navigators"
 
 export const ProfileScreen: FC<MainTabScreenProps<"Profile">> = function ProfileScreen(_props) {
-  const { authenticationStore } = useStores()
+  const { authenticationStore, metadataStore } = useStores()
 
   // Pull in navigation via hook
   // const navigation = useNavigation()
@@ -18,6 +18,7 @@ export const ProfileScreen: FC<MainTabScreenProps<"Profile">> = function Profile
   const logout = async () => {
     await clearSession({})
     authenticationStore.logout()
+    metadataStore.reset()
   }
   return (
     <Screen contentContainerStyle={$container} preset="scroll" safeAreaEdges={["top"]}>

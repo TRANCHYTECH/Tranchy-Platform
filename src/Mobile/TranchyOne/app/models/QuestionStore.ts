@@ -75,9 +75,14 @@ export const QuestionStoreModel = types
     },
   }))
   .actions((self) => ({
-    getHighlights: flow(function* func() {
+    getHighlights: flow(function* func(categories: string[]) {
       try {
-        const response: ApiResponse<GetUserHighlightsResponse> = yield getUserHighlights()
+        const response: ApiResponse<GetUserHighlightsResponse> = yield getUserHighlights({
+          categories,
+        })
+        if (__DEV__) {
+          console.log("get highlights", categories, response.status)
+        }
         if (response.ok) {
           self.highlights = cast(response.data)
         }
@@ -126,7 +131,7 @@ export const QuestionStoreModel = types
       if (response.ok && response.data && response.data.questions) {
         self.savedQuestions = cast(response.data.questions)
         if (__DEV__) {
-          console.tron.debug("loaded saved questions: " + self.savedQuestions)
+          console.debug("getSavedQuestions - response", self.savedQuestions)
         }
       }
     }),

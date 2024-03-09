@@ -12,6 +12,7 @@ public class GetUserResponse
     public string? LastName { get; set; }
     public string? Headline { get; set; }
     public string? ProfilePictureBlobLocation { get; set; }
+    public string[]? CategoryIds { get; set; }
 }
 
 public class GetUserExpertiseResponse

@@ -6,6 +6,7 @@
  */
 
 export * from "./acceptQuestionRequest"
+export * from "./addCategoriesToUserRequest"
 export * from "./categoryBrief"
 export * from "./categoryBriefSection"
 export * from "./createEventMetadata"
@@ -35,6 +36,7 @@ export * from "./createUserRequest"
 export * from "./expertiseType"
 export * from "./finishConsultationRequest"
 export * from "./gender"
+export * from "./getHighlightsRequest"
 export * from "./getMyConsultationsParams"
 export * from "./getMyQuestionsParams"
 export * from "./getQuestionConfigurationsResponse"

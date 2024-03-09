@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "https_macos": {
+    "https": {
       "commandName": "Project",
       "launchUrl": "swagger",
       "environmentVariables": {

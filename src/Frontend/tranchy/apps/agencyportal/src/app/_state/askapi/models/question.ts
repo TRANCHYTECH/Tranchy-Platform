@@ -10,6 +10,7 @@ import type { QuestionStatus } from './questionStatus';
 import type { SupportLevel } from './supportLevel';
 
 export interface Question {
+  categoryIds?: string[] | null;
   comment?: string | null;
   communityShareAgreement?: boolean | null;
   consultant?: QuestionConsultant;
@@ -21,7 +22,6 @@ export interface Question {
   priorityId?: string | null;
   priorityRank?: number;
   queryIndex?: number;
-  questionCategoryIds?: string[] | null;
   status?: QuestionStatus;
   supportLevel?: SupportLevel;
   title?: string | null;
