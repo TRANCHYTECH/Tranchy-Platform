@@ -33,12 +33,12 @@ public static class ServiceCollectionExtensions
             //     o.UseBusOutbox();
             // });
 
-            c.AddMongoDbOutbox(o =>
-            {
-                o.ClientFactory(_ => DB.Database(configuration.QuestionDb.DatabaseName).Client);
-                o.DatabaseFactory(_ => DB.Database(configuration.QuestionDb.DatabaseName));
-                o.UseBusOutbox();
-            });
+            // c.AddMongoDbOutbox(o =>
+            // {
+            //     o.ClientFactory(_ => DB.Database(configuration.QuestionDb.DatabaseName).Client);
+            //     o.DatabaseFactory(_ => DB.Database(configuration.QuestionDb.DatabaseName));
+            //     o.UseBusOutbox();
+            // });
 
             string endpointPrefix = string.Equals(configuration.ASPNETCORE_ENVIRONMENT, Environments.Development,
                 StringComparison.Ordinal)

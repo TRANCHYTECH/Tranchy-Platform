@@ -20,13 +20,13 @@ import {
   QuestionStatus,
   SaveQuestionResponse,
   SortingType,
+  SupportLevel,
 } from "app/services/ask-api/models"
 import { ApiResponse } from "apisauce"
 import { parseNumber } from "app/utils/methodHelper"
 
 // setLivelinessChecking("error")
 
-// todo: update conditions for each query
 const QueryParams: { [id in QuerySection]: QueryQuestionsRequest } = {
   mine: {
     mine: true,
@@ -46,18 +46,27 @@ const QueryParams: { [id in QuerySection]: QueryQuestionsRequest } = {
     limit: 5,
     applyPagination: true,
   },
+  community: {
+    status: QuestionStatus.Accepted,
+    supportLevel: SupportLevel.Community,
+    createdAtSortingType: SortingType.Ascending,
+    limit: 5,
+    applyPagination: true,
+  },
 }
-export type QuerySection = keyof Pick<QuestionStoreSnapshotIn, "mine" | "consultations" | "recent">
-export type HighlightSection = keyof Pick<QuestionStoreSnapshotIn, "highlights">
+export type QuerySection = keyof Pick<
+  QuestionStoreSnapshotIn,
+  "mine" | "consultations" | "recent" | "community"
+>
+export type AggregateSection = keyof Pick<QuestionStoreSnapshotIn, "highlights">
 
-export type QuestionSection = QuerySection | HighlightSection
+export type QuestionSection = QuerySection | AggregateSection
 
 export const QuestionStoreModel = types
   .model("QuestionStore")
   .props({
     savedQuestions: types.optional(types.array(types.string), []),
     isLoading: types.optional(types.boolean, false),
-    nextQueryIndex: types.maybe(types.number),
     currentQuestion: types.maybeNull(types.frozen<Question>()),
     currentQuestionEvents: types.optional(types.array(types.frozen<MobileQuestionEvent>()), []),
 
@@ -65,6 +74,7 @@ export const QuestionStoreModel = types
     mine: types.optional(types.frozen<QuestionBriefPaginationResponse>(), { data: [] }),
     consultations: types.optional(types.frozen<QuestionBriefPaginationResponse>(), { data: [] }),
     recent: types.optional(types.frozen<QuestionBriefPaginationResponse>(), { data: [] }),
+    community: types.optional(types.frozen<QuestionBriefPaginationResponse>(), { data: [] }),
 
     highlights: types.maybeNull(types.frozen<GetUserHighlightsResponse>()),
   })
@@ -80,11 +90,11 @@ export const QuestionStoreModel = types
         const response: ApiResponse<GetUserHighlightsResponse> = yield getUserHighlights({
           categories,
         })
-        if (__DEV__) {
-          console.log("get highlights", categories, response.status)
-        }
-        if (response.ok) {
-          self.highlights = cast(response.data)
+        if (response.ok && response.data) {
+          if (__DEV__) {
+            console.log("get highlights", categories, response.data)
+          }
+          self.highlights = response.data
         }
       } catch (error) {
         console.error("Failed to fetch user highlights", error)
@@ -110,6 +120,10 @@ export const QuestionStoreModel = types
         )
 
         if (response.ok && response.data) {
+          if (__DEV__) {
+            console.log("query questions", querySection, response.data)
+          }
+
           let data = self[querySection].data ?? []
           data = resetQuery ? response.data.data : [...data, ...response.data.data]
           self.setProp(querySection, {

@@ -89,7 +89,7 @@ public class GetHighlights : IEndpoint
                 }),
             new("$sort",
                 new BsonDocument("TotalQuestions", -1)),
-            new("$limit", 5),
+            new("$limit", 3),
         };
 
         var categorySummary = await DB.Collection<Data.Question>().Aggregate<CategoryBrief>(categorySummaryQuery,
