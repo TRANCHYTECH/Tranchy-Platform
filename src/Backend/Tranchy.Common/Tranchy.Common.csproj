@@ -1,26 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <Compile Remove="MassTransit\**"/>
-    <EmbeddedResource Remove="MassTransit\**"/>
-    <None Remove="MassTransit\**"/>
+    <Compile Remove="MassTransit\**" />
+    <EmbeddedResource Remove="MassTransit\**" />
+    <None Remove="MassTransit\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit.Abstractions"/>
-    <PackageReference Include="MassTransit.MongoDb"/>
-    <PackageReference Include="MiniValidation"/>
-    <PackageReference Include="MongoDB.Entities"/>
-    <PackageReference Include="FluentValidation"/>
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" />
+    <PackageReference Include="Azure.Extensions.AspNetCore.DataProtection.Blobs" />
+    <PackageReference Include="Azure.Extensions.AspNetCore.DataProtection.Keys" />
+    <PackageReference Include="Azure.Identity" />
+    <PackageReference Include="MassTransit.Abstractions" />
+    <PackageReference Include="MassTransit.MongoDb" />
+    <PackageReference Include="MiniValidation" />
+    <PackageReference Include="MongoDB.Entities" />
+    <PackageReference Include="FluentValidation" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Events\Payment\"/>
-    <Folder Include="Services\"/>
+    <Folder Include="Events\Payment\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>

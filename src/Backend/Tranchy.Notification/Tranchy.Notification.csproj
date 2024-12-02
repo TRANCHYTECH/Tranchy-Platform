@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit"/>
+    <PackageReference Include="Azure.Identity" />
+    <PackageReference Include="MassTransit" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tranchy.Common\Tranchy.Common.csproj"/>
+    <ProjectReference Include="..\Tranchy.Common\Tranchy.Common.csproj" />
   </ItemGroup>
 
 </Project>

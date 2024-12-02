@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Azure;
-using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Tranchy.Ask.API;
 using Tranchy.Common;
@@ -16,29 +14,13 @@ using Tranchy.File;
 using Tranchy.Payment;
 using Tranchy.Question;
 using Tranchy.User;
-// using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 const string agencyPortalSpaPolicy = "agency-portal-spa";
+const string appName = "ask-api";
 
 var builder = WebApplication.CreateBuilder(args);
+builder.AddTranchyKeyVault(appName);
 
-builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false)
-    .ConfigureAppConfiguration(config =>
-    {
-        config.AddAzureAppConfiguration(options =>
-        {
-            string? appConfigName = builder.Configuration["AppConfigName"];
-            options.Connect(new Uri($"https://{appConfigName}.azconfig.io"), new DefaultAzureCredential())
-                .Select(KeyFilter.Any, builder.Environment.EnvironmentName)
-                .ConfigureKeyVault(keyVaultConfig => keyVaultConfig.SetCredential(new DefaultAzureCredential()));
-        });
-    });
-builder.Services.AddAzureClients(config =>
-{
-    string? vault = builder.Configuration["KeyVaultName"];
-    config.UseCredential(new DefaultAzureCredential());
-    config.AddSecretClient(new Uri($"https://{vault}.vault.azure.net"));
-});
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.ForwardedHeaders = ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedProto);
 
@@ -77,7 +59,6 @@ builder.Services.AddAuthentication(options =>
         options.DefaultScheme = "MultiAuthSchemes";
         options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
         options.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
-        // options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
     {
         // host prefixed cookie name
@@ -210,4 +191,4 @@ app.MapBffManagementEndpoints();
 app.MapTranchyHealthChecks();
 
 app.UseHubs();
-app.Run();
+await app.RunAsync();
